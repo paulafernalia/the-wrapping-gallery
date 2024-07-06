@@ -1,9 +1,103 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <title>Hello</title>
-    </head>
-    <body>
-        <h1>Hello, World!</h1>
-    </body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carry search engine</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{% static 'wrappinggallery/styles.css' %}" rel="stylesheet">
+    <link href="{% static 'wrappinggallery/grid.css' %}" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="header"> <!-- Placeholder for the header -->
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">THE WRAPPING GALLERY</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="#" onclick="navigateTo('about')">About Me</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="#" onclick="navigateTo('index')">Carries</a>
+                </li>
+            </ul>
+        </div>
+      </nav>
+    </div>
+    <div class="grid" id="imageGrid"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const imageFiles = [
+                'figure.png',
+                'figure.png',
+                'figure.png',
+                'figure.png',
+                'figure.png',
+                'figure.png',
+                'figure.png',
+                'figure.png',
+                'figure.png'
+            ];
+
+            const gridContainer = document.getElementById('imageGrid');
+            if (!gridContainer) {
+                console.error('Element with ID "imageGrid" not found');
+                return;
+            }
+
+            imageFiles.forEach(fileName => {
+                // Create grid item
+                const gridItem = document.createElement('div');
+                gridItem.className = 'grid-item';
+
+                // Create image
+                const img = document.createElement('img');
+                img.src = "{% static 'wrappinggallery/figure.png' %}"; // Adjust path as necessary
+                img.alt = fileName;
+
+                // Add click event to navigate to the carry page with the carry name as a query parameter
+                img.addEventListener('click', () => navigateToCarry(fileName.split('.')[0]));
+
+                // Create description container
+                const descContainer = document.createElement('div');
+                descContainer.className = 'desc-container';
+
+                // Create carrydesc
+                const carrydesc = document.createElement('div');
+                carrydesc.className = 'carrydesc';
+                carrydesc.textContent = 'Lena\'s Double Poppins';
+
+                // Create sizedesc
+                const sizedesc = document.createElement('div');
+                sizedesc.className = 'sizedesc';
+                sizedesc.textContent = 'Base + 1';
+
+                // Append descriptions to the description container
+                descContainer.appendChild(carrydesc);
+                descContainer.appendChild(sizedesc);
+
+                // Append image and description container to grid item
+                gridItem.appendChild(img);
+                gridItem.appendChild(descContainer);
+
+                // Append grid item to grid container
+                gridContainer.appendChild(gridItem);
+            });
+        });
+
+        function navigateToCarry(carryName) {
+            window.location.href = `carry.html?carry=${carryName}`;
+        }
+    </script>
+</body>
 </html>
+

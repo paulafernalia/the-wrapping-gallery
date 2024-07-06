@@ -1,0 +1,40 @@
+.navbar {
+    min-height: 80px; /* Increase the height of the navbar */
+    background-color: #222 !important; /* Darker shade of black with !important */
+    padding-top: 15px; /* Padding before the title */
+    padding-left: 100px; /* Padding on the left side */
+    padding-right: 100px; /* Padding on the right side */
+}
+
+.navbar-brand {
+    font-family: "Playfair Display", serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 2.0rem;
+    color: white; /* Font color set to white */
+    margin-right: 20px; /* Space after the navbar brand */
+}
+
+.navbar-nav .nav-link {
+    color: white !important; /* Font color set to white with !important */
+    margin-right: 10px; /* Space after each nav link */
+    padding-left: 30px !important; /* Padding on the left side of each nav link */
+    padding-right: 30px !important; /* Padding on the right side of each nav link */
+    font-size: 13px;
+    font-family: "Poppins";
+}
+
+.navbar-nav .nav-link:hover {
+    color: #222 !important; /* Light gray text color on hover */
+    background-color: #888 !important; /* Darker background color on hover */
+}
+
+.navbar-nav .nav-link:last-child {
+    margin-right: 0; /* Remove margin after the last nav link */
+}
+
+.navbar-dark .navbar-nav .nav-item .nav-link.active {
+    background-color: white; /* Custom background color for active link */
+    color: grey !important; /* Text color when active */
+}

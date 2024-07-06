@@ -1,0 +1,74 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+}
+
+h2 {
+    text-align: center;
+    margin: 20px;
+}
+
+.grid {
+    margin: 0 auto;
+    padding: 20px;
+    max-width: 1100px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); /* Responsive grid layout */
+    gap: 50px; /* Space between grid items, reduced from 50px */
+}
+
+.grid-item {
+    position: relative; /* Allows absolute positioning of child elements */
+    overflow: hidden;
+    background-color: #fff; /* Optional: Background color for the grid item */
+    border: none; /* Optional: Border around each grid item */
+    transition: transform 0.8s ease; /* Smooth transition for hover effect */
+}
+
+.grid-item:hover {
+    transform: scale(1.02); /* Slight zoom-in effect */
+}
+
+.grid-item:hover img {
+    transform: scale(1.05); /* Slight zoom-in effect for the image */
+}
+
+
+.grid-item img {
+    width: 100%; /* Full width of the grid item */
+    max-width: 200px; /* Maximum width of images */
+    height: auto; /* Maintain aspect ratio */
+    display: block;
+    object-fit: cover; /* Cover the container */
+}
+
+.desc-container {
+    position: absolute; /* Position absolutely within the grid item */
+    bottom: 5px; /* Space from the bottom of the grid item */
+    width: 100%; /* Full width of the grid item */
+    padding: 10px; /* Padding around the text */
+    box-sizing: border-box; /* Ensure padding does not overflow the container */
+    background-color: rgba(255, 255, 255, 0.1); /* Semi-transparent background */
+}
+
+.carrydesc,
+.sizedesc {
+    text-align: center;
+    margin: 0; /* Remove default margin */
+    font-weight: 500;
+}
+
+.carrydesc {
+    font-family: "Poppins", cursive;
+    font-size: 16px; /* Adjust font size as needed */
+}
+
+.sizedesc {
+    font-family: "Dancing Script", cursive;
+    font-size: 18px; /* Adjust font size as needed */
+}
