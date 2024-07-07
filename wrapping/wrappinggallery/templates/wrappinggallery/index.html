@@ -3,10 +3,65 @@
 {% load static %}
 
 {% block body %}
+<div class="content-container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="input-group mb-3">
+                <input type="text" class="form-control input-underline" placeholder="Search carries">
+                <button class="btn btn-outline-secondary ml-4" type="button" id="button-filter">Filters</button>
+            </div>
+        </div>
+    </div>
+
+    <div id=filterBox style="display: none;">
+        <p><strong> Position </strong></p>
+        <div role="group" aria-label="Filter Group 1">
+            <button type="button" class="btn btn-custom mx-1 active" onclick="setActiveButton(this)">Any</button>
+            <button type="button" class="btn btn-custom mx-1" onclick="setActiveButton(this)">Front</button>
+            <button type="button" class="btn btn-custom mx-1" onclick="setActiveButton(this)">Hip</button>
+            <button type="button" class="btn btn-custom mx-1" onclick="setActiveButton(this)">Back</button>
+        </div>
+        <hr>
+        <p><strong> Size </strong> (referenced to the base size)</p>
+        <div role="group" aria-label="Filter Group 1">
+            <button type="button" class="btn btn-custom mx-1 active" onclick="setActiveButton(this)">Any</button>
+            <button type="button" class="btn btn-custom mx-1" onclick="setActiveButton(this)">-5</button>
+            <button type="button" class="btn btn-custom mx-1" onclick="setActiveButton(this)">-4</button>
+            <button type="button" class="btn btn-custom mx-1" onclick="setActiveButton(this)">-3</button>
+            <button type="button" class="btn btn-custom mx-1" onclick="setActiveButton(this)">-2</button>
+            <button type="button" class="btn btn-custom mx-1" onclick="setActiveButton(this)">-1</button>
+            <button type="button" class="btn btn-custom mx-1" onclick="setActiveButton(this)">0</button>
+            <button type="button" class="btn btn-custom mx-1" onclick="setActiveButton(this)">+1</button>
+            <button type="button" class="btn btn-custom mx-1" onclick="setActiveButton(this)">+2</button>
+        </div>
+        <hr>
+    </div>
+</div>
 <div class="grid" id="imageGrid" data-static-url="{% static 'wrappinggallery/' %}"></div>
 
 <script>
+    function setActiveButton(button) {
+        const btnGroup = button.parentElement;
+        const buttons = btnGroup.getElementsByClassName('btn-custom');
+        for (let btn of buttons) {
+            btn.classList.remove('active');
+        }
+        button.classList.add('active');
+        console.log("text in button", button.text);
+    }
+
     document.addEventListener('DOMContentLoaded', function() {
+        const searchButton = document.getElementById('button-filter');
+        const filterBox = document.getElementById('filterBox');
+
+        searchButton.addEventListener('click', function() {
+            if (filterBox.style.display === 'none' || filterBox.style.display === '') {
+                filterBox.style.display = 'block';
+            } else {
+                filterBox.style.display = 'none';
+            }
+        });
+
         const imageFiles = [
             'figure.png',
             'figure.png',
