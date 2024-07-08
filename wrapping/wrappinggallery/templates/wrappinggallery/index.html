@@ -8,128 +8,30 @@
         <div class="col-md-6">
             <div class="input-group mb-3">
                 <input type="text" class="form-control input-underline" placeholder="Search carries">
-                <button class="btn btn-outline-secondary ml-4" type="button" id="button-filter">Filters</button>
+                <button class="btn btn-outline-secondary ml-4" type="button" id="button-filter" onclick="toggleFilterBox()" >Filters</button>
             </div>
         </div>
     </div>
 
     <div id=filterBox style="display: none;">
         <p><strong> Position </strong></p>
-        <div role="group" aria-label="Filter Group 1">
-            <button type="button" class="btn btn-custom mx-1 active" onclick="setActiveButton(this)">Any</button>
-            <button type="button" class="btn btn-custom mx-1" onclick="setActiveButton(this)">Front</button>
-            <button type="button" class="btn btn-custom mx-1" onclick="setActiveButton(this)">Hip</button>
-            <button type="button" class="btn btn-custom mx-1" onclick="setActiveButton(this)">Back</button>
+        <div id="positionFilters" data-property="position">
+            {% for value in position_values %}
+                <button type="button" class="btn btn-custom mx-1" data-property="position" data-value="{{ value }}" onclick="clickFilterButton(this)">{{ value }}</button>
+            {% endfor %}
         </div>
         <hr>
         <p><strong> Size </strong> (referenced to the base size)</p>
-        <div role="group" aria-label="Filter Group 1">
-            <button type="button" class="btn btn-custom mx-1 active" onclick="setActiveButton(this)">Any</button>
-            <button type="button" class="btn btn-custom mx-1" onclick="setActiveButton(this)">-5</button>
-            <button type="button" class="btn btn-custom mx-1" onclick="setActiveButton(this)">-4</button>
-            <button type="button" class="btn btn-custom mx-1" onclick="setActiveButton(this)">-3</button>
-            <button type="button" class="btn btn-custom mx-1" onclick="setActiveButton(this)">-2</button>
-            <button type="button" class="btn btn-custom mx-1" onclick="setActiveButton(this)">-1</button>
-            <button type="button" class="btn btn-custom mx-1" onclick="setActiveButton(this)">0</button>
-            <button type="button" class="btn btn-custom mx-1" onclick="setActiveButton(this)">+1</button>
-            <button type="button" class="btn btn-custom mx-1" onclick="setActiveButton(this)">+2</button>
+        <div id="sizeFilters" data-property="size">
+            {% for value in size_values %}
+                <button type="button" class="btn btn-custom mx-1" data-property="size" data-value="{{ value }}" onclick="clickFilterButton(this)">{{ value }}</button>
+            {% endfor %}
         </div>
         <hr>
     </div>
 </div>
-<div class="grid" id="imageGrid" data-static-url="{% static 'wrappinggallery/' %}"></div>
+<div class="grid" id="imageGrid"></div>
 
-<script>
-    function setActiveButton(button) {
-        const btnGroup = button.parentElement;
-        const buttons = btnGroup.getElementsByClassName('btn-custom');
-        for (let btn of buttons) {
-            btn.classList.remove('active');
-        }
-        button.classList.add('active');
-        console.log("text in button", button.text);
-    }
-
-    document.addEventListener('DOMContentLoaded', function() {
-        const searchButton = document.getElementById('button-filter');
-        const filterBox = document.getElementById('filterBox');
-
-        searchButton.addEventListener('click', function() {
-            if (filterBox.style.display === 'none' || filterBox.style.display === '') {
-                filterBox.style.display = 'block';
-            } else {
-                filterBox.style.display = 'none';
-            }
-        });
-
-        const imageFiles = [
-            'figure.png',
-            'figure.png',
-            'figure.png',
-            'figure.png',
-            'figure.png',
-            'figure.png',
-            'figure.png',
-            'figure.png',
-            'figure.png'
-        ];
-
-        const gridContainer = document.getElementById('imageGrid');
-        if (!gridContainer) {
-            console.error('Element with ID "imageGrid" not found');
-            return;
-        }
-
-        const staticUrl = gridContainer.getAttribute('data-static-url');
-
-        imageFiles.forEach(fileName => {
-            // Create grid item
-            const gridItem = document.createElement('div');
-            gridItem.className = 'grid-item';
-
-            // Create image
-            const img = document.createElement('img');
-            img.src = staticUrl + fileName; // Combine the static URL with the file name
-            img.alt = fileName;
-
-            // Add click event to navigate to the carry page with the carry name as a query parameter
-            img.addEventListener('click', () => navigateToCarry(fileName.split('.')[0]));
-
-            // Create description container
-            const descContainer = document.createElement('div');
-            descContainer.className = 'desc-container';
-
-            // Create carrydesc
-            const carrydesc = document.createElement('div');
-            carrydesc.className = 'carrydesc';
-            carrydesc.textContent = 'Lena\'s Double Poppins';
-
-            // Create sizedesc
-            const sizedesc = document.createElement('div');
-            sizedesc.className = 'sizedesc';
-            sizedesc.textContent = 'Base + 1';
-
-            // Append descriptions to the description container
-            descContainer.appendChild(carrydesc);
-            descContainer.appendChild(sizedesc);
-
-            // Append image and description container to grid item
-            gridItem.appendChild(img);
-            gridItem.appendChild(descContainer);
-
-            // Append grid item to grid container
-            gridContainer.appendChild(gridItem);
-        });
-    });
-
-    function navigateToCarry(carryName) {
-        window.location.href = `carry.html?carry=${carryName}`;
-    }
-
-
-    function navigateToCarry(carryName) {
-        window.location.href = `carry.html?carry=${carryName}`;
-    }
-</script>
+<script src="{% static 'wrappinggallery/app.js' %}"></script>
 
 {% endblock %}
