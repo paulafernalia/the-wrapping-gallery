@@ -3,34 +3,39 @@
 {% load static %}
 
 {% block body %}
-<div class="content-container">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="input-group mb-3">
-                <input type="text" class="form-control input-underline" placeholder="Search carries">
-                <button class="btn btn-outline-secondary ml-4" type="button" id="button-filter" onclick="toggleFilterBox()" >Filters</button>
+<div id="about-page" style="display: none;">
+    <p>HELLO</p>
+</div>
+<div id="carries-page">
+    <div class="content-container">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="input-group mb-3">
+                    <input id="search-input" type="text" class="form-control input-underline" placeholder="Search carries">
+                    <button id="button-filter" class="btn btn-outline-secondary ml-4" type="button" onclick="toggleFilterBox()" >Filters</button>
+                </div>
             </div>
         </div>
-    </div>
 
-    <div id=filterBox style="display: none;">
-        <p><strong> Position </strong></p>
-        <div id="positionFilters" data-property="position">
-            {% for value in position_values %}
-                <button type="button" class="btn btn-custom mx-1" data-property="position" data-value="{{ value }}" onclick="clickFilterButton(this)">{{ value }}</button>
-            {% endfor %}
+        <div id=filterBox style="display: none;">
+            <p><strong> Position </strong></p>
+            <div id="positionFilters" data-property="position">
+                {% for value in position_values %}
+                    <button type="button" class="btn btn-custom mx-1" data-property="position" data-value="{{ value }}" onclick="clickFilterButton(this)">{{ value }}</button>
+                {% endfor %}
+            </div>
+            <hr>
+            <p><strong> Size </strong> (referenced to the base size)</p>
+            <div id="sizeFilters" data-property="size">
+                {% for value in size_values %}
+                    <button type="button" class="btn btn-custom mx-1" data-property="size" data-value="{{ value }}" onclick="clickFilterButton(this)">{{ value }}</button>
+                {% endfor %}
+            </div>
+            <hr>
         </div>
-        <hr>
-        <p><strong> Size </strong> (referenced to the base size)</p>
-        <div id="sizeFilters" data-property="size">
-            {% for value in size_values %}
-                <button type="button" class="btn btn-custom mx-1" data-property="size" data-value="{{ value }}" onclick="clickFilterButton(this)">{{ value }}</button>
-            {% endfor %}
-        </div>
-        <hr>
     </div>
+    <div class="grid" id="imageGrid"></div>
 </div>
-<div class="grid" id="imageGrid"></div>
 
 <script src="{% static 'wrappinggallery/app.js' %}"></script>
 

@@ -12,6 +12,31 @@ async function clickFilterButton(button) {
 }
 
 
+
+function showPage(tab) {
+    // Clear active tab
+    const carriesTab = document.querySelector('.nav-link[data-page="carries-page"]');
+    carriesTab.classList.remove('active');
+
+    const aboutTab = document.querySelector('.nav-link[data-page="about-page"]');
+    aboutTab.classList.remove('active');
+
+    // Hide all of the divs:
+    const carriesPage = document.getElementById('carries-page');
+    carriesPage.style.display = 'none';
+
+    const aboutPage = document.getElementById('about-page');
+    aboutPage.style.display = 'none';
+
+    // Show the div provided in the argument
+    const selectedPage = document.getElementById(tab.dataset.page);
+    selectedPage.style.display = 'block';
+
+    // Mark tab as active
+    tab.classList.add('active');
+}
+
+
 function updateFilterData(button) {
     const property = button.parentElement.getAttribute('data-property');
     const value = button.getAttribute('data-value');
