@@ -135,7 +135,6 @@ function setActiveButton(button) {
 }
 
 function toggleFilterBox() {
-    console.log("triggered");
     const filterBox = document.getElementById('filterBox');
     if (filterBox.style.display === 'none' || filterBox.style.display === '') {
         filterBox.style.display = 'block';
