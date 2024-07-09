@@ -204,5 +204,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Set link of navbar brand
     const navbarBrand = document.querySelector('.navbar-brand');
     const carriesTab = document.querySelector('.nav-link[data-page="carries-page"]');
-    navbarBrand.onclick = showPage(carriesTab);
+    navbarBrand.onclick = function() {
+        showPage(carriesTab);
+    };
 });
