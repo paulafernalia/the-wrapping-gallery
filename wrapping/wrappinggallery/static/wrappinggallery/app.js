@@ -43,6 +43,11 @@ function showPage(tab) {
 
     // Mark tab as active
     tab.classList.add('active');
+
+    // Reset filters correctly
+    if (tab.dataset.page === 'carries-page') {
+        initialiseFiltersData();
+    }
 }
 
 
@@ -61,6 +66,10 @@ function initialiseFilterData(property) {
         localStorage.setItem(property, 'Any');
     } else {
         init = localStorage.getItem(property);
+
+        // If any filters applied, show filter box to alert user
+        const filterBox = document.getElementById('filterBox');
+        filterBox.style.display = 'block';
     }
 
     // Get button with this property and value
