@@ -12,6 +12,15 @@ async function clickFilterButton(button) {
 }
 
 
+function handleInputChange() {
+    const searchInput = document.getElementById('search-input');
+    localStorage.setItem('partialname', searchInput.value);
+
+    if (searchInput.value !== "") {
+        // Filter carries by the property selected in the button
+        filterCarries();
+    }
+}
 
 function showPage(tab) {
     // Clear active tab
@@ -60,9 +69,20 @@ function initialiseFilterData(property) {
     button.classList.add('active');
 }
 
+
+function initialiseSearchBar() {
+    // Set content to localstorage if available
+    if (localStorage.getItem('partialname')) {
+        const searchInput = document.getElementById('search-input');
+        searchInput.value = localStorage.getItem('partialname');
+    }
+}
+
 function initialiseFiltersData() {
     initialiseFilterData('size');
-    initialiseFilterData('position');    
+    initialiseFilterData('position');
+    initialiseSearchBar();
+
 }
 
 async function fetchFilteredCarries() {
@@ -70,13 +90,13 @@ async function fetchFilteredCarries() {
     const filters = {
         size: localStorage.getItem("size"),
         position: localStorage.getItem("position"),
+        partialname: localStorage.getItem("partialname"),
     };
     
     // Build the query string from the filters object
     const queryString = Object.entries(filters)
         .map(([property, value]) => `property[]=${encodeURIComponent(property)}&value[]=${encodeURIComponent(value)}`)
         .join('&');
-
     // Filter carries by using filter values
     const response = await fetch(`/api/filter-carries/?${queryString}`);
 
@@ -180,6 +200,4 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Filter carries in gallery
     filterCarries();
-
-
 });

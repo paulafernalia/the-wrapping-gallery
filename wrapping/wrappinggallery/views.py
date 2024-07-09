@@ -29,7 +29,8 @@ def filter_carries(request):
             queryset = queryset.filter(size=val)
         elif prop == 'position' and val != 'Any':
             queryset = queryset.filter(position=val)
-        # Add more properties as needed
+        elif prop == 'partialname' and val != '':
+            queryset = queryset.filter(title__icontains=val)
 
     # Serialize the results
     results = list(queryset.values('position', 'title', 'size', 'coverpicture'))
