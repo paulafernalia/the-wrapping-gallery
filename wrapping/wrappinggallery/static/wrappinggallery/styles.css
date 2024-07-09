@@ -14,6 +14,7 @@
     font-size: 2.0rem;
     color: white; /* Font color set to white */
     margin-right: 20px; /* Space after the navbar brand */
+    cursor: pointer; /* Change cursor to pointer */
 }
 
 .navbar-nav .nav-link {
@@ -23,6 +24,7 @@
     padding-right: 30px !important; /* Padding on the right side of each nav link */
     font-size: 13px;
     font-family: "Poppins";
+    cursor: pointer; /* Change cursor to pointer */
 }
 
 .navbar-nav .nav-link:hover {
