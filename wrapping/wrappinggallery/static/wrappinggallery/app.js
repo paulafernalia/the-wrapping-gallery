@@ -78,7 +78,7 @@ async function fetchFilteredCarries() {
         .join('&');
 
     // Filter carries by using filter values
-    const response = await fetch(`/wrappinggallery/api/filter-carries/?${queryString}`);
+    const response = await fetch(`/api/filter-carries/?${queryString}`);
 
     if (!response.ok) {
         throw new Error('Network response was not ok');

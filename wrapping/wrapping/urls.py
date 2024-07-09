@@ -21,7 +21,7 @@ from django.conf import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('wrappinggallery/', include("wrappinggallery.urls")),
+    path('', include("wrappinggallery.urls")),
 ]
 
 if settings.DEBUG:
