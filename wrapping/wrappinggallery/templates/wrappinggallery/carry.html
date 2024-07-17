@@ -6,15 +6,4 @@
 <h1> hello {{name}}</h1>
 <h2> position {{position}}</h2>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function() { 
-        // Set link of navbar brand
-        const carriesTab = document.querySelector('.nav-link[data-page="carries-page"]');
-        carriesTab.classList.remove('active');
-        
-        const aboutTab = document.querySelector('.nav-link[data-page="about-page"]');
-        aboutTab.classList.remove('active'); 
-    }); 
-</script>
-
 {% endblock %}

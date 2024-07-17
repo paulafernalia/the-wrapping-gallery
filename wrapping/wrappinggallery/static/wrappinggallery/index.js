@@ -192,14 +192,6 @@ function updateCarryGallery(carries) {
 }
 
 document.addEventListener('DOMContentLoaded', function() { 
-    // Set link of navbar brand
-    const navbarBrand = document.querySelector('.navbar-brand');
-    const carriesTab = document.querySelector('.nav-link[data-page="carries-page"]');
-    carriesTab.classList.add('active');
-    
-    const aboutTab = document.querySelector('.nav-link[data-page="about-page"]');
-    aboutTab.classList.remove('active');
-
     // Set initial active buttons in filters
     initialiseFiltersData();
 
