@@ -24,10 +24,10 @@
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a class="nav-link" data-page="about-page" onclick="showPage(this)">About Me</a>
+                    <a class="nav-link {% if tab == 'about' %}active{% endif %}" data-page="about-page" onclick="showPage(this)">About Me</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active" data-page="carries-page" onclick="showPage(this)">Carries</a>
+                    <a class="nav-link {% if tab == 'carries' or not tab %}active{% endif %}" data-page="carries-page" onclick="showPage(this)">Carries</a>
                 </li>
             </ul>
         </div>
@@ -35,6 +35,13 @@
     </div>
     {% block body %}
     {% endblock %}
+    <!-- Include jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
+    <!-- Include Bootstrap JS -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <!-- Optional: Include Popper.js for Bootstrap's dropdowns, tooltips, and popovers -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 </body>
 </html>
