@@ -14,6 +14,10 @@ def index(request):
         "position_values": ["Any", "Front", "Back"]
     })
 
+
+def about(request):
+    return render(request, "wrappinggallery/about.html")
+
 @require_GET
 def filter_carries(request):
     # Extract lists of properties and values from GET parameters
