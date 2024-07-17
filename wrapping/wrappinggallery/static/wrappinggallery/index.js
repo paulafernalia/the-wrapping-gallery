@@ -22,35 +22,6 @@ function handleInputChange() {
     }
 }
 
-function showPage(tab) {
-    // Clear active tab
-    const carriesTab = document.querySelector('.nav-link[data-page="carries-page"]');
-    carriesTab.classList.remove('active');
-
-    const aboutTab = document.querySelector('.nav-link[data-page="about-page"]');
-    aboutTab.classList.remove('active');
-
-    // Hide all of the divs:
-    const carriesPage = document.getElementById('carries-page');
-    carriesPage.style.display = 'none';
-
-    const aboutPage = document.getElementById('about-page');
-    aboutPage.style.display = 'none';
-
-    // Show the div provided in the argument
-    const selectedPage = document.getElementById(tab.dataset.page);
-    selectedPage.style.display = 'block';
-
-    // Mark tab as active
-    tab.classList.add('active');
-
-    // Reset filters correctly
-    if (tab.dataset.page === 'carries-page') {
-        initialiseFiltersData();
-    }
-}
-
-
 function updateFilterData(button) {
     const property = button.parentElement.getAttribute('data-property');
     const value = button.getAttribute('data-value');
@@ -157,6 +128,7 @@ function updateCarryGallery(carries) {
     // Get imageGrid div
     const gridContainer = document.getElementById('imageGrid');
     gridContainer.innerHTML = '';
+    const baseUrlPattern = gridContainer.dataset.baseUrlPattern.replace('PLACEHOLDER', '');
 
     carries.forEach(carry => {
         // Create grid item
@@ -169,7 +141,24 @@ function updateCarryGallery(carries) {
         // Create image
         const img = document.createElement('img');
         img.src = imageUrl; // Combine the static URL with the file name
-        img.alt = carry.coverpicture;
+        img.alt = carry.name;
+        
+        // Create on click functionality
+        img.addEventListener('click', function() {
+            // Construct the full URL by appending the name to the base URL pattern
+            const url = `${baseUrlPattern}${carry.name}`;
+            
+            // Clear active tab
+            const carriesTab = document.querySelector('.nav-link[data-page="carries-page"]');
+            carriesTab.classList.remove('active');
+
+            const aboutTab = document.querySelector('.nav-link[data-page="about-page"]');
+            aboutTab.classList.remove('active');
+
+            // Redirect to the constructed URL
+            window.location.href = url;
+
+        });
 
         // Create description container
         const descContainer = document.createElement('div');
@@ -202,17 +191,10 @@ function updateCarryGallery(carries) {
     })
 }
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function() { 
     // Set initial active buttons in filters
     initialiseFiltersData();
 
     // Filter carries in gallery
-    filterCarries();
-
-    // Set link of navbar brand
-    const navbarBrand = document.querySelector('.navbar-brand');
-    const carriesTab = document.querySelector('.nav-link[data-page="carries-page"]');
-    navbarBrand.onclick = function() {
-        showPage(carriesTab);
-    };
+    filterCarries();   
 });

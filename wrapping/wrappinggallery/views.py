@@ -14,6 +14,22 @@ def index(request):
         "position_values": ["Any", "Front", "Back"]
     })
 
+
+def about(request):
+    return render(request, "wrappinggallery/about.html")
+
+
+def carry(request, name):
+    # Initialize a queryset for filtering
+    queryset = Carry.objects.all()
+    queryset = queryset.filter(name=name)
+    results = list(queryset.values('name', 'position', 'title', 'size', 'coverpicture'))
+
+    assert len(results) == 1
+    
+    return render(request, "wrappinggallery/carry.html", results[0])
+
+
 @require_GET
 def filter_carries(request):
     # Extract lists of properties and values from GET parameters
@@ -33,5 +49,5 @@ def filter_carries(request):
             queryset = queryset.filter(title__icontains=val)
 
     # Serialize the results
-    results = list(queryset.values('position', 'title', 'size', 'coverpicture'))
+    results = list(queryset.values('name', 'position', 'title', 'size', 'coverpicture'))
     return JsonResponse({'carries': results})
