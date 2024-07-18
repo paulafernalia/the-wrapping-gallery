@@ -45,6 +45,7 @@ h2 {
     height: auto; /* Maintain aspect ratio */
     display: block;
     object-fit: cover; /* Cover the container */
+    cursor: pointer;
 }
 
 .desc-container {
@@ -60,13 +61,4 @@ h2 {
 .sizedesc {
     text-align: center;
     margin: 0; /* Remove default margin */
-    font-weight: 500;
-}
-
-.carrydesc {
-    font-size: 16px; /* Adjust font size as needed */
-}
-
-.sizedesc {
-    font-size: 18px; /* Adjust font size as needed */
 }
