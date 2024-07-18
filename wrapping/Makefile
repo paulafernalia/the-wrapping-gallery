@@ -19,3 +19,6 @@ makemigrations:
 
 migrate:
 	$(PYTHON) $(MANAGE) migrate
+
+shell:
+	$(PYTHON) $(MANAGE) shell
