@@ -43,7 +43,7 @@ class Carry(models.Model):
 
     position = models.CharField(
         max_length=5,
-        choices={"front": "front", "back": "back"},
+        choices={"front": "Front", "back": "Back"},
     )
 
     description = models.TextField(blank=True)
@@ -72,3 +72,20 @@ class Carry(models.Model):
 
     def __str__(self):
         return f"{self.name}: {self.position} carry, {self.size}, {self.mmposition}"
+
+
+    def to_dict(self):
+        return {
+            "title": self.title,
+            "size": self.get_size_display(),
+            "shoulders": self.get_shoulders_display(),
+            "layers": self.get_layers_display(),
+            "mmposition": self.get_mmposition_display(),
+            "position": self.get_position_display(),
+            "finish": self.get_finish_display(),
+            "pretied": self.pretied,
+            "description": self.description,
+            "videotutorial": self.videotutorial,
+            "videoauthor": self.videoauthor,
+            "coverpicture": self.coverpicture,
+        }

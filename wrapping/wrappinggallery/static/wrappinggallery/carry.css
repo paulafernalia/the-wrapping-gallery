@@ -1,0 +1,106 @@
+.content-container {
+    margin-top: 50px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 1100px;
+}
+
+h1 {
+    font-family: "Playfair Display", serif;
+    font-size: 32px; /* Adjust font size as needed */
+}
+
+h3 {
+    font-family: "Dancing Script", cursive;
+    font-size: 22px; /* Adjust font size as needed */
+}
+
+h4 {
+    font-family: "Helvetica";
+    font-size: 18px;
+    margin-left: 20px;
+}
+
+/* Flexbox container for three-column layout */
+.three-column-container {
+    display: flex;
+    margin-top: 20px; /* Add some space above */
+}
+
+/* Column widths and alignment */
+.three-column-container .column {
+    display: flex;
+    flex-direction: column;
+/*    justify-content: flex-end; */
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+/* Specific widths for each column */
+.three-column-container .column {
+    flex: 0 0 40%; /* 20% width */
+/*    padding: 10px;*/
+}
+
+/* Styling for the image */
+.three-column-container .column img {
+    max-width: 100%; /* Ensure image fits within the column */
+    width: auto;
+    height: auto; /* Maintain aspect ratio */
+    max-width: 250px; /* Set a maximum width for the image */
+    display: block;
+    margin: 0 auto; /* Center the image within the column */
+}
+
+.custom-list-spacing .list-group-item {
+    padding: 5px 10px; /* Adjust padding as needed */
+    margin-bottom: 2px; /* Adjust margin as needed */
+    line-height: 1.2;  /* Adjust line-height as needed */
+}
+
+.highlight {
+    color: #FF5733; /* Change to your desired color */
+    font-weight: bold;
+}
+
+
+.list-group-item {
+    border: 1px solid white !important; /* White border color */
+    background-color: transparent; /* Optional: Make background transparent */
+    display: flex;
+    align-items: center; /* Center items vertically */
+    font-size: 14px;
+}
+
+
+.video-container {
+    position: relative;
+    width: 100%;
+    padding-bottom: 56.25%; /* 16:9 aspect ratio */
+    height: 0;
+    overflow: hidden;
+    background: #000;
+}
+
+.video-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+
+.pink-span {
+    margin-right: 10px;
+    color: #ad9393;
+}
+
+
+.fs32 {
+    font-size: 32px;
+}
+
+.fs16 {
+    font-size: 16px;
+}

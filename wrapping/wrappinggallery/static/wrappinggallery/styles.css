@@ -7,7 +7,6 @@
 }
 
 .navbar-brand {
-    font-family: "Playfair Display", serif;
     font-optical-sizing: auto;
     font-weight: 400;
     font-style: normal;
@@ -23,7 +22,6 @@
     padding-left: 30px !important; /* Padding on the left side of each nav link */
     padding-right: 30px !important; /* Padding on the right side of each nav link */
     font-size: 13px;
-    font-family: "Poppins";
     cursor: pointer; /* Change cursor to pointer */
 }
 
@@ -48,7 +46,6 @@
     border-radius: 10px; /* Rounded corners */
     margin-right: 50px; /* Space between buttons */
     margin-bottom: 50px; /* Space between button groups */
-    font-family: 'Poppins', serif; /* Custom font */
     font-size: 14px; /* Adjust font size as needed */
     font-weight: 700; /* Adjust font weight as needed */
     padding: 10px 20px; /* Padding around the button text */
@@ -72,9 +69,13 @@
 }
 
 p {
-    font-family: 'Poppins', serif;  Custom font 
-    font-size: 13px; /* Adjust font size as needed */
-    font-weight: 900;
+    font-size: 12px; /* Adjust font size as needed */
+    font-weight: 400;
+}
+
+li {
+    font-size: 12px; /* Adjust font size as needed */
+    font-weight: 400;
 }
 
 .content-container {
@@ -89,7 +90,6 @@ p {
     border-bottom: 1px solid #000;
     border-radius: 0;
     box-shadow: none;
-    font-family: 'Poppins', sans-serif; /* Replace 'YourChosenFont' with the desired font family */
     font-size: 14px;
 }
 
@@ -99,8 +99,33 @@ p {
 }
 
 .btn-outline-secondary {
-    font-family: 'Poppins', sans-serif; /* Replace 'YourChosenFont' with the desired font family */
     margin-left: 1rem; /* Adjust this as needed for the gap */
     font-size: 14px;
     border-radius: 15px;
+}
+
+.poppins-bold {
+  font-family: "Poppins", sans-serif;
+  font-weight: 700;
+  font-style: normal;
+}
+
+.poppins-light {
+  font-family: "Poppins", sans-serif;
+  font-weight: 300;
+  font-style: normal;
+}
+
+.poppins-regular {
+  font-family: "Poppins", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.playfair {
+  font-family: "Playfair Display", sans-serif;
+}
+
+.dancing {
+  font-family: "Dancing Script", sans-serif;
 }

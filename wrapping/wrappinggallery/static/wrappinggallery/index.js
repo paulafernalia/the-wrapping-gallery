@@ -166,12 +166,12 @@ function updateCarryGallery(carries) {
 
         // Create carrydesc
         const carrydesc = document.createElement('div');
-        carrydesc.className = 'carrydesc';
+        carrydesc.className = 'carrydesc poppins-regular fs16';
         carrydesc.textContent = carry.title;
 
         // Create sizedesc
         const sizedesc = document.createElement('div');
-        sizedesc.className = 'sizedesc';
+        sizedesc.className = 'sizedesc dancing fs16';
         if (carry.size == 0) {
             sizedesc.textContent = "Base";
         } else {
