@@ -1,4 +1,6 @@
 from django.db import models
+from django.core.validators import MinValueValidator, MaxValueValidator
+from django.contrib.auth.models import User
 
 # Create your models here.
 class Carry(models.Model):
@@ -89,3 +91,40 @@ class Carry(models.Model):
             "videoauthor": self.videoauthor,
             "coverpicture": self.coverpicture,
         }
+
+
+class Ratings(models.Model):
+    validators = [MinValueValidator(1.0), MaxValueValidator(5.0)]
+
+    carry = models.ForeignKey(Carry, on_delete=models.CASCADE)
+
+    newborns = models.FloatField(validators=validators)
+    legstraighteners = models.FloatField(validators=validators)
+    leaners = models.FloatField(validators=validators)
+    bigkids = models.FloatField(validators=validators)
+    feeding = models.FloatField(validators=validators)
+    quickups = models.FloatField(validators=validators) 
+
+    difficulty = models.FloatField(validators=validators)
+    fancy = models.FloatField(validators=validators)
+
+    votes = models.IntegerField(blank=True)
+
+
+class UserRatings(models.Model):
+    validators = [MinValueValidator(1), MaxValueValidator(5)]
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    carry = models.ForeignKey(Carry, on_delete=models.CASCADE)
+
+    newborns = models.IntegerField(validators=validators)
+    legstraighteners = models.IntegerField(validators=validators)
+    leaners = models.IntegerField(validators=validators)
+    bigkids = models.IntegerField(validators=validators)
+    feeding = models.IntegerField(validators=validators)
+    quickups = models.IntegerField(validators=validators) 
+
+    difficulty = models.IntegerField(validators=validators)
+
+    fancy = models.IntegerField(validators=validators)
