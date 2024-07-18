@@ -110,7 +110,7 @@ class Ratings(models.Model):
     difficulty = models.FloatField(validators=validators)
     fancy = models.FloatField(validators=validators)
 
-    votes = models.IntegerField(blank=True)
+    votes = models.IntegerField(blank=True, null=True)
 
 
 class UserRatings(models.Model):
