@@ -75,6 +75,8 @@ class Carry(models.Model):
     def __str__(self):
         return f"{self.name}: {self.position} carry, {self.size}, {self.mmposition}"
 
+    def is_valid_carry(self):
+        return not self.pretied or not self.position == "back"
 
     def to_dict(self):
         return {
