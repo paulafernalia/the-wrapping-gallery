@@ -9,25 +9,28 @@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="{% static 'wrappinggallery/styles.css' %}" rel="stylesheet">
     <link href="{% static 'wrappinggallery/grid.css' %}" rel="stylesheet">
+    <link href="{% static 'wrappinggallery/carry.css' %}" rel="stylesheet">
     <link rel="shortcut icon" type="image/png" href="{% static 'wrappinggallery/favicon.ico' %}"/>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
 </head>
 <body>
     <div id="header"> 
       <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a class="navbar-brand">THE WRAPPING GALLERY</a>
+        <a class="navbar-brand playfair">THE WRAPPING GALLERY</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a class="nav-link {% if request.path == '/about/' %}active{% endif %}" data-page="about-page" href="{% url 'about' %}">About Me</a>
+                    <a class="nav-link poppins-light {% if request.path == '/about/' %}active{% endif %}" data-page="about-page" href="{% url 'about' %}">About Me</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {% if request.path == '/' %}active{% endif %}" data-page="carries-page" href="{% url 'index' %}">Carries</a>
+                    <a class="nav-link poppins-light {% if request.path == '/' %}active{% endif %}" data-page="carries-page" href="{% url 'index' %}">Carries</a>
                 </li>
             </ul>
         </div>
@@ -35,13 +38,5 @@
     </div>
     {% block body %}
     {% endblock %}
-    <!-- Include jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-    <!-- Include Bootstrap JS -->
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
-    <!-- Optional: Include Popper.js for Bootstrap's dropdowns, tooltips, and popovers -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 </body>
 </html>

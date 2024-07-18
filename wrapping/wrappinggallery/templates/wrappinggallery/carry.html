@@ -3,7 +3,42 @@
 {% load static %}
 
 {% block body %}
-<h1> hello {{name}}</h1>
-<h2> position {{position}}</h2>
+<div class="content-container">
+    <h1 id="carryName">{{title}}</h2>
+    <h3 id="carrySize">{{size}}</h3>
+    <hr>
+
+    <div class="three-column-container">
+        <div class="column">
+            <img id="carryImage" alt="{{name}}" src='/media/{{coverpicture}}'>
+        </div>
+        <div class="column">
+            <h4 class="dancing fs32">Carry features</p>
+
+            <ul class="list-group list-group-flush custom-list-spacing">
+                <li class="list-group-item poppins-light fs16"><span class="poppins-bold pink-span">TYPE: </span> {{position}} carry </li>
+                <li class="list-group-item poppins-light fs16"><span class="poppins-bold pink-span">SIZE: </span> {{size}} </li>
+                <li class="list-group-item poppins-light fs16"><span class="poppins-bold pink-span">MM POSITION: </span> {{mmposition}} </li>
+                <li class="list-group-item poppins-light fs16"><span class="poppins-bold pink-span">LAYERS: </span> {{layers}} layers </li>
+                <li class="list-group-item poppins-light fs16"><span class="poppins-bold pink-span">SHOULDERS: </span> {{shoulders}} </li>
+                <li class="list-group-item poppins-light fs16"><span class="poppins-bold pink-span">CAN BE PRE-TIED: </span> {{pretied}} </li>
+                <li class="list-group-item poppins-light fs16"><span class="poppins-bold pink-span">FINISH: </span> {{finish}} </li>
+            </ul>
+        </div>
+    </div>
+
+    <hr>
+
+    <h4 class="poppins-light fs16">VIDEO TUTORIAL by {{videoauthor}}</p>
+    <div class="video-container">>
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/flK5VEPV8Rw?si=LmzPyjr0CqVDaG08" 
+            title="YouTube video player" 
+            frameborder="0" 
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+            referrerpolicy="strict-origin-when-cross-origin" 
+            allowfullscreen>
+    </iframe>
+    </div>
+</div>
 
 {% endblock %}

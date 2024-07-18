@@ -7,21 +7,21 @@
     <div class="row justify-content-center">
         <div class="col-md-6">
             <div class="input-group mb-3">
-                <input id="search-input" type="text" class="form-control input-underline" placeholder="Search carries" oninput="handleInputChange()">
-                <button id="button-filter" class="btn btn-outline-secondary ml-4" type="button" onclick="toggleFilterBox()" >Filters</button>
+                <input id="search-input" type="text" class="form-control input-underline poppins-light" placeholder="Search carries" oninput="handleInputChange()">
+                <button id="button-filter" class="btn btn-outline-secondary ml-4 poppins-light" type="button" onclick="toggleFilterBox()" >Filters</button>
             </div>
         </div>
     </div>
 
     <div id=filterBox style="display: none;">
-        <p><strong> Position </strong></p>
+        <p class="poppins-bold fs16"> Position </p>
         <div id="positionFilters" data-property="position">
             {% for value in position_values %}
-                <button type="button" class="btn btn-custom mx-1" data-property="position" data-value="{{ value }}" onclick="clickFilterButton(this)">{{ value }}</button>
+                <button type="button" class="btn btn-custom mx-1 poppins-light" data-property="position" data-value="{{ value }}" onclick="clickFilterButton(this)">{{ value }}</button>
             {% endfor %}
         </div>
         <hr>
-        <p><strong> Size </strong> (referenced to the base size)</p>
+        <p class="poppins-bold fs16"> Size <span class="poppins-light">(referenced to base size)</span> </p>
         <div id="sizeFilters" data-property="size">
             {% for value in size_values %}
                 <button type="button" class="btn btn-custom mx-1" data-property="size" data-value="{{ value }}" onclick="clickFilterButton(this)">{{ value }}</button>

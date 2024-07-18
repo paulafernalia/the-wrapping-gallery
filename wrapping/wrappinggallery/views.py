@@ -23,11 +23,11 @@ def carry(request, name):
     # Initialize a queryset for filtering
     queryset = Carry.objects.all()
     queryset = queryset.filter(name=name)
-    results = list(queryset.values('name', 'position', 'title', 'size', 'coverpicture'))
 
-    assert len(results) == 1
-    
-    return render(request, "wrappinggallery/carry.html", results[0])
+    assert len(queryset) == 1
+
+    carry_dict = queryset[0].to_dict()
+    return render(request, "wrappinggallery/carry.html", carry_dict)
 
 
 @require_GET
