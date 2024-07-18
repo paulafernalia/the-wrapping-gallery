@@ -75,6 +75,8 @@ class Carry(models.Model):
     def __str__(self):
         return f"{self.name}: {self.position} carry, {self.size}, {self.mmposition}"
 
+    def is_valid_carry(self):
+        return not self.pretied or not self.position == "back"
 
     def to_dict(self):
         return {
@@ -108,7 +110,7 @@ class Ratings(models.Model):
     difficulty = models.FloatField(validators=validators)
     fancy = models.FloatField(validators=validators)
 
-    votes = models.IntegerField(blank=True)
+    votes = models.IntegerField(blank=True, null=True)
 
 
 class UserRatings(models.Model):
