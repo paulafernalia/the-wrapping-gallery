@@ -33,10 +33,20 @@ jobs:
         SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
         SERVICE_ROLE_KEY: ${{ secrets.SERVICE_ROLE_KEY }}
         SUPABASE_BUCKET_NAME: ${{ secrets.SUPABASE_BUCKET_NAME }}
+        DB_NAME: ${{ secrets.DB_NAME }}
+        DB_USER: ${{ secrets.DB_USER }}
+        DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+        DB_HOST: ${{ secrets.DB_HOST }}
+        DB_PORT: ${{ secrets.DB_PORT }}
       run: |
         echo "SUPABASE_URL=${SUPABASE_URL}" >> $GITHUB_ENV
         echo "SERVICE_ROLE_KEY=${SERVICE_ROLE_KEY}" >> $GITHUB_ENV
         echo "SUPABASE_BUCKET_NAME=${SUPABASE_BUCKET_NAME}" >> $GITHUB_ENV
+        echo "DB_NAME=${DB_NAME}" >> $GITHUB_ENV
+        echo "DB_USER=${DB_USER}" >> $GITHUB_ENV
+        echo "DB_PASSWORD=${DB_PASSWORD}" >> $GITHUB_ENV
+        echo "DB_HOST=${DB_HOST}" >> $GITHUB_ENV
+        echo "DB_PORT=${DB_PORT}" >> $GITHUB_ENV
 
     - name: Run Tests
       run: |
