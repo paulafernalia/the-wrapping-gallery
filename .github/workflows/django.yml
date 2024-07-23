@@ -30,6 +30,7 @@ jobs:
 
     - name: Set environment variables
       env:
+        TEST: '1'  # Set TEST environment variable for test settings
         SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
         SERVICE_ROLE_KEY: ${{ secrets.SERVICE_ROLE_KEY }}
         SUPABASE_BUCKET_NAME: ${{ secrets.SUPABASE_BUCKET_NAME }}
@@ -39,6 +40,7 @@ jobs:
         DB_HOST: ${{ secrets.DB_HOST }}
         DB_PORT: ${{ secrets.DB_PORT }}
       run: |
+        echo "TEST=${TEST}" >> $GITHUB_ENV
         echo "SUPABASE_URL=${SUPABASE_URL}" >> $GITHUB_ENV
         echo "SERVICE_ROLE_KEY=${SERVICE_ROLE_KEY}" >> $GITHUB_ENV
         echo "SUPABASE_BUCKET_NAME=${SUPABASE_BUCKET_NAME}" >> $GITHUB_ENV
@@ -51,5 +53,5 @@ jobs:
     - name: Run Tests
       run: |
         cd wrapping
-        python manage.py test
+        python manage.py test --keepdb
 
