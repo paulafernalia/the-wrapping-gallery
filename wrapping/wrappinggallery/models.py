@@ -70,7 +70,7 @@ class Carry(models.Model):
         }
     )
 
-    coverpicture = models.ImageField(blank=True)
+    coverpicture = models.CharField(max_length=160, blank=True)
 
     def __str__(self):
         return f"{self.name}: {self.position} carry, {self.size}, {self.mmposition}"
