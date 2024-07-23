@@ -1,18 +1,31 @@
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
-from .models import Carry
+from .models import Carry, Ratings
 from django.views.decorators.http import require_GET
+from django.db.models import FloatField, Func, F
+from django.db.models.functions import Round
 
+
+DIFFICULTY_VALUES = [
+    "Beginner", "Beginner+", "Intermediate", "Advanced", "Pro"
+]
 
 # Create your views here.
 def index(request):
-    size_values = ["Any", "-5", "-4", "-3", "-2", "-1", "0", "+1", "+2"]
-    position_values = ["Any", "Front", "Back"]
+    context = {}
 
-    return render(request, "wrappinggallery/index.html", {
-        "size_values": ["Any", "-5", "-4", "-3", "-2", "-1", "0", "+1", "+2"],
-        "position_values": ["Any", "Front", "Back"]
-    })
+    carry_fields = [
+        "size", "shoulders", "layers", "mmposition", "position", "finish"
+    ]
+
+    for field in carry_fields:
+        idx = 0 if field == "size" else 1
+        labels = [elem[idx] for elem in Carry._meta.get_field(field).choices]
+        context[field + "_values"] = ["Any"] + labels
+
+    context["difficulty_values"] = ["Any"] + DIFFICULTY_VALUES
+
+    return render(request, "wrappinggallery/index.html", context)
 
 
 def about(request):
@@ -36,18 +49,37 @@ def filter_carries(request):
     properties = request.GET.getlist('property[]')
     values = request.GET.getlist('value[]')
 
+    difficulties = dict(zip(DIFFICULTY_VALUES, [1, 2, 3, 4, 5]))
+
     # Initialize a queryset for filtering
-    queryset = Carry.objects.all()
+    queryset = Ratings.objects.all()
 
     # Apply filters based on properties and values
     for prop, val in zip(properties, values):
         if prop == 'size' and val != 'Any':
-            queryset = queryset.filter(size=val)
+            queryset = queryset.filter(carry__size=val)
         elif prop == 'position' and val != 'Any':
-            queryset = queryset.filter(position=val)
+            queryset = queryset.filter(carry__position=val)
+        elif prop == 'finish' and val != 'Any':
+            queryset = queryset.filter(carry__finish=val)
         elif prop == 'partialname' and val != '':
-            queryset = queryset.filter(title__icontains=val)
+            queryset = queryset.filter(carry__title__icontains=val)
+        elif prop == "difficulty" and val != 'Any':
+            queryset = queryset.annotate(
+                rounded_difficulty=Round(F('difficulty'))
+            ).filter(rounded_difficulty=difficulties[val])
+        elif prop == "pretied" and val != "null":
+            queryset = queryset.filter(carry__pretied=val)
 
     # Serialize the results
-    results = list(queryset.values('name', 'position', 'title', 'size', 'coverpicture'))
+    results = list(queryset.values(
+        'carry__name',
+        'carry__position',
+        'carry__title',
+        'carry__size',
+        'carry__coverpicture',
+        'carry__pretied',
+        'difficulty',
+        'fancy'
+    ))
     return JsonResponse({'carries': results})

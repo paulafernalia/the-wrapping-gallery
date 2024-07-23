@@ -3,11 +3,44 @@ function getButtonByValueAndProperty(property, value) {
     return document.querySelector(`button[data-value="${value}"][data-property="${property}"]`);
 }
 
+function getDropdownByValueAndProperty(property, value) {
+    // Get button that matches the data-property and data-value args given
+    return document.querySelector(`option[value="${value}"][data-property="${property}"]`);
+}
+
+function getSwitchByProperty(property) {
+    return document.querySelector(`input[data-property="${property}"]`);
+}
+
 async function clickFilterButton(button) {
     // Set this button as active
     setActiveButton(button);
 
     // Filter carries by the property selected in the button
+    filterCarries();
+}
+
+async function handleSelectChange(dropdown) {
+    const selectedOption = dropdown.options[dropdown.selectedIndex];
+
+    // Store selected value in local storage
+    localStorage.setItem(selectedOption.dataset.property, selectedOption.value);
+
+    // Filter carries by the properties selected
+    filterCarries();
+}
+
+
+async function handleSwitchChange(switch_) {
+    let checked = 0;
+    if (switch_.checked) {
+        checked = 1;
+    }
+
+    // Store selected value in local storage
+    localStorage.setItem(switch_.dataset.property, checked);
+
+    // Filter carries by the properties selected
     filterCarries();
 }
 
@@ -22,15 +55,76 @@ function handleInputChange() {
     }
 }
 
-function updateFilterData(button) {
-    const property = button.parentElement.getAttribute('data-property');
-    const value = button.getAttribute('data-value');
+function initialiseSwitchData(property) {
+    let init = 0;
 
-    // Update local storage
-    localStorage.setItem(property, value);
+    if (!localStorage.getItem(property)) {
+        localStorage.setItem(property, 0);
+    } else {
+        init = localStorage.getItem(property);
+
+        // If any switches on, show filter box to alert user
+        if (init === '1') {
+            showAllFilters();
+        }
+    }
+
+    // Get switch with this property and value
+    const switch_ = getSwitchByProperty(property);
+    if (switch_) {
+        if (init === '1') {
+            switch_.checked = true;
+        } else {
+            switch_.checked = false;
+        }
+    }
 }
 
-function initialiseFilterData(property) {
+
+function hideAllFilters() {
+    const filterBox = document.getElementById('filterBox');
+    filterBox.style.display = 'none';
+
+    const showMoreBtn = document.getElementById('showMoreBtn');
+    showMoreBtn.style.display = 'none';
+
+    const filterBoxExt = document.getElementById('filterBoxExt');
+    filterBoxExt.style.display = 'none';
+
+    const buttonBox = document.getElementById('buttonBox');
+    buttonBox.style.display = 'none';
+}
+
+
+function showAllFilters() {
+    const filterBox = document.getElementById('filterBox');
+    filterBox.style.display = 'block';
+
+    const showMoreBtn = document.getElementById('showMoreBtn');
+    showMoreBtn.style.display = 'none';
+
+    const filterBoxExt = document.getElementById('filterBoxExt');
+    filterBoxExt.style.display = 'block';
+
+    const buttonBox = document.getElementById('buttonBox');
+    buttonBox.style.display = 'block';
+}
+
+async function resetFilters() {
+    localStorage.setItem("size", "Any");
+    localStorage.setItem("position", "Any");
+    localStorage.setItem("difficulty", "Any");
+    localStorage.setItem("finish", "Any");
+    localStorage.setItem("fancy", "0");
+    localStorage.setItem("pretied", "0");
+
+    initialiseFiltersData();
+
+    // Filter carries in gallery
+    filterCarries();
+}
+
+function initialiseButtonData(property) {
     let init = 'Any';
     if (!localStorage.getItem(property)) {
         // If not, set the counter to 0 in local storage
@@ -38,15 +132,46 @@ function initialiseFilterData(property) {
     } else {
         init = localStorage.getItem(property);
 
-        // If any filters applied, show filter box to alert user
-        const filterBox = document.getElementById('filterBox');
-        filterBox.style.display = 'block';
+        if (init !== "Any") {
+            // If any filters applied, show filter box to alert user
+            const filterBox = document.getElementById('filterBox');
+            filterBox.style.display = 'block';
+        }
     }
 
     // Get button with this property and value
     const button = getButtonByValueAndProperty(property, init);
+    const btnGroup = button.parentElement;
+    const buttons = btnGroup.getElementsByClassName('btn-custom');
 
-    button.classList.add('active');
+    // Set all other buttons as inactive
+    for (let btn of buttons) {
+        btn.classList.remove('active');
+    }
+
+    if (button) {
+        button.classList.add('active');
+    }
+}
+
+function initialiseDropdownData(property) {
+    let init = 'Any';
+    if (!localStorage.getItem(property)) {
+        // If not, set the counter to 0 in local storage
+        localStorage.setItem(property, 'Any');
+    } else {
+        init = localStorage.getItem(property);
+
+        if (init !== "Any") {
+            showAllFilters();
+        }
+    }
+
+    // If it's not a button, it may be a dropdown
+    const optionToSelect = getDropdownByValueAndProperty(property, init);
+    if (optionToSelect) {
+        optionToSelect.selected = true;
+    }
 }
 
 
@@ -59,8 +184,12 @@ function initialiseSearchBar() {
 }
 
 function initialiseFiltersData() {
-    initialiseFilterData('size');
-    initialiseFilterData('position');
+    initialiseButtonData('size');
+    initialiseButtonData('position');
+    initialiseDropdownData('difficulty');
+    initialiseDropdownData('finish');
+    initialiseSwitchData('fancy');
+    initialiseSwitchData('pretied');
     initialiseSearchBar();
 
 }
@@ -70,7 +199,11 @@ async function fetchFilteredCarries() {
     const filters = {
         size: localStorage.getItem("size"),
         position: localStorage.getItem("position"),
+        difficulty: localStorage.getItem("difficulty"),
         partialname: localStorage.getItem("partialname"),
+        pretied: localStorage.getItem("pretied"),
+        fancy: localStorage.getItem("fancy"),
+        finish: localStorage.getItem("finish"),
     };
     
     // Build the query string from the filters object
@@ -88,11 +221,32 @@ async function fetchFilteredCarries() {
     return data.carries;
 }
 
+function showResults() {
+    // Hide all filters
+    hideAllFilters();
+
+    // Scroll to gallery
+    var targetElement = document.getElementById('imageGrid');
+    targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
 async function filterCarries() {
     fetchFilteredCarries()
         .then(carries => {
             // Update gallery content
             updateCarryGallery(carries);
+
+            showResultsBtn = document.getElementById('showResultsBtn');
+
+            if (carries.length === 0) {
+                showResultsBtn.classList.remove('active');
+                showResultsBtn.classList.add('disabled');
+                showResultsBtn.textContent = "No results";
+            } else {
+                showResultsBtn.classList.remove('disabled');
+                showResultsBtn.classList.add('active');
+                showResultsBtn.textContent ="Show " + carries.length + " results";
+            }
         })
         .catch(error => {
             console.error('There was a problem with the fetch operation:', error);
@@ -116,11 +270,33 @@ function setActiveButton(button) {
 
 function toggleFilterBox() {
     const filterBox = document.getElementById('filterBox');
-    if (filterBox.style.display === 'none' || filterBox.style.display === '') {
+    if (filterBox.style.display === 'none') {
         filterBox.style.display = 'block';
+
+        const buttonBox = document.getElementById('buttonBox');
+        buttonBox.style.display = 'block';
+
+        const showMoreBtn = document.getElementById('showMoreBtn');
+        showMoreBtn.style.display = 'block';
     } else {
-        filterBox.style.display = 'none';
+        hideAllFilters();
     }
+}
+
+function showFilterBoxExt() {
+    const filterBoxExt = document.getElementById('filterBoxExt');
+    filterBoxExt.style.display = 'block';
+
+    const showMoreBtn = document.getElementById('showMoreBtn');
+    showMoreBtn.style.display = 'none';
+}
+
+function hideFilterBoxExt() {
+    const filterBoxExt = document.getElementById('filterBoxExt');
+    filterBoxExt.style.display = 'none';
+
+    const showMoreBtn = document.getElementById('showMoreBtn');
+    showMoreBtn.style.display = 'block';
 }
 
 
@@ -136,17 +312,17 @@ function updateCarryGallery(carries) {
         gridItem.className = 'grid-item';
 
         // Set image URL
-        const imageUrl = '/media/' + carry.coverpicture;
+        const imageUrl = '/media/' + carry.carry__coverpicture;
 
         // Create image
         const img = document.createElement('img');
         img.src = imageUrl; // Combine the static URL with the file name
-        img.alt = carry.name;
+        img.alt = carry.carry__name;
         
         // Create on click functionality
         img.addEventListener('click', function() {
             // Construct the full URL by appending the name to the base URL pattern
-            const url = `${baseUrlPattern}${carry.name}`;
+            const url = `${baseUrlPattern}${carry.carry__name}`;
             
             // Clear active tab
             const carriesTab = document.querySelector('.nav-link[data-page="carries-page"]');
@@ -167,15 +343,15 @@ function updateCarryGallery(carries) {
         // Create carrydesc
         const carrydesc = document.createElement('div');
         carrydesc.className = 'carrydesc poppins-regular fs16';
-        carrydesc.textContent = carry.title;
+        carrydesc.textContent = carry.carry__title;
 
         // Create sizedesc
         const sizedesc = document.createElement('div');
         sizedesc.className = 'sizedesc dancing fs16';
-        if (carry.size == 0) {
+        if (carry.carry__size == 0) {
             sizedesc.textContent = "Base";
         } else {
-            sizedesc.textContent = "Base " + carry.size;
+            sizedesc.textContent = "Base " + carry.carry__size;
         }
 
         // Append descriptions to the description container
