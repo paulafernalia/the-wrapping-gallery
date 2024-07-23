@@ -231,26 +231,26 @@ function showResults() {
 }
 
 async function filterCarries() {
-    fetchFilteredCarries()
-        .then(carries => {
-            // Update gallery content
-            updateCarryGallery(carries);
+    try {
+        const carries = await fetchFilteredCarries();
+        
+        // Update gallery content
+        await updateCarryGallery(carries);
 
-            showResultsBtn = document.getElementById('showResultsBtn');
+        const showResultsBtn = document.getElementById('showResultsBtn');
 
-            if (carries.length === 0) {
-                showResultsBtn.classList.remove('active');
-                showResultsBtn.classList.add('disabled');
-                showResultsBtn.textContent = "No results";
-            } else {
-                showResultsBtn.classList.remove('disabled');
-                showResultsBtn.classList.add('active');
-                showResultsBtn.textContent ="Show " + carries.length + " results";
-            }
-        })
-        .catch(error => {
-            console.error('There was a problem with the fetch operation:', error);
-        });
+        if (carries.length === 0) {
+            showResultsBtn.classList.remove('active');
+            showResultsBtn.classList.add('disabled');
+            showResultsBtn.textContent = "No results";
+        } else {
+            showResultsBtn.classList.remove('disabled');
+            showResultsBtn.classList.add('active');
+            showResultsBtn.textContent = "Show " + carries.length + " results";
+        }
+    } catch (error) {
+        console.error('There was a problem with the fetch operation:', error);
+    }
 }
 
 function setActiveButton(button) {
@@ -300,32 +300,45 @@ function hideFilterBoxExt() {
 }
 
 
-function updateCarryGallery(carries) {
+async function fetchFileUrl(fileName) {
+    try {
+        const response = await fetch(`/file-url/${fileName}/`);
+        const data = await response.json();
+        return data.url;
+    } catch (error) {
+        console.error('Error fetching file URL:', error);
+    }
+}
+
+
+async function updateCarryGallery(carries) {
     // Get imageGrid div
     const gridContainer = document.getElementById('imageGrid');
     gridContainer.innerHTML = '';
     const baseUrlPattern = gridContainer.dataset.baseUrlPattern.replace('PLACEHOLDER', '');
 
-    carries.forEach(carry => {
+    for (const carry of carries) {
         // Create grid item
         const gridItem = document.createElement('div');
         gridItem.className = 'grid-item';
 
         // Set image URL
-        let imageUrl = '/media/' + carry.carry__coverpicture;
+        let imageFile = carry.carry__coverpicture;
 
         // Use placeholder if carry image not available
         if (carry.carry__coverpicture === "") {
             if (carry.carry__position === "back") {
-                imageUrl = '/media/' + "placeholder_back.png";
+                imageFile = "placeholder_back.png";
             } else {
-                imageUrl = '/media/' + "placeholder_front.png";
+                imageFile = "placeholder_front.png";
             }
         }
 
+        const fileUrl = await fetchFileUrl(imageFile);
+
         // Create image
         const img = document.createElement('img');
-        img.src = imageUrl; // Combine the static URL with the file name
+        img.src = fileUrl; // Combine the static URL with the file name
         img.alt = carry.carry__name;
         
         // Create on click functionality
@@ -342,7 +355,6 @@ function updateCarryGallery(carries) {
 
             // Redirect to the constructed URL
             window.location.href = url;
-
         });
 
         // Create description container
@@ -373,8 +385,9 @@ function updateCarryGallery(carries) {
 
         // Append grid item to grid container
         gridContainer.appendChild(gridItem);
-    })
+    }
 }
+
 
 document.addEventListener('DOMContentLoaded', function() { 
     // Set initial active buttons in filters

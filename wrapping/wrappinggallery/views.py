@@ -1,9 +1,10 @@
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
-from .models import Carry, Ratings
 from django.views.decorators.http import require_GET
 from django.db.models import FloatField, Func, F
 from django.db.models.functions import Round
+from .models import Carry, Ratings
+from .utils import generate_signed_url
 
 
 DIFFICULTY_VALUES = [
@@ -48,6 +49,14 @@ def carry(request, name):
             carry_dict["coverpicture"] = "placeholder_front.png"
 
     return render(request, "wrappinggallery/carry.html", carry_dict)
+
+
+def file_url(request, file_name):
+    signed_url = generate_signed_url(f'{file_name}')
+    if signed_url:
+        return JsonResponse({'url': signed_url})
+    else:
+        return JsonResponse({'error': 'Unable to generate signed URL'}, status=500)
 
 
 @require_GET

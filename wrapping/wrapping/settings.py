@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 from pathlib import Path
 import os
+from decouple import config, Csv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -32,6 +33,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Media files
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# Load Supabase configuration from environment variables
+SUPABASE_URL = config('SUPABASE_URL', default='https://default.supabase.co')
+SERVICE_ROLE_KEY = config('SERVICE_ROLE_KEY', default='default-service-role-key')
+SUPABASE_BUCKET_NAME = config('SUPABASE_BUCKET_NAME', default='default-bucket-name')
 
 # Application definition
 
@@ -81,10 +87,25 @@ WSGI_APPLICATION = 'wrapping.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': config('DB_NAME', default='default_db_name'),
+        'USER': config('DB_USER', default='default_user'),
+        'PASSWORD': config('DB_PASSWORD', default='default_password'),
+        'HOST': config('DB_HOST', default='localhost'),
+        'PORT': config('DB_PORT', default='5432'),
     }
 }
+
+# Test Database Configuration
+if 'TEST' in os.environ:
+    DATABASES['default'] = {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': f"test_{config('DB_NAME')}",  # Ensures unique test DB names
+        'USER': config('DB_USER'),
+        'PASSWORD': config('DB_PASSWORD'),
+        'HOST': config('DB_HOST'),
+        'PORT': config('DB_PORT', default='5432'),
+    }
 
 
 # Password validation
