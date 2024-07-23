@@ -40,6 +40,13 @@ def carry(request, name):
     assert len(queryset) == 1
 
     carry_dict = queryset[0].to_dict()
+
+    if carry_dict["coverpicture"] == "":
+        if carry_dict["position"] == "Back":
+            carry_dict["coverpicture"] = "placeholder_back.png"
+        else:
+            carry_dict["coverpicture"] = "placeholder_front.png"
+
     return render(request, "wrappinggallery/carry.html", carry_dict)
 
 

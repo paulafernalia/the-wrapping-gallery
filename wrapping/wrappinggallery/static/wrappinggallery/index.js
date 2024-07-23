@@ -312,7 +312,16 @@ function updateCarryGallery(carries) {
         gridItem.className = 'grid-item';
 
         // Set image URL
-        const imageUrl = '/media/' + carry.carry__coverpicture;
+        let imageUrl = '/media/' + carry.carry__coverpicture;
+
+        // Use placeholder if carry image not available
+        if (carry.carry__coverpicture === "") {
+            if (carry.carry__position === "back") {
+                imageUrl = '/media/' + "placeholder_back.png";
+            } else {
+                imageUrl = '/media/' + "placeholder_front.png";
+            }
+        }
 
         // Create image
         const img = document.createElement('img');
