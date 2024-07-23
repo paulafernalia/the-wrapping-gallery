@@ -40,15 +40,14 @@
 }
 
 .btn-custom {
-/*    background-color: white;*/
     color: black;
     border: 2px solid black;
     border-radius: 10px; /* Rounded corners */
-    margin-right: 50px; /* Space between buttons */
+    margin-right: 30px; /* Space between buttons */
     margin-bottom: 50px; /* Space between button groups */
     font-size: 14px; /* Adjust font size as needed */
     font-weight: 700; /* Adjust font weight as needed */
-    padding: 10px 20px; /* Padding around the button text */
+    padding: 7px 20px; /* Padding around the button text */
 }
 
 
@@ -68,6 +67,20 @@
     border: 2px solid #ddd;
 }
 
+.btn-custom.disabled {
+    background-color: white;
+    color: #ddd;
+    cursor: not-allowed;
+    border: 2px solid #ddd;
+}
+
+.btn-custom.disabled:hover {
+    background-color: white !important;
+    color: #ddd !important;
+    cursor: not-allowed;
+    border: 2px solid #ddd;
+}
+
 p {
     font-size: 12px; /* Adjust font size as needed */
     font-weight: 400;
@@ -82,7 +95,7 @@ li {
     margin-top: 30px;
     margin-left: auto;
     margin-right: auto;
-    width: 1100px;
+    max-width: 1000px;
 }
 
 .input-underline {
@@ -106,7 +119,7 @@ li {
 
 .poppins-bold {
   font-family: "Poppins", sans-serif;
-  font-weight: 700;
+  font-weight: 600;
   font-style: normal;
 }
 
@@ -129,3 +142,38 @@ li {
 .dancing {
   font-family: "Dancing Script", sans-serif;
 }
+
+.show-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    text-decoration: underline;
+}
+
+.show-button:focus {
+    outline: none;
+}
+
+.show-button:hover {
+    color: grey;
+}
+
+.dropdown select:focus {
+    outline: none;
+}
+
+.dropdown {
+    display: inline-block;
+    position: relative;
+}
+.dropdown select {
+    width: 200px;
+    padding: 8px;
+    font-size: 16px;
+    border: 2px solid black;
+    border-radius: 10px;
+    background-color: white;
+    cursor: pointer;
+}
+

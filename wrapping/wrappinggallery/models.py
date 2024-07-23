@@ -50,7 +50,7 @@ class Carry(models.Model):
 
     description = models.TextField(blank=True)
 
-    pretied = models.BooleanField()
+    pretied = models.BooleanField(null=True)
 
     finish = models.CharField(
         max_length=16,

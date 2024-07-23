@@ -17,18 +17,64 @@
         <p class="poppins-bold fs16"> Position </p>
         <div id="positionFilters" data-property="position">
             {% for value in position_values %}
-                <button type="button" class="btn btn-custom mx-1 poppins-light" data-property="position" data-value="{{ value }}" onclick="clickFilterButton(this)">{{ value }}</button>
+                <button type="button" class="btn btn-custom mx-1 poppins-regular" data-property="position" data-value="{{ value }}" onclick="clickFilterButton(this)">{{ value }}</button>
             {% endfor %}
         </div>
-        <hr>
         <p class="poppins-bold fs16"> Size <span class="poppins-light">(referenced to base size)</span> </p>
         <div id="sizeFilters" data-property="size">
             {% for value in size_values %}
-                <button type="button" class="btn btn-custom mx-1 poppins-light" data-property="size" data-value="{{ value }}" onclick="clickFilterButton(this)">{{ value }}</button>
+                <button type="button" class="btn btn-custom mx-1 poppins-regular" data-property="size" data-value="{{ value }}" onclick="clickFilterButton(this)">{{ value }}</button>
             {% endfor %}
         </div>
-        <hr>
+        <button id="showMoreBtn" class="show-button poppins-light" onclick="showFilterBoxExt()">Show more</button>
     </div>
+    <div id=filterBoxExt style="display: none;">
+        <p class="poppins-bold fs16"> Difficulty</p>
+        <div class="dropdown poppins-light fs16">
+            <select id="difficulty-select" onchange="handleSelectChange(this)">
+                {% for value in difficulty_values %}
+                    <option data-property="difficulty" value="{{value}}" selected>{{value}}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <br>
+        <br>
+        <p class="poppins-bold fs16"> Finish</p>
+        <div class="dropdown poppins-light fs16">
+            <select id="finish-select" onchange="handleSelectChange(this)">
+                {% for value in finish_values %}
+                    <option data-property="finish" value="{{value}}" selected>{{value}}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <br>
+        <br>
+        <br>
+        <p class="poppins-bold fs16"> Can be pre-tied</p>
+        <div class="custom-control custom-switch">
+            <input type="checkbox" class="custom-control-input" id="pretiedSwitch" onchange="handleSwitchChange(this)"  data-property="pretied">
+            <label class="custom-control-label" for="pretiedSwitch"></label>
+        </div>
+        <br>
+        <p class="poppins-bold fs16"> Fancy</p>
+        <div class="custom-control custom-switch">
+            <input type="checkbox" class="custom-control-input" id="fancySwitch" onchange="handleSwitchChange(this)" data-property="fancy">
+            <label class="custom-control-label" for="fancySwitch"></label>
+        </div>
+        <br>
+        <button id="showLessBtn" class="show-button poppins-light" onclick="hideFilterBoxExt()">Show less</button>
+        <br>
+        <br>
+    </div>
+    <div id=buttonBox style="display: none;">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                 <button id="showResultsBtn" type="button" class="btn btn-custom mx-1 poppins-regular disabled" onclick="showResults()">Show results</button>
+                <button id="resetFiltersBtn" type="button" class="btn btn-custom mx-1 poppins-regular" onclick="resetFilters()">Reset filters</button>
+            </div>
+        </div>
+    </div>
+<br>
 </div>
 <div class="grid" id="imageGrid" data-base-url-pattern="{% url 'carry' 'PLACEHOLDER' %}"></div>
 
