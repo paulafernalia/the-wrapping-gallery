@@ -98,7 +98,7 @@ class Carry(models.Model):
 class Ratings(models.Model):
     validators = [MinValueValidator(1.0), MaxValueValidator(5.0)]
 
-    carry = models.ForeignKey(Carry, on_delete=models.CASCADE)
+    carry = models.OneToOneField(Carry, on_delete=models.CASCADE)
 
     newborns = models.FloatField(validators=validators, default=1)
     legstraighteners = models.FloatField(validators=validators, default=1)
@@ -130,3 +130,8 @@ class UserRatings(models.Model):
     difficulty = models.IntegerField(validators=validators)
 
     fancy = models.IntegerField(validators=validators)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['user', 'carry'], name='unique_foreign_keys')
+        ]
