@@ -326,7 +326,8 @@ async function updateCarryGallery(carries) {
         let imageFile = carry.carry__coverpicture;
 
         // Use placeholder if carry image not available
-        if (carry.carry__coverpicture === "") {
+        if (carry.carry__coverpicture === "" ||
+            carry.carry__coverpicture === null) {
             if (carry.carry__position === "back") {
                 imageFile = "placeholder_back.png";
             } else {
