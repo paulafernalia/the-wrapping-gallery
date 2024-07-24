@@ -39,18 +39,18 @@ class Carry(models.Model):
         }
     )
 
-    videotutorial = models.URLField(blank=True)
+    videotutorial = models.URLField(blank=True, null=True)
 
-    videoauthor = models.CharField(max_length=64, blank=True)
+    videoauthor = models.CharField(max_length=64, blank=True, null=True)
 
     position = models.CharField(
         max_length=5,
         choices={"front": "Front", "back": "Back"},
     )
 
-    description = models.TextField(blank=True)
+    description = models.TextField(blank=True, null=True)
 
-    pretied = models.BooleanField(null=True)
+    pretied = models.BooleanField(default=False)
 
     finish = models.CharField(
         max_length=16,
@@ -70,7 +70,7 @@ class Carry(models.Model):
         }
     )
 
-    coverpicture = models.CharField(max_length=160, blank=True)
+    coverpicture = models.CharField(max_length=160, blank=True, null=True)
 
     def __str__(self):
         return f"{self.name}: {self.position} carry, {self.size}, {self.mmposition}"
