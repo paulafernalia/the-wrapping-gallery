@@ -6,6 +6,17 @@
     padding-right: 100px; /* Padding on the right side */
 }
 
+#header {
+    position: fixed;
+    top: 0; /* Fixed to the top */
+    width: 100%; /* Full width */
+    z-index: 1000; /* Ensure it's above other content */
+}
+
+body {
+    padding-top: 80px; /* Adjust according to the height of your navbar */
+}
+
 .navbar-brand {
     font-optical-sizing: auto;
     font-weight: 400;
