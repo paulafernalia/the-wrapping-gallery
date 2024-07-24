@@ -40,7 +40,7 @@ jobs:
         DB_HOST: ${{ secrets.DB_HOST }}
         DB_PORT: ${{ secrets.DB_PORT }}
         SECRET_KEY: ${{ secrets.SECRET_KEY }}
-        MODE: ${{ variables.MODE }}
+        MODE: ${{ env.MODE }}
       run: |
         echo "TEST=${TEST}" >> $GITHUB_ENV
         echo "SUPABASE_URL=${SUPABASE_URL}" >> $GITHUB_ENV
