@@ -130,3 +130,8 @@ class UserRatings(models.Model):
     difficulty = models.IntegerField(validators=validators)
 
     fancy = models.IntegerField(validators=validators)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['user', 'carry'], name='unique_foreign_keys')
+        ]
