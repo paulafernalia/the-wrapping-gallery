@@ -59,8 +59,8 @@ class CarrySignalTestCase(TestCase):
 
         # Check that the Ratings instance has the correct default values
         self.assertEqual(
-            ratings_instance.rating, 0,
-            "Ratings instance does not have default rating value of 0"
+            ratings_instance.bigkids, 1,
+            "Ratings instance does not have default bigkids value of 1"
         )
 
         # Ensure that only one Ratings instance was created for the Carry instance
