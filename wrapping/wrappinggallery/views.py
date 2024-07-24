@@ -48,6 +48,8 @@ def carry(request, name):
         else:
             carry_dict["coverpicture"] = "placeholder_front.png"
 
+    carry_dict["imageSrc"] = generate_signed_url(carry_dict["coverpicture"])
+
     return render(request, "wrappinggallery/carry.html", carry_dict)
 
 
