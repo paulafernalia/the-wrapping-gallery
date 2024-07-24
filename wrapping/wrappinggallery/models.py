@@ -108,7 +108,7 @@ class Ratings(models.Model):
     quickups = models.FloatField(validators=validators, default=1)
 
     difficulty = models.FloatField(validators=validators, default=1)
-    fancy = models.FloatField(validators=validators, default=True)
+    fancy = models.FloatField(validators=validators, default=1)
 
     votes = models.IntegerField(blank=True, null=True, default=0)
 
