@@ -100,17 +100,17 @@ class Ratings(models.Model):
 
     carry = models.ForeignKey(Carry, on_delete=models.CASCADE)
 
-    newborns = models.FloatField(validators=validators)
-    legstraighteners = models.FloatField(validators=validators)
-    leaners = models.FloatField(validators=validators)
-    bigkids = models.FloatField(validators=validators)
-    feeding = models.FloatField(validators=validators)
-    quickups = models.FloatField(validators=validators) 
+    newborns = models.FloatField(validators=validators, default=1)
+    legstraighteners = models.FloatField(validators=validators, default=1)
+    leaners = models.FloatField(validators=validators, default=1)
+    bigkids = models.FloatField(validators=validators, default=1)
+    feeding = models.FloatField(validators=validators, default=1)
+    quickups = models.FloatField(validators=validators, default=1)
 
-    difficulty = models.FloatField(validators=validators)
-    fancy = models.FloatField(validators=validators)
+    difficulty = models.FloatField(validators=validators, default=1)
+    fancy = models.FloatField(validators=validators, default=True)
 
-    votes = models.IntegerField(blank=True, null=True)
+    votes = models.IntegerField(blank=True, null=True, default=0)
 
 
 class UserRatings(models.Model):
