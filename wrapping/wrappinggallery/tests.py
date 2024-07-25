@@ -22,3 +22,4 @@ class CarryTestCase(TestCase):
     def test_carries_count(self):
         c = Carry.objects.all()
         self.assertEqual(c.count(), 1)
+
