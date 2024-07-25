@@ -30,6 +30,7 @@ jobs:
     - name: Set environment variables
       run: |
         echo "TEST=1" >> $GITHUB_ENV
+        echo "DJANGO_SETTINGS_MODULE=wrapping.settings.testing" >> $GITHUB_ENV
         echo "SUPABASE_URL=${{ secrets.SUPABASE_URL }}" >> $GITHUB_ENV
         echo "SERVICE_ROLE_KEY=${{ secrets.SERVICE_ROLE_KEY }}" >> $GITHUB_ENV
         echo "SUPABASE_BUCKET_NAME=${{ secrets.SUPABASE_BUCKET_NAME }}" >> $GITHUB_ENV
@@ -39,12 +40,17 @@ jobs:
         echo "DB_HOST=${{ secrets.DB_HOST }}" >> $GITHUB_ENV
         echo "DB_PORT=${{ secrets.DB_PORT }}" >> $GITHUB_ENV
         echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" >> $GITHUB_ENV
-        echo "DJANGO_SETTINGS_MODULE=wrapping.settings.development" >> $GITHUB_ENV
+
+    - name: Run Migrations
+      run: |
+        cd wrapping
+        python manage.py migrate
 
     - name: Run Tests
       run: |
         cd wrapping
         python manage.py test --keepdb
+
 
 
     - name: Run Tests
