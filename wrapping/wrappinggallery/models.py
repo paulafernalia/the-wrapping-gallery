@@ -113,6 +113,19 @@ class Ratings(models.Model):
     votes = models.IntegerField(blank=True, null=True, default=0)
 
 
+    def to_dict(self):
+        return {
+            "newborns": round(self.newborns),
+            "legstraighteners": round(self.legstraighteners),
+            "leaners": round(self.leaners),
+            "bigkids": round(self.bigkids),
+            "feeding": round(self.feeding),
+            "quickups": round(self.quickups),
+            "difficulty": round(self.difficulty),
+            "fancy": round(self.fancy),
+        }
+
+
 class UserRatings(models.Model):
     validators = [MinValueValidator(1), MaxValueValidator(5)]
 

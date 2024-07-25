@@ -50,7 +50,15 @@ def carry(request, name):
 
     carry_dict["imageSrc"] = generate_signed_url(carry_dict["coverpicture"])
 
-    return render(request, "wrappinggallery/carry.html", carry_dict)
+    # Add ratings
+    ratingsqueryset = Ratings.objects.all()
+    ratingsqueryset = ratingsqueryset.filter(carry__name=name)
+
+    assert len(ratingsqueryset) == 1
+
+    context = {**carry_dict, **(ratingsqueryset[0].to_dict())}
+
+    return render(request, "wrappinggallery/carry.html", context)
 
 
 def file_url(request, file_name):

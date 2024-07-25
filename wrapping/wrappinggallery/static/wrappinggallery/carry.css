@@ -25,21 +25,21 @@ h4 {
 .three-column-container {
     display: flex;
     margin-top: 20px; /* Add some space above */
+    justify-content: space-between; /* Distribute space between columns */
+    align-items: flex-start; /* Align items to the top */
 }
 
 /* Column widths and alignment */
 .three-column-container .column {
     display: flex;
     flex-direction: column;
-/*    justify-content: flex-end; */
-    padding: 10px;
+    padding: 0px;
     box-sizing: border-box;
 }
 
 /* Specific widths for each column */
 .three-column-container .column {
-    flex: 0 0 40%; /* 20% width */
-/*    padding: 10px;*/
+    flex: 0 0 30%; /* Each column will take 30% of the container width */
 }
 
 /* Styling for the image */
@@ -51,6 +51,7 @@ h4 {
     display: block;
     margin: 0 auto; /* Center the image within the column */
 }
+
 
 .custom-list-spacing .list-group-item {
     padding: 5px 10px; /* Adjust padding as needed */
@@ -103,4 +104,24 @@ h4 {
 
 .fs16 {
     font-size: 16px;
+}
+
+
+.fa-star {
+    font-size: 20px !important; /* Adjust this value to change the size of the stars */
+}
+
+/* Styles for checked stars */
+.checked {
+    color: #ad9393; /* You can change this color if needed */
+}
+
+/* Styles for unchecked stars */
+.notchecked {
+    color: #f0f0f0 !important; /* Almost white color for unchecked stars */
+}
+
+/* Add vertical padding between rating groups */
+.rating-group {
+    margin-bottom: 10px; /* Adjust this value to change the space between groups */
 }
