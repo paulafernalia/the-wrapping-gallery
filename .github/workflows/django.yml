@@ -40,7 +40,7 @@ jobs:
         DB_HOST: ${{ secrets.DB_HOST }}
         DB_PORT: ${{ secrets.DB_PORT }}
         SECRET_KEY: ${{ secrets.SECRET_KEY }}
-        MODE: ${{ env.MODE }}
+        DJANGO_SETTINGS_MODULE: ${{ env.DJANGO_SETTINGS_MODULE }}
       run: |
         echo "TEST=${TEST}" >> $GITHUB_ENV
         echo "SUPABASE_URL=${SUPABASE_URL}" >> $GITHUB_ENV
@@ -51,7 +51,7 @@ jobs:
         echo "DB_PASSWORD=${DB_PASSWORD}" >> $GITHUB_ENV
         echo "DB_HOST=${DB_HOST}" >> $GITHUB_ENV
         echo "DB_PORT=${DB_PORT}" >> $GITHUB_ENV
-        echo "MODE=${MODE}" >> $GITHUB_ENV
+        echo "DJANGO_SETTINGS_MODULE=${DJANGO_SETTINGS_MODULE}" >> $GITHUB_ENV
 
     - name: Run Tests
       run: |
