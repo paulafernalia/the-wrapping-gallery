@@ -104,3 +104,23 @@ h4 {
 .fs16 {
     font-size: 16px;
 }
+
+
+.fa-star {
+    font-size: 20px !important; /* Adjust this value to change the size of the stars */
+}
+
+/* Styles for checked stars */
+.checked {
+    color: #ad9393; /* You can change this color if needed */
+}
+
+/* Styles for unchecked stars */
+.notchecked {
+    color: #f0f0f0 !important; /* Almost white color for unchecked stars */
+}
+
+/* Add vertical padding between rating groups */
+.rating-group {
+    margin-bottom: 10px; /* Adjust this value to change the space between groups */
+}
