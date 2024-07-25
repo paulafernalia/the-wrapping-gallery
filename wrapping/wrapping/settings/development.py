@@ -125,7 +125,7 @@ DATABASES = {
     }
 }
 
-# Test Database Configuration
+# If TEST environment variable is set, use a separate SQLite database for tests
 if 'TEST' in os.environ:
     DATABASES['default'] = {
         'ENGINE': 'django.db.backends.sqlite3',
