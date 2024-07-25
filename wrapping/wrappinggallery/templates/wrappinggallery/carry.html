@@ -25,8 +25,30 @@
                 <li class="list-group-item poppins-light fs16"><span class="poppins-bold pink-span">FINISH: </span> {{finish}} </li>
             </ul>
         </div>
-    </div>
+        <div class="column">
+            <h4 class="dancing fs32">Ratings</h4>
+            <br>
+            <div id="newborn-rating" class="rating-group" data-property="{{newborns}}">
+                <span class="poppins-light"> Good for newborns</span>
+            </div>
+            <div id="legstraightener-rating" class="rating-group" data-property="{{legstraighteners}}">
+                <span class="poppins-light"> Good for leg straighteners</span>
+            </div>
+            <div id="leaners-rating" class="rating-group" data-property="{{leaners}}">
+                <span class="poppins-light"> Good for leaners</span>
+            </div>
+            <div id="bigkids-rating" class="rating-group" data-property="{{bigkids}}">
+                <span class="poppins-light"> Good for big kids</span>
+            </div>
+            <div id="quickups-rating" class="rating-group" data-property="{{quickups}}">
+                <span class="poppins-light"> Good for quick ups</span>
+            </div>
+             <div id="feeding-rating" class="rating-group" data-property="{{feeding}}">
+                <span class="poppins-light"> Good for feeding</span>
+            </div>
+        </div>
 
+    </div>
     <hr>
 
     <h4 class="poppins-light fs16">VIDEO TUTORIAL by {{videoauthor}}</p>
@@ -40,5 +62,7 @@
     </iframe>
     </div>
 </div>
+
+<script src="{% static 'wrappinggallery/carry.js' %}"></script>
 
 {% endblock %}
