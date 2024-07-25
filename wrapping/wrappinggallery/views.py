@@ -42,7 +42,7 @@ def carry(request, name):
 
     carry_dict = queryset[0].to_dict()
 
-    if carry_dict["coverpicture"] == "":
+    if carry_dict["coverpicture"] == "" or carry_dict["coverpicture"] is None:
         if carry_dict["position"] == "Back":
             carry_dict["coverpicture"] = "placeholder_back.png"
         else:
