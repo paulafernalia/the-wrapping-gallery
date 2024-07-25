@@ -10,7 +10,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
     strategy:
-      max-parallel: 4
       matrix:
         python-version: [3.12]
 
@@ -29,29 +28,24 @@ jobs:
         pip install -r requirements.txt
 
     - name: Set environment variables
-      env:
-        TEST: '1'  # Set TEST environment variable for test settings
-        SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-        SERVICE_ROLE_KEY: ${{ secrets.SERVICE_ROLE_KEY }}
-        SUPABASE_BUCKET_NAME: ${{ secrets.SUPABASE_BUCKET_NAME }}
-        DB_NAME: ${{ secrets.DB_NAME }}
-        DB_USER: ${{ secrets.DB_USER }}
-        DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-        DB_HOST: ${{ secrets.DB_HOST }}
-        DB_PORT: ${{ secrets.DB_PORT }}
-        SECRET_KEY: ${{ secrets.SECRET_KEY }}
-        DJANGO_SETTINGS_MODULE: ${{ env.DJANGO_SETTINGS_MODULE }}
       run: |
-        echo "TEST=${TEST}" >> $GITHUB_ENV
-        echo "SUPABASE_URL=${SUPABASE_URL}" >> $GITHUB_ENV
-        echo "SERVICE_ROLE_KEY=${SERVICE_ROLE_KEY}" >> $GITHUB_ENV
-        echo "SUPABASE_BUCKET_NAME=${SUPABASE_BUCKET_NAME}" >> $GITHUB_ENV
-        echo "DB_NAME=${DB_NAME}" >> $GITHUB_ENV
-        echo "DB_USER=${DB_USER}" >> $GITHUB_ENV
-        echo "DB_PASSWORD=${DB_PASSWORD}" >> $GITHUB_ENV
-        echo "DB_HOST=${DB_HOST}" >> $GITHUB_ENV
-        echo "DB_PORT=${DB_PORT}" >> $GITHUB_ENV
-        echo "DJANGO_SETTINGS_MODULE=${DJANGO_SETTINGS_MODULE}" >> $GITHUB_ENV
+        echo "TEST=1" >> $GITHUB_ENV
+        echo "SUPABASE_URL=${{ secrets.SUPABASE_URL }}" >> $GITHUB_ENV
+        echo "SERVICE_ROLE_KEY=${{ secrets.SERVICE_ROLE_KEY }}" >> $GITHUB_ENV
+        echo "SUPABASE_BUCKET_NAME=${{ secrets.SUPABASE_BUCKET_NAME }}" >> $GITHUB_ENV
+        echo "DB_NAME=${{ secrets.DB_NAME }}" >> $GITHUB_ENV
+        echo "DB_USER=${{ secrets.DB_USER }}" >> $GITHUB_ENV
+        echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> $GITHUB_ENV
+        echo "DB_HOST=${{ secrets.DB_HOST }}" >> $GITHUB_ENV
+        echo "DB_PORT=${{ secrets.DB_PORT }}" >> $GITHUB_ENV
+        echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" >> $GITHUB_ENV
+        echo "DJANGO_SETTINGS_MODULE=wrapping.settings" >> $GITHUB_ENV
+
+    - name: Run Tests
+      run: |
+        cd wrapping
+        python manage.py test --keepdb
+
 
     - name: Run Tests
       run: |
