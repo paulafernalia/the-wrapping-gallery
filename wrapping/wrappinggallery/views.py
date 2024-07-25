@@ -30,7 +30,9 @@ def index(request):
 
 
 def about(request):
-    return render(request, "wrappinggallery/about.html")
+    context = {"imageSrc": generate_signed_url('profile.png', 'misc')}
+    print("context", context)
+    return render(request, "wrappinggallery/about.html", context)
 
 
 def carry(request, name):

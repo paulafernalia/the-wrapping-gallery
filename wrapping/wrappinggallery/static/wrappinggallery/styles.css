@@ -146,6 +146,14 @@ li {
   font-style: normal;
 }
 
+.fs32 {
+    font-size: 32px;
+}
+
+.fs16 {
+    font-size: 16px;
+}
+
 .playfair {
   font-family: "Playfair Display", sans-serif;
 }
@@ -188,3 +196,27 @@ li {
     cursor: pointer;
 }
 
+
+.container {
+    display: flex;
+    width: 100%;
+    height: 100vh; /* Full viewport height */
+}
+
+.sidebar {
+    width: 30%;
+    background-color: #e8e8e8; /* Lighter shade of #f0f0f0 */
+    padding: 30px;
+    box-sizing: border-box; /* Include padding in width */
+}
+
+.main-content {
+    width: 70%;
+    background-color: #d3d3d3; /* Lighter shade of #e0e0e0 */
+    padding: 50px;
+    box-sizing: border-box; /* Include padding in width */
+}
+
+.pink {
+    color: #ad9393;
+}
