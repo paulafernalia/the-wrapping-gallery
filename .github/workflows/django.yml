@@ -39,7 +39,7 @@ jobs:
         echo "DB_HOST=${{ secrets.DB_HOST }}" >> $GITHUB_ENV
         echo "DB_PORT=${{ secrets.DB_PORT }}" >> $GITHUB_ENV
         echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" >> $GITHUB_ENV
-        echo "DJANGO_SETTINGS_MODULE=wrapping.settings" >> $GITHUB_ENV
+        echo "DJANGO_SETTINGS_MODULE=wrapping.settings.development" >> $GITHUB_ENV
 
     - name: Run Tests
       run: |
