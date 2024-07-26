@@ -49,10 +49,8 @@ function handleInputChange() {
     const searchInput = document.getElementById('search-input');
     localStorage.setItem('partialname', searchInput.value);
 
-    if (searchInput.value !== "") {
-        // Filter carries by the property selected in the button
-        filterCarries();
-    }
+    // Filter carries by the property selected in the button
+    filterCarries();
 }
 
 function initialiseSwitchData(property) {
@@ -395,5 +393,12 @@ document.addEventListener('DOMContentLoaded', function() {
     initialiseFiltersData();
 
     // Filter carries in gallery
-    filterCarries();   
+    filterCarries();
+
+    const searchInput = document.getElementById('search-input');
+    searchInput.addEventListener('keydown', function(event) {
+        if (event.key === 'Enter') {
+            handleInputChange();
+        }
+    });
 });
