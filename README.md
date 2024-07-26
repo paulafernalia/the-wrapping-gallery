@@ -7,9 +7,11 @@ The production environment uses a PostgreSQL database hosted in Supabase, the de
 To set run the app in development mode, follow these steps:
 
 1. Clone this repo.
-2. Navigate to the Django project folder: `cd wrapping`.
-3. Install dependencies with `pip install -r requirements.txt`.
-4. Create a SQLite development database with some initial data: `make setup-env-db`.
-5. Run the app with `make runserver`.
+2. Create an environment with python3.12: `python3.12 -m venv venv`.
+3. Activate the environment: `source venv/bin/activate`.
+4. Navigate to the Django project folder: `cd wrapping`.
+5. Install dependencies with `pip install -r requirements.txt`.
+6. Create a SQLite development database with some initial data: `make setup-env-db`.
+7. Run the app with `make runserver`.
 
 Unit tests are run with `make test`.
