@@ -11,7 +11,7 @@ To set run the app in development mode, follow these steps:
 3. Activate the environment: `source venv/bin/activate`.
 4. Navigate to the Django project folder: `cd wrapping`.
 5. Install dependencies with `pip install -r requirements.txt`.
-6. Create a SQLite development database with some initial data: `make setup-env-db`.
+6. Create a SQLite development database with some initial data: `make setup-dev-db`.
 7. Run the app with `make runserver`.
 
 Unit tests are run with `make test`.
