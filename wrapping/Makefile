@@ -48,5 +48,21 @@ sync-dev-db:
 	# Clean up temporary data file
 	rm all_data.json
 
+sync-prod-db:
+	# Dump all data from the development database
+	$(PYTHON) manage.py dumpdata --settings=$(MYPROJ).settings.development --indent 2 > all_data.json
+	
+	# Migrate the production database schema
+	$(PYTHON) manage.py migrate --settings=$(MYPROJ).settings.production
+	
+	# Clear all data in the production database
+	$(PYTHON) manage.py flush --settings=$(MYPROJ).settings.production --noinput
+	
+	# Load all data into the production database
+	$(PYTHON) manage.py loaddata all_data.json --settings=$(MYPROJ).settings.production
+	
+	# Clean up temporary data file
+	rm all_data.json
+
 test:
 	$(PYTHON) manage.py test
