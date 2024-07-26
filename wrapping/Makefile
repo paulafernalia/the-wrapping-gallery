@@ -17,8 +17,7 @@ runserver:
 # entries or modify them if they don't fit in with the new
 # database structure.
 makemigrations:
-	makemigrations-dev
-	makemigrations-prod
+	$(PYTHON) manage.py makemigrations
 
 migrate:
 	$(PYTHON) manage.py migrate
