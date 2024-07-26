@@ -1,3 +1,6 @@
+let counter = 0
+let isFetching = false
+
 function getButtonByValueAndProperty(property, value) {
     // Get button that matches the data-property and data-value args given
     return document.querySelector(`button[data-value="${value}"][data-property="${property}"]`);
@@ -193,6 +196,10 @@ function initialiseFiltersData() {
 }
 
 async function fetchFilteredCarries() {
+    const start = counter;
+    const end = counter + 17;
+    counter = end + 1;
+
     // Read the property of the button group and the button value
     const filters = {
         size: localStorage.getItem("size"),
@@ -207,7 +214,9 @@ async function fetchFilteredCarries() {
     // Build the query string from the filters object
     const queryString = Object.entries(filters)
         .map(([property, value]) => `property[]=${encodeURIComponent(property)}&value[]=${encodeURIComponent(value)}`)
+        .concat([`start=${start}`, `end=${end}`])  // Add start and end parameters
         .join('&');
+
     // Filter carries by using filter values
     const response = await fetch(`/api/filter-carries/?${queryString}`);
 
@@ -229,10 +238,12 @@ function showResults() {
 }
 
 async function filterCarries() {
+    counter = 0;
     try {
         const carries = await fetchFilteredCarries();
         
         // Update gallery content
+        emptyCarryGallery();
         await updateCarryGallery(carries);
 
         const showResultsBtn = document.getElementById('showResultsBtn');
@@ -308,11 +319,15 @@ async function fetchFileUrl(fileName) {
     }
 }
 
+function emptyCarryGallery() {
+    const gridContainer = document.getElementById('imageGrid');
+    gridContainer.innerHTML = '';
+}
+
 
 async function updateCarryGallery(carries) {
     // Get imageGrid div
     const gridContainer = document.getElementById('imageGrid');
-    gridContainer.innerHTML = '';
     const baseUrlPattern = gridContainer.dataset.baseUrlPattern.replace('PLACEHOLDER', '');
 
     for (const carry of carries) {
@@ -402,3 +417,31 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
+
+
+// Define the async function to handle scrolling
+async function handleScroll() {
+    // Check if a request is already in progress
+    if (isFetching) return;
+
+    // Check if the user has scrolled to the bottom of the page
+    if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
+        isFetching = true;  // Set the flag to indicate a request is in progress
+
+        try {
+            // Filter carries based on current filters
+            const carries = await fetchFilteredCarries();
+
+            // Append carries to the gallery
+            updateCarryGallery(carries);
+        } catch (error) {
+            console.error('Error fetching carries:', error);
+        } finally {
+            isFetching = false;  // Reset the flag after the request completes
+        }
+    }
+}
+
+
+// Attach the async scroll handler to the window's scroll event
+window.onscroll = handleScroll;
