@@ -50,6 +50,14 @@ def carry(request, name):
         else:
             carry_dict["coverpicture"] = "placeholder_front.png"
 
+    if carry_dict["videoauthor"] == "" or carry_dict["videoauthor"] is None:
+        assert carry_dict["videotutorial"] == "" or \
+               carry_dict["videotutorial"] is None
+
+        carry_dict["videoauthor"] = "NA"
+        carry_dict["videotutorial"] = "NA"
+
+
     carry_dict["imageSrc"] = generate_signed_url(carry_dict["coverpicture"])
 
     # Add ratings
