@@ -137,6 +137,9 @@ function initialiseButtonData(property) {
             // If any filters applied, show filter box to alert user
             const filterBox = document.getElementById('filterBox');
             filterBox.style.display = 'block';
+
+            const buttonBox = document.getElementById('buttonBox');
+            buttonBox.style.display = 'block';
         }
     }
 
