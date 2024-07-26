@@ -1,0 +1,912 @@
+[
+{
+  "model": "wrappinggallery.carry",
+  "pk": "annes_fwcc",
+  "fields": {
+    "title": "Anne's Front Wrap Cross Carry",
+    "size": 0,
+    "shoulders": 2,
+    "layers": 2,
+    "mmposition": -1,
+    "videotutorial": "https://www.youtube.com/embed/E-k0Nkp416g?si=CdDsAv0CE4oiKHI",
+    "videoauthor": "Sheen Slings",
+    "position": "front",
+    "description": "",
+    "pretied": false,
+    "finish": "knotless",
+    "coverpicture": "annes_fwcc.png"
+  }
+},
+{
+  "model": "wrappinggallery.carry",
+  "pk": "autumns_ruck_knotless_tibetan",
+  "fields": {
+    "title": "Autumn's Ruck tied Knotless Tibetan",
+    "size": -1,
+    "shoulders": 2,
+    "layers": 2,
+    "mmposition": 0,
+    "videotutorial": "https://www.youtube.com/embed/IEXIZOOwwSw?si=o6Asla9grWtSzN_P",
+    "videoauthor": "Wraplena",
+    "position": "back",
+    "description": "",
+    "pretied": false,
+    "finish": "knotless tibetan",
+    "coverpicture": null
+  }
+},
+{
+  "model": "wrappinggallery.carry",
+  "pk": "double_twisted_pirate",
+  "fields": {
+    "title": "Double Twisted Pirate",
+    "size": 0,
+    "shoulders": 2,
+    "layers": 4,
+    "mmposition": 0,
+    "videotutorial": null,
+    "videoauthor": null,
+    "position": "back",
+    "description": "",
+    "pretied": false,
+    "finish": "TIF",
+    "coverpicture": "double_twisted_pirate.png"
+  }
+},
+{
+  "model": "wrappinggallery.carry",
+  "pk": "fcc",
+  "fields": {
+    "title": "Front Cross Carry",
+    "size": 0,
+    "shoulders": 2,
+    "layers": 2,
+    "mmposition": -1,
+    "videotutorial": null,
+    "videoauthor": null,
+    "position": "front",
+    "description": "",
+    "pretied": false,
+    "finish": "TUB",
+    "coverpicture": null
+  }
+},
+{
+  "model": "wrappinggallery.carry",
+  "pk": "frts_pond",
+  "fields": {
+    "title": "FRTS with a Pond Finish",
+    "size": 0,
+    "shoulders": 1,
+    "layers": 1,
+    "mmposition": 0,
+    "videotutorial": null,
+    "videoauthor": null,
+    "position": "front",
+    "description": "",
+    "pretied": false,
+    "finish": "tied at the back",
+    "coverpicture": "frts_pond.png"
+  }
+},
+{
+  "model": "wrappinggallery.carry",
+  "pk": "fwcc",
+  "fields": {
+    "title": "Front Wrap Cross Carry",
+    "size": 0,
+    "shoulders": 2,
+    "layers": 2,
+    "mmposition": 0,
+    "videotutorial": null,
+    "videoauthor": null,
+    "position": "front",
+    "description": "",
+    "pretied": false,
+    "finish": "tied at the back",
+    "coverpicture": null
+  }
+},
+{
+  "model": "wrappinggallery.carry",
+  "pk": "fwcc_tub",
+  "fields": {
+    "title": "Front Wrap Cross Carry Tied Uder Bum",
+    "size": -2,
+    "shoulders": 2,
+    "layers": 1,
+    "mmposition": -1,
+    "videotutorial": null,
+    "videoauthor": null,
+    "position": "front",
+    "description": "",
+    "pretied": false,
+    "finish": "TUB",
+    "coverpicture": null
+  }
+},
+{
+  "model": "wrappinggallery.carry",
+  "pk": "kathleens_twisted_back_poppins",
+  "fields": {
+    "title": "Kathleen's Twisted Back Poppins",
+    "size": 2,
+    "shoulders": 2,
+    "layers": 3,
+    "mmposition": 1,
+    "videotutorial": null,
+    "videoauthor": null,
+    "position": "back",
+    "description": "",
+    "pretied": false,
+    "finish": "slipknot",
+    "coverpicture": null
+  }
+},
+{
+  "model": "wrappinggallery.carry",
+  "pk": "lenas_double_poppins",
+  "fields": {
+    "title": "Lena's Double Poppins",
+    "size": 1,
+    "shoulders": 2,
+    "layers": 3,
+    "mmposition": 0,
+    "videotutorial": null,
+    "videoauthor": null,
+    "position": "back",
+    "description": "",
+    "pretied": false,
+    "finish": "TIF",
+    "coverpicture": "lenas_double_poppins.png"
+  }
+},
+{
+  "model": "wrappinggallery.carry",
+  "pk": "ruck_buleria",
+  "fields": {
+    "title": "Ruck Buleria",
+    "size": -4,
+    "shoulders": 2,
+    "layers": 1,
+    "mmposition": 0,
+    "videotutorial": "https://www.youtube.com/embed/6dZIjFbuEss?si=VPJkq6v3nCZ85Fyb",
+    "videoauthor": "Wrapping With My Heart",
+    "position": "back",
+    "description": "",
+    "pretied": false,
+    "finish": "buleria",
+    "coverpicture": "ruck_buleria.png"
+  }
+},
+{
+  "model": "wrappinggallery.carry",
+  "pk": "ruck_tied_tibetan",
+  "fields": {
+    "title": "Ruck Tied Tibetan",
+    "size": -1,
+    "shoulders": 2,
+    "layers": 1,
+    "mmposition": 0,
+    "videotutorial": null,
+    "videoauthor": null,
+    "position": "back",
+    "description": null,
+    "pretied": false,
+    "finish": "tibetan",
+    "coverpicture": null
+  }
+},
+{
+  "model": "wrappinggallery.carry",
+  "pk": "ruckless_bikini_carry",
+  "fields": {
+    "title": "Ruckless Bikini Carry",
+    "size": 0,
+    "shoulders": 2,
+    "layers": 3,
+    "mmposition": 0,
+    "videotutorial": "https://www.youtube.com/embed/0rE8-a3Gdz8?si=DS3enKXaAW5PC0wH",
+    "videoauthor": "@silverzephyr16",
+    "position": "back",
+    "description": "",
+    "pretied": false,
+    "finish": "TIF",
+    "coverpicture": "ruckless_bikini_carry.png"
+  }
+},
+{
+  "model": "wrappinggallery.carry",
+  "pk": "torso_dh",
+  "fields": {
+    "title": "Torso Double Hammock",
+    "size": -3,
+    "shoulders": 0,
+    "layers": 2,
+    "mmposition": 0,
+    "videotutorial": "https://www.youtube.com/embed/PwSDiNm5t-U?si=gLHWMltuBrbsk3oo",
+    "videoauthor": "Alyssa Leonard",
+    "position": "back",
+    "description": "",
+    "pretied": false,
+    "finish": "TIF",
+    "coverpicture": "torso_dh.png"
+  }
+},
+{
+  "model": "wrappinggallery.ratings",
+  "pk": 1,
+  "fields": {
+    "carry": "ruckless_bikini_carry",
+    "newborns": 1.0,
+    "legstraighteners": 2.0,
+    "leaners": 5.0,
+    "bigkids": 4.0,
+    "feeding": 1.0,
+    "quickups": 1.0,
+    "difficulty": 5.0,
+    "fancy": 5.0,
+    "votes": 0
+  }
+},
+{
+  "model": "wrappinggallery.ratings",
+  "pk": 2,
+  "fields": {
+    "carry": "ruck_buleria",
+    "newborns": 4.0,
+    "legstraighteners": 1.0,
+    "leaners": 5.0,
+    "bigkids": 2.0,
+    "feeding": 1.0,
+    "quickups": 5.0,
+    "difficulty": 2.0,
+    "fancy": 3.0,
+    "votes": 0
+  }
+},
+{
+  "model": "wrappinggallery.ratings",
+  "pk": 3,
+  "fields": {
+    "carry": "ruck_tied_tibetan",
+    "newborns": 3.0,
+    "legstraighteners": 2.0,
+    "leaners": 5.0,
+    "bigkids": 3.0,
+    "feeding": 1.0,
+    "quickups": 3.0,
+    "difficulty": 2.0,
+    "fancy": 2.0,
+    "votes": 0
+  }
+},
+{
+  "model": "wrappinggallery.ratings",
+  "pk": 4,
+  "fields": {
+    "carry": "lenas_double_poppins",
+    "newborns": 1.0,
+    "legstraighteners": 5.0,
+    "leaners": 5.0,
+    "bigkids": 5.0,
+    "feeding": 1.0,
+    "quickups": 1.0,
+    "difficulty": 4.0,
+    "fancy": 5.0,
+    "votes": 0
+  }
+},
+{
+  "model": "wrappinggallery.ratings",
+  "pk": 5,
+  "fields": {
+    "carry": "torso_dh",
+    "newborns": 1.0,
+    "legstraighteners": 3.0,
+    "leaners": 2.0,
+    "bigkids": 4.0,
+    "feeding": 1.0,
+    "quickups": 3.0,
+    "difficulty": 4.0,
+    "fancy": 4.0,
+    "votes": 0
+  }
+},
+{
+  "model": "wrappinggallery.ratings",
+  "pk": 6,
+  "fields": {
+    "carry": "frts_pond",
+    "newborns": 1.0,
+    "legstraighteners": 1.0,
+    "leaners": 1.0,
+    "bigkids": 1.0,
+    "feeding": 1.0,
+    "quickups": 1.0,
+    "difficulty": 1.0,
+    "fancy": 1.0,
+    "votes": 0
+  }
+},
+{
+  "model": "wrappinggallery.ratings",
+  "pk": 7,
+  "fields": {
+    "carry": "annes_fwcc",
+    "newborns": 5.0,
+    "legstraighteners": 2.0,
+    "leaners": 4.0,
+    "bigkids": 1.0,
+    "feeding": 2.0,
+    "quickups": 2.0,
+    "difficulty": 2.0,
+    "fancy": 3.0,
+    "votes": 0
+  }
+},
+{
+  "model": "wrappinggallery.ratings",
+  "pk": 8,
+  "fields": {
+    "carry": "autumns_ruck_knotless_tibetan",
+    "newborns": 2.0,
+    "legstraighteners": 2.0,
+    "leaners": 5.0,
+    "bigkids": 3.0,
+    "feeding": 1.0,
+    "quickups": 3.0,
+    "difficulty": 2.0,
+    "fancy": 3.0,
+    "votes": 0
+  }
+},
+{
+  "model": "wrappinggallery.ratings",
+  "pk": 9,
+  "fields": {
+    "carry": "double_twisted_pirate",
+    "newborns": 1.0,
+    "legstraighteners": 3.0,
+    "leaners": 5.0,
+    "bigkids": 5.0,
+    "feeding": 1.0,
+    "quickups": 2.0,
+    "difficulty": 4.0,
+    "fancy": 4.0,
+    "votes": 0
+  }
+},
+{
+  "model": "wrappinggallery.ratings",
+  "pk": 10,
+  "fields": {
+    "carry": "kathleens_twisted_back_poppins",
+    "newborns": 1.0,
+    "legstraighteners": 1.0,
+    "leaners": 1.0,
+    "bigkids": 1.0,
+    "feeding": 1.0,
+    "quickups": 1.0,
+    "difficulty": 1.0,
+    "fancy": 1.0,
+    "votes": 0
+  }
+},
+{
+  "model": "wrappinggallery.ratings",
+  "pk": 11,
+  "fields": {
+    "carry": "fwcc_tub",
+    "newborns": 1.0,
+    "legstraighteners": 1.0,
+    "leaners": 1.0,
+    "bigkids": 1.0,
+    "feeding": 1.0,
+    "quickups": 1.0,
+    "difficulty": 1.0,
+    "fancy": 1.0,
+    "votes": 0
+  }
+},
+{
+  "model": "wrappinggallery.ratings",
+  "pk": 12,
+  "fields": {
+    "carry": "fwcc",
+    "newborns": 1.0,
+    "legstraighteners": 1.0,
+    "leaners": 1.0,
+    "bigkids": 1.0,
+    "feeding": 1.0,
+    "quickups": 1.0,
+    "difficulty": 1.0,
+    "fancy": 1.0,
+    "votes": 0
+  }
+},
+{
+  "model": "wrappinggallery.ratings",
+  "pk": 13,
+  "fields": {
+    "carry": "fcc",
+    "newborns": 1.0,
+    "legstraighteners": 1.0,
+    "leaners": 1.0,
+    "bigkids": 1.0,
+    "feeding": 1.0,
+    "quickups": 1.0,
+    "difficulty": 1.0,
+    "fancy": 1.0,
+    "votes": 0
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 1,
+  "fields": {
+    "action_time": "2024-07-23T14:34:03.242Z",
+    "user": 1,
+    "content_type": 1,
+    "object_id": "ruckless_bikini_carry",
+    "object_repr": "ruckless_bikini_carry: back carry, 0, 0",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 2,
+  "fields": {
+    "action_time": "2024-07-23T14:34:17.188Z",
+    "user": 1,
+    "content_type": 2,
+    "object_id": "1",
+    "object_repr": "Ratings object (1)",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 3,
+  "fields": {
+    "action_time": "2024-07-23T16:21:27.607Z",
+    "user": 1,
+    "content_type": 1,
+    "object_id": "ruckless_bikini_carry",
+    "object_repr": "ruckless_bikini_carry: back carry, 0, 0",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Coverpicture\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 4,
+  "fields": {
+    "action_time": "2024-07-24T15:20:05.671Z",
+    "user": 1,
+    "content_type": 1,
+    "object_id": "ruck_buleria",
+    "object_repr": "ruck_buleria: back carry, -4, 0",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 5,
+  "fields": {
+    "action_time": "2024-07-24T15:58:37.959Z",
+    "user": 1,
+    "content_type": 2,
+    "object_id": "3",
+    "object_repr": "Ratings object (3)",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 6,
+  "fields": {
+    "action_time": "2024-07-24T15:58:54.832Z",
+    "user": 1,
+    "content_type": 2,
+    "object_id": "4",
+    "object_repr": "Ratings object (4)",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 7,
+  "fields": {
+    "action_time": "2024-07-24T15:59:37.278Z",
+    "user": 1,
+    "content_type": 1,
+    "object_id": "torso_dh",
+    "object_repr": "torso_dh: back carry, -3, 0",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 8,
+  "fields": {
+    "action_time": "2024-07-24T16:10:25.072Z",
+    "user": 1,
+    "content_type": 1,
+    "object_id": "frts_pond",
+    "object_repr": "frts_pond: front carry, 0, 0",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 9,
+  "fields": {
+    "action_time": "2024-07-25T21:48:33.767Z",
+    "user": 1,
+    "content_type": 1,
+    "object_id": "torso_dh",
+    "object_repr": "torso_dh: back carry, -3, 0",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Videotutorial\", \"Videoauthor\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 10,
+  "fields": {
+    "action_time": "2024-07-25T21:50:02.762Z",
+    "user": 1,
+    "content_type": 2,
+    "object_id": "1",
+    "object_repr": "Ratings object (1)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Legstraighteners\", \"Leaners\", \"Bigkids\", \"Difficulty\", \"Fancy\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 11,
+  "fields": {
+    "action_time": "2024-07-25T21:51:47.846Z",
+    "user": 1,
+    "content_type": 2,
+    "object_id": "2",
+    "object_repr": "Ratings object (2)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Newborns\", \"Leaners\", \"Bigkids\", \"Quickups\", \"Difficulty\", \"Fancy\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 12,
+  "fields": {
+    "action_time": "2024-07-25T21:53:47.345Z",
+    "user": 1,
+    "content_type": 2,
+    "object_id": "3",
+    "object_repr": "Ratings object (3)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Newborns\", \"Legstraighteners\", \"Leaners\", \"Bigkids\", \"Quickups\", \"Difficulty\", \"Fancy\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 13,
+  "fields": {
+    "action_time": "2024-07-25T21:54:26.696Z",
+    "user": 1,
+    "content_type": 2,
+    "object_id": "4",
+    "object_repr": "Ratings object (4)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Legstraighteners\", \"Leaners\", \"Bigkids\", \"Difficulty\", \"Fancy\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 14,
+  "fields": {
+    "action_time": "2024-07-25T21:57:04.328Z",
+    "user": 1,
+    "content_type": 2,
+    "object_id": "5",
+    "object_repr": "Ratings object (5)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Legstraighteners\", \"Leaners\", \"Bigkids\", \"Quickups\", \"Difficulty\", \"Fancy\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 15,
+  "fields": {
+    "action_time": "2024-07-25T21:59:43.283Z",
+    "user": 1,
+    "content_type": 1,
+    "object_id": "frts_pond",
+    "object_repr": "frts_pond: front carry, 0, 0",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Coverpicture\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 16,
+  "fields": {
+    "action_time": "2024-07-25T22:03:00.052Z",
+    "user": 1,
+    "content_type": 1,
+    "object_id": "ruck_buleria",
+    "object_repr": "ruck_buleria: back carry, -4, 0",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Coverpicture\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 17,
+  "fields": {
+    "action_time": "2024-07-25T22:03:47.097Z",
+    "user": 1,
+    "content_type": 1,
+    "object_id": "lenas_double_poppins",
+    "object_repr": "lenas_double_poppins: back carry, 1, 0",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Coverpicture\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 18,
+  "fields": {
+    "action_time": "2024-07-25T22:07:31.649Z",
+    "user": 1,
+    "content_type": 1,
+    "object_id": "torso_dh",
+    "object_repr": "torso_dh: back carry, -3, 0",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Coverpicture\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 19,
+  "fields": {
+    "action_time": "2024-07-26T07:56:56.458Z",
+    "user": 1,
+    "content_type": 1,
+    "object_id": "ruck_buleria",
+    "object_repr": "ruck_buleria: back carry, -4, 0",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Videotutorial\", \"Videoauthor\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 20,
+  "fields": {
+    "action_time": "2024-07-26T09:07:24.012Z",
+    "user": 1,
+    "content_type": 1,
+    "object_id": "annes_fwcc",
+    "object_repr": "annes_fwcc: front carry, 0, -1",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 21,
+  "fields": {
+    "action_time": "2024-07-26T09:08:28.074Z",
+    "user": 1,
+    "content_type": 2,
+    "object_id": "7",
+    "object_repr": "Ratings object (7)",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 22,
+  "fields": {
+    "action_time": "2024-07-26T09:10:11.513Z",
+    "user": 1,
+    "content_type": 1,
+    "object_id": "autumns_ruck_knotless_tibetan",
+    "object_repr": "autumns_ruck_knotless_tibetan: back carry, -1, 0",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 23,
+  "fields": {
+    "action_time": "2024-07-26T09:10:53.219Z",
+    "user": 1,
+    "content_type": 2,
+    "object_id": "8",
+    "object_repr": "Ratings object (8)",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 24,
+  "fields": {
+    "action_time": "2024-07-26T09:12:25.271Z",
+    "user": 1,
+    "content_type": 1,
+    "object_id": "double_twisted_pirate",
+    "object_repr": "double_twisted_pirate: back carry, 0, 0",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 25,
+  "fields": {
+    "action_time": "2024-07-26T09:12:58.102Z",
+    "user": 1,
+    "content_type": 2,
+    "object_id": "9",
+    "object_repr": "Ratings object (9)",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 26,
+  "fields": {
+    "action_time": "2024-07-26T09:22:35.413Z",
+    "user": 1,
+    "content_type": 1,
+    "object_id": "autumns_ruck_knotless_tibetan",
+    "object_repr": "autumns_ruck_knotless_tibetan: back carry, -1, 0",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Coverpicture\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 27,
+  "fields": {
+    "action_time": "2024-07-26T09:23:44.117Z",
+    "user": 1,
+    "content_type": 1,
+    "object_id": "fwcc",
+    "object_repr": "fwcc: front carry, 0, 0",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 28,
+  "fields": {
+    "action_time": "2024-07-26T09:24:32.984Z",
+    "user": 1,
+    "content_type": 1,
+    "object_id": "fwcc_tub",
+    "object_repr": "fwcc_tub: front carry, -2, -1",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 29,
+  "fields": {
+    "action_time": "2024-07-26T09:25:48.803Z",
+    "user": 1,
+    "content_type": 1,
+    "object_id": "kathleens_twisted_back_poppins",
+    "object_repr": "kathleens_twisted_back_poppins: back carry, 2, 1",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 30,
+  "fields": {
+    "action_time": "2024-07-26T09:26:44.462Z",
+    "user": 1,
+    "content_type": 2,
+    "object_id": "10",
+    "object_repr": "Ratings object (10)",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 31,
+  "fields": {
+    "action_time": "2024-07-26T09:26:55.079Z",
+    "user": 1,
+    "content_type": 2,
+    "object_id": "11",
+    "object_repr": "Ratings object (11)",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 32,
+  "fields": {
+    "action_time": "2024-07-26T09:37:40.754Z",
+    "user": 1,
+    "content_type": 2,
+    "object_id": "12",
+    "object_repr": "Ratings object (12)",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 33,
+  "fields": {
+    "action_time": "2024-07-26T09:38:31.773Z",
+    "user": 1,
+    "content_type": 1,
+    "object_id": "fcc",
+    "object_repr": "fcc: front carry, 0, -1",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 34,
+  "fields": {
+    "action_time": "2024-07-26T09:38:42.251Z",
+    "user": 1,
+    "content_type": 2,
+    "object_id": "13",
+    "object_repr": "Ratings object (13)",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 1,
+  "fields": {
+    "password": "pbkdf2_sha256$720000$8ngUahhDKYG2lJg63xWvgK$2y6W5g0347IpKqoTzHXRyytYYbzHPeVHdshDCw0qHYs=",
+    "last_login": "2024-07-24T14:51:01.128Z",
+    "is_superuser": true,
+    "username": "paulafermincueto",
+    "first_name": "",
+    "last_name": "",
+    "email": "paula.fermin.cueto@gmail.com",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2024-07-23T14:32:34.317Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "9q8sqeylf83ml540vfu6h047yyx12cgb",
+  "fields": {
+    "session_data": ".eJxVjEEOwiAQRe_C2hCG0aG4dO8ZmgEGqRpISrsy3l2bdKHb_977LzXyupRx7TKPU1JnBerwuwWOD6kbSHeut6Zjq8s8Bb0peqddX1uS52V3_w4K9_KtnctiCVLMIBEJyBiMYUjBH4GyGCTOYE9oMbngs2FiOwTwCOhIclTvD-NXN8Y:1sWdKX:xl6XTjTy5Bk85LoPs1eeilGVIV4WPuKDHzGe9tCFbH8",
+    "expire_date": "2024-08-07T14:51:01.156Z"
+  }
+}
+]

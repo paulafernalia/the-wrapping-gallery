@@ -51,6 +51,10 @@ setup-dev-db:
 	$(PYTHON) manage.py migrate
 	$(PYTHON) manage.py loaddata initial_data.json
 
+# Dump non-sensitive data in db.sqlite3 to a JSON file
+dump-init-data:
+	$(PYTHON) manage.py dumpdata --exclude auth.permission --exclude contenttypes --indent 2 > initial_data.json
+
 # Command to check for missing ratings
 check-ratings:
 	$(PYTHON) manage.py check_ratings --settings=$(MYPROJ).settings.development
