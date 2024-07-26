@@ -18,7 +18,9 @@
             <ul class="list-group list-group-flush custom-list-spacing">
                 <li class="list-group-item poppins-light fs16"><span class="poppins-bold pink-span">TYPE: </span> {{position}} carry </li>
                 <li class="list-group-item poppins-light fs16"><span class="poppins-bold pink-span">SIZE: </span> {{size}} </li>
-                <li class="list-group-item poppins-light fs16"><span class="poppins-bold pink-span">MM POSITION: </span> {{mmposition}} </li>
+                {% if mmposition != 'NA' %}
+                    <li class="list-group-item poppins-light fs16"><span class="poppins-bold pink-span">MM POSITION: </span> {{mmposition}} </li>
+                {% endif %}
                 <li class="list-group-item poppins-light fs16"><span class="poppins-bold pink-span">LAYERS: </span> {{layers}} layers </li>
                 <li class="list-group-item poppins-light fs16"><span class="poppins-bold pink-span">SHOULDERS: </span> {{shoulders}} </li>
                 <li class="list-group-item poppins-light fs16"><span class="poppins-bold pink-span">CAN BE PRE-TIED: </span> {{pretied}} </li>
