@@ -31,6 +31,7 @@ class Carry(models.Model):
 
     mmposition = models.IntegerField(
         choices={
+            -1: "NA",
             0: "Starts centred",
             0.5: "Starts half an arm length off centre",
             1: "Starts one arm length off centre",
