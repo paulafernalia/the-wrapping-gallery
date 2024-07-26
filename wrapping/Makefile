@@ -48,6 +48,10 @@ sync-dev-db:
 	# Clean up temporary data file
 	rm all_data.json
 
+# Command to check for missing ratings
+check-ratings:
+	$(PYTHON) manage.py check_ratings --settings=$(MYPROJ).settings.development
+
 sync-prod-db:
 	# Dump all data from the development database
 	$(PYTHON) manage.py dumpdata --settings=$(MYPROJ).settings.development --indent 2 > all_data.json
