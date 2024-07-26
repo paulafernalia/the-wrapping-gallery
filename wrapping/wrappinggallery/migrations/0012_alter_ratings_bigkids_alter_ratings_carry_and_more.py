@@ -8,58 +8,111 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('wrappinggallery', '0011_alter_carry_coverpicture_alter_carry_description_and_more'),
+        (
+            "wrappinggallery",
+            "0011_alter_carry_coverpicture_alter_carry_description_and_more",
+        ),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='ratings',
-            name='bigkids',
-            field=models.FloatField(default=1, validators=[django.core.validators.MinValueValidator(1.0), django.core.validators.MaxValueValidator(5.0)]),
+            model_name="ratings",
+            name="bigkids",
+            field=models.FloatField(
+                default=1,
+                validators=[
+                    django.core.validators.MinValueValidator(1.0),
+                    django.core.validators.MaxValueValidator(5.0),
+                ],
+            ),
         ),
         migrations.AlterField(
-            model_name='ratings',
-            name='carry',
-            field=models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to='wrappinggallery.carry'),
+            model_name="ratings",
+            name="carry",
+            field=models.OneToOneField(
+                on_delete=django.db.models.deletion.CASCADE, to="wrappinggallery.carry"
+            ),
         ),
         migrations.AlterField(
-            model_name='ratings',
-            name='difficulty',
-            field=models.FloatField(default=1, validators=[django.core.validators.MinValueValidator(1.0), django.core.validators.MaxValueValidator(5.0)]),
+            model_name="ratings",
+            name="difficulty",
+            field=models.FloatField(
+                default=1,
+                validators=[
+                    django.core.validators.MinValueValidator(1.0),
+                    django.core.validators.MaxValueValidator(5.0),
+                ],
+            ),
         ),
         migrations.AlterField(
-            model_name='ratings',
-            name='fancy',
-            field=models.FloatField(default=True, validators=[django.core.validators.MinValueValidator(1.0), django.core.validators.MaxValueValidator(5.0)]),
+            model_name="ratings",
+            name="fancy",
+            field=models.FloatField(
+                default=True,
+                validators=[
+                    django.core.validators.MinValueValidator(1.0),
+                    django.core.validators.MaxValueValidator(5.0),
+                ],
+            ),
         ),
         migrations.AlterField(
-            model_name='ratings',
-            name='feeding',
-            field=models.FloatField(default=1, validators=[django.core.validators.MinValueValidator(1.0), django.core.validators.MaxValueValidator(5.0)]),
+            model_name="ratings",
+            name="feeding",
+            field=models.FloatField(
+                default=1,
+                validators=[
+                    django.core.validators.MinValueValidator(1.0),
+                    django.core.validators.MaxValueValidator(5.0),
+                ],
+            ),
         ),
         migrations.AlterField(
-            model_name='ratings',
-            name='leaners',
-            field=models.FloatField(default=1, validators=[django.core.validators.MinValueValidator(1.0), django.core.validators.MaxValueValidator(5.0)]),
+            model_name="ratings",
+            name="leaners",
+            field=models.FloatField(
+                default=1,
+                validators=[
+                    django.core.validators.MinValueValidator(1.0),
+                    django.core.validators.MaxValueValidator(5.0),
+                ],
+            ),
         ),
         migrations.AlterField(
-            model_name='ratings',
-            name='legstraighteners',
-            field=models.FloatField(default=1, validators=[django.core.validators.MinValueValidator(1.0), django.core.validators.MaxValueValidator(5.0)]),
+            model_name="ratings",
+            name="legstraighteners",
+            field=models.FloatField(
+                default=1,
+                validators=[
+                    django.core.validators.MinValueValidator(1.0),
+                    django.core.validators.MaxValueValidator(5.0),
+                ],
+            ),
         ),
         migrations.AlterField(
-            model_name='ratings',
-            name='newborns',
-            field=models.FloatField(default=1, validators=[django.core.validators.MinValueValidator(1.0), django.core.validators.MaxValueValidator(5.0)]),
+            model_name="ratings",
+            name="newborns",
+            field=models.FloatField(
+                default=1,
+                validators=[
+                    django.core.validators.MinValueValidator(1.0),
+                    django.core.validators.MaxValueValidator(5.0),
+                ],
+            ),
         ),
         migrations.AlterField(
-            model_name='ratings',
-            name='quickups',
-            field=models.FloatField(default=1, validators=[django.core.validators.MinValueValidator(1.0), django.core.validators.MaxValueValidator(5.0)]),
+            model_name="ratings",
+            name="quickups",
+            field=models.FloatField(
+                default=1,
+                validators=[
+                    django.core.validators.MinValueValidator(1.0),
+                    django.core.validators.MaxValueValidator(5.0),
+                ],
+            ),
         ),
         migrations.AlterField(
-            model_name='ratings',
-            name='votes',
+            model_name="ratings",
+            name="votes",
             field=models.IntegerField(blank=True, default=0, null=True),
         ),
     ]

@@ -6,33 +6,33 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('wrappinggallery', '0010_alter_carry_coverpicture'),
+        ("wrappinggallery", "0010_alter_carry_coverpicture"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='carry',
-            name='coverpicture',
+            model_name="carry",
+            name="coverpicture",
             field=models.CharField(blank=True, max_length=160, null=True),
         ),
         migrations.AlterField(
-            model_name='carry',
-            name='description',
+            model_name="carry",
+            name="description",
             field=models.TextField(blank=True, null=True),
         ),
         migrations.AlterField(
-            model_name='carry',
-            name='pretied',
+            model_name="carry",
+            name="pretied",
             field=models.BooleanField(default=False),
         ),
         migrations.AlterField(
-            model_name='carry',
-            name='videoauthor',
+            model_name="carry",
+            name="videoauthor",
             field=models.CharField(blank=True, max_length=64, null=True),
         ),
         migrations.AlterField(
-            model_name='carry',
-            name='videotutorial',
+            model_name="carry",
+            name="videotutorial",
             field=models.URLField(blank=True, null=True),
         ),
     ]

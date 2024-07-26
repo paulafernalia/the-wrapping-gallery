@@ -6,13 +6,16 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('wrappinggallery', '0007_rename_name_ratings_carry_alter_ratings_bigkids_and_more'),
+        (
+            "wrappinggallery",
+            "0007_rename_name_ratings_carry_alter_ratings_bigkids_and_more",
+        ),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='ratings',
-            name='votes',
+            model_name="ratings",
+            name="votes",
             field=models.IntegerField(blank=True, null=True),
         ),
     ]
