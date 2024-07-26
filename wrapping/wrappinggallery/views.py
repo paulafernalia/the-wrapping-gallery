@@ -107,6 +107,23 @@ def filter_carries(request):
         elif prop == "pretied" and val != "null":
             queryset = queryset.filter(carry__pretied=val)
 
+    # Extract start and end parameters
+    start = int(request.GET.get('start', 0))
+    end = int(request.GET.get('end', 8)) + 1  # end is inclusive
+
+     # Get the total count of items
+    total_count = queryset.count()
+
+    # Ensure that start and end are within the bounds
+    if start < 0:
+        start = 0
+    if end > total_count:
+        end = total_count
+
+    # Apply pagination
+    print("getting results", start, end)
+    queryset = queryset[start:end]
+
     # Serialize the results
     results = list(queryset.values(
         'carry__name',
@@ -118,4 +135,5 @@ def filter_carries(request):
         'difficulty',
         'fancy'
     ))
+
     return JsonResponse({'carries': results})
