@@ -240,13 +240,8 @@ function showResults() {
 async function filterCarries() {
     counter = 0;
     try {
-        const carries = await fetchFilteredCarries();
-        
-        // Update gallery content
-        emptyCarryGallery();
-        await updateCarryGallery(carries);
-
         const showResultsBtn = document.getElementById('showResultsBtn');
+        const carries = await fetchFilteredCarries();
 
         if (carries.length === 0) {
             showResultsBtn.classList.remove('active');
@@ -257,6 +252,10 @@ async function filterCarries() {
             showResultsBtn.classList.add('active');
             showResultsBtn.textContent = "Show " + carries.length + " results";
         }
+        
+        // Update gallery content
+        emptyCarryGallery();
+        await updateCarryGallery(carries);
     } catch (error) {
         console.error('There was a problem with the fetch operation:', error);
     }
