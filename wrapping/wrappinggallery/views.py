@@ -127,12 +127,14 @@ def filter_carries(request):
     if end > total_count:
         end = total_count
 
+    sorted_queryset = queryset.order_by('carry__title')
+
     # Apply pagination
-    queryset = queryset[start:end]
+    sorted_queryset = sorted_queryset[start:end]
 
     # Serialize the results
     results = list(
-        queryset.values(
+        sorted_queryset.values(
             "carry__name",
             "carry__position",
             "carry__title",
