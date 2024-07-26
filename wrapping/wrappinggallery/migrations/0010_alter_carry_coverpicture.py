@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('wrappinggallery', '0009_alter_carry_pretied'),
+        ("wrappinggallery", "0009_alter_carry_pretied"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='carry',
-            name='coverpicture',
+            model_name="carry",
+            name="coverpicture",
             field=models.CharField(blank=True, max_length=160),
         ),
     ]

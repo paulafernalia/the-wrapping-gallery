@@ -9,70 +9,194 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('wrappinggallery', '0006_ratings'),
+        ("wrappinggallery", "0006_ratings"),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
     operations = [
         migrations.RenameField(
-            model_name='ratings',
-            old_name='name',
-            new_name='carry',
+            model_name="ratings",
+            old_name="name",
+            new_name="carry",
         ),
         migrations.AlterField(
-            model_name='ratings',
-            name='bigkids',
-            field=models.FloatField(validators=[django.core.validators.MinValueValidator(1.0), django.core.validators.MaxValueValidator(5.0)]),
+            model_name="ratings",
+            name="bigkids",
+            field=models.FloatField(
+                validators=[
+                    django.core.validators.MinValueValidator(1.0),
+                    django.core.validators.MaxValueValidator(5.0),
+                ]
+            ),
         ),
         migrations.AlterField(
-            model_name='ratings',
-            name='difficulty',
-            field=models.FloatField(validators=[django.core.validators.MinValueValidator(1.0), django.core.validators.MaxValueValidator(5.0)]),
+            model_name="ratings",
+            name="difficulty",
+            field=models.FloatField(
+                validators=[
+                    django.core.validators.MinValueValidator(1.0),
+                    django.core.validators.MaxValueValidator(5.0),
+                ]
+            ),
         ),
         migrations.AlterField(
-            model_name='ratings',
-            name='fancy',
-            field=models.FloatField(validators=[django.core.validators.MinValueValidator(1.0), django.core.validators.MaxValueValidator(5.0)]),
+            model_name="ratings",
+            name="fancy",
+            field=models.FloatField(
+                validators=[
+                    django.core.validators.MinValueValidator(1.0),
+                    django.core.validators.MaxValueValidator(5.0),
+                ]
+            ),
         ),
         migrations.AlterField(
-            model_name='ratings',
-            name='feeding',
-            field=models.FloatField(validators=[django.core.validators.MinValueValidator(1.0), django.core.validators.MaxValueValidator(5.0)]),
+            model_name="ratings",
+            name="feeding",
+            field=models.FloatField(
+                validators=[
+                    django.core.validators.MinValueValidator(1.0),
+                    django.core.validators.MaxValueValidator(5.0),
+                ]
+            ),
         ),
         migrations.AlterField(
-            model_name='ratings',
-            name='leaners',
-            field=models.FloatField(validators=[django.core.validators.MinValueValidator(1.0), django.core.validators.MaxValueValidator(5.0)]),
+            model_name="ratings",
+            name="leaners",
+            field=models.FloatField(
+                validators=[
+                    django.core.validators.MinValueValidator(1.0),
+                    django.core.validators.MaxValueValidator(5.0),
+                ]
+            ),
         ),
         migrations.AlterField(
-            model_name='ratings',
-            name='legstraighteners',
-            field=models.FloatField(validators=[django.core.validators.MinValueValidator(1.0), django.core.validators.MaxValueValidator(5.0)]),
+            model_name="ratings",
+            name="legstraighteners",
+            field=models.FloatField(
+                validators=[
+                    django.core.validators.MinValueValidator(1.0),
+                    django.core.validators.MaxValueValidator(5.0),
+                ]
+            ),
         ),
         migrations.AlterField(
-            model_name='ratings',
-            name='newborns',
-            field=models.FloatField(validators=[django.core.validators.MinValueValidator(1.0), django.core.validators.MaxValueValidator(5.0)]),
+            model_name="ratings",
+            name="newborns",
+            field=models.FloatField(
+                validators=[
+                    django.core.validators.MinValueValidator(1.0),
+                    django.core.validators.MaxValueValidator(5.0),
+                ]
+            ),
         ),
         migrations.AlterField(
-            model_name='ratings',
-            name='quickups',
-            field=models.FloatField(validators=[django.core.validators.MinValueValidator(1.0), django.core.validators.MaxValueValidator(5.0)]),
+            model_name="ratings",
+            name="quickups",
+            field=models.FloatField(
+                validators=[
+                    django.core.validators.MinValueValidator(1.0),
+                    django.core.validators.MaxValueValidator(5.0),
+                ]
+            ),
         ),
         migrations.CreateModel(
-            name='UserRatings',
+            name="UserRatings",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('newborns', models.IntegerField(validators=[django.core.validators.MinValueValidator(1), django.core.validators.MaxValueValidator(5)])),
-                ('legstraighteners', models.IntegerField(validators=[django.core.validators.MinValueValidator(1), django.core.validators.MaxValueValidator(5)])),
-                ('leaners', models.IntegerField(validators=[django.core.validators.MinValueValidator(1), django.core.validators.MaxValueValidator(5)])),
-                ('bigkids', models.IntegerField(validators=[django.core.validators.MinValueValidator(1), django.core.validators.MaxValueValidator(5)])),
-                ('feeding', models.IntegerField(validators=[django.core.validators.MinValueValidator(1), django.core.validators.MaxValueValidator(5)])),
-                ('quickups', models.IntegerField(validators=[django.core.validators.MinValueValidator(1), django.core.validators.MaxValueValidator(5)])),
-                ('difficulty', models.IntegerField(validators=[django.core.validators.MinValueValidator(1), django.core.validators.MaxValueValidator(5)])),
-                ('fancy', models.IntegerField(validators=[django.core.validators.MinValueValidator(1), django.core.validators.MaxValueValidator(5)])),
-                ('carry', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='wrappinggallery.carry')),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "newborns",
+                    models.IntegerField(
+                        validators=[
+                            django.core.validators.MinValueValidator(1),
+                            django.core.validators.MaxValueValidator(5),
+                        ]
+                    ),
+                ),
+                (
+                    "legstraighteners",
+                    models.IntegerField(
+                        validators=[
+                            django.core.validators.MinValueValidator(1),
+                            django.core.validators.MaxValueValidator(5),
+                        ]
+                    ),
+                ),
+                (
+                    "leaners",
+                    models.IntegerField(
+                        validators=[
+                            django.core.validators.MinValueValidator(1),
+                            django.core.validators.MaxValueValidator(5),
+                        ]
+                    ),
+                ),
+                (
+                    "bigkids",
+                    models.IntegerField(
+                        validators=[
+                            django.core.validators.MinValueValidator(1),
+                            django.core.validators.MaxValueValidator(5),
+                        ]
+                    ),
+                ),
+                (
+                    "feeding",
+                    models.IntegerField(
+                        validators=[
+                            django.core.validators.MinValueValidator(1),
+                            django.core.validators.MaxValueValidator(5),
+                        ]
+                    ),
+                ),
+                (
+                    "quickups",
+                    models.IntegerField(
+                        validators=[
+                            django.core.validators.MinValueValidator(1),
+                            django.core.validators.MaxValueValidator(5),
+                        ]
+                    ),
+                ),
+                (
+                    "difficulty",
+                    models.IntegerField(
+                        validators=[
+                            django.core.validators.MinValueValidator(1),
+                            django.core.validators.MaxValueValidator(5),
+                        ]
+                    ),
+                ),
+                (
+                    "fancy",
+                    models.IntegerField(
+                        validators=[
+                            django.core.validators.MinValueValidator(1),
+                            django.core.validators.MaxValueValidator(5),
+                        ]
+                    ),
+                ),
+                (
+                    "carry",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="wrappinggallery.carry",
+                    ),
+                ),
+                (
+                    "user",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
         ),
     ]

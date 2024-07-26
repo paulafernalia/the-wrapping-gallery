@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('wrappinggallery', '0003_alter_carry_videoauthor'),
+        ("wrappinggallery", "0003_alter_carry_videoauthor"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='carry',
-            name='title',
+            model_name="carry",
+            name="title",
             field=models.CharField(max_length=64),
         ),
     ]

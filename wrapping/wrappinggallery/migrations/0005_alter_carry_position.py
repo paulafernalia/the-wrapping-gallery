@@ -6,13 +6,15 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('wrappinggallery', '0004_alter_carry_title'),
+        ("wrappinggallery", "0004_alter_carry_title"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='carry',
-            name='position',
-            field=models.CharField(choices=[('front', 'Front'), ('back', 'Back')], max_length=5),
+            model_name="carry",
+            name="position",
+            field=models.CharField(
+                choices=[("front", "Front"), ("back", "Back")], max_length=5
+            ),
         ),
     ]

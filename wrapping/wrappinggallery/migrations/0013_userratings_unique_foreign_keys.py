@@ -7,13 +7,15 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('wrappinggallery', '0012_alter_ratings_bigkids_alter_ratings_carry_and_more'),
+        ("wrappinggallery", "0012_alter_ratings_bigkids_alter_ratings_carry_and_more"),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
     operations = [
         migrations.AddConstraint(
-            model_name='userratings',
-            constraint=models.UniqueConstraint(fields=('user', 'carry'), name='unique_foreign_keys'),
+            model_name="userratings",
+            constraint=models.UniqueConstraint(
+                fields=("user", "carry"), name="unique_foreign_keys"
+            ),
         ),
     ]

@@ -1,6 +1,7 @@
 from django.test import TestCase
 from .models import Carry
 
+
 # Create your tests here.
 class CarryTestCase(TestCase):
 
@@ -16,10 +17,9 @@ class CarryTestCase(TestCase):
             mmposition=0,
             position="back",
             pretied="False",
-            finish="TIF"
+            finish="TIF",
         )
 
     def test_carries_count(self):
         c = Carry.objects.all()
         self.assertEqual(c.count(), 1)
-

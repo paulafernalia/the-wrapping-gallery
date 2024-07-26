@@ -8,24 +8,102 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('wrappinggallery', '0005_alter_carry_position'),
+        ("wrappinggallery", "0005_alter_carry_position"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Ratings',
+            name="Ratings",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('newborns', models.FloatField(validators=[django.core.validators.MinValueValidator(0.0), django.core.validators.MaxValueValidator(5.0)])),
-                ('legstraighteners', models.FloatField(validators=[django.core.validators.MinValueValidator(0.0), django.core.validators.MaxValueValidator(5.0)])),
-                ('leaners', models.FloatField(validators=[django.core.validators.MinValueValidator(0.0), django.core.validators.MaxValueValidator(5.0)])),
-                ('bigkids', models.FloatField(validators=[django.core.validators.MinValueValidator(0.0), django.core.validators.MaxValueValidator(5.0)])),
-                ('feeding', models.FloatField(validators=[django.core.validators.MinValueValidator(0.0), django.core.validators.MaxValueValidator(5.0)])),
-                ('quickups', models.FloatField(validators=[django.core.validators.MinValueValidator(0.0), django.core.validators.MaxValueValidator(5.0)])),
-                ('difficulty', models.FloatField(validators=[django.core.validators.MinValueValidator(0.0), django.core.validators.MaxValueValidator(5.0)])),
-                ('fancy', models.FloatField(validators=[django.core.validators.MinValueValidator(0.0), django.core.validators.MaxValueValidator(5.0)])),
-                ('votes', models.IntegerField(blank=True)),
-                ('name', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='wrappinggallery.carry')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "newborns",
+                    models.FloatField(
+                        validators=[
+                            django.core.validators.MinValueValidator(0.0),
+                            django.core.validators.MaxValueValidator(5.0),
+                        ]
+                    ),
+                ),
+                (
+                    "legstraighteners",
+                    models.FloatField(
+                        validators=[
+                            django.core.validators.MinValueValidator(0.0),
+                            django.core.validators.MaxValueValidator(5.0),
+                        ]
+                    ),
+                ),
+                (
+                    "leaners",
+                    models.FloatField(
+                        validators=[
+                            django.core.validators.MinValueValidator(0.0),
+                            django.core.validators.MaxValueValidator(5.0),
+                        ]
+                    ),
+                ),
+                (
+                    "bigkids",
+                    models.FloatField(
+                        validators=[
+                            django.core.validators.MinValueValidator(0.0),
+                            django.core.validators.MaxValueValidator(5.0),
+                        ]
+                    ),
+                ),
+                (
+                    "feeding",
+                    models.FloatField(
+                        validators=[
+                            django.core.validators.MinValueValidator(0.0),
+                            django.core.validators.MaxValueValidator(5.0),
+                        ]
+                    ),
+                ),
+                (
+                    "quickups",
+                    models.FloatField(
+                        validators=[
+                            django.core.validators.MinValueValidator(0.0),
+                            django.core.validators.MaxValueValidator(5.0),
+                        ]
+                    ),
+                ),
+                (
+                    "difficulty",
+                    models.FloatField(
+                        validators=[
+                            django.core.validators.MinValueValidator(0.0),
+                            django.core.validators.MaxValueValidator(5.0),
+                        ]
+                    ),
+                ),
+                (
+                    "fancy",
+                    models.FloatField(
+                        validators=[
+                            django.core.validators.MinValueValidator(0.0),
+                            django.core.validators.MaxValueValidator(5.0),
+                        ]
+                    ),
+                ),
+                ("votes", models.IntegerField(blank=True)),
+                (
+                    "name",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="wrappinggallery.carry",
+                    ),
+                ),
             ],
         ),
     ]

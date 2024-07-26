@@ -6,13 +6,22 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('wrappinggallery', '0013_userratings_unique_foreign_keys'),
+        ("wrappinggallery", "0013_userratings_unique_foreign_keys"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='carry',
-            name='mmposition',
-            field=models.IntegerField(choices=[(-1, 'NA'), (0, 'Starts centred'), (0.5, 'Starts half an arm length off centre'), (1, 'Starts one arm length off centre'), (1.5, 'Starts one and a half arm lengths off centre'), (2, 'Starts two arm lengths off centre')]),
+            model_name="carry",
+            name="mmposition",
+            field=models.IntegerField(
+                choices=[
+                    (-1, "NA"),
+                    (0, "Starts centred"),
+                    (0.5, "Starts half an arm length off centre"),
+                    (1, "Starts one arm length off centre"),
+                    (1.5, "Starts one and a half arm lengths off centre"),
+                    (2, "Starts two arm lengths off centre"),
+                ]
+            ),
         ),
     ]

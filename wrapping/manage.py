@@ -7,7 +7,9 @@ from decouple import config
 
 def main():
     """Run administrative tasks."""
-    settings_module = config('DJANGO_SETTINGS_MODULE', default='wrapping.settings.development')
+    settings_module = config(
+        "DJANGO_SETTINGS_MODULE", default="wrapping.settings.development"
+    )
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", settings_module)
 
     try:
@@ -21,5 +23,5 @@ def main():
     execute_from_command_line(sys.argv)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

@@ -2,6 +2,7 @@ from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.contrib.auth.models import User
 
+
 # Create your models here.
 class Carry(models.Model):
     name = models.CharField(max_length=64, primary_key=True)
@@ -9,7 +10,7 @@ class Carry(models.Model):
     title = models.CharField(max_length=64)
 
     size = models.IntegerField(
-        choices = {
+        choices={
             -5: "Base - 5",
             -4: "Base - 4",
             -3: "Base - 3",
@@ -21,13 +22,9 @@ class Carry(models.Model):
         }
     )
 
-    shoulders = models.IntegerField(
-        choices={0: "Torso", 1: "One", 2: "Two"}
-    )
+    shoulders = models.IntegerField(choices={0: "Torso", 1: "One", 2: "Two"})
 
-    layers = models.IntegerField(
-        choices={1: "One", 2: "Two", 3: "Three", 4: "Four"}
-    )
+    layers = models.IntegerField(choices={1: "One", 2: "Two", 3: "Three", 4: "Four"})
 
     mmposition = models.IntegerField(
         choices={
@@ -67,8 +64,8 @@ class Carry(models.Model):
             "slipknot": "slipknot",
             "ring(s)": "rings",
             "rapunzel": "rapunzel",
-            "tied at the back": "tied at the back"
-        }
+            "tied at the back": "tied at the back",
+        },
     )
 
     coverpicture = models.CharField(max_length=160, blank=True, null=True)
@@ -113,7 +110,6 @@ class Ratings(models.Model):
 
     votes = models.IntegerField(blank=True, null=True, default=0)
 
-
     def to_dict(self):
         return {
             "newborns": round(self.newborns),
@@ -139,7 +135,7 @@ class UserRatings(models.Model):
     leaners = models.IntegerField(validators=validators)
     bigkids = models.IntegerField(validators=validators)
     feeding = models.IntegerField(validators=validators)
-    quickups = models.IntegerField(validators=validators) 
+    quickups = models.IntegerField(validators=validators)
 
     difficulty = models.IntegerField(validators=validators)
 
@@ -147,5 +143,7 @@ class UserRatings(models.Model):
 
     class Meta:
         constraints = [
-            models.UniqueConstraint(fields=['user', 'carry'], name='unique_foreign_keys')
+            models.UniqueConstraint(
+                fields=["user", "carry"], name="unique_foreign_keys"
+            )
         ]
