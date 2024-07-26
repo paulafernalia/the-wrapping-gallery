@@ -47,6 +47,10 @@ sync-dev-db:
 	# Clean up temporary data file
 	rm all_data.json
 
+setup-dev-db:
+	$(PYTHON) manage.py migrate
+	$(PYTHON) manage.py loaddata initial_data.json
+
 # Command to check for missing ratings
 check-ratings:
 	$(PYTHON) manage.py check_ratings --settings=$(MYPROJ).settings.development
