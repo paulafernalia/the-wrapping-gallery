@@ -29,8 +29,11 @@ SUPABASE_URL = config("SUPABASE_URL", default="https://default.supabase.co")
 SERVICE_ROLE_KEY = config("SERVICE_ROLE_KEY", default="default-service-role-key")
 SUPABASE_BUCKET_NAME = config("SUPABASE_BUCKET_NAME", default="default-bucket-name")
 
-# Application definition
+# Media files settings
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
+# Application definition
 INSTALLED_APPS = [
     "wrappinggallery",
     "django.contrib.admin",

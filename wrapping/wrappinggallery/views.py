@@ -5,6 +5,7 @@ from django.db.models import FloatField, Func, F
 from django.db.models.functions import Round
 from .models import Carry, Ratings
 from .utils import generate_signed_url
+from django.conf import settings
 
 
 DIFFICULTY_VALUES = ["Beginner", "Beginner+", "Intermediate", "Advanced", "Pro"]
@@ -27,8 +28,13 @@ def index(request):
 
 
 def about(request):
-    context = {"imageSrc": generate_signed_url("profile.png", "misc")}
-    print("context", context)
+    context = {}
+
+    if settings.SUPABASE_URL == "https://default.supabase.co":
+        file_name = "profile.png"
+        context = {"imageSrc": settings.MEDIA_URL + file_name}
+    else:
+        context = {"imageSrc": generate_signed_url("profile.png", "misc")}
     return render(request, "wrappinggallery/about.html", context)
 
 
@@ -67,6 +73,12 @@ def carry(request, name):
 
 
 def file_url(request, file_name):
+    # if no access to S3 storage:
+    if settings.SUPABASE_URL == "https://default.supabase.co":
+        print("WARNING: missing connection details for S3 bucket in SUPABASE, using default image in media folder")
+        file_name = "placeholder_back.png"
+        return JsonResponse({"url": settings.MEDIA_URL + file_name})
+
     signed_url = generate_signed_url(f"{file_name}")
     if signed_url:
         return JsonResponse({"url": signed_url})
@@ -116,7 +128,6 @@ def filter_carries(request):
         end = total_count
 
     # Apply pagination
-    print("getting results", start, end)
     queryset = queryset[start:end]
 
     # Serialize the results
