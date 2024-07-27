@@ -20,13 +20,16 @@
                 <button type="button" class="btn btn-custom mx-1 poppins-regular" data-property="position" data-value="{{ value }}" onclick="clickFilterButton(this)">{{ value }}</button>
             {% endfor %}
         </div>
+        <br>
         <p class="poppins-bold fs16"> Size <span class="poppins-light">(referenced to base size)</span> </p>
         <div id="sizeFilters" data-property="size">
             {% for value in size_values %}
                 <button type="button" class="btn btn-custom mx-1 poppins-regular" data-property="size" data-value="{{ value }}" onclick="clickFilterButton(this)">{{ value }}</button>
             {% endfor %}
         </div>
+        <br>
         <button id="showMoreBtn" class="show-button poppins-light" onclick="showFilterBoxExt()">Show more</button>
+        <br>
     </div>
     <div id=filterBoxExt style="display: none;">
         <p class="poppins-bold fs16"> Difficulty</p>
