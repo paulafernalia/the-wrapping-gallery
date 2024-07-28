@@ -178,7 +178,6 @@ p, li {
 .dropdown select {
     width: 200px;
     padding: 8px;
-    font-size: 16px;
     border: 2px solid black;
     border-radius: 10px;
     background-color: white;
@@ -251,13 +250,13 @@ p, li {
     }
 
     .content-container {
-        margin-top: 30px;
+        margin-top: 50px;
         margin-left: 30px;
         margin-right: 30px;
     }
 
     #search-input {
-        font-size: 12px;
+        font-size: 14px;
     }
 
     .navbar-brand {
@@ -265,18 +264,22 @@ p, li {
     }
 
     .fs16 {
-        font-size: 12px;
+        font-size: 14px;
     }
-
-    .input-group {
-/*        flex-direction: column;*/
-/*        align-items: stretch;*/
-/*        margin-top: 50px;*/
-/*        margin: 30px;*/
+    
+    .btn-custom {
+        color: black;
+        border: 2px solid black;
+        border-radius: 10px;
+        margin-right: 0px !important;
+        margin-bottom: 10px;
+        padding: 7px 10px;
     }
 
     #button-filter {
+        padding: 10px !important;
+        maring: 10px;
         max-width: 80px;
-        font-size: 12px;
+        font-size: 14px !important;
     }
 }

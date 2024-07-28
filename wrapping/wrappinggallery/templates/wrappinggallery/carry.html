@@ -15,38 +15,36 @@
         <div class="column">
             <h4 class="dancing fs32">Carry features</p>
 
-            <ul class="list-group list-group-flush custom-list-spacing">
-                <li class="list-group-item poppins-light fs16"><span class="poppins-bold pink-span">TYPE: </span> {{position}} carry </li>
-                <li class="list-group-item poppins-light fs16"><span class="poppins-bold pink-span">SIZE: </span> {{size}} </li>
+                <div class="feature poppins-light fs16"><span class="poppins-bold pink-span">TYPE: </span> {{position}} carry </div>
+                <div class="feature poppins-light fs16"><span class="poppins-bold pink-span">SIZE: </span> {{size}} </div>
                 {% if mmposition != 'NA' %}
-                    <li class="list-group-item poppins-light fs16"><span class="poppins-bold pink-span">MM POSITION: </span> {{mmposition}} </li>
+                    <div class="feature poppins-light fs16"><span class="poppins-bold pink-span">MM POSITION: </span> {{mmposition}} </div>
                 {% endif %}
-                <li class="list-group-item poppins-light fs16"><span class="poppins-bold pink-span">LAYERS: </span> {{layers}} layers </li>
-                <li class="list-group-item poppins-light fs16"><span class="poppins-bold pink-span">SHOULDERS: </span> {{shoulders}} </li>
-                <li class="list-group-item poppins-light fs16"><span class="poppins-bold pink-span">CAN BE PRE-TIED: </span> {{pretied}} </li>
-                <li class="list-group-item poppins-light fs16"><span class="poppins-bold pink-span">FINISH: </span> {{finish}} </li>
-            </ul>
+                <div class="feature poppins-light fs16"><span class="poppins-bold pink-span">LAYERS: </span> {{layers}} layers </div>
+                <div class="feature poppins-light fs16"><span class="poppins-bold pink-span">SHOULDERS: </span> {{shoulders}} </div>
+                <div class="feature poppins-light fs16"><span class="poppins-bold pink-span">CAN BE PRE-TIED: </span> {{pretied}} </div>
+                <div class="feature poppins-light fs16"><span class="poppins-bold pink-span">FINISH: </span> {{finish}} </div>
         </div>
         <div class="column">
             <h4 class="dancing fs32">Ratings</h4>
             <br>
             <div id="newborn-rating" class="rating-group" data-property="{{newborns}}">
-                <span class="poppins-light"> Good for newborns</span>
+                <span class="poppins-light fs16"> Good for newborns</span>
             </div>
             <div id="legstraightener-rating" class="rating-group" data-property="{{legstraighteners}}">
-                <span class="poppins-light"> Good for leg straighteners</span>
+                <span class="poppins-light fs16> Good for leg straighteners</span>
             </div>
             <div id="leaners-rating" class="rating-group" data-property="{{leaners}}">
-                <span class="poppins-light"> Good for leaners</span>
+                <span class="poppins-light fs16"> Good for leaners</span>
             </div>
             <div id="bigkids-rating" class="rating-group" data-property="{{bigkids}}">
-                <span class="poppins-light"> Good for big kids</span>
+                <span class="poppins-light fs16"> Good for big kids</span>
             </div>
             <div id="quickups-rating" class="rating-group" data-property="{{quickups}}">
-                <span class="poppins-light"> Good for quick ups</span>
+                <span class="poppins-light fs16"> Good for quick ups</span>
             </div>
              <div id="feeding-rating" class="rating-group" data-property="{{feeding}}">
-                <span class="poppins-light"> Good for feeding</span>
+                <span class="poppins-light fs16"> Good for feeding</span>
             </div>
         </div>
 
@@ -65,6 +63,7 @@
             </iframe>
         </div>
     {% endif %}
+    <br><br><br>
 </div>
 
 <script src="{% static 'wrappinggallery/carry.js' %}"></script>

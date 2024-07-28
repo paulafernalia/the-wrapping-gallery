@@ -11,7 +11,7 @@ h3 {
 h4 {
     font-family: "Helvetica";
     font-size: 18px;
-    margin-left: 20px;
+/*    margin-left: 20px;*/
 }
 
 /* Flexbox container for three-column layout */
@@ -37,12 +37,12 @@ h4 {
 
 /* Styling for the image */
 .three-column-container .column img {
-    max-width: 100%; /* Ensure image fits within the column */
-    width: auto;
-    height: auto; /* Maintain aspect ratio */
-    max-width: 250px; /* Set a maximum width for the image */
+    max-width: 100%; /* Ensures the image does not exceed the container's width */
+    height: auto; /* Maintains the aspect ratio */
+    max-height: 300px; /* Sets the maximum height */
     display: block;
     margin: 0 auto; /* Center the image within the column */
+    object-fit: contain; /* Ensures the image fits within the max-height while maintaining the aspect ratio */
 }
 
 #carryImage {
@@ -67,7 +67,6 @@ h4 {
     background-color: transparent; /* Optional: Make background transparent */
     display: flex;
     align-items: center; /* Center items vertically */
-    font-size: 14px;
 }
 
 
@@ -111,5 +110,39 @@ h4 {
 
 /* Add vertical padding between rating groups */
 .rating-group {
+    margin-bottom: 12px; /* Adjust this value to change the space between groups */
+}
+
+/* Add vertical padding between rating groups */
+.feature {
     margin-bottom: 10px; /* Adjust this value to change the space between groups */
+}
+
+
+/*@media only screen and (max-width: 768px) {
+    
+
+    .three-column-container {
+        flex-direction: column; 
+    }
+}*/
+
+/* Media query for small screens */
+@media only screen and (max-width: 768px) {
+    .three-column-container .column img {
+        max-height: 300px;
+    }
+
+    .three-column-container {
+        flex-direction: column; /* Stack items vertically */
+        align-items: flex-start; /* Left-align all columns */
+    }
+
+    .three-column-container .column:first-child {
+        align-self: center; /* Center the first column (the image) */
+    }
+
+    .fa-star {
+        font-size: 15px !important; /* Adjust this value to change the size of the stars */
+    }
 }
