@@ -17,21 +17,24 @@
         <p class="poppins-bold fs16"> Position </p>
         <div id="positionFilters" data-property="position">
             {% for value in position_values %}
-                <button type="button" class="btn btn-custom mx-1 poppins-regular" data-property="position" data-value="{{ value }}" onclick="clickFilterButton(this)">{{ value }}</button>
+                <button type="button" class="btn btn-custom mx-1 poppins-regular fs16" data-property="position" data-value="{{ value }}" onclick="clickFilterButton(this)">{{ value }}</button>
             {% endfor %}
         </div>
+        <br>
         <p class="poppins-bold fs16"> Size <span class="poppins-light">(referenced to base size)</span> </p>
         <div id="sizeFilters" data-property="size">
             {% for value in size_values %}
-                <button type="button" class="btn btn-custom mx-1 poppins-regular" data-property="size" data-value="{{ value }}" onclick="clickFilterButton(this)">{{ value }}</button>
+                <button type="button" class="btn btn-custom mx-1 poppins-regular fs16" data-property="size" data-value="{{ value }}" onclick="clickFilterButton(this)">{{ value }}</button>
             {% endfor %}
         </div>
-        <button id="showMoreBtn" class="show-button poppins-light" onclick="showFilterBoxExt()">Show more</button>
+        <br>
+        <button id="showMoreBtn" class="show-button poppins-light fs16" onclick="showFilterBoxExt()">Show more</button>
+        <br>
     </div>
     <div id=filterBoxExt style="display: none;">
         <p class="poppins-bold fs16"> Difficulty</p>
         <div class="dropdown poppins-light fs16">
-            <select id="difficulty-select" onchange="handleSelectChange(this)">
+            <select id="difficulty-select fs16" onchange="handleSelectChange(this)">
                 {% for value in difficulty_values %}
                     <option data-property="difficulty" value="{{value}}" selected>{{value}}</option>
                 {% endfor %}
@@ -62,15 +65,15 @@
             <label class="custom-control-label" for="fancySwitch"></label>
         </div>
         <br>
-        <button id="showLessBtn" class="show-button poppins-light" onclick="hideFilterBoxExt()">Show less</button>
+        <button id="showLessBtn" class="show-button poppins-light fs16" onclick="hideFilterBoxExt()">Show less</button>
         <br>
         <br>
     </div>
     <div id=buttonBox style="display: none;">
         <div class="row justify-content-center">
             <div class="col-md-6">
-                 <button id="showResultsBtn" type="button" class="btn btn-custom mx-1 poppins-regular disabled" onclick="showResults()">Show results</button>
-                <button id="resetFiltersBtn" type="button" class="btn btn-custom mx-1 poppins-regular" onclick="resetFilters()">Reset filters</button>
+                 <button id="showResultsBtn" type="button" class="btn btn-custom mx-1 poppins-regular disabled fs16" onclick="showResults()">Show results</button>
+                <button id="resetFiltersBtn" type="button" class="btn btn-custom mx-1 poppins-regular fs16" onclick="resetFilters()">Reset filters</button>
             </div>
         </div>
     </div>
