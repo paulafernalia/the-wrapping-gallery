@@ -235,6 +235,11 @@ p, li {
     max-width: 1100px;
 }
 
+#showMoreBtn {
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
 @media only screen and (max-width: 768px) {
     .sidebar {
         display: none;
@@ -255,6 +260,26 @@ p, li {
         margin-right: 30px;
     }
 
+    .button-filters {
+        display: flex;
+        overflow-x: scroll;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch; /* Smooth scrolling for iOS */
+    }
+
+    .button-filters::-webkit-scrollbar {
+        display: none; /* Hide scrollbar for WebKit-based browsers */
+    }
+
+    .button-filters {
+        -ms-overflow-style: none;  /* Hide scrollbar for Internet Explorer and Edge */
+        scrollbar-width: none;  /* Hide scrollbar for Firefox */
+    }
+
+    .button-filters button {
+        flex-shrink: 0; /* Prevent buttons from shrinking */
+    }
+
     #search-input {
         font-size: 14px;
     }
@@ -270,8 +295,8 @@ p, li {
     .btn-custom {
         color: black;
         border: 2px solid black;
-        border-radius: 10px;
-        margin-right: 0px !important;
+        border-radius: 12px;
+        margin-right: 3px !important;
         margin-bottom: 10px;
         padding: 7px 10px;
     }
