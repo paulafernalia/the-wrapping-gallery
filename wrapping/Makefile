@@ -77,3 +77,6 @@ sync-prod-db:
 
 test:
 	$(PYTHON) manage.py test
+
+load-csv-data:
+	$(PYTHON) manage.py load_csv_data initial_data.csv --settings=wrapping.settings.development
