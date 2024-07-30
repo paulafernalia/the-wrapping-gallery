@@ -334,6 +334,10 @@ function emptyCarryGallery() {
 
 
 async function updateCarryGallery(carries) {
+    // Disable filters until all images have rendered
+    const filterBtn = document.getElementById('button-filter');
+    filterBtn.classList.add('disabled');
+
     // Get imageGrid div
     const gridContainer = document.getElementById('imageGrid');
     const baseUrlPattern = gridContainer.dataset.baseUrlPattern.replace('PLACEHOLDER', '');
@@ -408,6 +412,9 @@ async function updateCarryGallery(carries) {
         // Append grid item to grid container
         gridContainer.appendChild(gridItem);
     }
+
+    // Reactivate at the end
+    filterBtn.classList.remove('disabled');
 }
 
 
