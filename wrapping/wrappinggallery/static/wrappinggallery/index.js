@@ -20,7 +20,7 @@ async function clickFilterButton(button) {
     setActiveButton(button);
 
     // Filter carries by the property selected in the button
-    filterCarries();
+    await updateButtonBox();
 }
 
 async function handleSelectChange(dropdown) {
@@ -30,9 +30,8 @@ async function handleSelectChange(dropdown) {
     localStorage.setItem(selectedOption.dataset.property, selectedOption.value);
 
     // Filter carries by the properties selected
-    filterCarries();
+    await updateButtonBox();
 }
-
 
 async function handleSwitchChange(switch_) {
     let checked = 0;
@@ -44,7 +43,7 @@ async function handleSwitchChange(switch_) {
     localStorage.setItem(switch_.dataset.property, checked);
 
     // Filter carries by the properties selected
-    filterCarries();
+    await updateButtonBox();
 }
 
 
@@ -63,11 +62,6 @@ function initialiseSwitchData(property) {
         localStorage.setItem(property, 0);
     } else {
         init = localStorage.getItem(property);
-
-        // If any switches on, show filter box to alert user
-        if (init === '1') {
-            showAllFilters();
-        }
     }
 
     // Get switch with this property and value
@@ -79,6 +73,11 @@ function initialiseSwitchData(property) {
             switch_.checked = false;
         }
     }
+
+    if (init !== "Any") {
+        return true;
+    }
+    return false;
 }
 
 
@@ -119,10 +118,23 @@ async function resetFilters() {
     localStorage.setItem("fancy", "0");
     localStorage.setItem("pretied", "0");
 
-    initialiseFiltersData();
+    // Set initial values of filters
+    initialiseFilters();
 
-    // Filter carries in gallery
-    filterCarries();
+    // Hide all filters
+    hideAllFilters();
+
+    // Show carries
+    fetchFilteredCarries().then(carries => {
+        updateCarryGallery(carries);
+    });
+
+    // Update button box
+    updateButtonBox();
+
+    // Disable reset button
+    const resetFiltersBtn = document.getElementById('resetFiltersBtn');
+    resetFiltersBtn.classList.add('disabled');
 }
 
 function initialiseButtonData(property) {
@@ -132,15 +144,6 @@ function initialiseButtonData(property) {
         localStorage.setItem(property, 'Any');
     } else {
         init = localStorage.getItem(property);
-
-        if (init !== "Any") {
-            // If any filters applied, show filter box to alert user
-            const filterBox = document.getElementById('filterBox');
-            filterBox.style.display = 'block';
-
-            const buttonBox = document.getElementById('buttonBox');
-            buttonBox.style.display = 'block';
-        }
     }
 
     // Get button with this property and value
@@ -156,6 +159,12 @@ function initialiseButtonData(property) {
     if (button) {
         button.classList.add('active');
     }
+
+    if (init !== "Any") {
+        return true;
+    }
+
+    return false;
 }
 
 function initialiseDropdownData(property) {
@@ -165,10 +174,6 @@ function initialiseDropdownData(property) {
         localStorage.setItem(property, 'Any');
     } else {
         init = localStorage.getItem(property);
-
-        if (init !== "Any") {
-            showAllFilters();
-        }
     }
 
     // If it's not a button, it may be a dropdown
@@ -176,6 +181,12 @@ function initialiseDropdownData(property) {
     if (optionToSelect) {
         optionToSelect.selected = true;
     }
+
+    if (init !== "Any") {
+        return true;
+    }
+
+    return false;
 }
 
 
@@ -187,21 +198,54 @@ function initialiseSearchBar() {
     }
 }
 
-function initialiseFiltersData() {
-    initialiseButtonData('size');
-    initialiseButtonData('position');
-    initialiseDropdownData('difficulty');
-    initialiseDropdownData('finish');
-    initialiseSwitchData('fancy');
-    initialiseSwitchData('pretied');
+async function initialiseFilters() {
+    const fil1 = initialiseButtonData('size');
+    const fil2 = initialiseButtonData('position');
+    const fil3 = initialiseDropdownData('difficulty');
+    const fil4 = initialiseDropdownData('finish');
+    const fil5 = initialiseSwitchData('fancy');
+    const fil6 = initialiseSwitchData('pretied');
     initialiseSearchBar();
 
+    if (fil1 || fil2 || fil3 || fil4 || fil5 || fil6) {
+        return true;
+    } else {
+        return false;
+    }
 }
 
-async function fetchFilteredCarries() {
-    const start = counter;
-    const end = counter + 17;
-    counter = end + 1;
+function isAnyFilterActive() {
+    const choiceProperties = ["size", "position", "difficulty", "finish"];
+
+    for (let i = 0; i < choiceProperties.length; i++) {
+        if (localStorage.getItem(choiceProperties[i]) != "Any") {
+            return true;
+        }
+    }
+
+    const boolProperties = ["fancy", "pretied"];
+
+    for (let i = 0; i < boolProperties.length; i++) {
+        if (localStorage.getItem(boolProperties[i]) == "1") {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+
+
+async function fetchFilteredCarries(includeAll = false) {
+    let start = counter;
+    let end = counter + 17;
+
+    if (includeAll) {
+        start = 0;
+        end = 1000;
+    } else {
+        counter = end + 1;
+    }
 
     // Read the property of the button group and the button value
     const filters = {
@@ -231,9 +275,14 @@ async function fetchFilteredCarries() {
     return data.carries;
 }
 
-function showResults() {
+async function showResults() {
     // Hide all filters
     hideAllFilters();
+
+    // Populate gallery
+    const carries = await fetchFilteredCarries();
+
+    updateCarryGallery(carries);
 
     // Scroll to gallery
     var targetElement = document.getElementById('imageGrid');
@@ -246,12 +295,13 @@ function showResults() {
     });
 }
 
-async function filterCarries() {
-    counter = 0;
-    try {
-        const showResultsBtn = document.getElementById('showResultsBtn');
-        const carries = await fetchFilteredCarries();
 
+async function updateButtonBox() {
+    const showResultsBtn = document.getElementById('showResultsBtn');
+    let num_carries = 0;
+    try {
+        const carries = await fetchFilteredCarries(true);
+        
         if (carries.length === 0) {
             showResultsBtn.classList.remove('active');
             showResultsBtn.classList.add('disabled');
@@ -261,12 +311,17 @@ async function filterCarries() {
             showResultsBtn.classList.add('active');
             showResultsBtn.textContent = "Show " + carries.length + " results";
         }
-        
-        // Update gallery content
-        emptyCarryGallery();
-        await updateCarryGallery(carries);
     } catch (error) {
         console.error('There was a problem with the fetch operation:', error);
+    }
+
+    // Deactivate reset button if no filters have been applied
+    const resetFiltersBtn = document.getElementById('resetFiltersBtn');
+
+    if (isAnyFilterActive()) {
+        resetFiltersBtn.classList.remove('disabled');
+    } else {
+        resetFiltersBtn.classList.add('disabled');
     }
 }
 
@@ -285,7 +340,13 @@ function setActiveButton(button) {
     localStorage.setItem(button.dataset.property, button.dataset.value);
 }
 
-function toggleFilterBox() {
+async function toggleFilterBox(button) {
+    if (button.classList.contains('disabled')) {
+        console.log("IT icnludes it");
+    } else {
+        console.log("it doesn't");
+    }
+
     const filterBox = document.getElementById('filterBox');
     if (filterBox.style.display === 'none') {
         filterBox.style.display = 'block';
@@ -295,8 +356,15 @@ function toggleFilterBox() {
 
         const showMoreBtn = document.getElementById('showMoreBtn');
         showMoreBtn.style.display = 'block';
+
+        // Empty gallery
+        emptyCarryGallery();
+
     } else {
         hideAllFilters();
+
+        const carries = await fetchFilteredCarries();
+        updateCarryGallery(carries);
     }
 }
 
@@ -330,10 +398,17 @@ async function fetchFileUrl(fileName) {
 function emptyCarryGallery() {
     const gridContainer = document.getElementById('imageGrid');
     gridContainer.innerHTML = '';
+
+    // Reset counter whenever we empty the gallery
+    counter = 0;
 }
 
 
 async function updateCarryGallery(carries) {
+    // Disable filters until all images have rendered
+    const filterBtn = document.getElementById('button-filter');
+    filterBtn.classList.add('disabled');
+
     // Get imageGrid div
     const gridContainer = document.getElementById('imageGrid');
     const baseUrlPattern = gridContainer.dataset.baseUrlPattern.replace('PLACEHOLDER', '');
@@ -408,15 +483,38 @@ async function updateCarryGallery(carries) {
         // Append grid item to grid container
         gridContainer.appendChild(gridItem);
     }
+
+    // Reactivate at the end
+    filterBtn.classList.remove('disabled');
 }
 
 
 document.addEventListener('DOMContentLoaded', function() { 
-    // Set initial active buttons in filters
-    initialiseFiltersData();
+    // Reset gallery
+    emptyCarryGallery();
 
-    // Filter carries in gallery
-    filterCarries();
+    // Set initial active buttons in filters
+    const anyapplied = initialiseFilters();
+
+    // Update button box
+    updateButtonBox();
+
+    // Update reset filters button
+    resetFiltersBtn = document.getElementById('resetFiltersBtn');
+
+    // If any filters applied, show filter box to alert user
+    if (anyapplied) {
+        showAllFilters();
+
+        resetFiltersBtn.classList.remove('disabled');
+    } else {
+        // Get all carries with session data and update gallery
+        fetchFilteredCarries().then(carries => {
+            updateCarryGallery(carries);
+        });
+
+        resetFiltersBtn.classList.add('disabled');
+    }
 
     const searchInput = document.getElementById('search-input');
     searchInput.addEventListener('keydown', function(event) {
@@ -429,6 +527,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Define the async function to handle scrolling
 async function handleScroll() {
+    const gridContainer = document.getElementById('imageGrid');
+    if (gridContainer.innerHTML === '') {
+        return;
+    }
+
     // Check if a request is already in progress
     if (isFetching) return;
 

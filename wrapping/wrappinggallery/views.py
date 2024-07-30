@@ -102,7 +102,7 @@ def filter_carries(request):
         if prop == "size" and val != "Any":
             queryset = queryset.filter(carry__size=val)
         elif prop == "position" and val != "Any":
-            queryset = queryset.filter(carry__position=val)
+            queryset = queryset.filter(carry__position=val.lower())
         elif prop == "finish" and val != "Any":
             queryset = queryset.filter(carry__finish=val)
         elif prop == "partialname" and val != "":
