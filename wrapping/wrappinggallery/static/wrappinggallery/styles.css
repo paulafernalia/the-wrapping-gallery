@@ -102,7 +102,6 @@ p, li {
     border-bottom: 1px solid #000;
     border-radius: 0;
     box-shadow: none;
-    font-size: 14px;
 }
 
 .input-underline:focus {
