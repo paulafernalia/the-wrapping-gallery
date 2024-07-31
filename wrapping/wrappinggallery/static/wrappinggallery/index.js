@@ -93,6 +93,9 @@ function hideAllFilters() {
 
     const buttonBox = document.getElementById('buttonBox');
     buttonBox.style.display = 'none';
+
+    const wrapper = document.getElementById('wrapper');
+    wrapper.style.display = 'none';
 }
 
 
@@ -108,6 +111,9 @@ function showAllFilters() {
 
     const buttonBox = document.getElementById('buttonBox');
     buttonBox.style.display = 'block';
+
+    const wrapper = document.getElementById('wrapper');
+    wrapper.style.display = 'block';
 }
 
 async function resetFilters() {
@@ -353,6 +359,9 @@ async function toggleFilterBox(button) {
 
         const buttonBox = document.getElementById('buttonBox');
         buttonBox.style.display = 'block';
+
+        const wrapper = document.getElementById('wrapper');
+        wrapper.style.display = 'block';
 
         const showMoreBtn = document.getElementById('showMoreBtn');
         showMoreBtn.style.display = 'block';

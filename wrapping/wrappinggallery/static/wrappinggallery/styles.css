@@ -18,6 +18,21 @@ body {
     padding-top: 80px;
 }
 
+
+#buttonBox {
+    position: fixed;
+    bottom: 0px;
+    width: 100%;
+    background-color: white;
+    padding: 30px 0px;
+    z-index: 1000;
+}
+
+#wrapper {
+    background-color: white;
+    padding: 30px 0px;
+}
+
 .navbar-brand {
     font-optical-sizing: auto;
     font-weight: 400;
