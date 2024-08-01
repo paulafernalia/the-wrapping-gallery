@@ -325,6 +325,7 @@ p, li {
     padding: 30px;
     border-radius: 5px;
     border: 1px solid lightgrey;
+    animation: slideDown 0.8s ease-out forwards;
 }
 
 .search-container {
