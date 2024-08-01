@@ -30,10 +30,10 @@ class Carry(models.Model):
         choices={
             -1: "NA",
             0: "Starts centred",
-            0.5: "Starts half an arm length off centre",
-            1: "Starts one arm length off centre",
-            1.5: "Starts one and a half arm lengths off centre",
-            2: "Starts two arm lengths off centre",
+            0.5: "Starts 0.5 measures off centre",
+            1: "Starts 1 measure off centre",
+            1.5: "Starts 1.5 measures off centre",
+            2: "Starts 2 measures off centre",
         }
     )
 
