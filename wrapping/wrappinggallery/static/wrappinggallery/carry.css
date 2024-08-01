@@ -63,7 +63,7 @@ h4 {
 
 
 .list-group-item {
-    border: 1px solid white !important; /* White border color */
+    border: 1px solid #e0e0e0 !important; /* White border color */
     background-color: transparent; /* Optional: Make background transparent */
     display: flex;
     align-items: center; /* Center items vertically */
@@ -105,7 +105,7 @@ h4 {
 
 /* Styles for unchecked stars */
 .notchecked {
-    color: #f0f0f0 !important; /* Almost white color for unchecked stars */
+    color: #f0f0f0 !important; /* Almost #e0e0e0 color for unchecked stars */
 }
 
 /* Add vertical padding between rating groups */
