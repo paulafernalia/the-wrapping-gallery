@@ -22,7 +22,7 @@ class Carry(models.Model):
         }
     )
 
-    shoulders = models.IntegerField(choices={0: "Torso", 1: "One", 2: "Two"})
+    shoulders = models.IntegerField(choices={0: "Zero (torso carry)", 1: "One", 2: "Two"})
 
     layers = models.IntegerField(choices={1: "One", 2: "Two", 3: "Three", 4: "Four"})
 
