@@ -17,16 +17,9 @@
     z-index: 1000;
 }
 
-footer {
-    height: 60px;
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-}
 
 body {
     padding-top: 80px;
-    padding-bottom: 60px;
     background-color: #F5F7F8;
 }
 
