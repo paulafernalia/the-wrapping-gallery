@@ -19,21 +19,20 @@
 
 footer {
     height: 60px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
 }
 
 body {
     padding-top: 80px;
+    padding-bottom: 60px;
 }
 
 #buttonBox {
     max-width: 900px;
     background-color: white;
     padding: 20px 0px;
-}
-
-#wrapper {
-    background-color: white;
-    height: 50px;
 }
 
 .navbar-brand {
