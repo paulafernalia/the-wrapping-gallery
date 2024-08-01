@@ -5,7 +5,7 @@
 {% block body %}
 <div class="content-container">
     <h1 id="carryName">{{title}}</h2>
-    <h3 id="carrySize">{{size}}</h3>
+    <h3 id="carrySize">{{finish}} &nbsp; | &nbsp;   {{size}}</h3>
     <hr>
     <br>
 
@@ -16,14 +16,11 @@
         </div>
         <div class="column">
             <h4 class="dancing fs32">Carry features</p>
-
                 <div class="feature poppins-light fs16"><span class="poppins-bold pink-span">TYPE: </span> {{position}} carry </div>
-                <div class="feature poppins-light fs16"><span class="poppins-bold pink-span">SIZE: </span> {{size}} </div>
                 {% if mmposition != 'NA' %}
                     <div class="feature poppins-light fs16"><span class="poppins-bold pink-span">MM POSITION: </span> {{mmposition}} </div>
                 {% endif %}
-                <div class="feature poppins-light fs16"><span class="poppins-bold pink-span">LAYERS: </span> {{layers}} </div>
-                <div class="feature poppins-light fs16"><span class="poppins-bold pink-span">SHOULDERS: </span> {{shoulders}} </div>
+                <!-- <div class="feature poppins-light fs16"><span class="poppins-bold pink-span">FINISH: </span> {{finish}} </div> -->
                 <div class="feature poppins-light fs16">
                     <span class="poppins-bold pink-span">CAN BE PRE-TIED: </span> 
                         {% if pretied %}
@@ -32,7 +29,10 @@
                             No
                         {% endif %}
                 </div>
-                <div class="feature poppins-light fs16"><span class="poppins-bold pink-span">FINISH: </span> {{finish}} </div>
+                <div class="feature poppins-light fs16"><span class="poppins-bold pink-span">DIFFICULTY: </span> {{difficulty}} / 5 </div>
+                <div class="feature poppins-light fs16"><span class="poppins-bold pink-span">FANCY: </span> {{fancy}} / 5</div>
+                <div class="feature poppins-light fs16"><span class="poppins-bold pink-span">LAYERS: </span> {{layers}} </div>
+                <div class="feature poppins-light fs16"><span class="poppins-bold pink-span">SHOULDERS: </span> {{shoulders}} </div>
                 <br>
         </div>
         <div class="column">
