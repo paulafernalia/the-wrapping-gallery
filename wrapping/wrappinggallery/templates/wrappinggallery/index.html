@@ -23,16 +23,19 @@
             {% endfor %}
         </div>
         <br>
+        
         <p class="poppins-bold fs16"> Size <span class="poppins-light">(referenced to base size)</span> </p>
         <div class="button-filters" data-property="size">
             {% for value in size_values %}
                 <button type="button" class="btn btn-custom mx-1 poppins-regular fs16" data-property="size" data-value="{{ value }}" onclick="clickFilterButton(this)">{{ value }}</button>
             {% endfor %}
         </div>
+        
         <button id="showMoreBtn" class="show-button poppins-light fs16" onclick="showFilterBoxExt()">Show more</button>
     </div>
     <div id=filterBoxExt style="display: none;">
         <hr>
+        
         <p class="poppins-bold fs16"> Difficulty</p>
         <div class="dropdown poppins-light fs16">
             <select id="difficulty-select fs16" onchange="handleSelectChange(this)">
@@ -43,6 +46,18 @@
         </div>
         <br>
         <br>
+
+        <p class="poppins-bold fs16"> Middle marker position</p>
+        <div class="dropdown poppins-light fs16">
+            <select id="mmposition-select fs16" onchange="handleSelectChange(this)">
+                {% for value in mmposition_values %}
+                    <option data-property="mmposition" value="{{value}}" selected>{{value}}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <br>
+        <br>
+        
         <p class="poppins-bold fs16"> Finish</p>
         <div class="dropdown poppins-light fs16">
             <select id="finish-select" onchange="handleSelectChange(this)">
@@ -52,17 +67,81 @@
             </select>
         </div>
         <hr>
-        <p class="poppins-bold fs16"> Can be pre-tied</p>
-        <div class="custom-control custom-switch">
-            <input type="checkbox" class="custom-control-input" id="pretiedSwitch" onchange="handleSwitchChange(this)"  data-property="pretied">
-            <label class="custom-control-label" for="pretiedSwitch"></label>
+
+        <br>
+        <div class="checkbox-group poppins-bold fs16">
+            <label>
+                <input type="checkbox" data-property="pretied" onclick="handleSwitchChange(this)">
+                Can be pre-tied
+            </label>
         </div>
         <br>
-        <p class="poppins-bold fs16"> Fancy</p>
-        <div class="custom-control custom-switch">
-            <input type="checkbox" class="custom-control-input" id="fancySwitch" onchange="handleSwitchChange(this)" data-property="fancy">
-            <label class="custom-control-label" for="fancySwitch"></label>
+        
+        <div class="checkbox-group poppins-bold fs16">
+            <label>
+                <input type="checkbox" data-property="fancy" onclick="handleSwitchChange(this)">
+                Looks fancy
+            </label>
         </div>
+        <hr>
+
+        <p class="poppins-bold fs16"> Must be suitable for</p>
+        <div class="checkbox-group poppins-light fs16">
+            <div>
+                <label>
+                    <input type="checkbox" data-property="newborns" onclick="handleSwitchChange(this)">
+                    Newborns
+                </label>
+            </div>
+            <div>
+                <label>
+                    <input type="checkbox" data-property="legstraighteners" onclick="handleSwitchChange(this)">
+                    Leg straighteners
+                </label>
+            </div>
+            <div>
+                <label>
+                    <input type="checkbox" data-property="leaners" onclick="handleSwitchChange(this)">
+                    Leaners
+                </label>
+            </div>
+            <div>
+                <label>
+                    <input type="checkbox" data-property="bigkids" onclick="handleSwitchChange(this)">
+                    Big kids
+                </label>
+            </div>
+            <div>
+                <label>
+                    <input type="checkbox" data-property="feeding" onclick="handleSwitchChange(this)">
+                    Feeding
+                </label>
+            </div>
+            <div>
+                <label>
+                    <input type="checkbox" data-property="quickups" onclick="handleSwitchChange(this)">
+                    Quick ups
+                </label>
+            </div>
+        </div>
+
+        <hr>
+
+        <p class="poppins-bold fs16"> Shoulders </p>
+        <div class="button-filters" data-property="shoulders">
+            {% for value in shoulders_values %}
+                <button type="button" class="btn btn-custom mx-1 poppins-regular fs16" data-property="shoulders" data-value="{{ value }}" onclick="clickFilterButton(this)">{{ value }}</button>
+            {% endfor %}
+        </div>
+        <br>
+        
+        <p class="poppins-bold fs16"> Layers </p>
+        <div class="button-filters" data-property="layers">
+            {% for value in layers_values %}
+                <button type="button" class="btn btn-custom mx-1 poppins-regular fs16" data-property="layers" data-value="{{ value }}" onclick="clickFilterButton(this)">{{ value }}</button>
+            {% endfor %}
+        </div>
+
         <hr>
         <button id="showLessBtn" class="show-button poppins-light fs16" onclick="hideFilterBoxExt()">Show less</button>
     </div>
