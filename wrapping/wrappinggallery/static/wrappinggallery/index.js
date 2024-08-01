@@ -33,6 +33,7 @@ async function handleSelectChange(dropdown) {
     await updateButtonBox();
 }
 
+
 async function handleSwitchChange(switch_) {
     let checked = 0;
     if (switch_.checked) {
@@ -69,15 +70,12 @@ function initialiseSwitchData(property) {
     if (switch_) {
         if (init === '1') {
             switch_.checked = true;
+            return true;
         } else {
             switch_.checked = false;
+            return false;
         }
     }
-
-    if (init !== "Any") {
-        return true;
-    }
-    return false;
 }
 
 
@@ -113,21 +111,22 @@ function showAllFilters() {
 async function resetFilters() {
     localStorage.setItem("size", "Any");
     localStorage.setItem("position", "Any");
+    localStorage.setItem("mmposition", "Any");
+    localStorage.setItem("layers", "Any");
+    localStorage.setItem("shoulders", "Any");
     localStorage.setItem("difficulty", "Any");
     localStorage.setItem("finish", "Any");
     localStorage.setItem("fancy", "0");
     localStorage.setItem("pretied", "0");
+    localStorage.setItem("newborns", "0");
+    localStorage.setItem("legstraighteners", "0");
+    localStorage.setItem("leaners", "0");
+    localStorage.setItem("bigkids", "0");
+    localStorage.setItem("feeding", "0");
+    localStorage.setItem("quickups", "0");
 
     // Set initial values of filters
     initialiseFilters();
-
-    // Hide all filters
-    hideAllFilters();
-
-    // Show carries
-    fetchFilteredCarries().then(carries => {
-        updateCarryGallery(carries);
-    });
 
     // Update button box
     updateButtonBox();
@@ -201,13 +200,23 @@ function initialiseSearchBar() {
 async function initialiseFilters() {
     const fil1 = initialiseButtonData('size');
     const fil2 = initialiseButtonData('position');
-    const fil3 = initialiseDropdownData('difficulty');
-    const fil4 = initialiseDropdownData('finish');
-    const fil5 = initialiseSwitchData('fancy');
-    const fil6 = initialiseSwitchData('pretied');
+    const fil3 = initialiseButtonData('shoulders');
+    const fil4 = initialiseButtonData('layers');
+    const fil5 = initialiseDropdownData('difficulty');
+    const fil6 = initialiseDropdownData('finish');
+    const fil7 = initialiseSwitchData('fancy');
+    const fil8 = initialiseSwitchData('pretied');
+    const fil9 = initialiseSwitchData('newborns');
+    const fil10 = initialiseSwitchData('legstraighteners');
+    const fil11 = initialiseSwitchData('leaners');
+    const fil12 = initialiseSwitchData('bigkids');
+    const fil13 = initialiseSwitchData('feeding');
+    const fil14 = initialiseSwitchData('quickups');
+    const fil15 = initialiseDropdownData('mmposition');
     initialiseSearchBar();
 
-    if (fil1 || fil2 || fil3 || fil4 || fil5 || fil6) {
+    if (fil1 || fil2 || fil3 || fil4 || fil5 || fil6 || fil7 || fil8 ||
+        fil9 || fil10 || fil11 || fil12 || fil13 || fil14 || fil15) {
         return true;
     } else {
         return false;
@@ -215,7 +224,10 @@ async function initialiseFilters() {
 }
 
 function isAnyFilterActive() {
-    const choiceProperties = ["size", "position", "difficulty", "finish"];
+    const choiceProperties = [
+        "size", "position", "difficulty", "finish",
+        "layers", "shoulders", "mmposition"
+    ];
 
     for (let i = 0; i < choiceProperties.length; i++) {
         if (localStorage.getItem(choiceProperties[i]) != "Any") {
@@ -223,7 +235,10 @@ function isAnyFilterActive() {
         }
     }
 
-    const boolProperties = ["fancy", "pretied"];
+    const boolProperties = [
+        "fancy", "pretied", "newborns", "legstraighteners",
+        "leaners", "bigkids", "feeding", "quickups"
+    ];
 
     for (let i = 0; i < boolProperties.length; i++) {
         if (localStorage.getItem(boolProperties[i]) == "1") {
@@ -251,11 +266,20 @@ async function fetchFilteredCarries(includeAll = false) {
     const filters = {
         size: localStorage.getItem("size"),
         position: localStorage.getItem("position"),
+        shoulders: localStorage.getItem("shoulders"),
+        layers: localStorage.getItem("layers"),
         difficulty: localStorage.getItem("difficulty"),
+        mmposition: localStorage.getItem("mmposition"),
         partialname: localStorage.getItem("partialname"),
         pretied: localStorage.getItem("pretied"),
         fancy: localStorage.getItem("fancy"),
         finish: localStorage.getItem("finish"),
+        newborns: localStorage.getItem("newborns"),
+        legstraighteners: localStorage.getItem("legstraighteners"),
+        leaners: localStorage.getItem("leaners"),
+        bigkids: localStorage.getItem("bigkids"),
+        feeding: localStorage.getItem("feeding"),
+        quickups: localStorage.getItem("quickups"),
     };
     
     // Build the query string from the filters object

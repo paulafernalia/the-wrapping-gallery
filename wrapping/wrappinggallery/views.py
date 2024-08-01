@@ -18,7 +18,7 @@ def index(request):
     carry_fields = ["size", "shoulders", "layers", "mmposition", "position", "finish"]
 
     for field in carry_fields:
-        idx = 0 if field == "size" else 1
+        idx = 0 if field in ["shoulders", "layers", "size"] else 1
         labels = [elem[idx] for elem in Carry._meta.get_field(field).choices]
         context[field + "_values"] = ["Any"] + labels
 
@@ -94,6 +94,10 @@ def filter_carries(request):
 
     difficulties = dict(zip(DIFFICULTY_VALUES, [1, 2, 3, 4, 5]))
 
+    mmpositions = {
+        key: value for value, key in Carry._meta.get_field("mmposition").choices
+    }
+
     # Initialize a queryset for filtering
     queryset = Ratings.objects.all()
 
@@ -103,6 +107,12 @@ def filter_carries(request):
             queryset = queryset.filter(carry__size=val)
         elif prop == "position" and val != "Any":
             queryset = queryset.filter(carry__position=val.lower())
+        elif prop == "shoulders" and val != "Any":
+            queryset = queryset.filter(carry__shoulders=val)
+        elif prop == "layers" and val != "Any":
+            queryset = queryset.filter(carry__layers=val)
+        elif prop == "mmposition" and val != "Any":
+            queryset = queryset.filter(carry__mmposition=mmpositions[val])
         elif prop == "finish" and val != "Any":
             queryset = queryset.filter(carry__finish=val)
         elif prop == "partialname" and val != "":
@@ -113,6 +123,20 @@ def filter_carries(request):
             ).filter(rounded_difficulty=difficulties[val])
         elif prop == "pretied" and val != "null":
             queryset = queryset.filter(carry__pretied=val)
+        elif prop == "newborns" and val == "1":
+            queryset = queryset.filter(newborns__gte=3.5)
+        elif prop == "legstraighteners" and val == "1":
+            queryset = queryset.filter(legstraighteners__gte=3.5)
+        elif prop == "leaners" and val == "1":
+            queryset = queryset.filter(leaners__gte=3.5)
+        elif prop == "bigkids" and val == "1":
+            queryset = queryset.filter(bigkids__gte=3.5)
+        elif prop == "feeding" and val == "1":
+            queryset = queryset.filter(feeding__gte=3.5)
+        elif prop == "quickups" and val == "1":
+            queryset = queryset.filter(quickups__gte=3.5)
+        elif prop == "fancy" and val == "1":
+            queryset = queryset.filter(fancy__gte=3.5)
 
     # Extract start and end parameters
     start = int(request.GET.get("start", 0))
