@@ -80,29 +80,24 @@ function initialiseSwitchData(property) {
 
 
 function hideAllFilters() {
-    const filterBox = document.getElementById('filterBox');
-    filterBox.style.display = 'none';
-
-    const showMoreBtn = document.getElementById('showMoreBtn');
-    showMoreBtn.style.display = 'none';
-
-    const filterBoxExt = document.getElementById('filterBoxExt');
-    filterBoxExt.style.display = 'none';
-
     const buttonBox = document.getElementById('buttonBox');
     buttonBox.style.display = 'none';
+
+    const filtertitle = document.getElementById('filter-title');
+    filtertitle.style.display = 'none';
+
+    const filtersContainer = document.getElementById('filters-container');
+    filtersContainer.style.display = 'none';
+
 }
 
 
 function showAllFilters() {
-    const filterBox = document.getElementById('filterBox');
-    filterBox.style.display = 'block';
+    const filtersContainer = document.getElementById('filters-container');
+    filtersContainer.style.display = 'block';
 
-    const showMoreBtn = document.getElementById('showMoreBtn');
-    showMoreBtn.style.display = 'none';
-
-    const filterBoxExt = document.getElementById('filterBoxExt');
-    filterBoxExt.style.display = 'block';
+    const filtertitle = document.getElementById('filter-title');
+    filtertitle.style.display = 'block';
 
     const buttonBox = document.getElementById('buttonBox');
     buttonBox.style.display = 'block';
@@ -365,15 +360,12 @@ function setActiveButton(button) {
 }
 
 async function toggleFilterBox(button) {
-    const filterBox = document.getElementById('filterBox');
-    if (filterBox.style.display === 'none') {
-        filterBox.style.display = 'block';
+    const filtersContainer = document.getElementById('filters-container');
+    if (filtersContainer.style.display === 'none') {
+        filtersContainer.style.display = 'block';
 
         const buttonBox = document.getElementById('buttonBox');
         buttonBox.style.display = 'block';
-
-        const showMoreBtn = document.getElementById('showMoreBtn');
-        showMoreBtn.style.display = 'block';
 
         // Empty gallery
         emptyCarryGallery();
@@ -392,6 +384,14 @@ function showFilterBoxExt() {
 
     const showMoreBtn = document.getElementById('showMoreBtn');
     showMoreBtn.style.display = 'none';
+
+    var targetElement = document.getElementById('filterBoxExt');
+    var elementPosition = targetElement.getBoundingClientRect().top;
+
+    window.scrollTo({
+        top: elementPosition,
+        behavior: 'smooth'
+    });
 }
 
 function hideFilterBoxExt() {
@@ -400,6 +400,14 @@ function hideFilterBoxExt() {
 
     const showMoreBtn = document.getElementById('showMoreBtn');
     showMoreBtn.style.display = 'block';
+
+    var targetElement = document.getElementById('filterBox');
+    var elementPosition = targetElement.getBoundingClientRect().top;
+
+    window.scrollTo({
+        top: elementPosition,
+        behavior: 'smooth'
+    });
 }
 
 
