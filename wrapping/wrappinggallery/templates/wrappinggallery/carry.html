@@ -22,7 +22,14 @@
                 {% endif %}
                 <div class="feature poppins-light fs16"><span class="poppins-bold pink-span">LAYERS: </span> {{layers}} </div>
                 <div class="feature poppins-light fs16"><span class="poppins-bold pink-span">SHOULDERS: </span> {{shoulders}} </div>
-                <div class="feature poppins-light fs16"><span class="poppins-bold pink-span">CAN BE PRE-TIED: </span> {{pretied}} </div>
+                <div class="feature poppins-light fs16">
+                    <span class="poppins-bold pink-span">CAN BE PRE-TIED: </span> 
+                        {% if pretied %}
+                            Yes
+                        {% else %}
+                            No
+                        {% endif %}
+                </div>
                 <div class="feature poppins-light fs16"><span class="poppins-bold pink-span">FINISH: </span> {{finish}} </div>
         </div>
         <div class="column">
