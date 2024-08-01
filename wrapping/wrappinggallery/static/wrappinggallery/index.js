@@ -93,9 +93,6 @@ function hideAllFilters() {
 
     const buttonBox = document.getElementById('buttonBox');
     buttonBox.style.display = 'none';
-
-    const wrapper = document.getElementById('wrapper');
-    wrapper.style.display = 'none';
 }
 
 
@@ -111,9 +108,6 @@ function showAllFilters() {
 
     const buttonBox = document.getElementById('buttonBox');
     buttonBox.style.display = 'block';
-
-    const wrapper = document.getElementById('wrapper');
-    wrapper.style.display = 'block';
 }
 
 async function resetFilters() {
@@ -347,21 +341,12 @@ function setActiveButton(button) {
 }
 
 async function toggleFilterBox(button) {
-    if (button.classList.contains('disabled')) {
-        console.log("IT icnludes it");
-    } else {
-        console.log("it doesn't");
-    }
-
     const filterBox = document.getElementById('filterBox');
     if (filterBox.style.display === 'none') {
         filterBox.style.display = 'block';
 
         const buttonBox = document.getElementById('buttonBox');
         buttonBox.style.display = 'block';
-
-        const wrapper = document.getElementById('wrapper');
-        wrapper.style.display = 'block';
 
         const showMoreBtn = document.getElementById('showMoreBtn');
         showMoreBtn.style.display = 'block';
@@ -417,6 +402,7 @@ async function updateCarryGallery(carries) {
     // Disable filters until all images have rendered
     const filterBtn = document.getElementById('button-filter');
     filterBtn.classList.add('disabled');
+    filterBtn.setAttribute('disabled', true);
 
     // Get imageGrid div
     const gridContainer = document.getElementById('imageGrid');
@@ -495,6 +481,7 @@ async function updateCarryGallery(carries) {
 
     // Reactivate at the end
     filterBtn.classList.remove('disabled');
+    filterBtn.removeAttribute('disabled');
 }
 
 
