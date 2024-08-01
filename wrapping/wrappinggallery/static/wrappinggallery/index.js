@@ -1,5 +1,6 @@
 let counter = 0
 let isFetching = false
+let filteredResults = 0;
 
 function getButtonByValueAndProperty(property, value) {
     // Get button that matches the data-property and data-value args given
@@ -48,12 +49,16 @@ async function handleSwitchChange(switch_) {
 }
 
 
-function handleInputChange() {
+async function handleInputChange() {
     const searchInput = document.getElementById('search-input');
     localStorage.setItem('partialname', searchInput.value);
 
+    // Filter carries by the properties selected
+    await updateButtonBox();
+
     // Filter carries by the property selected in the button
-    filterCarries();
+    emptyCarryGallery();
+    await showResults();
 }
 
 function initialiseSwitchData(property) {
@@ -317,18 +322,23 @@ async function showResults() {
 
 async function updateButtonBox() {
     const showResultsBtn = document.getElementById('showResultsBtn');
+    const countText = document.getElementById('count-text');
+
     let num_carries = 0;
     try {
         const carries = await fetchFilteredCarries(true);
+        filteredResults = carries.length;
         
         if (carries.length === 0) {
             showResultsBtn.classList.remove('active');
             showResultsBtn.classList.add('disabled');
             showResultsBtn.textContent = "No results";
+            countText.textContent = "No carries found";
         } else {
             showResultsBtn.classList.remove('disabled');
             showResultsBtn.classList.add('active');
-            showResultsBtn.textContent = "Show " + carries.length + " results";
+            showResultsBtn.textContent = "Show " + filteredResults + " results";
+            countText.textContent = filteredResults + " carries found.";
         }
     } catch (error) {
         console.error('There was a problem with the fetch operation:', error);
@@ -422,6 +432,9 @@ async function fetchFileUrl(fileName) {
 }
 
 function emptyCarryGallery() {
+    const countText = document.getElementById('count-text');
+    countText.style.display = 'none';
+
     const gridContainer = document.getElementById('imageGrid');
     gridContainer.innerHTML = '';
 
@@ -431,6 +444,10 @@ function emptyCarryGallery() {
 
 
 async function updateCarryGallery(carries) {
+    // show text counting results
+    const countText = document.getElementById('count-text');
+    countText.style.display = 'block';
+
     // Disable filters until all images have rendered
     const filterBtn = document.getElementById('button-filter');
     filterBtn.classList.add('disabled');

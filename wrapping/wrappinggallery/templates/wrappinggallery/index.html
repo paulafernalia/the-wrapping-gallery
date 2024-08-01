@@ -8,6 +8,7 @@
 <div class="title-container poppins-bold fsmedium">
     <div id="searchcarrytitle" class="row justify-content-center">
         Search a carry by name
+    </div>
 </div>
 <div class="search-container">
     <div class="row justify-content-center">
@@ -166,11 +167,15 @@
                 <button id="resetFiltersBtn" type="button" class="btn btn-custom mx-1 poppins-regular fs16" onclick="resetFilters()">Reset filters</button>
             </div>
         </div>
-    <div class="grid" id="imageGrid" data-base-url-pattern="{% url 'carry' 'PLACEHOLDER' %}"></div>
+</div>
+
+<div id="count-text" style="display: none;" class="title-container poppins-bold fsmedium">
+    Showing carries
+</div>
+<div class="grid" id="imageGrid" data-base-url-pattern="{% url 'carry' 'PLACEHOLDER' %}"></div>
 </div>
 <br>
 <br>
-
 
 <script src="{% static 'wrappinggallery/index.js' %}"></script>
 
