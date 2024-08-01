@@ -39,11 +39,26 @@ h4 {
 .three-column-container .column img {
     max-width: 100%; /* Ensures the image does not exceed the container's width */
     height: auto; /* Maintains the aspect ratio */
-    max-height: 300px; /* Sets the maximum height */
+    max-height: 250px; /* Sets the maximum height */
     display: block;
     margin: 0 auto; /* Center the image within the column */
     object-fit: contain; /* Ensures the image fits within the max-height while maintaining the aspect ratio */
 }
+
+
+/* Specific widths for each column using nth-child */
+.three-column-container .column:nth-child(1) {
+    flex: 0 0 30%; /* First column takes 25% of the container's width */
+}
+
+.three-column-container .column:nth-child(2) {
+    flex: 0 0 42%; /* Second column takes 40% of the container's width */
+}
+
+.three-column-container .column:nth-child(3) {
+    flex: 0 0 28%; /* Third column takes 35% of the container's width */
+}
+
 
 #carryImage {
     width: 100%; /* Set a maximum width for the image */
@@ -128,7 +143,7 @@ h4 {
 }*/
 
 /* Media query for small screens */
-@media only screen and (max-width: 768px) {
+@media only screen and (max-width: 1024px) {
     .three-column-container .column img {
         max-height: 300px;
     }

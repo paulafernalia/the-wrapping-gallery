@@ -7,10 +7,12 @@
     <h1 id="carryName">{{title}}</h2>
     <h3 id="carrySize">{{size}}</h3>
     <hr>
+    <br>
 
     <div class="three-column-container">
         <div class="column">
             <img id="carryImage" alt="{{name}}" src="{{imageSrc}}">
+            <br>
         </div>
         <div class="column">
             <h4 class="dancing fs32">Carry features</p>
@@ -31,6 +33,7 @@
                         {% endif %}
                 </div>
                 <div class="feature poppins-light fs16"><span class="poppins-bold pink-span">FINISH: </span> {{finish}} </div>
+                <br>
         </div>
         <div class="column">
             <h4 class="dancing fs32">Ratings</h4>
@@ -53,12 +56,14 @@
              <div id="feeding-rating" class="rating-group" data-property="{{feeding}}">
                 <span class="poppins-light fs16"> Good for feeding</span>
             </div>
+            <br>
         </div>
 
     </div>
     <hr>
 
     {% if videoauthor != 'NA' %}
+        <br>
         <h4 class="poppins-light fs16">VIDEO TUTORIAL by {{videoauthor}}</p>
         <div class="video-container">>
             <iframe width="560" height="315" src="{{videotutorial}}"
