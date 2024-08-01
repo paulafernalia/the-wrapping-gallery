@@ -215,6 +215,12 @@ p, li {
     border: none;
 }
 
+.btn-container {
+    display: flex !important;
+    justify-content: center  !important; /* Centers the button horizontally */
+    align-items: center  !important; /* Centers the button vertically */
+}
+
 .show-button:hover {
     color: grey;
 }
