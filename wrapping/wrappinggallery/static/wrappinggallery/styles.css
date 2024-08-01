@@ -27,12 +27,12 @@ footer {
 body {
     padding-top: 80px;
     padding-bottom: 60px;
+    background-color: #F5F7F8;
 }
 
 #buttonBox {
     max-width: 900px;
-    background-color: white;
-    padding: 20px 0px;
+    padding: 40px 0px;
 }
 
 .navbar-brand {
@@ -48,6 +48,26 @@ body {
 #copy-right {
     color: #e0e0e0;
     font-size: 13px;
+}
+
+.button-filters {
+    display: flex;
+    overflow-x: scroll;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling for iOS */
+}
+
+.button-filters::-webkit-scrollbar {
+    display: none; /* Hide scrollbar for WebKit-based browsers */
+}
+
+.button-filters {
+    -ms-overflow-style: none;  /* Hide scrollbar for Internet Explorer and Edge */
+    scrollbar-width: none;  /* Hide scrollbar for Firefox */
+}
+
+.button-filters button {
+    flex-shrink: 0; /* Prevent buttons from shrinking */
 }
 
 .navbar-nav .nav-link {
@@ -116,10 +136,17 @@ body {
 
 .btn-outline-secondary.disabled {
     cursor: not-allowed;
+    background-color: lightgrey;
 }
+
 
 .btn-outline-secondary.disabled:hover {
     cursor: not-allowed;
+    background-color: grey;
+}
+
+#button-filter {
+    font-size: 18px;
 }
 
 p, li {
@@ -127,10 +154,10 @@ p, li {
     font-weight: 400;
 }
 
-.input-underline {
-    border: none;
-    border-bottom: 1px solid #000;
-    border-radius: 0;
+.input-format{
+    height: 50px;
+    border: 1px solid lightgrey;
+    border-radius: 5px;
     box-shadow: none;
 }
 
@@ -140,9 +167,13 @@ p, li {
 }
 
 .btn-outline-secondary {
-    margin-left: 1rem;
+    margin-left: -10px !important;
     font-size: 14px;
     border-radius: 15px;
+    width: 50px;
+    z-index: 800;
+    background-color: black;
+    border: black;
 }
 
 .poppins-bold {
@@ -165,6 +196,10 @@ p, li {
 
 .fs32 {
     font-size: 32px;
+}
+
+.fsmedium {
+    font-size: 17px;
 }
 
 .fs16 {
@@ -213,6 +248,12 @@ p, li {
 .checkbox-group input[type="checkbox"]:checked {
     background-color: black;
     border: none;
+}
+
+.btn-container {
+    display: flex !important;
+    justify-content: center  !important; /* Centers the button horizontally */
+    align-items: center  !important; /* Centers the button vertically */
 }
 
 .show-button:hover {
@@ -284,10 +325,30 @@ p, li {
 }
 
 .content-container {
-    margin-top: 50px;
     margin-left: auto;
     margin-right: auto;
-    max-width: 900px;
+    max-width: 1000px;
+    background-color: white;
+    padding: 30px;
+    border-radius: 5px;
+    border: 1px solid lightgrey;
+}
+
+.search-container {
+    margin-top: 0px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 0px;
+    max-width: 1000px;
+    padding: 10px;
+}
+
+.title-container {
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 10px;
+    max-width: 1000px;
+    padding-left: 30px;
 }
 
 #showMoreBtn {
@@ -297,7 +358,18 @@ p, li {
 
 @media only screen and (max-width: 1024px) {
     .content-container {
-        margin-top: 50px;
+        margin-left: auto;
+        margin-right: auto;
+        max-width: 700px;
+    }
+
+    .title-container {
+        margin-left: auto;
+        margin-right: auto;
+        max-width: 700px;
+    }
+
+    .search-container {
         margin-left: auto;
         margin-right: auto;
         max-width: 700px;
@@ -305,6 +377,10 @@ p, li {
 
     .fs16 {
         font-size: 13px;
+    }
+
+    .fsmedium {
+        font-size: 14px;
     }
 }
 
@@ -328,30 +404,10 @@ p, li {
         padding-right: 30px;
     }
 
-    .content-container {
+    .content-container .search-container .title-container {
         margin-top: 50px;
         margin-left: 30px;
         margin-right: 30px;
-    }
-
-    .button-filters {
-        display: flex;
-        overflow-x: scroll;
-        white-space: nowrap;
-        -webkit-overflow-scrolling: touch; /* Smooth scrolling for iOS */
-    }
-
-    .button-filters::-webkit-scrollbar {
-        display: none; /* Hide scrollbar for WebKit-based browsers */
-    }
-
-    .button-filters {
-        -ms-overflow-style: none;  /* Hide scrollbar for Internet Explorer and Edge */
-        scrollbar-width: none;  /* Hide scrollbar for Firefox */
-    }
-
-    .button-filters button {
-        flex-shrink: 0; /* Prevent buttons from shrinking */
     }
 
     .navbar-brand {

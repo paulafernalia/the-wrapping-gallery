@@ -15,9 +15,17 @@
         <p class="poppins-light fs16">May this platform inspire and support you in your wrapping journey just as much as I am enjoying creating it.</p>
 
         <p class="poppins-light fs16">This is an evolving project. If you have any ideas or spot any errors email me at <strong>thewrappinggallery@gmail.com</strong>.</p>
-
         </p>
+        <br>
+        <div class="btn-container">
+            <button type="button" class="btn btn-custom mx-1 poppins-regular fs16" onclick="exploreCarriesBtnClick()">Explore carries</button>
+        </div>
     </div>
 </div>
+<script>
+    function exploreCarriesBtnClick() {
+        window.location.href = "{% url 'index' %}";
+    }
+</script>
 
 {% endblock %}

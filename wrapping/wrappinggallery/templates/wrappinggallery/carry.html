@@ -3,12 +3,12 @@
 {% load static %}
 
 {% block body %}
-<div class="content-container">
+<div id="carryTitle" class="title-container poppins-bold fsmedium">
     <h1 id="carryName">{{title}}</h2>
-    <h3 id="carrySize">{{finish}} &nbsp; | &nbsp;   {{size}}</h3>
-    <hr>
-    <br>
+    <h3 id="carrySize">{{size}}</h3>
+</div>
 
+<div class="content-container">
     <div class="three-column-container">
         <div class="column">
             <img id="carryImage" alt="{{name}}" src="{{imageSrc}}">
@@ -20,7 +20,6 @@
                 {% if mmposition != 'NA' %}
                     <div class="feature poppins-light fs16"><span class="poppins-bold pink-span">MM POSITION: </span> {{mmposition}} </div>
                 {% endif %}
-                <!-- <div class="feature poppins-light fs16"><span class="poppins-bold pink-span">FINISH: </span> {{finish}} </div> -->
                 <div class="feature poppins-light fs16">
                     <span class="poppins-bold pink-span">CAN BE PRE-TIED: </span> 
                         {% if pretied %}
@@ -59,23 +58,27 @@
         </div>
 
     </div>
-    <hr>
-
-    {% if videoauthor != 'NA' %}
-        <br>
-        <h4 class="poppins-light fs16">VIDEO TUTORIAL by {{videoauthor}}</p>
-        <div class="video-container">>
-            <iframe width="560" height="315" src="{{videotutorial}}"
-                title="YouTube video player" 
-                frameborder="0" 
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                referrerpolicy="strict-origin-when-cross-origin" 
-                allowfullscreen>
-            </iframe>
-        </div>
-    {% endif %}
-    <br><br><br>
 </div>
+
+{% if videoauthor != 'NA' %}
+<br><br>
+<div id="filter-title" class="title-container poppins-bold fsmedium">
+    Video tutorial by {{videoauthor}}
+</div>
+<div class="content-container">
+    <br>
+    <div class="video-container">>
+        <iframe width="560" height="315" src="{{videotutorial}}"
+            title="YouTube video player" 
+            frameborder="0" 
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+            referrerpolicy="strict-origin-when-cross-origin" 
+            allowfullscreen>
+        </iframe>
+    </div>
+    <br>
+</div>
+{% endif %}
 
 <script src="{% static 'wrappinggallery/carry.js' %}"></script>
 

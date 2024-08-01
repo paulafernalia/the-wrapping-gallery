@@ -3,19 +3,32 @@
 {% load static %}
 
 {% block body %}
-<div class="content-container">
+<br>
+<br>
+<div class="title-container poppins-bold fsmedium">
+    <div id="searchcarrytitle" class="row justify-content-center">
+        Search a carry by name
+    </div>
+</div>
+<div class="search-container">
     <div class="row justify-content-center">
         <div class="col-md-6">
             <div class="input-group mb-3">
-                <input id="search-input" type="text" class="form-control input-underline poppins-light fs16" placeholder="Search carries">
+                <input id="search-input" type="text" class="form-control input-format poppins-light fs16" placeholder="Type part of the name and hit enter">
                 <button id="button-filter" class="btn btn-outline-secondary ml-4 poppins-light fs16" type="button" onclick="toggleFilterBox(this)">
-                    <img src="{% static 'wrappinggallery/filters.svg' %}" alt="Filters" style="width: 1em; height: 1em;">
+                    <img src="{% static 'wrappinggallery/filters_white.svg' %}" alt="Filters" style="width: 1em; height: 1em;">
                 </button>
             </div>
         </div>
     </div>
+</div>
 
-    <div id=filterBox style="display: none;">
+<br>
+<div id="filter-title" class="title-container poppins-bold fsmedium">
+    Filter properties
+</div>
+<div id="filters-container" class="content-container">
+    <div id=filterBox style="display: block;">
         <p class="poppins-bold fs16"> Position </p>
         <div class="button-filters" data-property="position">
             {% for value in position_values %}
@@ -145,18 +158,24 @@
         <hr>
         <button id="showLessBtn" class="show-button poppins-light fs16" onclick="hideFilterBoxExt()">Show less</button>
     </div>
+</div>
+
+<div class="title-container">
     <div id=buttonBox style="display: block;">
-        <div class="row justify-content-center">
-             <button id="showResultsBtn" type="button" class="btn btn-custom mx-1 poppins-regular disabled fs16" onclick="showResults()">Show results</button>
-            <button id="resetFiltersBtn" type="button" class="btn btn-custom mx-1 poppins-regular fs16" onclick="resetFilters()">Reset filters</button>
+            <div class="row justify-content-center">
+                 <button id="showResultsBtn" type="button" class="btn btn-custom mx-1 poppins-regular disabled fs16" onclick="showResults()">Show results</button>
+                <button id="resetFiltersBtn" type="button" class="btn btn-custom mx-1 poppins-regular fs16" onclick="resetFilters()">Reset filters</button>
+            </div>
         </div>
-    </div>
-<br>
+</div>
+
+<div id="count-text" style="display: none;" class="title-container poppins-bold fsmedium">
+    Showing carries
 </div>
 <div class="grid" id="imageGrid" data-base-url-pattern="{% url 'carry' 'PLACEHOLDER' %}"></div>
+</div>
 <br>
 <br>
-
 
 <script src="{% static 'wrappinggallery/index.js' %}"></script>
 

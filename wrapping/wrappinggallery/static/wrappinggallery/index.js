@@ -1,5 +1,6 @@
 let counter = 0
 let isFetching = false
+let filteredResults = 0;
 
 function getButtonByValueAndProperty(property, value) {
     // Get button that matches the data-property and data-value args given
@@ -48,12 +49,16 @@ async function handleSwitchChange(switch_) {
 }
 
 
-function handleInputChange() {
+async function handleInputChange() {
     const searchInput = document.getElementById('search-input');
     localStorage.setItem('partialname', searchInput.value);
 
+    // Filter carries by the properties selected
+    await updateButtonBox();
+
     // Filter carries by the property selected in the button
-    filterCarries();
+    emptyCarryGallery();
+    await showResults();
 }
 
 function initialiseSwitchData(property) {
@@ -80,29 +85,24 @@ function initialiseSwitchData(property) {
 
 
 function hideAllFilters() {
-    const filterBox = document.getElementById('filterBox');
-    filterBox.style.display = 'none';
-
-    const showMoreBtn = document.getElementById('showMoreBtn');
-    showMoreBtn.style.display = 'none';
-
-    const filterBoxExt = document.getElementById('filterBoxExt');
-    filterBoxExt.style.display = 'none';
-
     const buttonBox = document.getElementById('buttonBox');
     buttonBox.style.display = 'none';
+
+    const filtertitle = document.getElementById('filter-title');
+    filtertitle.style.display = 'none';
+
+    const filtersContainer = document.getElementById('filters-container');
+    filtersContainer.style.display = 'none';
+
 }
 
 
 function showAllFilters() {
-    const filterBox = document.getElementById('filterBox');
-    filterBox.style.display = 'block';
+    const filtersContainer = document.getElementById('filters-container');
+    filtersContainer.style.display = 'block';
 
-    const showMoreBtn = document.getElementById('showMoreBtn');
-    showMoreBtn.style.display = 'none';
-
-    const filterBoxExt = document.getElementById('filterBoxExt');
-    filterBoxExt.style.display = 'block';
+    const filtertitle = document.getElementById('filter-title');
+    filtertitle.style.display = 'block';
 
     const buttonBox = document.getElementById('buttonBox');
     buttonBox.style.display = 'block';
@@ -322,18 +322,23 @@ async function showResults() {
 
 async function updateButtonBox() {
     const showResultsBtn = document.getElementById('showResultsBtn');
+    const countText = document.getElementById('count-text');
+
     let num_carries = 0;
     try {
         const carries = await fetchFilteredCarries(true);
+        filteredResults = carries.length;
         
         if (carries.length === 0) {
             showResultsBtn.classList.remove('active');
             showResultsBtn.classList.add('disabled');
             showResultsBtn.textContent = "No results";
+            countText.textContent = "No carries found";
         } else {
             showResultsBtn.classList.remove('disabled');
             showResultsBtn.classList.add('active');
-            showResultsBtn.textContent = "Show " + carries.length + " results";
+            showResultsBtn.textContent = "Show " + filteredResults + " results";
+            countText.textContent = filteredResults + " carries found.";
         }
     } catch (error) {
         console.error('There was a problem with the fetch operation:', error);
@@ -365,15 +370,12 @@ function setActiveButton(button) {
 }
 
 async function toggleFilterBox(button) {
-    const filterBox = document.getElementById('filterBox');
-    if (filterBox.style.display === 'none') {
-        filterBox.style.display = 'block';
+    const filtersContainer = document.getElementById('filters-container');
+    if (filtersContainer.style.display === 'none') {
+        filtersContainer.style.display = 'block';
 
         const buttonBox = document.getElementById('buttonBox');
         buttonBox.style.display = 'block';
-
-        const showMoreBtn = document.getElementById('showMoreBtn');
-        showMoreBtn.style.display = 'block';
 
         // Empty gallery
         emptyCarryGallery();
@@ -392,6 +394,14 @@ function showFilterBoxExt() {
 
     const showMoreBtn = document.getElementById('showMoreBtn');
     showMoreBtn.style.display = 'none';
+
+    var targetElement = document.getElementById('filterBoxExt');
+    var elementPosition = targetElement.getBoundingClientRect().top;
+
+    window.scrollTo({
+        top: elementPosition,
+        behavior: 'smooth'
+    });
 }
 
 function hideFilterBoxExt() {
@@ -400,6 +410,14 @@ function hideFilterBoxExt() {
 
     const showMoreBtn = document.getElementById('showMoreBtn');
     showMoreBtn.style.display = 'block';
+
+    var targetElement = document.getElementById('filterBox');
+    var elementPosition = targetElement.getBoundingClientRect().top;
+
+    window.scrollTo({
+        top: elementPosition,
+        behavior: 'smooth'
+    });
 }
 
 
@@ -414,6 +432,9 @@ async function fetchFileUrl(fileName) {
 }
 
 function emptyCarryGallery() {
+    const countText = document.getElementById('count-text');
+    countText.style.display = 'none';
+
     const gridContainer = document.getElementById('imageGrid');
     gridContainer.innerHTML = '';
 
@@ -423,6 +444,10 @@ function emptyCarryGallery() {
 
 
 async function updateCarryGallery(carries) {
+    // show text counting results
+    const countText = document.getElementById('count-text');
+    countText.style.display = 'block';
+
     // Disable filters until all images have rendered
     const filterBtn = document.getElementById('button-filter');
     filterBtn.classList.add('disabled');
