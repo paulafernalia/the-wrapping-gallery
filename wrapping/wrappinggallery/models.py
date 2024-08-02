@@ -68,8 +68,6 @@ class Carry(models.Model):
         },
     )
 
-    coverpicture = models.CharField(max_length=160, blank=True, null=True)
-
     def __str__(self):
         return f"{self.name}: {self.position} carry, {self.size}, {self.mmposition}"
 
@@ -90,7 +88,6 @@ class Carry(models.Model):
             "description": self.description,
             "videotutorial": self.videotutorial,
             "videoauthor": self.videoauthor,
-            "coverpicture": self.coverpicture,
         }
 
 

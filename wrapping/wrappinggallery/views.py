@@ -201,7 +201,6 @@ def filter_carries(request):
             "carry__position",
             "carry__title",
             "carry__size",
-            "carry__coverpicture",
             "carry__pretied",
             "difficulty",
             "fancy",

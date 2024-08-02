@@ -13,8 +13,7 @@
     "position": "front",
     "description": "",
     "pretied": false,
-    "finish": "knotless",
-    "coverpicture": "annes_fwcc.png"
+    "finish": "knotless"
   }
 },
 {
@@ -31,8 +30,7 @@
     "position": "back",
     "description": "",
     "pretied": false,
-    "finish": "knotless tibetan",
-    "coverpicture": null
+    "finish": "knotless tibetan"
   }
 },
 {
@@ -49,8 +47,7 @@
     "position": "back",
     "description": "",
     "pretied": false,
-    "finish": "TIF",
-    "coverpicture": "double_twisted_pirate.png"
+    "finish": "TIF"
   }
 },
 {
@@ -67,8 +64,7 @@
     "position": "front",
     "description": "",
     "pretied": false,
-    "finish": "TUB",
-    "coverpicture": null
+    "finish": "TUB"
   }
 },
 {
@@ -85,8 +81,7 @@
     "position": "front",
     "description": "",
     "pretied": false,
-    "finish": "tied at the back",
-    "coverpicture": "frts_pond.png"
+    "finish": "tied at the back"
   }
 },
 {
@@ -103,8 +98,7 @@
     "position": "front",
     "description": "",
     "pretied": false,
-    "finish": "tied at the back",
-    "coverpicture": null
+    "finish": "tied at the back"
   }
 },
 {
@@ -121,8 +115,7 @@
     "position": "front",
     "description": "",
     "pretied": false,
-    "finish": "TUB",
-    "coverpicture": null
+    "finish": "TUB"
   }
 },
 {
@@ -139,8 +132,7 @@
     "position": "back",
     "description": "",
     "pretied": false,
-    "finish": "slipknot",
-    "coverpicture": null
+    "finish": "slipknot"
   }
 },
 {
@@ -157,8 +149,7 @@
     "position": "back",
     "description": "",
     "pretied": false,
-    "finish": "TIF",
-    "coverpicture": "lenas_double_poppins.png"
+    "finish": "TIF"
   }
 },
 {
@@ -175,8 +166,7 @@
     "position": "back",
     "description": "",
     "pretied": false,
-    "finish": "buleria",
-    "coverpicture": "ruck_buleria.png"
+    "finish": "buleria"
   }
 },
 {
@@ -193,8 +183,7 @@
     "position": "back",
     "description": null,
     "pretied": false,
-    "finish": "tibetan",
-    "coverpicture": null
+    "finish": "tibetan"
   }
 },
 {
@@ -211,8 +200,7 @@
     "position": "back",
     "description": "",
     "pretied": false,
-    "finish": "TIF",
-    "coverpicture": "ruckless_bikini_carry.png"
+    "finish": "TIF"
   }
 },
 {
@@ -229,8 +217,7 @@
     "position": "back",
     "description": "",
     "pretied": false,
-    "finish": "TIF",
-    "coverpicture": "torso_dh.png"
+    "finish": "TIF"
   }
 },
 {
