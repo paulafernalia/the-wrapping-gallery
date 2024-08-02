@@ -90,9 +90,12 @@ def carry(request, name):
     image_url = generate_signed_url(f"{name}.png", bucket)
     if image_url is None:
         if carry_dict["position"] == "Back":
-            image_url = "placeholder_back.png"
+            placeholder = "placeholder_back.png"
         else:
-            image_url = "placeholder_front.png"
+            placeholder = "placeholder_front.png"
+
+        # Get url of placeholder
+        image_url = generate_signed_url(placeholder, bucket)
 
     carry_dict["imageSrc"] = image_url
 
