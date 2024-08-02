@@ -58,9 +58,9 @@ function fixFooter() {
 }
 
 
-function hidePictureTutorialContainer() {
+function showPictureTutorialContainer() {
     const tutorialContent = document.getElementById('tutorial-content');
-    tutorialContent.style.display = 'none';
+    tutorialContent.style.display = 'block';
 }
 
 
@@ -72,14 +72,15 @@ async function loadTutorialImages() {
     const response = await fetch(`/step-urls/${carryName}/?bucket=${bucketName}`);
     
     if (!response.ok) {
-        return false;
+        return;
     }
 
     const data = await response.json();
+    if ("urls" in data) {
+        showPictureTutorialContainer();
+    }
 
-    let anyFound = false;
     for (const stepurl of data["urls"]) {
-        anyFound = true;
 
         // Create grid item for image
         const gridItem = document.createElement('div');
@@ -93,19 +94,15 @@ async function loadTutorialImages() {
         // Append grid item to grid container
         gridContainer.appendChild(gridItem);
     }
-
-    return anyFound;
 }
 
 
 
 
 document.addEventListener('DOMContentLoaded', async function() { 
-    // Hide picture tutorial section if no tutorial available
-    const found = await loadTutorialImages();
-    if (!found) {
-        hidePictureTutorialContainer();
-    }
+    // Load images
+    await loadTutorialImages();
+
 
 
     // Add stars to the rating groups based on their data attributes
