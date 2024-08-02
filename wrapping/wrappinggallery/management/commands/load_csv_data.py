@@ -42,7 +42,6 @@ class Command(BaseCommand):
                         description=row["description"],
                         pretied=row["pretied"],
                         finish=row["finish"],
-                        coverpicture=row["coverpicture"],
                     )
 
                     ratings = Ratings.objects.update_or_create(
@@ -78,7 +77,6 @@ class Command(BaseCommand):
                         carry.description = row["description"]
                         carry.pretied = row["pretied"]
                         carry.finish = row["finish"]
-                        carry.coverpicture = row["coverpicture"]
 
                         ratings = Ratings.objects.get(carry__name=row["name"])
                         ratings.legstraighteners = row["legstraighteners"]

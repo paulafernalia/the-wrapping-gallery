@@ -476,7 +476,7 @@ async function fetchFileUrl(fileName) {
         const data = await response.json();
         return data.url;
     } catch (error) {
-        console.error('Error fetching file URL:', error);
+        return null;
     }
 }
 
@@ -515,23 +515,25 @@ async function updateCarryGallery(carries) {
         gridItem.className = 'grid-item';
         gridItem.classList.add('clickable-grid-item');
 
-        // Set image URL
-        let imageFile = carry.carry__coverpicture;
+        // Set image filename
+        let imageFile = carry.carry__name + ".png";
 
         // Use placeholder if carry image not available
-        if (carry.carry__coverpicture === "" ||
-            carry.carry__coverpicture === null) {
+        let fileUrl = await fetchFileUrl(imageFile);
+        if (typeof fileUrl === 'undefined') {
             if (carry.carry__position === "back") {
                 imageFile = "placeholder_back.png";
             } else {
                 imageFile = "placeholder_front.png";
             }
-        }
 
-        const fileUrl = await fetchFileUrl(imageFile);
+            // Fetch placeholder
+            fileUrl = await fetchFileUrl(imageFile);
+        }
 
         // Create image
         const img = document.createElement('img');
+
         img.src = fileUrl; // Combine the static URL with the file name
         img.alt = carry.carry__name;
         
