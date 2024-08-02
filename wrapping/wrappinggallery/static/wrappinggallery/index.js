@@ -510,6 +510,7 @@ async function updateCarryGallery(carries) {
         // Create grid item
         const gridItem = document.createElement('div');
         gridItem.className = 'grid-item';
+        gridItem.classList.add('clickable-grid-item');
 
         // Set image URL
         let imageFile = carry.carry__coverpicture;
