@@ -27,7 +27,10 @@ SECRET_KEY = config("SECRET_KEY", default="default-development-secret-key")
 # Load Supabase configuration from environment variables
 SUPABASE_URL = config("SUPABASE_URL", default="https://default.supabase.co")
 SERVICE_ROLE_KEY = config("SERVICE_ROLE_KEY", default="default-service-role-key")
-SUPABASE_BUCKET_NAME = config("SUPABASE_BUCKET_NAME", default="default-bucket-name")
+
+SUPABASE_COVER_BUCKET = config("SUPABASE_COVER_BUCKET", default="default-bucket-name")
+SUPABASE_MISC_BUCKET = config("SUPABASE_MISC_BUCKET", default="default-bucket-name")
+SUPABASE_TUTORIAL_BUCKET = config("SUPABASE_TUTORIAL_BUCKET", default="default-bucket-name")
 
 # Media files settings
 MEDIA_URL = '/media/'

@@ -58,8 +58,20 @@ function fixFooter() {
 }
 
 
+function hidePictureTutorialContainer() {
+    const tutorialContent = document.getElementById('tutorial-content');
+    tutorialContent.style.display = 'none';
+}
+
 
 document.addEventListener('DOMContentLoaded', function() { 
+    // Hide picture tutorial section if no tutorial available
+    const nothingFoundElement = document.getElementById('tutorialNA');
+    if (nothingFoundElement) {
+        hidePictureTutorialContainer();
+    }
+
+
     // Add stars to the rating groups based on their data attributes
     const ratingGroups = document.querySelectorAll('.rating-group');
     ratingGroups.forEach(group => {

@@ -78,6 +78,7 @@ class Carry(models.Model):
 
     def to_dict(self):
         return {
+            "name": self.name,
             "title": self.title,
             "size": self.get_size_display(),
             "shoulders": self.get_shoulders_display(),

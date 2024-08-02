@@ -4,7 +4,7 @@ from django.views.decorators.http import require_GET
 from django.db.models import FloatField, Func, F
 from django.db.models.functions import Round
 from .models import Carry, Ratings
-from .utils import generate_signed_url
+from .utils import generate_signed_url, generate_signed_urls, initialise_supabase
 from django.conf import settings
 
 
@@ -34,7 +34,10 @@ def about(request):
         file_name = "profile.png"
         context = {"imageSrc": settings.MEDIA_URL + file_name}
     else:
-        context = {"imageSrc": generate_signed_url("profile.png", "misc")}
+        context = {"imageSrc": generate_signed_url(
+            "profile.png",
+            settings.SUPABASE_MISC_BUCKET
+        )}
     return render(request, "wrappinggallery/about.html", context)
 
 
@@ -59,7 +62,41 @@ def carry(request, name):
         carry_dict["videoauthor"] = "NA"
         carry_dict["videotutorial"] = "NA"
 
-    carry_dict["imageSrc"] = generate_signed_url(carry_dict["coverpicture"])
+    carry_dict["imageSrc"] = generate_signed_url(
+        carry_dict["coverpicture"],
+        settings.SUPABASE_COVER_BUCKET
+    )
+
+    # Get tutorial images
+    carry_dict["tutorial_urls"] = []
+
+    supabase = initialise_supabase()
+    bucketname = settings.SUPABASE_TUTORIAL_BUCKET
+
+    
+    batchsize = 10
+    signed_urls = []
+    counter = 0
+    batch_urls = ["dummy"]
+
+    while len(batch_urls) != 0:
+        filenames = []
+        range_start = counter * batchsize
+        range_end = (counter + 1) * batchsize
+        
+        for i in [f"{i+1:02}" for i in range(range_start, range_end)]:
+            filenames.append(f"{name}_step{i}.png")
+
+        batch_urls_dict = generate_signed_urls(filenames, "tutorials")
+        sorted_keys = sorted(batch_urls_dict.keys())
+        batch_urls = [batch_urls_dict[key] for key in sorted_keys]
+
+        signed_urls += batch_urls
+
+        counter += 1
+
+    if len(signed_urls) > 0:
+        carry_dict["tutorial_urls"] = signed_urls
 
     # Add ratings
     ratingsqueryset = Ratings.objects.all()
@@ -73,17 +110,23 @@ def carry(request, name):
 
 
 def file_url(request, file_name):
+    bucket_name = request.GET.get('bucket')
+
     # if no access to S3 storage:
     if settings.SUPABASE_URL == "https://default.supabase.co":
         print("WARNING: missing connection details for S3 bucket in SUPABASE, using default image in media folder")
         file_name = "placeholder_back.png"
         return JsonResponse({"url": settings.MEDIA_URL + file_name})
 
-    signed_url = generate_signed_url(f"{file_name}")
+
+    signed_url = generate_signed_url(file_name, bucket_name)
     if signed_url:
         return JsonResponse({"url": signed_url})
     else:
-        return JsonResponse({"error": "Unable to generate signed URL"}, status=500)
+        return JsonResponse(
+            {"warning": "Signed URL could not be generated."},
+            status=404  # or use 400 if it fits better
+        )
 
 
 @require_GET
@@ -116,7 +159,6 @@ def filter_carries(request):
         elif prop == "finish" and val != "Any":
             queryset = queryset.filter(carry__finish=val)
         elif prop == "partialname" and val != "":
-            print("VALUE", val)
             queryset = queryset.filter(carry__title__icontains=val)
         elif prop == "difficulty" and val != "Any":
             queryset = queryset.annotate(

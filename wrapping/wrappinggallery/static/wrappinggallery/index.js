@@ -462,12 +462,17 @@ function hideFilterBoxExt() {
         top: elementPosition,
         behavior: 'smooth'
     });
+
+    // Check if footer position must be updated
+    releaseFooter();
 }
 
 
 async function fetchFileUrl(fileName) {
+    const bucketName =  "carrycovers"; // Replace with your bucket name
+
     try {
-        const response = await fetch(`/file-url/${fileName}/`);
+        const response = await fetch(`/file-url/${fileName}/?bucket=${bucketName}`);
         const data = await response.json();
         return data.url;
     } catch (error) {
@@ -508,6 +513,7 @@ async function updateCarryGallery(carries) {
         // Create grid item
         const gridItem = document.createElement('div');
         gridItem.className = 'grid-item';
+        gridItem.classList.add('clickable-grid-item');
 
         // Set image URL
         let imageFile = carry.carry__coverpicture;

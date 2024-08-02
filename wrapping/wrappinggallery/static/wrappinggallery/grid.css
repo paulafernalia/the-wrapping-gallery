@@ -23,14 +23,17 @@ h2 {
     position: relative; /* Allows absolute positioning of child elements */
     overflow: hidden;
     border: none; /* Optional: Border around each grid item */
+}
+
+.clickable-grid-item:hover {
     transition: transform 0.8s ease; /* Smooth transition for hover effect */
 }
 
-.grid-item:hover {
+.clickable-grid-item:hover {
     transform: scale(1.02); /* Slight zoom-in effect */
 }
 
-.grid-item:hover img {
+.clickable-grid-item:hover img {
     transform: scale(1.05); /* Slight zoom-in effect for the image */
 }
 
@@ -41,6 +44,9 @@ h2 {
     height: auto; /* Maintain aspect ratio */
     display: block;
     object-fit: cover; /* Cover the container */
+}
+
+.clickable-grid-item img {
     cursor: pointer;
 }
 

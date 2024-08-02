@@ -62,7 +62,7 @@
 
 {% if videoauthor != 'NA' %}
 <br><br>
-<div id="filter-title" class="title-container poppins-bold fsmedium">
+<div class="title-container poppins-bold fsmedium">
     Video tutorial by {{videoauthor}}
 </div>
 <div class="content-container">
@@ -78,6 +78,30 @@
     </div>
     <br>
 </div>
+
+<br><br>
+<div id="tutorial-content">
+    <div class="title-container poppins-bold fsmedium">
+        Picture tutorial
+    </div>
+    <div class="content-container">
+        <br>
+        <div class="grid" id="imageGrid" data-name="{{name}}">
+            {% for url in tutorial_urls %}
+                <div class="grid-item">
+                    <img src="{{ url }}" alt="{{name}}">
+                </div>
+            {% empty %}
+                <div id="tutorialNA"></div>
+            {% endfor %}
+        </div>
+        <br>
+    </div>
+
+    <br>
+    <br>
+</div>
+
 {% endif %}
 
 <script src="{% static 'wrappinggallery/carry.js' %}"></script>
