@@ -76,7 +76,7 @@ async function loadTutorialImages() {
     }
 
     const data = await response.json();
-    if ("urls" in data) {
+    if (data["urls"].length > 0) {
         showPictureTutorialContainer();
     }
 
