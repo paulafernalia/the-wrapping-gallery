@@ -21,6 +21,42 @@ function addStarsToRatingGroup(groupId) {
     }
 }
 
+function updateFooterPosition() {
+    releaseFooter();
+
+    // print position of footer
+    let element = document.querySelector('footer');
+    elementPosition = 0;
+
+    while(element) {
+        elementPosition += element.offsetTop;
+        element = element.offsetParent;
+    }
+
+    let viewportHeight = window.innerHeight;
+
+    if (elementPosition < viewportHeight) {
+        fixFooter();
+    } else {
+        releaseFooter();
+    }
+}
+
+function releaseFooter() {
+    const footer = document.querySelector('footer');
+    footer.style.position = ''; 
+    footer.style.bottom = '';
+    footer.style.width = '';
+}
+
+
+function fixFooter() {
+    const footer = document.querySelector('footer');
+    footer.style.position = 'fixed'; 
+    footer.style.bottom = '0';
+    footer.style.width = '100%';
+}
+
 
 
 document.addEventListener('DOMContentLoaded', function() { 
@@ -29,4 +65,6 @@ document.addEventListener('DOMContentLoaded', function() {
     ratingGroups.forEach(group => {
         addStarsToRatingGroup(group.id);
     });
+
+    updateFooterPosition();
 });
