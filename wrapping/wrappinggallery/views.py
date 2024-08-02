@@ -67,6 +67,19 @@ def carry(request, name):
         settings.SUPABASE_COVER_BUCKET
     )
 
+    # Get tutorial images
+    carry_dict["tutorial_urls"] = []
+
+    for i in [f"{i:02}" for i in range(1, 51)]:
+        step_filename = f"{name}_step{i}.png"
+        bucketname = settings.SUPABASE_TUTORIAL_BUCKET
+        signed_url = generate_signed_url(step_filename, bucketname)
+
+        if signed_url:
+            carry_dict["tutorial_urls"].append(signed_url)
+        else:
+            break
+
     # Add ratings
     ratingsqueryset = Ratings.objects.all()
     ratingsqueryset = ratingsqueryset.filter(carry__name=name)
