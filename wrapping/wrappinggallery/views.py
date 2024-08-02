@@ -41,6 +41,35 @@ def about(request):
     return render(request, "wrappinggallery/about.html", context)
 
 
+def steps_url(request, prefix):
+    supabase = initialise_supabase()
+    bucketname = settings.SUPABASE_TUTORIAL_BUCKET
+
+    batchsize = 10
+    signed_urls = []
+    counter = 0
+    batch_urls = ["dummy"]
+
+    while len(batch_urls) != 0:
+        filenames = []
+        range_start = counter * batchsize
+        range_end = (counter + 1) * batchsize
+        
+        for i in [f"{i+1:02}" for i in range(range_start, range_end)]:
+            filenames.append(f"{prefix}_step{i}.png")
+
+        batch_urls_dict = generate_signed_urls(filenames, "tutorials")
+        sorted_keys = sorted(batch_urls_dict.keys())
+        batch_urls = [batch_urls_dict[key] for key in sorted_keys]
+
+        signed_urls += batch_urls
+
+        counter += 1
+
+    return JsonResponse({"urls": signed_urls})
+
+
+
 def carry(request, name):
     # Initialize a queryset for filtering
     queryset = Carry.objects.all()
@@ -66,37 +95,6 @@ def carry(request, name):
         carry_dict["coverpicture"],
         settings.SUPABASE_COVER_BUCKET
     )
-
-    # Get tutorial images
-    carry_dict["tutorial_urls"] = []
-
-    supabase = initialise_supabase()
-    bucketname = settings.SUPABASE_TUTORIAL_BUCKET
-
-    
-    batchsize = 10
-    signed_urls = []
-    counter = 0
-    batch_urls = ["dummy"]
-
-    while len(batch_urls) != 0:
-        filenames = []
-        range_start = counter * batchsize
-        range_end = (counter + 1) * batchsize
-        
-        for i in [f"{i+1:02}" for i in range(range_start, range_end)]:
-            filenames.append(f"{name}_step{i}.png")
-
-        batch_urls_dict = generate_signed_urls(filenames, "tutorials")
-        sorted_keys = sorted(batch_urls_dict.keys())
-        batch_urls = [batch_urls_dict[key] for key in sorted_keys]
-
-        signed_urls += batch_urls
-
-        counter += 1
-
-    if len(signed_urls) > 0:
-        carry_dict["tutorial_urls"] = signed_urls
 
     # Add ratings
     ratingsqueryset = Ratings.objects.all()

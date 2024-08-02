@@ -64,10 +64,43 @@ function hidePictureTutorialContainer() {
 }
 
 
+async function loadTutorialImages() {
+    const gridContainer = document.getElementById('imageGrid');
+    const carryName = gridContainer.dataset.name;
+    const bucketName = "tutorials";
+
+    const response = await fetch(`/step-urls/${carryName}/?bucket=${bucketName}`);
+    
+    if (!response.ok) {
+        return false;
+    }
+
+    const data = await response.json();
+
+    for (const stepurl of data["urls"]) {
+        // Create grid item for image
+        const gridItem = document.createElement('div');
+        gridItem.className = 'grid-item';
+
+        // Create image, set url and append to grid item
+        const img = document.createElement('img');
+        img.src = stepurl;
+        gridItem.appendChild(img);
+
+        // Append grid item to grid container
+        gridContainer.appendChild(gridItem);
+    }
+
+    return true;
+}
+
+
+
+
 document.addEventListener('DOMContentLoaded', function() { 
     // Hide picture tutorial section if no tutorial available
-    const nothingFoundElement = document.getElementById('tutorialNA');
-    if (nothingFoundElement) {
+    const found = loadTutorialImages();
+    if (!found) {
         hidePictureTutorialContainer();
     }
 

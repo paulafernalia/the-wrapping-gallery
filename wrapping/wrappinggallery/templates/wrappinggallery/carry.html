@@ -87,13 +87,6 @@
     <div class="content-container">
         <br>
         <div class="grid" id="imageGrid" data-name="{{name}}">
-            {% for url in tutorial_urls %}
-                <div class="grid-item">
-                    <img src="{{ url }}" alt="{{name}}">
-                </div>
-            {% empty %}
-                <div id="tutorialNA"></div>
-            {% endfor %}
         </div>
         <br>
     </div>

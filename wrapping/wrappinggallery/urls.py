@@ -7,4 +7,5 @@ urlpatterns = [
     path("api/filter-carries/", views.filter_carries, name="filter_carries"),
     path("carry/<str:name>", views.carry, name="carry"),
     path("file-url/<str:file_name>/", views.file_url, name="file_url"),
+    path("step-urls/<str:prefix>/", views.steps_url, name="file_url"),
 ]
