@@ -4,7 +4,7 @@ from django.views.decorators.http import require_GET
 from django.db.models import FloatField, Func, F
 from django.db.models.functions import Round
 from .models import Carry, Ratings
-from .utils import generate_signed_url
+from .utils import generate_signed_url, generate_signed_urls, initialise_supabase
 from django.conf import settings
 
 
@@ -70,15 +70,33 @@ def carry(request, name):
     # Get tutorial images
     carry_dict["tutorial_urls"] = []
 
-    for i in [f"{i:02}" for i in range(1, 51)]:
-        step_filename = f"{name}_step{i}.png"
-        bucketname = settings.SUPABASE_TUTORIAL_BUCKET
-        signed_url = generate_signed_url(step_filename, bucketname)
+    supabase = initialise_supabase()
+    bucketname = settings.SUPABASE_TUTORIAL_BUCKET
 
-        if signed_url:
-            carry_dict["tutorial_urls"].append(signed_url)
-        else:
-            break
+    
+    batchsize = 10
+    signed_urls = []
+    counter = 0
+    batch_urls = ["dummy"]
+
+    while len(batch_urls) != 0:
+        filenames = []
+        range_start = counter * batchsize
+        range_end = (counter + 1) * batchsize
+        
+        for i in [f"{i+1:02}" for i in range(range_start, range_end)]:
+            filenames.append(f"{name}_step{i}.png")
+
+        batch_urls_dict = generate_signed_urls(filenames, "tutorials")
+        sorted_keys = sorted(batch_urls_dict.keys())
+        batch_urls = [batch_urls_dict[key] for key in sorted_keys]
+
+        signed_urls += batch_urls
+
+        counter += 1
+
+    if len(signed_urls) > 0:
+        carry_dict["tutorial_urls"] = signed_urls
 
     # Add ratings
     ratingsqueryset = Ratings.objects.all()
