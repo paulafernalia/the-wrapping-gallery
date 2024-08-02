@@ -416,9 +416,9 @@ function updateFooterPosition() {
 
 function releaseFooter() {
     const footer = document.querySelector('footer');
-    footer.style.position = ''; 
-    footer.style.bottom = '';
-    footer.style.width = '';
+    footer.style.position = 'static'; // Reset to default position
+    footer.style.bottom = 'auto'; // Reset to default value
+    footer.style.width = 'auto'; // Reset to default width
 }
 
 
