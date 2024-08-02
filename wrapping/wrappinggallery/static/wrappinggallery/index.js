@@ -306,7 +306,7 @@ async function showResults() {
     // Populate gallery
     const carries = await fetchFilteredCarries();
 
-    updateCarryGallery(carries);
+    await updateCarryGallery(carries);
 
     // Scroll to gallery
     var targetElement = document.getElementById('imageGrid');
@@ -317,6 +317,9 @@ async function showResults() {
         top: offsetPosition,
         behavior: 'smooth'
     });
+
+
+    updateFooterPosition();
 }
 
 
@@ -386,6 +389,44 @@ async function toggleFilterBox(button) {
         const carries = await fetchFilteredCarries();
         updateCarryGallery(carries);
     }
+
+    updateFooterPosition();
+}
+
+function updateFooterPosition() {
+    releaseFooter();
+
+    // print position of footer
+    let element = document.querySelector('footer');
+    elementPosition = 0;
+
+    while(element) {
+        elementPosition += element.offsetTop;
+        element = element.offsetParent;
+    }
+
+    let viewportHeight = window.innerHeight;
+
+    if (elementPosition < viewportHeight) {
+        fixFooter();
+    } else {
+        releaseFooter();
+    }
+}
+
+function releaseFooter() {
+    const footer = document.querySelector('footer');
+    footer.style.position = ''; 
+    footer.style.bottom = '';
+    footer.style.width = '';
+}
+
+
+function fixFooter() {
+    const footer = document.querySelector('footer');
+    footer.style.position = 'fixed'; 
+    footer.style.bottom = '0';
+    footer.style.width = '100%';
 }
 
 function showFilterBoxExt() {
@@ -444,6 +485,9 @@ function emptyCarryGallery() {
 
 
 async function updateCarryGallery(carries) {
+    // Check if footer must be changed
+    updateFooterPosition();
+
     // show text counting results
     const countText = document.getElementById('count-text');
     countText.style.display = 'block';
@@ -531,12 +575,18 @@ async function updateCarryGallery(carries) {
     // Reactivate at the end
     filterBtn.classList.remove('disabled');
     filterBtn.removeAttribute('disabled');
+
+    // Check if footer must be changed
+    updateFooterPosition();
 }
 
 
 document.addEventListener('DOMContentLoaded', function() { 
     // Reset gallery
     emptyCarryGallery();
+
+    // Decide where footer should be
+    updateFooterPosition();
 
     // Set initial active buttons in filters
     const anyapplied = initialiseFilters();
