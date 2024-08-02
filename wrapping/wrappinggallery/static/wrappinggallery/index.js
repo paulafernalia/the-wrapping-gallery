@@ -443,6 +443,9 @@ function showFilterBoxExt() {
         top: elementPosition,
         behavior: 'smooth'
     });
+
+    // Check if footer position must be updated
+    releaseFooter();
 }
 
 function hideFilterBoxExt() {
