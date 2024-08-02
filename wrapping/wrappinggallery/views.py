@@ -34,7 +34,10 @@ def about(request):
         file_name = "profile.png"
         context = {"imageSrc": settings.MEDIA_URL + file_name}
     else:
-        context = {"imageSrc": generate_signed_url("profile.png", "misc")}
+        context = {"imageSrc": generate_signed_url(
+            "profile.png",
+            settings.SUPABASE_MISC_BUCKET
+        )}
     return render(request, "wrappinggallery/about.html", context)
 
 
@@ -59,7 +62,10 @@ def carry(request, name):
         carry_dict["videoauthor"] = "NA"
         carry_dict["videotutorial"] = "NA"
 
-    carry_dict["imageSrc"] = generate_signed_url(carry_dict["coverpicture"])
+    carry_dict["imageSrc"] = generate_signed_url(
+        carry_dict["coverpicture"],
+        settings.SUPABASE_COVER_BUCKET
+    )
 
     # Add ratings
     ratingsqueryset = Ratings.objects.all()
@@ -73,17 +79,23 @@ def carry(request, name):
 
 
 def file_url(request, file_name):
+    bucket_name = request.GET.get('bucket')
+
     # if no access to S3 storage:
     if settings.SUPABASE_URL == "https://default.supabase.co":
         print("WARNING: missing connection details for S3 bucket in SUPABASE, using default image in media folder")
         file_name = "placeholder_back.png"
         return JsonResponse({"url": settings.MEDIA_URL + file_name})
 
-    signed_url = generate_signed_url(f"{file_name}")
+
+    signed_url = generate_signed_url(file_name, bucket_name)
     if signed_url:
         return JsonResponse({"url": signed_url})
     else:
-        return JsonResponse({"error": "Unable to generate signed URL"}, status=500)
+        return JsonResponse(
+            {"warning": "Signed URL could not be generated."},
+            status=404  # or use 400 if it fits better
+        )
 
 
 @require_GET

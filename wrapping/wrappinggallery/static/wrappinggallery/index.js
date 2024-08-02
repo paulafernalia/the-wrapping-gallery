@@ -466,8 +466,10 @@ function hideFilterBoxExt() {
 
 
 async function fetchFileUrl(fileName) {
+    const bucketName =  "carrycovers"; // Replace with your bucket name
+
     try {
-        const response = await fetch(`/file-url/${fileName}/`);
+        const response = await fetch(`/file-url/${fileName}/?bucket=${bucketName}`);
         const data = await response.json();
         return data.url;
     } catch (error) {
