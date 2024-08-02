@@ -128,7 +128,6 @@ def filter_carries(request):
         elif prop == "finish" and val != "Any":
             queryset = queryset.filter(carry__finish=val)
         elif prop == "partialname" and val != "":
-            print("VALUE", val)
             queryset = queryset.filter(carry__title__icontains=val)
         elif prop == "difficulty" and val != "Any":
             queryset = queryset.annotate(
