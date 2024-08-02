@@ -77,7 +77,10 @@ async function loadTutorialImages() {
 
     const data = await response.json();
 
+    let anyFound = false;
     for (const stepurl of data["urls"]) {
+        anyFound = true;
+
         // Create grid item for image
         const gridItem = document.createElement('div');
         gridItem.className = 'grid-item';
@@ -91,15 +94,15 @@ async function loadTutorialImages() {
         gridContainer.appendChild(gridItem);
     }
 
-    return true;
+    return anyFound;
 }
 
 
 
 
-document.addEventListener('DOMContentLoaded', function() { 
+document.addEventListener('DOMContentLoaded', async function() { 
     // Hide picture tutorial section if no tutorial available
-    const found = loadTutorialImages();
+    const found = await loadTutorialImages();
     if (!found) {
         hidePictureTutorialContainer();
     }

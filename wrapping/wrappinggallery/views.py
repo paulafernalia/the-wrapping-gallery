@@ -79,22 +79,22 @@ def carry(request, name):
 
     carry_dict = queryset[0].to_dict()
 
-    if carry_dict["coverpicture"] == "" or carry_dict["coverpicture"] is None:
-        if carry_dict["position"] == "Back":
-            carry_dict["coverpicture"] = "placeholder_back.png"
-        else:
-            carry_dict["coverpicture"] = "placeholder_front.png"
-
     if carry_dict["videoauthor"] == "" or carry_dict["videoauthor"] is None:
         assert carry_dict["videotutorial"] == "" or carry_dict["videotutorial"] is None
 
         carry_dict["videoauthor"] = "NA"
         carry_dict["videotutorial"] = "NA"
 
-    carry_dict["imageSrc"] = generate_signed_url(
-        carry_dict["coverpicture"],
-        settings.SUPABASE_COVER_BUCKET
-    )
+    # Try to get image from name 
+    bucket = settings.SUPABASE_COVER_BUCKET
+    image_url = generate_signed_url(f"{name}.png", bucket)
+    if image_url is None:
+        if carry_dict["position"] == "Back":
+            image_url = "placeholder_back.png"
+        else:
+            image_url = "placeholder_front.png"
+
+    carry_dict["imageSrc"] = image_url
 
     # Add ratings
     ratingsqueryset = Ratings.objects.all()
@@ -121,10 +121,7 @@ def file_url(request, file_name):
     if signed_url:
         return JsonResponse({"url": signed_url})
     else:
-        return JsonResponse(
-            {"warning": "Signed URL could not be generated."},
-            status=404  # or use 400 if it fits better
-        )
+        return JsonResponse({"empty": None})
 
 
 @require_GET
