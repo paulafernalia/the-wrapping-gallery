@@ -123,7 +123,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
 DEBUG = False
-ALLOWED_HOSTS = ["127.0.0.1"]
+ALLOWED_HOSTS = [config("DJANGO_ALLOWED_HOSTS")]
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
