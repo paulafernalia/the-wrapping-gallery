@@ -156,7 +156,7 @@ def filter_carries(request):
             queryset = queryset.filter(carry__mmposition=mmpositions[val])
         elif prop == "finish" and val != "Any":
             queryset = queryset.filter(carry__finish=val)
-        elif prop == "partialname" and val != "":
+        elif prop == "partialname" and val not in ["null", ""] and val:
             queryset = queryset.filter(carry__title__icontains=val)
         elif prop == "difficulty" and val != "Any":
             queryset = queryset.annotate(
