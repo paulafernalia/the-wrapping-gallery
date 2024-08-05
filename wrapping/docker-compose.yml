@@ -1,0 +1,22 @@
+services:
+  web:
+    build:
+      dockerfile: Dockerfile
+    command: gunicorn wrapping.wsgi:application --bind 0.0.0.0:8000
+    volumes:
+      - static_volume:/code/staticfiles
+    expose:
+      - 8000
+    env_file:
+      - ./.env
+  nginx:
+    build: ./nginx
+    volumes:
+      - static_volume:/code/staticfiles
+    ports:
+      - 1337:80
+    depends_on:
+      - web
+
+volumes:
+  static_volume:

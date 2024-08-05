@@ -108,10 +108,14 @@ USE_I18N = True
 
 USE_TZ = True
 
+print("PRODUCTION SETTINGS")
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
-STATIC_URL = "static/"
+STATIC_URL = "/static/"
+STATIC_ROOT = BASE_DIR / "staticfiles"
+STATIC_DIRS = [ BASE_DIR / "static", ]
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
@@ -119,7 +123,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
 DEBUG = False
-ALLOWED_HOSTS = ["127.0.0.1"]
+ALLOWED_HOSTS = [config("DJANGO_ALLOWED_HOSTS")]
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
