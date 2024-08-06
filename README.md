@@ -20,7 +20,7 @@ To run using docker in production mode:
 
 1. Clone this repo
 2. Run `docker compose up --build -d`
-3. Open http://0.0.0.0:1337/ in a browser
+3. Open http://<IP_ADDRESS>/ in a browser
 
 To run the app, both with and without docker, you need an `.env` file at the same level as `manage.py` with the following variables:
 
