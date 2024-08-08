@@ -13,23 +13,32 @@ class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
         uploaded = 0
-
         csv_file = kwargs['csv_file']
 
         # Check the file exists
         if not os.path.exists(csv_file):
             raise ValidationError(f'{csv_file} does not exist')
-        
+
+            # Check if the database is empty
+        if Carry.objects.exists():
+            raise ValidationError('Carrys is not empty.')
+
+        if Ratings.objects.exists():
+            raise ValidationError('Ratings is not empty.')
+
         with open(csv_file, 'r') as f:
             reader = csv.DictReader(f)
             data = list(reader)
-        
-            for row in data:
-                # Check that this carry doesn't already exist, if so, skip
-                result = Carry.objects.filter(name=row["name"])
 
-                if result.count() == 0:
-                    carry = Carry.objects.update_or_create(
+            for row in data:
+                # Check if the Carry already exists
+                if Carry.objects.filter(name=row["name"]).exists():
+                    self.stdout.write(self.style.WARNING(f"- Skipped {row['name']}, already exists."))
+                    continue
+
+                try:
+                    # Create the Carry instance
+                    carry = Carry.objects.create(
                         name=row["name"],
                         title=row["title"],
                         size=row["size"],
@@ -44,8 +53,10 @@ class Command(BaseCommand):
                         finish=row["finish"],
                     )
 
-                    ratings = Ratings.objects.update_or_create(
+                    # Create the Ratings instance
+                    Ratings.objects.create(
                         carry=carry,
+                        newborns=row["newborns"],
                         legstraighteners=row["legstraighteners"],
                         leaners=row["leaners"],
                         bigkids=row["bigkids"],
@@ -57,43 +68,9 @@ class Command(BaseCommand):
                     )
 
                     uploaded += 1
-                    carry.save()
-                    ratings.save()
+                    self.stdout.write(self.style.SUCCESS(f"- Created {row['name']}."))
 
-                    print(f"- Created {row["name"]}.")
-                else:
-                    carry = result[0]
+                except Exception as e:
+                    self.stdout.write(self.style.ERROR(f"Error creating {row['name']}: {str(e)}"))
 
-                    update = input(f"Do you want to update {row['name']}? ([y]/n): ").strip().lower()
-                    if update in ["y", ""]:
-                        carry.title = row["title"]
-                        carry.size = row["size"]
-                        carry.shoulders = row["shoulders"]
-                        carry.layers = row["layers"]
-                        carry.mmposition = row["mmposition"]
-                        carry.videotutorial = row["videotutorial"]
-                        carry.videoauthor = row["videoauthor"]
-                        carry.position = row["position"]
-                        carry.description = row["description"]
-                        carry.pretied = row["pretied"]
-                        carry.finish = row["finish"]
-
-                        ratings = Ratings.objects.get(carry__name=row["name"])
-                        ratings.legstraighteners = row["legstraighteners"]
-                        ratings.leaners = row["leaners"]
-                        ratings.bigkids = row["bigkids"]
-                        ratings.feeding = row["feeding"]
-                        ratings.quickups = row["quickups"]
-                        ratings.difficulty = row["difficulty"]
-                        ratings.fancy = row["fancy"]
-                        ratings.votes = row["votes"]
-
-                        uploaded += 1
-                        carry.save()
-                        ratings.save()
-
-                        self.stdout.write(self.style.SUCCESS(f"- Updated {row['name']}."))
-                    else:
-                        self.stdout.write(self.style.NOTICE(f"- Skipped updating {row['name']}."))
-        
-        self.stdout.write(self.style.SUCCESS(f'\nSuccessfully loaded or updated {uploaded} carries to database.'))
+        self.stdout.write(self.style.SUCCESS(f'\nSuccessfully loaded {uploaded} carries to database.'))
