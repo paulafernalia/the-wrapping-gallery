@@ -16,5 +16,5 @@ RUN pip install -r requirements.txt
 # copy project
 COPY . /code/
 
-# Start Django development server
-ENTRYPOINT ["sh", "-c", "python manage.py migrate --settings=wrapping.settings.development --noinput && python manage.py load_csv_data initial_data.csv --settings=wrapping.settings.development && python manage.py check_ratings && python manage.py runserver 0.0.0.0:8000"]
+# Start Gunicorn server
+CMD ["sh", "-c", "python manage.py migrate --settings=wrapping.settings.development --noinput && python manage.py load_csv_data initial_data.csv --settings=wrapping.settings.development && python manage.py check_ratings && gunicorn --bind 0.0.0.0:8000 wrapping.wsgi:application"]
