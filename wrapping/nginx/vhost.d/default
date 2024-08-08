@@ -1,0 +1,9 @@
+location /static/ {
+  alias /vol/web/static/;
+  add_header Access-Control-Allow-Origin *;
+}
+
+location /media/ {
+  alias /vol/web/media/;
+  add_header Access-Control-Allow-Origin *;
+}

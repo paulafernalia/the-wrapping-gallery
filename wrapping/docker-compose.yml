@@ -3,20 +3,50 @@ services:
     build:
       dockerfile: Dockerfile
     command: gunicorn wrapping.wsgi:application --bind 0.0.0.0:8000
+    restart: always
     volumes:
-      - static_volume:/code/staticfiles
+      - static_volume:/vol/web/static
+      - media_volume:/vol/web/media
     expose:
       - 8000
     env_file:
       - ./.env
-  nginx:
-    build: ./nginx
-    volumes:
-      - static_volume:/code/staticfiles
+
+  nginx-proxy:
+    container_name: nginx-proxy
+    build: nginx
+    image: nginx-proxy-custom-image
+    restart: always
     ports:
-      - 80:80
+      - "80:80"
+      - "443:443"
+    volumes:
+      - static_volume:/vol/web/static
+      - media_volume:/vol/web/media
+      - html:/usr/share/nginx/html
+      - vhost:/etc/nginx/vhost.d
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - certs:/etc/nginx/certs:ro
+    labels:
+      - "com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy"
     depends_on:
       - web
 
+   nginx-proxy-letsencrypt:
+    image: jrcs/letsencrypt-nginx-proxy-companion
+    env_file:
+      - .env.proxy-companion
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - certs:/etc/nginx/certs:rw
+      - html:/usr/share/nginx/html
+      - vhost:/etc/nginx/vhost.d
+    depends_on:
+      - nginx-proxy
+
 volumes:
   static_volume:
+  media_volume:
+  html:
+  vhost:
+  certs:

@@ -16,7 +16,14 @@ RUN pip install -r requirements.txt
 # copy project
 COPY . /code/
 
-RUN mkdir /code/staticfiles
+# RUN mkdir /code/staticfiles
+RUN mkdir -p /vol/web/static
+RUN mkdir -p /vol/web/media
+
+RUN useradd -ms /bin/bash user
+RUN chown -R user:user /vol/
+RUN chmod -R 755 /vol/web
+USER user
 
 # Run Django management commands and start the application
 ENTRYPOINT ["sh", "-c", "python manage.py migrate --noinput && python manage.py collectstatic --no-input --clear && gunicorn wrapping.wsgi:application --bind 0.0.0.0:8000"]

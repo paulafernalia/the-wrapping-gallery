@@ -1,4 +1,8 @@
-FROM nginx:1.25
+# Dockerfile
+FROM jwilder/nginx-proxy
 
-RUN rm /etc/nginx/conf.d/default.conf
-COPY nginx.conf /etc/nginx/conf.d
+# Copy the default virtual host configuration file
+COPY vhost.d/default /etc/nginx/vhost.d/default
+
+# Copy the custom nginx configuration file
+COPY custom.conf /etc/nginx/conf.d/custom.conf
