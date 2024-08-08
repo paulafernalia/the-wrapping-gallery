@@ -22,38 +22,8 @@ makemigrations:
 migrate:
 	$(PYTHON) manage.py migrate
 
-shell:
-	$(PYTHON) manage.py shell
-
-makemigrations-prod:
-	$(PYTHON) manage.py makemigrations --settings=$(MYPROJ).settings.production 
-
 migrate-prod:
 	$(PYTHON) manage.py migrate --settings=$(MYPROJ).settings.production 
-
-sync-dev-db:
-	# Dump all data from the production database
-	$(PYTHON) manage.py dumpdata --settings=$(MYPROJ).settings.production --indent 2 > all_data.json
-	
-	# Migrate the development database schema
-	$(PYTHON) manage.py migrate --settings=$(MYPROJ).settings.development
-	
-	# Clear all data in the development database
-	$(PYTHON) manage.py flush --settings=$(MYPROJ).settings.development --noinput
-	
-	# Load all data into the development database
-	$(PYTHON) manage.py loaddata all_data.json --settings=$(MYPROJ).settings.development
-	
-	# Clean up temporary data file
-	rm all_data.json
-
-setup-dev-db:
-	$(PYTHON) manage.py migrate
-	$(PYTHON) manage.py loaddata initial_data.json
-
-# Dump non-sensitive data in db.sqlite3 to a JSON file
-dump-init-data:
-	$(PYTHON) manage.py dumpdata --exclude sessions.session --exclude auth.permission --exclude auth.user --exclude admin.logentry --exclude contenttypes --indent 2 > initial_data.json
 
 # Command to check for missing ratings
 check-ratings:

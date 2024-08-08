@@ -1,0 +1,20 @@
+# pull official base image
+FROM python:3.11.4-slim-buster
+
+# set work directory
+WORKDIR /code
+
+# set environment variables
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+
+# install dependencies
+RUN pip install --upgrade pip
+COPY requirements.txt /code/
+RUN pip install -r requirements.txt
+
+# copy project
+COPY . /code/
+
+# Start Gunicorn server
+CMD ["sh", "-c", "python manage.py migrate --settings=wrapping.settings.development --noinput && python manage.py load_csv_data initial_data.csv --settings=wrapping.settings.development && python manage.py check_ratings && gunicorn --bind 0.0.0.0:8000 wrapping.wsgi:application"]

@@ -84,7 +84,7 @@ profile_default/
 ipython_config.py
 
 # Sensitive information 
-**/.env
+**/.env*
 **/*.pem
 
 # pyenv
