@@ -4,25 +4,15 @@ This is a project for a website with content related to babywearing with woven w
 
 The production environment uses a PostgreSQL database hosted in Supabase, the development environment uses a SQLite database. Both the development and the production environment use images stored in a S3 bucket in Supabase. When environment variables describing the connection details to the Supabase S3 bucket are not available, the app will use default images in the project's media folder.
 
-To set run the app in development mode, follow these steps:
+To run the app in development mode, follow these steps:
 
 1. Clone this repo.
-2. Create an environment with python3.12: `python3.12 -m venv venv`.
-3. Activate the environment: `source venv/bin/activate`.
-4. Navigate to the Django project folder: `cd wrapping`.
-5. Install dependencies with `pip install -r requirements.txt`.
-6. Create a SQLite development database with some initial data: `make setup-dev-db`.
-7. Run the app with `make runserver`.
+2. Set up the required environment variables in a file called `.env.dev` (see below)
+3. Run `docker compose -f docker-compose.dev.yml up --build -d`
+4. Open http://0.0.0.0:8000 in a browser.
+5. Run `docker compose down` to stop running the app and remove the Docker container.
 
-Unit tests are run with `make test`.
-
-To run using docker in production mode:
-
-1. Clone this repo
-2. Run `docker compose up --build -d`
-3. Open http://<IP_ADDRESS>/ in a browser
-
-To run the app, both with and without docker, you need an `.env` file at the same level as `manage.py` with the following variables:
+The `.env` files must be at the same level as `manage.py` and list the following variables:
 
 ```
 DB_NAME=xxxx
@@ -33,7 +23,7 @@ DB_PORT=xxxx
 
 SECRET_KEY=xxxx
 
-DJANGO_SETTINGS_MODULE=wrapping.settings.production
+DJANGO_SETTINGS_MODULE=xxxx
 DJANGO_ALLOWED_HOSTS=xxxx
 
 SUPABASE_URL=xxxx
