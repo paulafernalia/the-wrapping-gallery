@@ -32,7 +32,7 @@ services:
     depends_on:
       - web
 
-   nginx-proxy-letsencrypt:
+  nginx-proxy-letsencrypt:
     image: jrcs/letsencrypt-nginx-proxy-companion
     env_file:
       - .env.proxy-companion
