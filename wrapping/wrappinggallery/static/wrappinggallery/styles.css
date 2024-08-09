@@ -473,6 +473,10 @@ p, li {
         padding: 5px 12px;
     }
 
+    .dropdown select {
+        border: 1.5px solid #222;
+    }
+
     #button-filter {
         padding: 5px 10px !important;
         font-size: 13px !important;
