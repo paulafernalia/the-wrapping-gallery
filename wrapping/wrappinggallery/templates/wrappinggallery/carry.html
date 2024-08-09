@@ -16,11 +16,11 @@
         </div>
         <div class="column">
             <h4 class="dancing fs32">Carry features</p>
-                <div class="feature poppins-light fs16"><span class="poppins-bold pink-span">TYPE: </span> {{position}} carry </div>
+                <div class="feature poppins-light fscarry"><span class="poppins-bold pink-span">TYPE: </span> {{position}} carry </div>
                 {% if mmposition != 'NA' %}
-                    <div class="feature poppins-light fs16"><span class="poppins-bold pink-span">MM POSITION: </span> {{mmposition}} </div>
+                    <div class="feature poppins-light fscarry"><span class="poppins-bold pink-span">MM POSITION: </span> {{mmposition}} </div>
                 {% endif %}
-                <div class="feature poppins-light fs16">
+                <div class="feature poppins-light fscarry">
                     <span class="poppins-bold pink-span">CAN BE PRE-TIED: </span> 
                         {% if pretied %}
                             Yes
@@ -28,31 +28,31 @@
                             No
                         {% endif %}
                 </div>
-                <div class="feature poppins-light fs16"><span class="poppins-bold pink-span">DIFFICULTY: </span> {{difficulty}} / 5 </div>
-                <div class="feature poppins-light fs16"><span class="poppins-bold pink-span">FANCY: </span> {{fancy}} / 5</div>
-                <div class="feature poppins-light fs16"><span class="poppins-bold pink-span">LAYERS: </span> {{layers}} </div>
-                <div class="feature poppins-light fs16"><span class="poppins-bold pink-span">SHOULDERS: </span> {{shoulders}} </div>
+                <div class="feature poppins-light fscarry"><span class="poppins-bold pink-span">DIFFICULTY: </span> {{difficulty}} / 5 </div>
+                <div class="feature poppins-light fscarry"><span class="poppins-bold pink-span">FANCY: </span> {{fancy}} / 5</div>
+                <div class="feature poppins-light fscarry"><span class="poppins-bold pink-span">LAYERS: </span> {{layers}} </div>
+                <div class="feature poppins-light fscarry"><span class="poppins-bold pink-span">SHOULDERS: </span> {{shoulders}} </div>
                 <br>
         </div>
         <div class="column">
             <h4 class="dancing fs32">Ratings</h4>
             <div id="newborn-rating" class="rating-group" data-property="{{newborns}}">
-                <span class="poppins-light fs16"> Good for newborns</span>
+                <span class="poppins-light fscarry"> Good for newborns</span>
             </div>
             <div id="legstraightener-rating" class="rating-group" data-property="{{legstraighteners}}">
-                <span class="poppins-light fs16> Good for leg straighteners</span>
+                <span class="poppins-light fscarry> Good for leg straighteners</span>
             </div>
             <div id="leaners-rating" class="rating-group" data-property="{{leaners}}">
-                <span class="poppins-light fs16"> Good for leaners</span>
+                <span class="poppins-light fscarry"> Good for leaners</span>
             </div>
             <div id="bigkids-rating" class="rating-group" data-property="{{bigkids}}">
-                <span class="poppins-light fs16"> Good for big kids</span>
+                <span class="poppins-light fscarry"> Good for big kids</span>
             </div>
             <div id="quickups-rating" class="rating-group" data-property="{{quickups}}">
-                <span class="poppins-light fs16"> Good for quick ups</span>
+                <span class="poppins-light fscarry"> Good for quick ups</span>
             </div>
              <div id="feeding-rating" class="rating-group" data-property="{{feeding}}">
-                <span class="poppins-light fs16"> Good for feeding</span>
+                <span class="poppins-light fscarry"> Good for feeding</span>
             </div>
             <br>
         </div>
@@ -62,7 +62,7 @@
 
 {% if videoauthor != 'NA' %}
 <br><br>
-<div class="title-container poppins-bold fsmedium">
+<div class="title-container poppins-bold fsplus">
     Video tutorial by {{videoauthor}}
 </div>
 <div class="content-container">
@@ -82,7 +82,7 @@
 
 <br><br>
 <div id="tutorial-content"  style="display: none;"">
-    <div class="title-container poppins-bold fsmedium">
+    <div class="title-container poppins-bold fsplus">
         Picture tutorial
     </div>
     <div class="content-container">
