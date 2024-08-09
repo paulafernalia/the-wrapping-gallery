@@ -567,6 +567,8 @@ async function updateCarryGallery(carries) {
         sizedesc.className = 'sizedesc dancing fs16';
         if (carry.carry__size == 0) {
             sizedesc.textContent = "Base";
+        } else if (carry.carry__size > 0) {
+            sizedesc.textContent = "Base + " + carry.carry__size;
         } else {
             sizedesc.textContent = "Base " + carry.carry__size;
         }
