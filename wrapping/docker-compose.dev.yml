@@ -5,5 +5,10 @@ services:
       dockerfile: Dockerfile.dev
     ports:
       - "8000:8000"
+    volumes:
+      - static_volume:/code/staticfiles
     env_file:
       - ./.env.dev  # Separate environment file for development
+
+volumes:
+  static_volume:
