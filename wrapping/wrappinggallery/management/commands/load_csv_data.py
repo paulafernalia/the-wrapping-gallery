@@ -19,12 +19,11 @@ class Command(BaseCommand):
         if not os.path.exists(csv_file):
             raise ValidationError(f'{csv_file} does not exist')
 
-            # Check if the database is empty
-        if Carry.objects.exists():
-            raise ValidationError('Carrys is not empty.')
-
-        if Ratings.objects.exists():
-            raise ValidationError('Ratings is not empty.')
+        # Check if the database is empty
+        if Carry.objects.exists() or Ratings.objects.exists():
+            self.stdout.write('Carry or Ratings not empty. Clearing both.')
+            Carry.objects.all().delete()
+            Ratings.objects.all().delete()
 
         with open(csv_file, 'r') as f:
             reader = csv.DictReader(f)
