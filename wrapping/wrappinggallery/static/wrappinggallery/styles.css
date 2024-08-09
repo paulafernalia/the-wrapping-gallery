@@ -283,6 +283,10 @@ p, li {
     cursor: pointer;
 }
 
+.dropdown {
+    color: black; /* Ensure the text color of the dropdown is set to black */
+}
+
 .dropdown select {
     color: black !important; /* Ensure the text color of the dropdown is set to black */
 }
