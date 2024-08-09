@@ -14,15 +14,8 @@ To set run the app in development mode, follow these steps:
 6. Create a SQLite development database with some initial data: `make setup-dev-db`.
 7. Run the app with `make runserver`.
 
-Unit tests are run with `make test`.
 
-To run using docker in production mode:
-
-1. Clone this repo
-2. Run `docker compose up --build -d`
-3. Open http://0.0.0.0:1337/ in a browser
-
-To run the app, both with and without docker, you need an `.env` file at the same level as `manage.py` with the following variables:
+To run the app you need an `.env` file at the same level as `manage.py` with the following variables:
 
 ```
 DB_NAME=xxxx
