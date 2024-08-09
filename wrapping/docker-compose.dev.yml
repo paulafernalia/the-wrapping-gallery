@@ -6,6 +6,7 @@ services:
     ports:
       - "8000:8000"
     volumes:
+      - .:/code  # Bind mount the current directory on the host to /code in the container
       - static_volume:/code/staticfiles
     env_file:
       - ./.env.dev  # Separate environment file for development
