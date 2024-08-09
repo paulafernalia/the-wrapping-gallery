@@ -102,17 +102,26 @@ body {
     flex-wrap: wrap;
 }
 
+/* Ensure active state is black */
 .btn-custom.active {
-    background-color: #222;
-    color: white;
+    background-color: #222 !important;
+    color: white !important;
 }
 
+/* Hover state */
 .btn-custom:hover {
     background-color: #ddd;
     color: white;
     border: 2px solid #ddd;
 }
 
+.btn-custom:focus {
+    outline: none;
+    box-shadow: none;
+    color: black;
+}
+
+/* Disabled state */
 .btn-custom.disabled {
     background-color: white;
     color: #ddd;
