@@ -6,30 +6,16 @@ The production environment uses a PostgreSQL database hosted in Supabase, the de
 
 To run the app in development mode, follow these steps:
 
-1. Clone this repo.
-2. Set up the required environment variables in a file called `.env.dev` (see below)
-3. Run `docker compose -f docker-compose.dev.yml up --build -d`
-4. Open http://0.0.0.0:8000 in a browser.
-5. Run `docker compose down` to stop running the app and remove the Docker container.
+1. Install [Docker](https://www.docker.com/get-started/).
+2. Clone this repo.
+3. Set up the required environment variables in a file called `.env.dev` (see below)
+4. Run `docker compose -f docker-compose.dev.yml up --build -d`
+5. Open http://0.0.0.0:8000 in a browser.
+6. Run `docker compose -f docker-compose.dev.yml down` to stop running the app and remove the Docker container.
 
-The `.env` files must be at the same level as `manage.py` and list the following variables:
+The `.env.dev` file must be at the same level as `manage.py` and list the following variable:
 
 ```
-DB_NAME=xxxx
-DB_USER=xxxx
-DB_PASSWORD=xxxx
-DB_HOST=xxxx
-DB_PORT=xxxx
+DJANGO_SETTINGS_MODULE=wrapping.settings.development
 
-SECRET_KEY=xxxx
-
-DJANGO_SETTINGS_MODULE=xxxx
-DJANGO_ALLOWED_HOSTS=xxxx
-
-SUPABASE_URL=xxxx
-SERVICE_ROLE_KEY=xxxx
-
-SUPABASE_COVER_BUCKET=carrycovers
-SUPABASE_MISC_BUCKET=misc
-SUPABASE_TUTORIAL_BUCKET=tutorials
 ```
