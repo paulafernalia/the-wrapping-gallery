@@ -509,6 +509,9 @@ async function updateCarryGallery(carries) {
     const gridContainer = document.getElementById('imageGrid');
     const baseUrlPattern = gridContainer.dataset.baseUrlPattern.replace('PLACEHOLDER', '');
 
+    const fileUrlBack = await fetchFileUrl( "placeholder_back.png");
+    const fileUrlFront = await fetchFileUrl( "placeholder_front.png");
+
     for (const carry of carries) {
         // Create grid item
         const gridItem = document.createElement('div');
@@ -522,13 +525,10 @@ async function updateCarryGallery(carries) {
         let fileUrl = await fetchFileUrl(imageFile);
         if (typeof fileUrl === 'undefined') {
             if (carry.carry__position === "back") {
-                imageFile = "placeholder_back.png";
+                fileUrl = fileUrlBack;
             } else {
-                imageFile = "placeholder_front.png";
+                fileUrl = fileUrlFront;
             }
-
-            // Fetch placeholder
-            fileUrl = await fetchFileUrl(imageFile);
         }
 
         // Create image
