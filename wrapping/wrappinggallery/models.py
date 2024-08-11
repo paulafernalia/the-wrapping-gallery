@@ -65,6 +65,7 @@ class Carry(models.Model):
             "ring(s)": "Rings",
             "rapunzel": "Rapunzel",
             "tied at the back": "Tied at the back",
+            "strangleproof": "Strangleproof",
         },
     )
 
