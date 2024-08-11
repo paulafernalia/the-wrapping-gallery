@@ -496,7 +496,7 @@ async function updateCarryGallery(carries) {
     // Check if footer must be changed
     updateFooterPosition();
 
-    // show text counting results
+    // Show text counting results
     const countText = document.getElementById('count-text');
     countText.style.display = 'block';
 
@@ -509,49 +509,41 @@ async function updateCarryGallery(carries) {
     const gridContainer = document.getElementById('imageGrid');
     const baseUrlPattern = gridContainer.dataset.baseUrlPattern.replace('PLACEHOLDER', '');
 
-    const fileUrlBack = await fetchFileUrl( "placeholder_back.png");
-    const fileUrlFront = await fetchFileUrl( "placeholder_front.png");
+    // Define paths for placeholders
+    const placeholderBack = await fetchFileUrl( "placeholder_back.png");
+    const placeholderFront = await fetchFileUrl( "placeholder_front.png");
 
-    for (const carry of carries) {
-        // Create grid item
-        const gridItem = document.createElement('div');
-        gridItem.className = 'grid-item';
-        gridItem.classList.add('clickable-grid-item');
-
-        // Set image filename
-        let imageFile = carry.carry__name + ".png";
+    // Create an array of promises to fetch all image URLs
+    const imagePromises = carries.map(async (carry) => {
+        const imageFile = `${carry.carry__name}.png`;
+        let fileUrl = await fetchFileUrl(imageFile);
 
         // Use placeholder if carry image not available
-        let fileUrl = await fetchFileUrl(imageFile);
-        if (typeof fileUrl === 'undefined') {
-            if (carry.carry__position === "back") {
-                fileUrl = fileUrlBack;
-            } else {
-                fileUrl = fileUrlFront;
-            }
+        if (!fileUrl) {
+            fileUrl = carry.carry__position === 'back' ? placeholderBack : placeholderFront;
         }
+
+        // Return an object containing carry data and the image URL
+        return { carry, fileUrl };
+    });
+
+    // Fetch all image URLs in parallel
+    const imageResults = await Promise.all(imagePromises);
+
+    // Create a DocumentFragment to batch DOM updates
+    const fragment = document.createDocumentFragment();
+
+    imageResults.forEach(({ carry, fileUrl }) => {
+        // Create grid item
+        const gridItem = document.createElement('div');
+        gridItem.className = 'grid-item clickable-grid-item';
 
         // Create image
         const img = document.createElement('img');
-
-        img.src = fileUrl; // Combine the static URL with the file name
+        img.src = fileUrl;
         img.alt = carry.carry__name;
-        
-        // Create on click functionality
-        img.addEventListener('click', function() {
-            // Construct the full URL by appending the name to the base URL pattern
-            const url = `${baseUrlPattern}${carry.carry__name}`;
-            
-            // Clear active tab
-            const carriesTab = document.querySelector('.nav-link[data-page="carries-page"]');
-            carriesTab.classList.remove('active');
-
-            const aboutTab = document.querySelector('.nav-link[data-page="about-page"]');
-            aboutTab.classList.remove('active');
-
-            // Redirect to the constructed URL
-            window.location.href = url;
-        });
+        img.loading = 'lazy'; // Enable lazy loading
+        img.className = 'grid-image'; // Optional: Add class for styling
 
         // Create description container
         const descContainer = document.createElement('div');
@@ -565,13 +557,9 @@ async function updateCarryGallery(carries) {
         // Create sizedesc
         const sizedesc = document.createElement('div');
         sizedesc.className = 'sizedesc dancing fs16';
-        if (carry.carry__size == 0) {
-            sizedesc.textContent = "Base";
-        } else if (carry.carry__size > 0) {
-            sizedesc.textContent = "Base + " + carry.carry__size;
-        } else {
-            sizedesc.textContent = "Base " + carry.carry__size;
-        }
+        sizedesc.textContent = carry.carry__size === 0 ? 'Base' :
+                               carry.carry__size > 0 ? `Base + ${carry.carry__size}` :
+                               `Base ${carry.carry__size}`;
 
         // Append descriptions to the description container
         descContainer.appendChild(carrydesc);
@@ -581,17 +569,36 @@ async function updateCarryGallery(carries) {
         gridItem.appendChild(img);
         gridItem.appendChild(descContainer);
 
-        // Append grid item to grid container
-        gridContainer.appendChild(gridItem);
-    }
+        // Make the entire grid item clickable
+        gridItem.addEventListener('click', () => {
+            const url = `${baseUrlPattern}${carry.carry__name}`;
 
-    // Reactivate at the end
+            const carriesTab = document.querySelector('.nav-link[data-page="carries-page"]');
+            carriesTab.classList.remove('active');
+
+            const aboutTab = document.querySelector('.nav-link[data-page="about-page"]');
+            aboutTab.classList.remove('active');
+
+            // Redirect to the constructed URL
+            window.location.href = url;
+        });
+
+        // Append grid item to fragment
+        fragment.appendChild(gridItem);
+    });
+
+    // Append the fragment to the grid container in one operation
+    gridContainer.appendChild(fragment);
+
+    // Reactivate the filter button
     filterBtn.classList.remove('disabled');
     filterBtn.removeAttribute('disabled');
 
     // Check if footer must be changed
     updateFooterPosition();
 }
+
+
 
 
 document.addEventListener('DOMContentLoaded', function() { 
