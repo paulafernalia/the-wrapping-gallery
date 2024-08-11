@@ -43,7 +43,7 @@ class Command(BaseCommand):
                         size=row["size"],
                         shoulders=row["shoulders"],
                         layers=row["layers"],
-                        mmposition=row["mmposition"],
+                        mmposition=float(row["mmposition"]),
                         videotutorial=row["videotutorial"],
                         videoauthor=row["videoauthor"],
                         position=row["position"],
