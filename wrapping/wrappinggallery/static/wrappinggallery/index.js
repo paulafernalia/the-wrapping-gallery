@@ -643,6 +643,8 @@ document.addEventListener('DOMContentLoaded', function() {
 // Define the async function to handle scrolling
 async function handleScroll() {
     const gridContainer = document.getElementById('imageGrid');
+    const loadingSpinner = document.getElementById('loadingSpinner');
+
     if (gridContainer.innerHTML === '') {
         return;
     }
@@ -652,18 +654,18 @@ async function handleScroll() {
 
     // Check if the user has scrolled to the bottom of the page
     if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
+        console.log('User has scrolled to the bottom. Fetching more data...'); // Debugging line
         isFetching = true;  // Set the flag to indicate a request is in progress
+        loadingSpinner.style.display = 'block';  // Show the spinner
 
         try {
-            // Filter carries based on current filters
             const carries = await fetchFilteredCarries();
-
-            // Append carries to the gallery
             updateCarryGallery(carries);
         } catch (error) {
             console.error('Error fetching carries:', error);
         } finally {
             isFetching = false;  // Reset the flag after the request completes
+            loadingSpinner.style.display = 'none';  // Hide the spinner
         }
     }
 }
