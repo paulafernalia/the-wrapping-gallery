@@ -162,7 +162,7 @@ def filter_carries(request):
             queryset = queryset.annotate(
                 rounded_difficulty=Round(F("difficulty"))
             ).filter(rounded_difficulty=difficulties[val])
-        elif prop == "pretied" and val != "null":
+        elif prop == "pretied" and val == "1":
             queryset = queryset.filter(carry__pretied=val)
         elif prop == "newborns" and val == "1":
             queryset = queryset.filter(newborns__gte=3.5)
