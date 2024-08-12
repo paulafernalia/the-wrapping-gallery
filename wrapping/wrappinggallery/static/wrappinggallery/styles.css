@@ -97,6 +97,11 @@ body {
     padding: 7px 20px;
 }
 
+.pinkbg {
+    background-color: #ad9393;
+    border: 2px solid #ad9393;
+}
+
 .btn-group {
     display: flex;
     flex-wrap: wrap;
