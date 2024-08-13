@@ -613,7 +613,7 @@ document.addEventListener('DOMContentLoaded', function() {
     resetFiltersBtn = document.getElementById('resetFiltersBtn');
 
     // If any filters applied, show filter box to alert user
-    if (anyapplied) {
+    if (anyapplied > 0) {
         showAllFilters();
 
         resetFiltersBtn.classList.remove('disabled');
