@@ -341,7 +341,7 @@ async function updateButtonBox() {
             showResultsBtn.classList.remove('disabled');
             showResultsBtn.classList.add('active');
             showResultsBtn.textContent = "Show " + filteredResults + " results";
-            countText.textContent = filteredResults + " carries found.";
+            countText.textContent = "Showing " + filteredResults + " carries.";
         }
     } catch (error) {
         console.error('There was a problem with the fetch operation:', error);
