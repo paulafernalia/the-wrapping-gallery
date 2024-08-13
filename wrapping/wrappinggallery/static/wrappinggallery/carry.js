@@ -58,9 +58,9 @@ function fixFooter() {
 }
 
 
-function showPictureTutorialContainer() {
+function hidePictureTutorialContainer() {
     const tutorialContent = document.getElementById('tutorial-content');
-    tutorialContent.style.display = 'block';
+    tutorialContent.style.display = 'none';
 }
 
 
@@ -69,6 +69,10 @@ async function loadTutorialImages() {
     const carryName = gridContainer.dataset.name;
     const bucketName = "tutorials";
 
+    const loadingSpinner = document.getElementById('loadingSpinner');
+    loadingSpinner.style.display = 'block';
+
+
     const response = await fetch(`/step-urls/${carryName}/?bucket=${bucketName}`);
     
     if (!response.ok) {
@@ -76,8 +80,8 @@ async function loadTutorialImages() {
     }
 
     const data = await response.json();
-    if (data["urls"].length > 0) {
-        showPictureTutorialContainer();
+    if (data["urls"].length == 0) {
+        hidePictureTutorialContainer();
     }
 
     for (const stepurl of data["urls"]) {
@@ -94,6 +98,8 @@ async function loadTutorialImages() {
         // Append grid item to grid container
         gridContainer.appendChild(gridItem);
     }
+
+    loadingSpinner.style.display = 'none';
 }
 
 
