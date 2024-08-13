@@ -535,7 +535,8 @@ async function updateCarryGallery(carries) {
 
         // Create image
         const img = document.createElement('img');
-        let fileUrl = await fetchFileUrl(carry.carry__name, "back");
+        let fileUrl = await fetchFileUrl(
+            carry.carry__name, carry.carry__position);
 
         img.src = fileUrl;
         img.alt = carry.carry__title;
