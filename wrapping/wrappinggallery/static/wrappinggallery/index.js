@@ -619,11 +619,11 @@ document.addEventListener('DOMContentLoaded', function() {
         resetFiltersBtn.classList.remove('disabled');
     } else {
         // Get all carries with session data and update gallery
-        fetchFilteredCarries().then(carries => {
-            updateCarryGallery(carries);
-        });
-
         resetFiltersBtn.classList.add('disabled');
+
+        // Filter carries by the property selected in the button
+        emptyCarryGallery();
+        showResults();
     }
 
     const searchInput = document.getElementById('search-input');
