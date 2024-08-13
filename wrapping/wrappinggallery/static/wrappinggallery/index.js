@@ -341,7 +341,7 @@ async function updateButtonBox() {
             showResultsBtn.classList.remove('disabled');
             showResultsBtn.classList.add('active');
             showResultsBtn.textContent = "Show " + filteredResults + " results";
-            countText.textContent = filteredResults + " carries found.";
+            countText.textContent = "Showing " + filteredResults + " carries.";
         }
     } catch (error) {
         console.error('There was a problem with the fetch operation:', error);
@@ -613,17 +613,17 @@ document.addEventListener('DOMContentLoaded', function() {
     resetFiltersBtn = document.getElementById('resetFiltersBtn');
 
     // If any filters applied, show filter box to alert user
-    if (anyapplied) {
+    if (anyapplied > 0) {
         showAllFilters();
 
         resetFiltersBtn.classList.remove('disabled');
     } else {
         // Get all carries with session data and update gallery
-        fetchFilteredCarries().then(carries => {
-            updateCarryGallery(carries);
-        });
-
         resetFiltersBtn.classList.add('disabled');
+
+        // Filter carries by the property selected in the button
+        emptyCarryGallery();
+        showResults();
     }
 
     const searchInput = document.getElementById('search-input');
