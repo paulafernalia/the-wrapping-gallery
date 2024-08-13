@@ -468,11 +468,9 @@ function hideFilterBoxExt() {
 }
 
 
-async function fetchFileUrl(fileName) {
-    const bucketName =  "carrycovers"; // Replace with your bucket name
-
+async function fetchFileUrl(fileName, position) {
     try {
-        const response = await fetch(`/file-url/${fileName}/?bucket=${bucketName}`);
+        const response = await fetch(`/file-url/${fileName}/?position=${position}`);
         const data = await response.json();
         return data.url;
     } catch (error) {
@@ -492,11 +490,31 @@ function emptyCarryGallery() {
 }
 
 
+// Function to check if the URL returns a 200 status
+async function checkUrlStatus(url) {
+    try {
+        const response = await fetch(url, { method: 'HEAD' });
+        if (response.status === 200) {
+            // URL is valid
+            console.log('URL is valid and returns a 200 status.');
+            return true;
+        }
+        // No logging for non-200 status codes
+        return false;
+    } catch (error) {
+        // Log only network errors or issues
+        console.log('Error fetching URL:', error);
+        return false;
+    }
+}
+
+
+
 async function updateCarryGallery(carries) {
     // Check if footer must be changed
     updateFooterPosition();
 
-    // Show text counting results
+    // // Show text counting results
     const countText = document.getElementById('count-text');
     countText.style.display = 'block';
 
@@ -509,39 +527,18 @@ async function updateCarryGallery(carries) {
     const gridContainer = document.getElementById('imageGrid');
     const baseUrlPattern = gridContainer.dataset.baseUrlPattern.replace('PLACEHOLDER', '');
 
-    // Define paths for placeholders
-    const placeholderBack = await fetchFileUrl( "placeholder_back.png");
-    const placeholderFront = await fetchFileUrl( "placeholder_front.png");
-
     // Create an array of promises to fetch all image URLs
-    const imagePromises = carries.map(async (carry) => {
-        const imageFile = `${carry.carry__name}.png`;
-        let fileUrl = await fetchFileUrl(imageFile);
-
-        // Use placeholder if carry image not available
-        if (!fileUrl) {
-            fileUrl = carry.carry__position === 'back' ? placeholderBack : placeholderFront;
-        }
-
-        // Return an object containing carry data and the image URL
-        return { carry, fileUrl };
-    });
-
-    // Fetch all image URLs in parallel
-    const imageResults = await Promise.all(imagePromises);
-
-    // Create a DocumentFragment to batch DOM updates
-    const fragment = document.createDocumentFragment();
-
-    imageResults.forEach(({ carry, fileUrl }) => {
+    for (const carry of carries) {
         // Create grid item
         const gridItem = document.createElement('div');
         gridItem.className = 'grid-item clickable-grid-item';
 
         // Create image
         const img = document.createElement('img');
+        let fileUrl = await fetchFileUrl(carry.carry__name, "back");
+
         img.src = fileUrl;
-        img.alt = carry.carry__name;
+        img.alt = carry.carry__title;
         img.loading = 'lazy'; // Enable lazy loading
         img.className = 'grid-image'; // Optional: Add class for styling
 
@@ -584,11 +581,8 @@ async function updateCarryGallery(carries) {
         });
 
         // Append grid item to fragment
-        fragment.appendChild(gridItem);
-    });
-
-    // Append the fragment to the grid container in one operation
-    gridContainer.appendChild(fragment);
+        gridContainer.appendChild(gridItem);
+    };
 
     // Reactivate the filter button
     filterBtn.classList.remove('disabled');

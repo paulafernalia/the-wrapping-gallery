@@ -4,8 +4,9 @@ from django.views.decorators.http import require_GET
 from django.db.models import FloatField, Func, F
 from django.db.models.functions import Round
 from .models import Carry, Ratings
-from .utils import generate_signed_url, generate_signed_urls, initialise_supabase
+from . import utils
 from django.conf import settings
+import os
 
 
 DIFFICULTY_VALUES = ["Beginner", "Beginner+", "Intermediate", "Advanced", "Pro"]
@@ -30,19 +31,14 @@ def index(request):
 def about(request):
     context = {}
 
-    if settings.SUPABASE_URL == "https://default.supabase.co":
-        file_name = "profile.png"
-        context = {"imageSrc": settings.MEDIA_URL + file_name}
-    else:
-        context = {"imageSrc": generate_signed_url(
-            "profile.png",
-            settings.SUPABASE_MISC_BUCKET
-        )}
+    image_url = utils.generate_server_url("profile", "back")
+
+    context = {"imageSrc": image_url}
     return render(request, "wrappinggallery/about.html", context)
 
 
 def steps_url(request, prefix):
-    supabase = initialise_supabase()
+    supabase = utils.initialise_supabase()
     bucketname = settings.SUPABASE_TUTORIAL_BUCKET
 
     batchsize = 10
@@ -58,7 +54,7 @@ def steps_url(request, prefix):
         for i in [f"{i+1:02}" for i in range(range_start, range_end)]:
             filenames.append(f"{prefix}_step{i}.png")
 
-        batch_urls_dict = generate_signed_urls(filenames, "tutorials")
+        batch_urls_dict = utils.generate_signed_urls(filenames, "tutorials")
         sorted_keys = sorted(batch_urls_dict.keys())
         batch_urls = [batch_urls_dict[key] for key in sorted_keys]
 
@@ -85,18 +81,8 @@ def carry(request, name):
         carry_dict["videoauthor"] = "NA"
         carry_dict["videotutorial"] = "NA"
 
-    # Try to get image from name 
-    bucket = settings.SUPABASE_COVER_BUCKET
-    image_url = generate_signed_url(f"{name}.png", bucket)
-    if image_url is None:
-        if carry_dict["position"] == "Back":
-            placeholder = "placeholder_back.png"
-        else:
-            placeholder = "placeholder_front.png"
-
-        # Get url of placeholder
-        image_url = generate_signed_url(placeholder, bucket)
-
+    # Get image from name 
+    image_url = utils.generate_server_url(name, carry_dict["position"].lower())
     carry_dict["imageSrc"] = image_url
 
     # Add ratings
@@ -111,20 +97,12 @@ def carry(request, name):
 
 
 def file_url(request, file_name):
-    bucket_name = request.GET.get('bucket')
+    position = request.GET.get("position", "back")
+    image_url = utils.generate_server_url(file_name, position)
 
-    # if no access to S3 storage:
-    if settings.SUPABASE_URL == "https://default.supabase.co":
-        print("WARNING: missing connection details for S3 bucket in SUPABASE, using default image in media folder")
-        file_name = "placeholder_back.png"
-        return JsonResponse({"url": settings.MEDIA_URL + file_name})
+    return JsonResponse({"url": image_url})
 
 
-    signed_url = generate_signed_url(file_name, bucket_name)
-    if signed_url:
-        return JsonResponse({"url": signed_url})
-    else:
-        return JsonResponse({"empty": None})
 
 
 @require_GET
