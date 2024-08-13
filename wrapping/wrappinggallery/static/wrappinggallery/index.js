@@ -648,7 +648,6 @@ async function handleScroll() {
 
     // Check if the user has scrolled to the bottom of the page
     if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
-        console.log('User has scrolled to the bottom. Fetching more data...'); // Debugging line
         isFetching = true;  // Set the flag to indicate a request is in progress
         loadingSpinner.style.display = 'block';  // Show the spinner
 
