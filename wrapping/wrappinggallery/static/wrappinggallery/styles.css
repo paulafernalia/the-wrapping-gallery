@@ -141,6 +141,23 @@ body {
     border: 2px solid #ddd;
 }
 
+
+.btn-outline-secondary {
+    margin-left: -10px !important;
+    font-size: 14px;
+    border-radius: 15px;
+    width: 50px;
+    z-index: 800;
+    background-color: black;
+    border: black;
+}
+
+.btn-outline-secondary:focus {
+    background-color: black; /* Ensures it stays black after clicking */
+    border-color: black; /* Ensures border stays black after clicking */
+}
+
+
 .btn-outline-secondary.disabled {
     cursor: not-allowed;
     background-color: lightgrey;
@@ -173,15 +190,6 @@ p, li {
     box-shadow: none;
 }
 
-.btn-outline-secondary {
-    margin-left: -10px !important;
-    font-size: 14px;
-    border-radius: 15px;
-    width: 50px;
-    z-index: 800;
-    background-color: black;
-    border: black;
-}
 
 .poppins-bold {
   font-family: "Poppins", sans-serif;
