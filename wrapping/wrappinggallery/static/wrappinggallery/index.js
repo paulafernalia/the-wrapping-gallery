@@ -587,7 +587,6 @@ async function updateCarryGallery(carries) {
 
 
 
-
 document.addEventListener('DOMContentLoaded', function() { 
     // Reset gallery
     emptyCarryGallery();
@@ -659,3 +658,16 @@ async function handleScroll() {
 
 // Attach the async scroll handler to the window's scroll event
 window.onscroll = handleScroll;
+
+
+function clearSearch() {
+    document.getElementById('search-input').value = '';
+    document.getElementById('search-input').focus();
+    document.getElementById('clear-search').style.display = 'none';
+    handleInputChange();
+}
+
+document.getElementById('search-input').addEventListener('input', function() {
+    const clearBtn = document.getElementById('clear-search');
+    clearBtn.style.display = this.value ? 'block' : 'none';
+});
