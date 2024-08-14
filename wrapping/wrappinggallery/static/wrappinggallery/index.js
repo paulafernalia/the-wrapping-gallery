@@ -620,7 +620,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const searchInput = document.getElementById('search-input');
     searchInput.addEventListener('keydown', function(event) {
         if (event.key === 'Enter') {
+            event.preventDefault(); // Prevent the default action (if necessary)
             handleInputChange();
+            this.blur();
         }
     });
 });
