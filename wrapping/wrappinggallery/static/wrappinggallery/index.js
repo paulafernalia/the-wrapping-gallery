@@ -308,17 +308,6 @@ async function showResults() {
 
     await updateCarryGallery(carries);
 
-    // Scroll to gallery
-    var targetElement = document.getElementById('imageGrid');
-    var elementPosition = targetElement.getBoundingClientRect().top + window.scrollY;
-    var offsetPosition = elementPosition - 100;
-
-    window.scrollTo({
-        top: offsetPosition,
-        behavior: 'smooth'
-    });
-
-
     updateFooterPosition();
 }
 
