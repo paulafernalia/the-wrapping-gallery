@@ -367,12 +367,15 @@ p, li {
     margin-right: auto;
     margin-bottom: 10px;
     max-width: 1000px;
-    padding-left: 30px;
 }
 
 #showMoreBtn {
     margin-top: 30px;
     margin-bottom: 30px;
+}
+
+#search-input {
+    max-width: 100%;
 }
 
 @media only screen and (max-width: 1024px) {
