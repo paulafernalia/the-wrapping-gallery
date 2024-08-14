@@ -23,7 +23,12 @@ jobs:
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }} << 'EOF'
             cd the-wrapping-gallery/wrapping
+
+            # Ensure we are on the main branch
+            git fetch origin
+            git checkout main
             git pull origin main
+
             docker-compose -f docker-compose.prod.yml down
             docker-compose -f docker-compose.prod.yml build
             docker-compose -f docker-compose.prod.yml up -d
