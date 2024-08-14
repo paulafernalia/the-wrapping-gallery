@@ -382,19 +382,19 @@ p, li {
     .content-container {
         margin-left: auto;
         margin-right: auto;
-        max-width: 700px;
+        width: 90% !important;
     }
 
-    .title-container {
+     .title-container {
         margin-left: auto;
         margin-right: auto;
-        max-width: 700px;
+        width: 90% !important;
     }
 
-    .search-container {
+     .search-container {
         margin-left: auto;
         margin-right: auto;
-        max-width: 700px;
+        width: 90% !important;
     }
 
     .fs16 {
@@ -477,15 +477,6 @@ p, li {
     #button-filter {
         padding: 5px 10px !important;
         font-size: 13px !important;
-    }
-}
-
-
-@media only screen and (max-width: 425px) {
-    .content-container {
-        margin-left: auto;
-        margin-right: auto;
-        max-width: 98% !important;
     }
 }
 
