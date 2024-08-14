@@ -563,3 +563,41 @@ p, li {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
 }
+
+.position-relative {
+    position: relative;
+}
+
+#search-input {
+    padding-right: 35px; /* Add padding to accommodate the clear button */
+}
+
+.clear-btn {
+    border: none;
+    background: none;
+    position: absolute;
+    right: 40px; /* Position 10px from the right border */
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 18px;
+    color: #999;
+    cursor: pointer;
+    z-index: 1000; /* Ensure it’s on top of other elements */
+    width: 50px;
+    padding: 0;
+    display: none; /* Hide by default */
+}
+
+#search-input:not(:placeholder-shown) ~ .clear-btn {
+    display: block; /* Show the clear button when there's text in the input */
+}
+
+.position-absolute {
+    position: absolute;
+}
+
+
+/* Optional: Add custom focus styles if needed */
+.clear-btn:focus {
+    outline: none; /* Ensure no outline appears on focus */
+}
