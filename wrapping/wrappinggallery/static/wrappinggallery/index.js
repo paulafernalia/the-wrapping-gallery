@@ -366,6 +366,9 @@ async function toggleFilterBox(button) {
     if (filtersContainer.style.display === 'none') {
         filtersContainer.style.display = 'block';
 
+        const filtertitle = document.getElementById('filter-title');
+        filtertitle.style.display = 'block';
+
         const buttonBox = document.getElementById('buttonBox');
         buttonBox.style.display = 'block';
 
