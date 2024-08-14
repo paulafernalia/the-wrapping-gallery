@@ -11,28 +11,25 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Set up SSH agent
-        uses: webfactory/ssh-agent@v0.5.3
-        with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-
-      - name: SSH and Deploy
+      - uses: actions/checkout@v2
+      - name: Build & Deploy
+        env:
+            PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+            REMOTE_HOST: ${{secrets.REMOTE_HOST}}
+            REMOTE_USER: ${{secrets.REMOTE_USER}}
+      
         run: |
-          ssh -o StrictHostKeyChecking=no ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }} << 'EOF'
-            cd the-wrapping-gallery/wrapping
+          echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
+          ssh -o StrictHostKeyChecking=no -i private_key ${REMOTE_USER}@${REMOTE_HOST} '
 
-            # Ensure we are on the main branch
+            cd the-wrapping-gallery/wrapping
             git fetch origin
             git checkout main
             git pull origin main
-
             docker-compose -f docker-compose.prod.yml down
             docker-compose -f docker-compose.prod.yml build
             docker-compose -f docker-compose.prod.yml up -d
-          EOF
+            '
 
       - name: Purge Cloudflare Cache
         env:
