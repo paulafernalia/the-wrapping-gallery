@@ -362,6 +362,7 @@ function setActiveButton(button) {
 }
 
 async function toggleFilterBox(button) {
+    button.blur();
     const filtersContainer = document.getElementById('filters-container');
     if (filtersContainer.style.display === 'none') {
         filtersContainer.style.display = 'block';
