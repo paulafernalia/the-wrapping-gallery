@@ -1,6 +1,7 @@
 from django.test import TestCase
 from .models import Carry, Ratings
 from django.db import IntegrityError
+from django.core.exceptions import ValidationError
 
 
 # Create your tests here.
@@ -104,3 +105,60 @@ class CarryTestCase(TestCase):
                 fancy=1.0,
                 votes=5,
             )
+
+class CarryVideoTest(TestCase):
+
+    def test_videoauthor2_cannot_be_set_if_videoauthor_is_null(self):
+        carry = Carry(
+            name="test_carry",
+            title="Test Carry",
+            size=0,
+            shoulders=2,
+            layers=2,
+            mmposition=0,
+            position="front",
+            finish="TIF",
+            videoauthor=None,
+            videoauthor2="Author 2",
+        )
+
+        with self.assertRaises(ValidationError):
+            carry.clean()
+
+    def test_videoauthor3_cannot_be_set_if_videoauthor2_is_null(self):
+        carry = Carry(
+            name="test_carry",
+            title="Test Carry",
+            size=0,
+            shoulders=2,
+            layers=2,
+            mmposition=0,
+            position="front",
+            finish="TIF",
+            videoauthor="Author 1",
+            videoauthor2=None,
+            videoauthor3="Author 3",
+        )
+
+        with self.assertRaises(ValidationError):
+            carry.clean()
+
+    def test_valid_carry_with_videoauthors(self):
+        carry = Carry(
+            name="test_carry",
+            title="Test Carry",
+            size=0,
+            shoulders=2,
+            layers=2,
+            mmposition=0,
+            position="front",
+            finish="TIF",
+            videoauthor="Author 1",
+            videoauthor2="Author 2",
+            videoauthor3="Author 3",
+        )
+
+        try:
+            carry.clean()  # Should not raise any exceptions
+        except ValidationError:
+            self.fail("Carry.clean() raised ValidationError unexpectedly!")
