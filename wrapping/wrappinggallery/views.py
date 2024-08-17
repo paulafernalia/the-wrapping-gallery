@@ -37,6 +37,35 @@ def about(request):
     return render(request, "wrappinggallery/about.html", context)
 
 
+def faq(request):
+    size_lengths = {
+        1: '2.2m',
+        2: '2.7m',
+        3: '3.2m',
+        4: '3.7m',
+        5: '4.2m',
+        6: '4.7m',
+        7: '5.2m',
+        8: '5.7m',
+        9: '6.2m',
+    }
+
+    clothes_size = {
+        "XS/S shirt": "size 5",
+        "M/L shirt": "size 6",
+        "XL/2X shirt": "size 7",
+        "3X/4X shirt": 'size 8',
+        "5X/6X shirt": 'size 9',
+    }
+    
+    context = {
+        'size_lengths': size_lengths,
+        'clothes_size': clothes_size,
+    }
+
+    return render(request, "wrappinggallery/faq.html", context)
+
+
 def steps_url(request, prefix):
     supabase = utils.initialise_supabase()
     bucketname = settings.SUPABASE_TUTORIAL_BUCKET
@@ -80,6 +109,18 @@ def carry(request, name):
 
         carry_dict["videoauthor"] = "NA"
         carry_dict["videotutorial"] = "NA"
+
+    if carry_dict["videoauthor2"] == "" or carry_dict["videoauthor2"] is None:
+        assert carry_dict["videotutorial2"] == "" or carry_dict["videotutorial2"] is None
+
+        carry_dict["videoauthor2"] = "NA"
+        carry_dict["videotutorial2"] = "NA"
+
+    if carry_dict["videoauthor3"] == "" or carry_dict["videoauthor3"] is None:
+        assert carry_dict["videotutorial3"] == "" or carry_dict["videotutorial3"] is None
+
+        carry_dict["videoauthor3"] = "NA"
+        carry_dict["videotutorial3"] = "NA"
 
     # Get image from name 
     image_url = utils.generate_server_url(name, carry_dict["position"].lower())

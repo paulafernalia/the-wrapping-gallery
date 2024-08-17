@@ -137,15 +137,6 @@ h4 {
     margin-bottom: 10px; /* Adjust this value to change the space between groups */
 }
 
-
-/*@media only screen and (max-width: 768px) {
-    
-
-    .three-column-container {
-        flex-direction: column; 
-    }
-}*/
-
 /* Media query for small screens */
 @media only screen and (max-width: 1024px) {
     .three-column-container .column img {

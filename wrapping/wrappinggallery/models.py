@@ -1,6 +1,7 @@
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
 
 
 # Create your models here.
@@ -34,12 +35,19 @@ class Carry(models.Model):
             1: "Starts 1 measure off centre",
             1.5: "Starts 1.5 measures off centre",
             2: "Starts 2 measures off centre",
+            3: "Starts centred on your chest",
+            4: "Starts centred on your back",
+            5: "Starts on your shoulder",
         }
     )
 
     videotutorial = models.URLField(blank=True, null=True)
+    videotutorial2 = models.URLField(blank=True, null=True)
+    videotutorial3 = models.URLField(blank=True, null=True)
 
     videoauthor = models.CharField(max_length=64, blank=True, null=True)
+    videoauthor2 = models.CharField(max_length=64, blank=True, null=True)
+    videoauthor3 = models.CharField(max_length=64, blank=True, null=True)
 
     position = models.CharField(
         max_length=5,
@@ -71,9 +79,7 @@ class Carry(models.Model):
 
     def __str__(self):
         return f"{self.name}: {self.position} carry, {self.size}, {self.mmposition}"
-
-    def is_valid_carry(self):
-        return not self.pretied or not self.position == "back"
+        
 
     def to_dict(self):
         return {
@@ -89,7 +95,40 @@ class Carry(models.Model):
             "description": self.description,
             "videotutorial": self.videotutorial,
             "videoauthor": self.videoauthor,
+            "videotutorial2": self.videotutorial2,
+            "videoauthor2": self.videoauthor2,
+            "videotutorial3": self.videotutorial3,
+            "videoauthor3": self.videoauthor3,
         }
+
+
+    def clean(self):
+        # Ensure carry cannot be pretied if it is a back carry
+        if self.pretied == 1 and self.position == "back":
+            raise ValidationError("a back carry cannot be pretied")
+
+        # Ensure videoauthor2 cannot be not null if videoauthor is null
+        if self.videoauthor2 and not self.videoauthor:
+            raise ValidationError("videoauthor2 cannot be set if videoauthor is null.")
+
+        # Ensure videoauthor3 cannot be not null if videoauthor2 is null
+        if self.videoauthor3 and not self.videoauthor2:
+            raise ValidationError("videoauthor3 cannot be set if videoauthor2 is null.")
+
+        # Ensure that if one of the pair is set, the other must also be set
+        if (self.videotutorial and not self.videoauthor) or (not self.videotutorial and self.videoauthor):
+            raise ValidationError("Both videoauthor and videotutorial must be either set or both blank.")
+
+        if (self.videotutorial2 and not self.videoauthor2) or (not self.videotutorial2 and self.videoauthor2):
+            raise ValidationError("Both videoauthor2 and videotutorial2 must be either set or both blank.")
+
+        if (self.videotutorial3 and not self.videoauthor3) or (not self.videotutorial3 and self.videoauthor3):
+            raise ValidationError("Both videoauthor3 and videotutorial3 must be either set or both blank.")
+
+
+    def save(self, *args, **kwargs):
+        self.clean()
+        super().save(*args, **kwargs)
 
 
 class Ratings(models.Model):

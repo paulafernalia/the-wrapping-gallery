@@ -1,0 +1,80 @@
+table {
+    text-align: center; /* Center the text */
+    max-width: 100%;
+    font-weight: normal !important;
+    border-collapse: collapse;
+    font-family: Poppins, sans-serif; /* Change font */
+}
+th, td {
+    font-weight: normal !important;
+    padding: 3px 20px; /* Increase separation between columns */
+    text-align: center; /* Center the text */
+}
+th {
+    border-bottom: 2px solid #000; /* Horizontal border underneath the first line */
+}
+td {
+    border: none; /* Remove all borders */
+}
+
+.aligned-list {
+    list-style-position: inside;
+    padding-left: 0;
+    margin-left: 0;
+}
+
+
+/* Styles for the difficulty table */
+.rating-table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-bottom: 20px; /* optional: adds space below the table */
+}
+
+.rating-table th {
+    text-align: left;
+    padding-bottom: 10px;
+}
+
+.rating-table td:first-child {
+    font-weight: bold;
+    padding-right: 10px;
+    text-align: left;
+    width: 40px; /* Adjust as needed */
+    text-align: center; /* Center the text in the first column */
+}
+
+.rating-table td {
+    text-align: left;
+    padding: 5px 0; /* Adjust padding as needed */
+}
+
+.question {
+    font-family: "Playfair Display";
+    font-size: 22px; /* Adjust font size as needed */
+}
+
+table {
+    text-align: center; /* Center the text */
+    max-width: 100%;
+    font-weight: normal !important;
+    border-collapse: collapse;
+    font-family: Poppins, sans-serif; /* Change font */
+}
+th, td {
+    font-weight: normal !important;
+    padding: 3px 20px; /* Increase separation between columns */
+    text-align: center; /* Center the text */
+}
+th {
+    border-bottom: 2px solid #000; /* Horizontal border underneath the first line */
+}
+td {
+    border: none; /* Remove all borders */
+}
+
+.aligned-list {
+    list-style-position: inside;
+    padding-left: 0;
+    margin-left: 0;
+}
