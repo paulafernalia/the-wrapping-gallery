@@ -120,6 +120,7 @@ class CarryVideoTest(TestCase):
             finish="TIF",
             videoauthor=None,
             videoauthor2="Author 2",
+            videotutorial2="video2",
         )
 
         with self.assertRaises(ValidationError):
@@ -136,8 +137,10 @@ class CarryVideoTest(TestCase):
             position="front",
             finish="TIF",
             videoauthor="Author 1",
+            videotutorial="video1",
             videoauthor2=None,
             videoauthor3="Author 3",
+            videotutorial3="video3",
         )
 
         with self.assertRaises(ValidationError):
@@ -153,6 +156,9 @@ class CarryVideoTest(TestCase):
             mmposition=0,
             position="front",
             finish="TIF",
+            videotutorial="video1",
+            videotutorial2="video2",
+            videotutorial3="video3",
             videoauthor="Author 1",
             videoauthor2="Author 2",
             videoauthor3="Author 3",
@@ -162,3 +168,122 @@ class CarryVideoTest(TestCase):
             carry.clean()  # Should not raise any exceptions
         except ValidationError:
             self.fail("Carry.clean() raised ValidationError unexpectedly!")
+
+    def test_videoauthor_and_videotutorial_both_blank_or_filled(self):
+        # Test case where both fields are blank
+        carry = Carry(
+            name="carry_test_1",
+            title="Test Carry 1",
+            size=0,
+            shoulders=2,
+            layers=2,
+            mmposition=0,
+            position="front",
+            finish="TUB"
+        )
+        try:
+            carry.full_clean()  # This should pass
+        except ValidationError:
+            self.fail("ValidationError raised unexpectedly when both videoauthor and videotutorial are blank.")
+
+        # Test case where both fields are filled
+        carry.videotutorial = "http://example.com/video"
+        carry.videoauthor = "Author Name"
+        try:
+            carry.full_clean()  # This should pass
+        except ValidationError:
+            self.fail("ValidationError raised unexpectedly when both videoauthor and videotutorial are filled.")
+
+        # Test case where only one is filled
+        carry.videoauthor = ""
+        with self.assertRaises(ValidationError):
+            carry.full_clean()  # This should raise a ValidationError
+
+        carry.videoauthor = "Author Name"
+        carry.videotutorial = ""
+        with self.assertRaises(ValidationError):
+            carry.full_clean()  # This should raise a ValidationError
+
+    def test_videoauthor2_and_videotutorial2_both_blank_or_filled(self):
+        # Similar tests for videoauthor2 and videotutorial2
+        carry = Carry(
+            name="carry_test_2",
+            title="Test Carry 2",
+            size=0,
+            shoulders=2,
+            layers=2,
+            mmposition=0,
+            position="front",
+            finish="TUB",
+            videoauthor="Author 1",
+            videotutorial="http://example.com/video1",
+        )
+
+        # Test case where both fields are blank
+        carry.videotutorial2 = ""
+        carry.videoauthor2 = ""
+        try:
+            carry.full_clean()  # This should pass
+        except ValidationError:
+            self.fail("ValidationError raised unexpectedly when both videoauthor2 and videotutorial2 are blank.")
+
+        # Test case where both fields are filled
+        carry.videotutorial2 = "http://example.com/video2"
+        carry.videoauthor2 = "Author Name 2"
+        try:
+            carry.full_clean()  # This should pass
+        except ValidationError:
+            self.fail("ValidationError raised unexpectedly when both videoauthor2 and videotutorial2 are filled.")
+
+        # Test case where only one is filled
+        carry.videoauthor2 = ""
+        with self.assertRaises(ValidationError):
+            carry.full_clean()  # This should raise a ValidationError
+
+        carry.videoauthor2 = "Author Name 2"
+        carry.videotutorial2 = ""
+        with self.assertRaises(ValidationError):
+            carry.full_clean()  # This should raise a ValidationError
+
+    def test_videoauthor3_and_videotutorial3_both_blank_or_filled(self):
+        # Similar tests for videoauthor3 and videotutorial3
+        carry = Carry(
+            name="carry_test_3",
+            title="Test Carry 3",
+            size=0,
+            shoulders=2,
+            layers=2,
+            mmposition=0,
+            position="front",
+            finish="TUB",
+            videoauthor="Author 1",
+            videotutorial="http://example.com/video1",
+            videoauthor2="Author 2",
+            videotutorial2="http://example.com/video2",
+        )
+
+        # Test case where both fields are blank
+        carry.videotutorial3 = ""
+        carry.videoauthor3 = ""
+        try:
+            carry.full_clean()  # This should pass
+        except ValidationError:
+            self.fail("ValidationError raised unexpectedly when both videoauthor3 and videotutorial3 are blank.")
+
+        # Test case where both fields are filled
+        carry.videotutorial3 = "http://example.com/video3"
+        carry.videoauthor3 = "Author Name 3"
+        try:
+            carry.full_clean()  # This should pass
+        except ValidationError:
+            self.fail("ValidationError raised unexpectedly when both videoauthor3 and videotutorial3 are filled.")
+
+        # Test case where only one is filled
+        carry.videoauthor3 = ""
+        with self.assertRaises(ValidationError):
+            carry.full_clean()  # This should raise a ValidationError
+
+        carry.videoauthor3 = "Author Name 3"
+        carry.videotutorial3 = ""
+        with self.assertRaises(ValidationError):
+            carry.full_clean()  # This should raise a ValidationError

@@ -112,6 +112,16 @@ class Carry(models.Model):
         if self.videoauthor3 and not self.videoauthor2:
             raise ValidationError("videoauthor3 cannot be set if videoauthor2 is null.")
 
+        # Ensure that if one of the pair is set, the other must also be set
+        if (self.videotutorial and not self.videoauthor) or (not self.videotutorial and self.videoauthor):
+            raise ValidationError("Both videoauthor and videotutorial must be either set or both blank.")
+
+        if (self.videotutorial2 and not self.videoauthor2) or (not self.videotutorial2 and self.videoauthor2):
+            raise ValidationError("Both videoauthor2 and videotutorial2 must be either set or both blank.")
+
+        if (self.videotutorial3 and not self.videoauthor3) or (not self.videotutorial3 and self.videoauthor3):
+            raise ValidationError("Both videoauthor3 and videotutorial3 must be either set or both blank.")
+
 
     def save(self, *args, **kwargs):
         self.clean()
