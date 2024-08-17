@@ -98,6 +98,46 @@
 </div>
 {% endif %}
 
+{% if videoauthor2 != 'NA' %}
+<br><br>
+<div class="title-container poppins-bold fsmedium">
+    Video tutorial by {{videoauthor2}}
+</div>
+<div class="content-container">
+    <br>
+    <div class="video-container">>
+        <iframe width="560" height="315" src="{{videotutorial2}}"
+            title="YouTube video player" 
+            frameborder="0" 
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+            referrerpolicy="strict-origin-when-cross-origin" 
+            allowfullscreen>
+        </iframe>
+    </div>
+    <br>
+</div>
+{% endif %}
+
+{% if videoauthor3 != 'NA' %}
+<br><br>
+<div class="title-container poppins-bold fsmedium">
+    Video tutorial by {{videoauthor3}}
+</div>
+<div class="content-container">
+    <br>
+    <div class="video-container">>
+        <iframe width="560" height="315" src="{{videotutorial3}}"
+            title="YouTube video player" 
+            frameborder="0" 
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+            referrerpolicy="strict-origin-when-cross-origin" 
+            allowfullscreen>
+        </iframe>
+    </div>
+    <br>
+</div>
+{% endif %}
+
 <div id="loadingSpinner" class="loading-spinner"></div>
 <br><br>
 <div id="tutorial-content">
