@@ -20,6 +20,7 @@
     <link href="{% static 'wrappinggallery/styles.css' %}" rel="stylesheet">
     <link href="{% static 'wrappinggallery/grid.css' %}" rel="stylesheet">
     <link href="{% static 'wrappinggallery/carry.css' %}" rel="stylesheet">
+    <link href="{% static 'wrappinggallery/faq.css' %}" rel="stylesheet">
     <link rel="shortcut icon" type="image/png" href="{% static 'wrappinggallery/favicon.ico' %}"/>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -50,6 +51,9 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link poppins-light {% if request.path == '/' %}active{% endif %}" data-page="carries-page" href="{% url 'index' %}">Carries</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link poppins-light {% if request.path == '/faq/' %}active{% endif %}" data-page="faq-page" href="{% url 'faq' %}">FAQ</a>
                 </li>
             </ul>
         </div>

@@ -18,7 +18,11 @@
             <h4 class="dancing fs32">Carry features</p>
                 <div class="feature poppins-light fscarry"><span class="poppins-bold pink-span">TYPE: </span> {{position}} carry </div>
                 {% if mmposition != 'NA' %}
-                    <div class="feature poppins-light fscarry"><span class="poppins-bold pink-span">MM POSITION: </span> {{mmposition}} </div>
+                    <div class="feature poppins-light fscarry">
+                        <span class="poppins-bold pink-span">MM POSITION:</span>
+                        {{ mmposition }}
+                        <a href="{% url 'faq' %}#faq_mm" class="info-icon" title="What does this mean">i</a>
+                    </div>
                 {% endif %}
                 <div class="feature poppins-light fscarry">
                     <span class="poppins-bold pink-span">CAN BE PRE-TIED: </span> 
@@ -28,14 +32,28 @@
                             No
                         {% endif %}
                 </div>
-                <div class="feature poppins-light fscarry"><span class="poppins-bold pink-span">DIFFICULTY: </span> {{difficulty}} / 5 </div>
-                <div class="feature poppins-light fscarry"><span class="poppins-bold pink-span">FANCY: </span> {{fancy}} / 5</div>
+                <div class="feature poppins-light fscarry">
+                    <span class="poppins-bold pink-span">DIFFICULTY:</span>
+                    {{ difficulty }} / 5
+                    <a href="{% url 'faq' %}#faq_ratings" class="info-icon" title="How do I interpret this rating?">i</a>
+                </div>
+                <div class="feature poppins-light fscarry">
+                    <span class="poppins-bold pink-span">FANCY:</span>
+                    {{ fancy }} / 5
+                    <a href="{% url 'faq' %}#faq_ratings" class="info-icon" title="How do I interpret this rating?">i</a>
+                </div>
+
+
                 <div class="feature poppins-light fscarry"><span class="poppins-bold pink-span">LAYERS: </span> {{layers}} </div>
                 <div class="feature poppins-light fscarry"><span class="poppins-bold pink-span">SHOULDERS: </span> {{shoulders}} </div>
                 <br>
         </div>
         <div class="column">
-            <h4 class="dancing fs32">Ratings</h4>
+            <div class="icon-container">
+                <h4 class="dancing fs32">Ratings</h4>
+                <a href="{% url 'faq' %}#faq_ratings" class="info-icon" title="How do I interpret these ratings">i</a>
+            </div>
+
             <div id="newborn-rating" class="rating-group" data-property="{{newborns}}">
                 <span class="poppins-light fscarry"> Good for newborns</span>
             </div>
@@ -62,7 +80,7 @@
 
 {% if videoauthor != 'NA' %}
 <br><br>
-<div class="title-container poppins-bold fsplus">
+<div class="title-container poppins-bold fsmedium">
     Video tutorial by {{videoauthor}}
 </div>
 <div class="content-container">

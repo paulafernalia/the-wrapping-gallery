@@ -229,6 +229,10 @@ p, li {
     font-size: 14px;
 }
 
+.fssmall {
+    font-size: 13px;
+}
+
 .playfair {
   font-family: "Playfair Display", sans-serif;
 }
@@ -402,6 +406,10 @@ p, li {
         font-size: 13px;
     }
 
+    .fssmall {
+        font-size: 12px;
+    }
+
     .fsmedium {
         font-size: 14px;
     }
@@ -460,6 +468,10 @@ p, li {
 
     .fs16 {
         font-size: 13px;
+    }
+
+    .fssmall {
+        font-size: 12px;
     }
     
     .btn-custom {
@@ -601,4 +613,28 @@ p, li {
 /* Optional: Add custom focus styles if needed */
 .clear-btn:focus {
     outline: none; /* Ensure no outline appears on focus */
+}
+
+
+.info-icon {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    background-color: grey;
+    color: white;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 12px;
+    font-size: 8px;
+    font-family: Arial, sans-serif;
+    text-decoration: none;
+    margin-left: 2px; /* Add some space between the text and the icon */
+    cursor: pointer;
+    vertical-align: super; /* Align the icon with the text */
+}
+
+
+.icon-container {
+    display: flex;
+    align-items: center; /* Aligns the items vertically centered */
 }

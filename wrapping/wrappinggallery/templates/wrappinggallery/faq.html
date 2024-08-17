@@ -1,0 +1,358 @@
+{% extends "wrappinggallery/layout.html" %}
+
+{% load static %}
+
+{% block body %}
+<div id="carryTitle" class="title-container poppins-bold fsmedium">
+    <h1 id="carryName" class="pink" >FAQ</h2>
+        <br>
+    <div id="faq_size" class="pink fsplus">1. What do the different sizes mean?</div>
+    <br>
+    <p class="fs16">Woven wraps come in different lengths and it is widely accepted in the babywearing community that these lengths go from a size 1 (2.2m) to a size 9 (6.2m), and all the numbers in between following 50cm increments:
+
+    <table class=fs16>
+        <thead>
+            <tr>
+                <th>Size</th>
+                <th>Length</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for size, length in size_lengths.items %}
+            <tr>
+                <td>{{ size }}</td>
+                <td>{{ length }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <br>
+
+    <p class="fs16">You can do different carries with different lengths. However, bodies come in all shapes and sizes. As a result, what you can do with a size&nbsp;2 wrap, another person might need a size&nbsp;3 to do it. This is why educational resources state the <b>minimum size that you need to do a particular carry relative to a "base size"</b>, instead of one of the values from the table above. This allows us to quickly work out what size we would need without having to compare our and our child's size with those of the person in the video.<p>
+
+    <p class="fs16">To use this system, first you need to <a href=#faq_base>work out what your base size is.</a> <b>Your base size is the minimum length that you need to do a Front Wrap Cross Carry</b>, most people's first ever carry with a woven wrap. Let's say you have worked out that your base is a size 6. When you see a tutorial that says you need a base&nbsp;-&nbsp;2 to do this carry, you will know you need a size&nbsp;4 (6&nbsp;-&nbsp;2). If it is a base&nbsp;+&nbsp;1 carry, you will need at least a&nbsp;7. Remember this is just the minimum length required. You can use one size up, and you will simply have longer tails. You might get away with one size down if you replace a double knot with a ring finish or if you wrap with precision and can tie a double knot with very short tails..
+    </p>
+
+    <br>
+    <div id="faq_base" class="pink fsplus">2. How can I work out my base size?</div>
+    <br>
+    <p class="fs16">Your base size is the minimum length that you need to do a <a href="{% url 'carry' 'fwcc' %}">Front Wrap Cross Carry</a>. You have different options:</p>
+
+    <p class="fs16">You can make an educated guess based on the base size of people you know who have similarly aged children and a similar body type to yours. There are also <b><a href="https://wrapyourbaby.com/woven-wrap-sizing-guide/" target="_blank">tables online</a> where you can estimate your base size based on the size of clothes you wear</b>:</p>
+
+    <table class=fs16>
+        <thead>
+            <tr>
+                <th>Size</th>
+                <th>Length</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for size, length in clothes_size.items %}
+            <tr>
+                <td>{{ size }}</td>
+                <td>{{ length }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <br>
+    
+    <p class="fs16">Alternatively, you can <b>borrow a long woven wrap from a friend or a sling library and try to do a Front Wrap Cross Carry</b>. If you have long tails ask yourself if you could have tied a double knot with 25cm less in each tail. If the answer is yes you need at least size down. If the answer is no, then this is your base size. If you couldn't even tie it off, your need a longer wrap.</p>
+
+    <p class="fs16">If you own a stretchy wrap, you can use that instead of borrowing a woven wrap. Measure the wrap, do a Front Wrap Cross Carry, and follow the same principles to work out your base size from that. If in doubt, size up: stretchy wraps are thin and stretchy; with a thicker woven wrap of the same length, your tails might be a little bit shorter. Remember, with stretchy wraps you need 3 layers around baby's body and FWCC without spread passes only has 1 layer, so this would not be a safe, hands-free carry to do with a stretchy wrap, but this is for experimental purposes! </p>
+
+
+    <br>
+
+    <div id="faq_buysize" class="pink fsplus">3. What size should I buy?</div>
+    <br>
+    <p class="fs16">
+    While you can certainly make most sizes work if you are keen and you practise, most people find it easier to <b>start with a base size wrap</b>. This is because some of the easiest carries to learn (FWCC and its variations, FCC, ruck tied tibetan) require a base size wrap.</p>
+
+    <p class="fs16">You can have a long and happy wrapping journey with only one wrap. This is perfectly valid. If you, however, decide that you want to try a different size, I personally think <b>base - 2 is a great option for a second wrap</b>. There are lots of beginner-friendly carries in this size that work very well with young babies and a short wrap is very convenient, as it is easy to pack and many carries in this size are quick to do or even poppable, which means you can pre-tie it and pop baby in and out as needed.</p>
+    <br>
+    <div id="faq_ratings" class="pink fsplus">4. How do I interpret the ratings?</div>
+    <br>
+    <p class="fs16">When you go to the <a href="{% url 'index' %}">Carries</a> section of this site and click on one of the results, you will be taken to a page where you will find a lot of information about that carry, including some ratings from 1 to 5 for different characteristics: difficulty, fanciness, suitability for newborns, for feeding, and more.</p>
+
+    <p class="fs16">These characteristics are very subjective. What one person finds difficult to do, another person gets it right the first time. Someone might think a particular carry is excellent for quick ups whereas others might think there are far better options for this. For this reason, my aspiration is that these values be replaced by an average rating calculated with the input of many users who have tried these carries and have shared their experience in The Wrapping Gallery. Until then, these ratings will be based on my own personal opinion and, as such, you should take them with a pinch of salt. </p>
+
+    <br>
+    <table class="rating-table fs16">
+        <thead>
+            <tr>
+                <th colspan="2"><b>Difficulty</b></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td>Very little to no previous experience required (e.g. <a href="{% url 'carry' 'fwcc' %}">FWCC</a>, <a href="{% url 'carry' 'fcc' %}">FCC</a>) </td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>Doable if you know the basics and have wrapped a few times (e.g. <a href="{% url 'carry' 'frts' %}">FRTS</a>, <a href="{% url 'carry' 'ruck_tif' %}">Ruck TIF</a>)</td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>Doable if you have been wrapping for a few weeks, although it may not be perfect (e.g. <a href="{% url 'carry' 'russian_jordan' %}">Russian Jordan</a>, <a href="{% url 'carry' 'bwcc' %}">BWCC</a>)</td>
+            </tr>
+            <tr>
+                <td>4</td>
+                <td>This carry is very technical, it might be hard to follow or to get right if you are not very experienced (e.g. <a href="{% url 'carry' 'rainbows_carry' %}">Rainbow's Carry)</a></td>
+            </tr>
+            <tr>
+                <td>5</td>
+                <td>Only for the bravest wrappers (e.g. <a href="{% url 'carry' 'hannahs_eyelet' %}">Hannah's Eyelet Carry)</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <br>
+    <table class="rating-table fs16">
+        <thead>
+            <tr>
+                <th colspan="2"><b>Fanciness</b></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td>This carry is functional (e.g. <a href="{% url 'carry' 'ruck_tif' %}">Ruck TIF</a>)</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>That's not bad looking at all (e.g. <a href="{% url 'carry' 'coolest_hip_cross_carry' %}">Coolest Hip Cross Carry</a>)</td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>That's cute (e.g. <a href="{% url 'carry' 'kangaroo' %}">Kangaroo</a>)</td>
+            </tr>
+            <tr>
+                <td>4</td>
+                <td>This is a very pretty carry (e.g. <a href="{% url 'carry' 'short_annes_fwcc' %}">Short Anne's FWCC</a>)</td>
+            </tr>
+            <tr>
+                <td>5</td>
+                <td>That is a showstopper (e.g. <a href="{% url 'carry' 'ruckless_bikini_carry' %}">Ruckless Bikini Carry</a>)</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <br>
+    <table class="rating-table fs16">
+        <thead>
+            <tr>
+                <th colspan="2"><b>Good for newborns</b></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td>Not suitable for a newborn: requires torso control or would be difficult to monitor breathing (e.g. <a href="{% url 'carry' 'taiwanese' %}">Taiwanese Back Carry</a>)</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>It could technically work if someone supports you, you do it as a high carry and/or you use a very thin wrap (e.g. <a href="{% url 'carry' 'half_silas_twist' %}">Half Sila's Twist</a>) </td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>It's possible, it would be safe, but maybe not worth faff (e.g. <a href="{% url 'carry' 'fdh' %}">Front Double Hammock</a>)</td>
+            </tr>
+            <tr>
+                <td>4</td>
+                <td>A pretty good carry with a squish (e.g. <a href="{% url 'carry' 'semi_pwcc' %}">Semi Pocket Wrap Cross Carry</a>)</td>
+            </tr>
+            <tr>
+                <td>5</td>
+                <td>No bunched passes under legs, but maybe one behind babies neck, can be done quickly (e.g. <a href="{% url 'carry' 'fwcc_lexi_twist' %}">FWCC with a lexi twist</a>)</td>
+            </tr>
+        </tbody>
+    </table>
+    <br>
+
+    <table class="rating-table fs16">
+        <thead>
+            <tr>
+                <th colspan="2"><b>Good for leg straighteners</b></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td>Single layer, shallow seat, no leg passes. They will pop the seat before you tie it off (e.g. <a href="{% url 'carry' 'ruck_cccb' %}">Ruck CCCB</a>)</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>No leg passes, shallow seat, but an extra layer or bunched pass helps to an extent (e.g. <a href="{% url 'carry' 'fwcc' %}">FWCC</a>) </td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>Not so easy to pop the seat, not impossible (e.g. <a href="{% url 'carry' 'torso_dh' %}">Torso Double Hammock</a>)</td>
+            </tr>
+            <tr>
+                <td>4</td>
+                <td>Very hard to pop, the carry has at least one leg pass (e.g. <a href="{% url 'carry' 'norwegian_wiggleproof' %}">Norwegian Wiggleproof</a>)</td>
+            </tr>
+            <tr>
+                <td>5</td>
+                <td>Absolutely seat popper proof (e.g. <a href="{% url 'carry' 'charlies_cross_carry_knotless' %}">Charlie's Cross Carry</a>)</td>
+            </tr>
+        </tbody>
+    </table>
+    <br>
+
+    <table class="rating-table fs16">
+        <thead>
+            <tr>
+                <th colspan="2"><b>Good for leaners</b></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td>The passes of this carry won't stop them from leaning, or there may be a fall risk while you are wrapping (e.g. <a href="{% url 'carry' 'russian_jordan' %}">Russian Jordan</a>, <a href="{% url 'carry' 'fcc' %}">FCC</a>)</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>Not a great carry for leaners when finished, but you don't have to worry about them possibly falling at any point (e.g. <a href="{% url 'carry' 'fwcc' %}">FWCC</a>, <a href="{% url 'carry' 'tsc' %}">TSC</a>) </td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>Baby can lean to some extent in this carry (e.g. <a href="{% url 'carry' 'semi_pwcc' %}">Semi PWCC</a>)</td>
+            </tr>
+            <tr>
+                <td>4</td>
+                <td>They won't be able to lean once tied off, but a leaner will move around while you are wrapping and resulting in an uneven job (e.g. <a href="{% url 'carry' 'ruckless_bikini_carry' %}">Ruckless Bikini Carry</a>)</td>
+            </tr>
+            <tr>
+                <td>5</td>
+                <td>Absolutely leaner proof (e.g. <a href="{% url 'carry' 'ruck_tied_tibetan' %}">Ruck Tied Tibetan</a>)</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <br>
+
+    <table class="rating-table fs16">
+        <thead>
+            <tr>
+                <th colspan="2"><b>Good for big kids</b></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td>This carry won't give you the support that you need with a heavy kid (e.g. <a href="{% url 'carry' 'ruck_tub' %}">Ruck TUB</a>, <a href="{% url 'carry' 'fcc' %}">FCC</a>)</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>It will be okay for a short period of time (e.g. <a href="{% url 'carry' 'fwcc' %}">FWCC</a>, <a href="{% url 'carry' 'fcc' %}">FCC</a>) </td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>A decent carry with a big kid, maybe not for a long hike (e.g. <a href="{% url 'carry' 'reinforced_robins_hip_carry' %}">Reinforced Robin's Hip Carry</a>)</td>
+            </tr>
+            <tr>
+                <td>4</td>
+                <td>A great carry with a heavy kid (e.g. <a href="{% url 'carry' 'frts_poppins' %}">FRTS Poppins</a>)</td>
+            </tr>
+            <tr>
+                <td>5</td>
+                <td>It will make a heavy kid feel almost weightless (e.g. <a href="{% url 'carry' 'double_twisted_pirate_strangleproof' %}">Strangleproof Double Twisted Pirate</a>)</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <br>
+
+    <table class="rating-table fs16">
+        <thead>
+            <tr>
+                <th colspan="2"><b>Good for feeding</b></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td>You simply can't (e.g. any back carry)</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>It is possible but it would take major adjustments before and/or after feeding (e.g. <a href="{% url 'carry' 'reinforced_robins_hip_carry' %}">Reinforced Robin's Hip Carry</a>) </td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>You can feed in it but adjustments may be a bit annoying (e.g. <a href="{% url 'carry' 'reinforced_robins_hip_carry' %}">Reinforced Robin's Hip Carry</a>)</td>
+            </tr>
+            <tr>
+                <td>4</td>
+                <td>A great carry to feed in with minor adjustments required (e.g. <a href="{% url 'carry' 'robins_hip_carry' %}">Robin's Hip Carry</a>)</td>
+            </tr>
+            <tr>
+                <td>5</td>
+                <td>It takes a few seconds to adjust, it doesn't get easier than this (e.g. <a href="{% url 'carry' 'tsc' %}">TSC</a>)</td>
+            </tr>
+        </tbody>
+    </table>
+    <br>
+
+    <div id="faq_mm" class="pink fsplus">5. What is the middle marker (MM) position?</div>
+    <br>
+    <p class="fs16">Wraps come with a middle marker, which is generally a small label sewed to the top and bottom rails of the wrap to tell us where the middle is. This is to help us to work out where we should place the wrap to start a woven wrap carry.</p>
+
+    <p class="fs16">In back carries, the first step is always to place the wrap over baby's back. Some carries are centred carries and this means you have to place the middle marker on the centre of your babies back before you get them on your back. Some carries start off centre and you will find tutorials that say "it starts 1 DH off centre". This is not very intuitive if you are new to wrapping. What does it mean? We use this notation because this is the starting point of a Double Hammock (DH) TIF. To measure 1 DH off centre, you place the middle marker on the center of your chest run the top rail round to your back. Where it reaches the centre of your back is your starting point for this carry.</p>
+
+    <p class="fs16">If the MM position is 0.5 DH off center, you start as above, but stop when the top rail reaches your armpit. To measure 1.5 DH off centre, you go round your back, reach the centre and keep going until you reach your other armpit. Lastly, to measure, 2 DH off centre you would go around your back and back to the front an up to the centre of your chest where the middle marker is.</p>
+
+     <p class="fs16">Front carries are a different story. There's no standardised way of indicating where to start because you normally put the wrap on first and the pop baby in, so a tutorial will simply tell you where to place the actual MM to start (centre of your back or your chest, on your shoulder...).</p>
+    <br>
+
+</div>
+
+<script>
+    function releaseFooter() {
+        const footer = document.querySelector('footer');
+        footer.style.position = 'static'; // Reset to default position
+        footer.style.bottom = 'auto'; // Reset to default value
+        footer.style.width = 'auto'; // Reset to default width
+    }
+
+
+    function fixFooter() {
+        const footer = document.querySelector('footer');
+        footer.style.position = 'fixed'; 
+        footer.style.bottom = '0';
+        footer.style.width = '100%';
+    }
+
+
+    function updateFooterPosition() {
+        releaseFooter();
+
+        // print position of footer
+        let element = document.querySelector('footer');
+        elementPosition = 0;
+
+        while(element) {
+            elementPosition += element.offsetTop;
+            element = element.offsetParent;
+        }
+
+        let viewportHeight = window.innerHeight;
+
+        if (elementPosition < viewportHeight) {
+            fixFooter();
+        } else {
+            releaseFooter();
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() { 
+        updateFooterPosition();
+    });
+</script>
+
+
+{% endblock %}
