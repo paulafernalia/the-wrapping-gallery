@@ -11,17 +11,16 @@ To run the app in development mode, follow these steps:
 3. Set up the required environment variables in a file called `.env.dev` (see below)
 4. Run `docker compose -f docker-compose.dev.yml up --build -d`
 5. To view on desktop: open http://0.0.0.0:8000 in a browser.
-6. To view on mobile: open http://<your-local-ip>:8000/ on your phone. 
+6. To view on mobile: open http://`<your-local-ip>`:8000/ on your phone. 
 7. Run `docker compose -f docker-compose.dev.yml down` to stop running the app and remove the Docker container.
 
 The `.env.dev` file must be at the same level as `manage.py` and list the following variable:
 
 ```
 DJANGO_SETTINGS_MODULE=wrapping.settings.development
-
 ```
 
-To find <your-local-ip> execute `ifconfig` on your terminal (linux/macOS) and look for the "IPv4 Address" under the section for your active network connection.
+To find `<your-local-ip>` execute `ifconfig` on your terminal (linux/macOS) and look for the "IPv4 Address" under the section for your active network connection.
 
 
 ## Licensing
