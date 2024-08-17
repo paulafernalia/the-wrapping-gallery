@@ -570,6 +570,9 @@ async function updateCarryGallery(carries) {
             const aboutTab = document.querySelector('.nav-link[data-page="about-page"]');
             aboutTab.classList.remove('active');
 
+            const faqTab = document.querySelector('.nav-link[data-page="faq-page"]');
+            faqTab.classList.remove('active');
+
             // Redirect to the constructed URL
             window.location.href = url;
         });
