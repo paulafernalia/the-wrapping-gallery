@@ -35,6 +35,9 @@ class Carry(models.Model):
             1: "Starts 1 measure off centre",
             1.5: "Starts 1.5 measures off centre",
             2: "Starts 2 measures off centre",
+            3: "Starts centred on your chest",
+            4: "Starts centred on your back",
+            5: "Starts on your shoulder",
         }
     )
 
