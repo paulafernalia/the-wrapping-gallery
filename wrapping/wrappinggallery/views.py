@@ -110,6 +110,18 @@ def carry(request, name):
         carry_dict["videoauthor"] = "NA"
         carry_dict["videotutorial"] = "NA"
 
+    if carry_dict["videoauthor2"] == "" or carry_dict["videoauthor2"] is None:
+        assert carry_dict["videotutorial2"] == "" or carry_dict["videotutorial2"] is None
+
+        carry_dict["videoauthor2"] = "NA"
+        carry_dict["videotutorial2"] = "NA"
+
+    if carry_dict["videoauthor3"] == "" or carry_dict["videoauthor3"] is None:
+        assert carry_dict["videotutorial3"] == "" or carry_dict["videotutorial3"] is None
+
+        carry_dict["videoauthor3"] = "NA"
+        carry_dict["videotutorial3"] = "NA"
+
     # Get image from name 
     image_url = utils.generate_server_url(name, carry_dict["position"].lower())
     carry_dict["imageSrc"] = image_url
