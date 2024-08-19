@@ -29,4 +29,4 @@ This project is licensed under the GNU General Public License (GPL), version 3.0
 
 ### Illustrations
 
-The illustrations included in this repository are not covered by the GPL license. These images are protected by copyright, and any use of them outside of this project requires explicit permission from the author. Please contact thewrappinggallery@gmail.com for more information.
+The illustrations included in this repository under `wrapping/wrappinggallery/static/wrappinggallery/illustrations` are not covered by the GPL license. These images are protected by copyright, and any use of them outside of this project requires explicit permission from the author. Please contact thewrappinggallery@gmail.com for more information.
