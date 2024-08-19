@@ -15,7 +15,7 @@
         <div class="input-group mb-3 position-relative">
             <input id="search-input" type="text" class="form-control input-format poppins-light fs16" placeholder="Type part of the name">
             <button id="button-filter" class="btn btn-outline-secondary ml-4 poppins-light fs16" type="button" onclick="toggleFilterBox(this)">
-                <img src="{% static 'wrappinggallery/filters_white.svg' %}" alt="Filters" style="width: 1em; height: 1em;">
+                <img src="{% static 'wrappinggallery/icons/filters_white.svg' %}" alt="Filters" style="width: 1em; height: 1em;">
             </button>
             <!-- Clear button -->
             <button id="clear-search" class="clear-btn position-absolute" type="button" onclick="clearSearch()">
@@ -183,6 +183,6 @@
 <br>
 <br>
 
-<script src="{% static 'wrappinggallery/index.js' %}"></script>
+<script src="{% static 'wrappinggallery/js/index.js' %}"></script>
 
 {% endblock %}
