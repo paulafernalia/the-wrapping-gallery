@@ -25,12 +25,13 @@ body {
 
 .row {
     max-width: 100%;
+    margin: 0 auto;
 }
 
 
 #buttonBox {
-    max-width: 900px;
-    padding: 40px 0px;
+    max-width: 100%;
+    padding: 20px 0px;
 }
 
 .navbar-brand {
@@ -91,7 +92,8 @@ body {
     border: 2px solid #222;
     border-radius: 10px;
     margin-right: 30px;
-    margin-bottom: 10px;
+    margin-top: 5px;
+    margin-bottom: 5px;
     font-size: 14px;
     font-weight: 700;
     padding: 7px 20px;
@@ -128,10 +130,10 @@ body {
 
 /* Disabled state */
 .btn-custom.disabled {
-    background-color: white;
-    color: #ddd;
+    background-color: lightgrey;
+    color: grey;
     cursor: not-allowed;
-    border: 2px solid #ddd;
+    border: 2px solid grey;
 }
 
 .btn-custom.disabled:hover {
@@ -374,6 +376,22 @@ p, li {
     max-width: 1000px;
 }
 
+.fixed-container {
+    marging-top: 0px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 0px;
+    max-width: 100%;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    text-align: center;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Small shadow */
+    background-color: lightgrey; /* Optional: to ensure the shadow is visible */
+    z-index: 1000;  Ensure it stays above other content 
+}
+
 #showMoreBtn {
     margin-top: 30px;
     margin-bottom: 30px;
@@ -476,15 +494,13 @@ p, li {
     
     .btn-custom {
         color: #222;
-        border: 1.5px solid #222;
         border-radius: 12px;
         margin-right: 3px !important;
-        margin-bottom: 10px;
         padding: 5px 12px;
     }
 
     .dropdown select {
-        border: 1.5px solid #222;
+        border: 2px solid #222;
     }
 
     #button-filter {
@@ -637,4 +653,26 @@ p, li {
 .icon-container {
     display: flex;
     align-items: center; /* Aligns the items vertically centered */
+}
+
+
+.filter-tag {
+    background-color: #e0e0e0;  /* Light grey background */
+    border-radius: 4px;  /* Rounded corners */
+    padding: 5px 10px;  /* Padding inside the rectangle */
+    margin-right: 5px;  /* Space between filters */
+    margin-bottom: 5px;
+    display: inline-block;  /* Display inline with other elements */
+    font-size: 12px;  /* Adjust the font size */
+    color: #333;  /* Text color */
+}
+
+.reset-button {
+    cursor: pointer;
+    font-size: 14px;
+    padding-left: 2px;
+    padding-right: 2px;
+    border-radius: 50%;
+    margin-left: 2px;
+    vertical-align: middle;
 }

@@ -134,6 +134,10 @@ async function resetFilters() {
     // Disable reset button
     const resetFiltersBtn = document.getElementById('resetFiltersBtn');
     resetFiltersBtn.classList.add('disabled');
+
+    // Display gallery
+    emptyCarryGallery();
+    showResults();
 }
 
 function initialiseButtonData(property) {
@@ -299,9 +303,129 @@ async function fetchFilteredCarries(includeAll = false) {
     return data.carries;
 }
 
+
+function showAppliedFilters() {
+    // Clear previous filters
+    const filtersApplied = document.getElementById('filters-applied');
+    filtersApplied.innerHTML = '';  // Clear any existing content
+
+    // Function to create and style a filter span
+    function createFilterSpan(text) {
+        const span = document.createElement('span');
+        span.className = 'filter-tag';  // Add a class for styling
+        span.textContent = text;
+        return span;
+    }
+
+    let anyApplied = false;
+
+    if (localStorage["size"] !== "Any") {
+        let sizeStr;
+        const sizeInt = parseInt(localStorage["size"]);
+        if (sizeInt === 0) {
+            sizeStr = "Base";
+        } else if (sizeInt > 0) {
+            sizeStr = "Base +" + localStorage["size"];
+        } else {
+            sizeStr = "Base " + localStorage["size"];
+        }
+
+        filtersApplied.appendChild(createFilterSpan("Size: " + sizeStr));
+        anyApplied = true;
+    }
+
+    if (localStorage["difficulty"] !== "Any") {
+        filtersApplied.appendChild(createFilterSpan("Difficulty: " + localStorage["difficulty"]));
+        anyApplied = true;
+    }
+
+    if (localStorage["position"] !== "Any") {
+        filtersApplied.appendChild(createFilterSpan(localStorage["position"] + " carries"));
+        anyApplied = true;
+    }
+
+    if (localStorage["finish"] !== "Any") {
+        filtersApplied.appendChild(createFilterSpan("Finish: " + localStorage["finish"]));
+        anyApplied = true;
+    }
+
+    if (localStorage["mmposition"] !== "Any") {
+        filtersApplied.appendChild(createFilterSpan("MM position: " + localStorage["mmposition"]));
+        anyApplied = true;
+    }
+
+    if (localStorage["layers"] !== "Any") {
+        filtersApplied.appendChild(createFilterSpan(localStorage["layers"] + " layers"));
+        anyApplied = true;
+    }
+
+    if (localStorage["shoulders"] !== "Any") {
+        filtersApplied.appendChild(createFilterSpan(localStorage["shoulders"] + " shoulders"));
+        anyApplied = true;
+    }
+
+    if (localStorage["bigkids"] === "1") {
+        filtersApplied.appendChild(createFilterSpan("Good for big kids"));
+        anyApplied = true;
+    }
+
+    if (localStorage["pretied"] === "1") {
+        filtersApplied.appendChild(createFilterSpan("Can be pre-tied"));
+        anyApplied = true;
+    }
+
+    if (localStorage["leaners"] === "1") {
+        filtersApplied.appendChild(createFilterSpan("Good for leaners"));
+        anyApplied = true;
+    }
+
+    if (localStorage["quickups"] === "1") {
+        filtersApplied.appendChild(createFilterSpan("Good for quickups"));
+        anyApplied = true;
+    }
+
+    if (localStorage["legstraighteners"] === "1") {
+        filtersApplied.appendChild(createFilterSpan("Good for leg straighteners"));
+        anyApplied = true;
+    }
+
+    if (localStorage["feeding"] === "1") {
+        filtersApplied.appendChild(createFilterSpan("Good for feeding"));
+        anyApplied = true;
+    }
+
+    if (localStorage["newborns"] === "1") {
+        filtersApplied.appendChild(createFilterSpan("Good for newborns"));
+        anyApplied = true;
+    }
+
+    if (localStorage["fancy"] === "1") {
+        filtersApplied.appendChild(createFilterSpan("Fancy carry"));
+        anyApplied = true;
+    }
+
+    // If any filters were added, add the reset "x" button
+    if (anyApplied) {
+        const resetButton = document.createElement('span');
+        resetButton.className = 'reset-button';
+        resetButton.innerHTML = '&times;';  // Use &times; HTML entity for ×
+        resetButton.title = 'Reset Filters';
+        resetButton.onclick = function() {
+            // Clear filters in localStorage
+            resetFilters();
+        };
+        filtersApplied.appendChild(resetButton);
+    }
+}
+
+
+
 async function showResults() {
     // Hide all filters
     hideAllFilters();
+
+    // Show applied filters
+    showAppliedFilters();
 
     // Populate gallery
     const carries = await fetchFilteredCarries();
@@ -378,6 +502,9 @@ async function toggleFilterBox(button) {
 
     } else {
         hideAllFilters();
+
+        // Show applied filters
+        showAppliedFilters();
 
         const carries = await fetchFilteredCarries();
         updateCarryGallery(carries);
@@ -475,6 +602,9 @@ function emptyCarryGallery() {
     const countText = document.getElementById('count-text');
     countText.style.display = 'none';
 
+    const filtersApplied = document.getElementById('filters-applied');
+    filtersApplied.style.display = 'none';
+
     const gridContainer = document.getElementById('imageGrid');
     gridContainer.innerHTML = '';
 
@@ -510,6 +640,9 @@ async function updateCarryGallery(carries) {
     // // Show text counting results
     const countText = document.getElementById('count-text');
     countText.style.display = 'block';
+
+    const filtersApplied = document.getElementById('filters-applied');
+    filtersApplied.style.display = 'block';
 
     // Disable filters until all images have rendered
     const filterBtn = document.getElementById('button-filter');
@@ -590,48 +723,6 @@ async function updateCarryGallery(carries) {
 }
 
 
-
-document.addEventListener('DOMContentLoaded', function() { 
-    // Reset gallery
-    emptyCarryGallery();
-
-    // Decide where footer should be
-    updateFooterPosition();
-
-    // Set initial active buttons in filters
-    const anyapplied = initialiseFilters();
-
-    // Update button box
-    updateButtonBox();
-
-    // Update reset filters button
-    resetFiltersBtn = document.getElementById('resetFiltersBtn');
-
-    // If any filters applied, show filter box to alert user
-    if (anyapplied > 0) {
-        showAllFilters();
-
-        resetFiltersBtn.classList.remove('disabled');
-    } else {
-        // Get all carries with session data and update gallery
-        resetFiltersBtn.classList.add('disabled');
-
-        // Filter carries by the property selected in the button
-        emptyCarryGallery();
-        showResults();
-    }
-
-    const searchInput = document.getElementById('search-input');
-    searchInput.addEventListener('keydown', function(event) {
-        if (event.key === 'Enter') {
-            event.preventDefault(); // Prevent the default action (if necessary)
-            handleInputChange();
-            this.blur();
-        }
-    });
-});
-
-
 // Define the async function to handle scrolling
 async function handleScroll() {
     const gridContainer = document.getElementById('imageGrid');
@@ -676,4 +767,45 @@ function clearSearch() {
 document.getElementById('search-input').addEventListener('input', function() {
     const clearBtn = document.getElementById('clear-search');
     clearBtn.style.display = this.value ? 'block' : 'none';
+});
+
+
+document.addEventListener('DOMContentLoaded', async function() { 
+    // Reset gallery
+    emptyCarryGallery();
+
+    // Decide where footer should be
+    updateFooterPosition();
+
+    // Set initial active buttons in filters
+    const anyapplied = await initialiseFilters();
+
+    // Update button box
+    updateButtonBox();
+
+    // Update reset filters button
+    resetFiltersBtn = document.getElementById('resetFiltersBtn');
+
+    // If any filters applied, show filter box to alert user
+    if (anyapplied > 0) {
+        showAllFilters();
+
+        resetFiltersBtn.classList.remove('disabled');
+    } else {
+        // Get all carries with session data and update gallery
+        resetFiltersBtn.classList.add('disabled');
+
+        // Filter carries by the property selected in the button
+        emptyCarryGallery();
+        showResults();
+    }
+
+    const searchInput = document.getElementById('search-input');
+    searchInput.addEventListener('keydown', function(event) {
+        if (event.key === 'Enter') {
+            event.preventDefault(); // Prevent the default action (if necessary)
+            handleInputChange();
+            this.blur();
+        }
+    });
 });
