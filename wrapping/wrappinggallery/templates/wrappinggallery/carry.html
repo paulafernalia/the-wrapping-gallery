@@ -17,13 +17,11 @@
         <div class="column">
             <h4 class="dancing fs32">Carry features</p>
                 <div class="feature poppins-light fscarry"><span class="poppins-bold pink-span">TYPE: </span> {{position}} carry </div>
-                {% if mmposition != 'NA' %}
-                    <div class="feature poppins-light fscarry">
-                        <span class="poppins-bold pink-span">MM POSITION:</span>
-                        {{ mmposition }}
-                        <a href="{% url 'faq' %}#faq_mm" class="info-icon" title="What does this mean">i</a>
-                    </div>
-                {% endif %}
+                <div class="feature poppins-light fscarry">
+                    <span class="poppins-bold pink-span">MM POSITION:</span>
+                    {{ mmposition }}
+                    <a href="{% url 'faq' %}#faq_mm" class="info-icon" title="What does this mean">i</a>
+                </div>
                 <div class="feature poppins-light fscarry">
                     <span class="poppins-bold pink-span">CAN BE PRE-TIED: </span> 
                         {% if pretied %}
