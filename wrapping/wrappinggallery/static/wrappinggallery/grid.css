@@ -54,9 +54,10 @@ h2 {
     position: absolute; /* Position absolutely within the grid item */
     bottom: 5px; /* Space from the bottom of the grid item */
     width: 100%; /* Full width of the grid item */
-    padding: 10px; /* Padding around the text */
+    padding: 0px; /* Padding around the text */
+    margin-bottom: 20px;
     box-sizing: border-box; /* Ensure padding does not overflow the container */
-    background-color: rgba(255, 255, 255, 0.1); /* Semi-transparent background */
+    background-color: rgba(245, 247, 248, 0.5); /* Semi-transparent background */
 }
 
 .carrydesc,
@@ -70,6 +71,6 @@ h2 {
 /* Media query for very narrow viewports */
 @media (max-width: 768px) { /* Adjust the max-width as needed */
     .grid {
-        grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); /* Responsive grid layout */
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); /* Responsive grid layout */
     }
 }
