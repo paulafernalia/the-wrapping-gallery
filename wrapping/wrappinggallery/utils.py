@@ -45,8 +45,8 @@ def generate_signed_urls(file_paths, bucket, supabase=supabase_client):
 
 
 def generate_server_url(file_name, position):
-    static_url = settings.STATIC_URL + "/wrappinggallery/images/"
-    static_path = os.path.join(settings.STATIC_ROOT, "wrappinggallery", "images")
+    static_url = settings.STATIC_URL + "/wrappinggallery/illustrations/"
+    static_path = os.path.join(settings.STATIC_ROOT, "wrappinggallery", "illustrations")
 
     image_url = static_url + f"{file_name}.png"
     image_path = os.path.join(static_path, f"{file_name}.png")
