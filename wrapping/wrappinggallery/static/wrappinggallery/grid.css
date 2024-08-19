@@ -71,6 +71,6 @@ h2 {
 /* Media query for very narrow viewports */
 @media (max-width: 768px) { /* Adjust the max-width as needed */
     .grid {
-        grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); /* Responsive grid layout */
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); /* Responsive grid layout */
     }
 }
