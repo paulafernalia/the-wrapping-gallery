@@ -25,12 +25,13 @@ body {
 
 .row {
     max-width: 100%;
+    margin: 0 auto;
 }
 
 
 #buttonBox {
-    max-width: 900px;
-    padding: 40px 0px;
+    max-width: 100%;
+    padding: 20px 0px;
 }
 
 .navbar-brand {
@@ -91,7 +92,8 @@ body {
     border: 2px solid #222;
     border-radius: 10px;
     margin-right: 30px;
-    margin-bottom: 10px;
+    margin-top: 5px;
+    margin-bottom: 5px;
     font-size: 14px;
     font-weight: 700;
     padding: 7px 20px;
@@ -128,10 +130,10 @@ body {
 
 /* Disabled state */
 .btn-custom.disabled {
-    background-color: white;
-    color: #ddd;
+    background-color: lightgrey;
+    color: grey;
     cursor: not-allowed;
-    border: 2px solid #ddd;
+    border: 2px solid grey;
 }
 
 .btn-custom.disabled:hover {
@@ -374,6 +376,22 @@ p, li {
     max-width: 1000px;
 }
 
+.fixed-container {
+    marging-top: 0px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 0px;
+    max-width: 100%;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    text-align: center;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Small shadow */
+    background-color: lightgrey; /* Optional: to ensure the shadow is visible */
+    z-index: 1000;  Ensure it stays above other content 
+}
+
 #showMoreBtn {
     margin-top: 30px;
     margin-bottom: 30px;
@@ -478,7 +496,6 @@ p, li {
         color: #222;
         border-radius: 12px;
         margin-right: 3px !important;
-        margin-bottom: 10px;
         padding: 5px 12px;
     }
 
