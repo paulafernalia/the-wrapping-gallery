@@ -349,8 +349,8 @@ function showAppliedFilters() {
         anyApplied = true;
     }
 
-    if (localStorage["finish"] !== "Any") {
-        filtersApplied.appendChild(createFilterSpan(localStorage["mmposition"]));
+    if (localStorage["mmposition"] !== "Any") {
+        filtersApplied.appendChild(createFilterSpan("MM position: " + localStorage["mmposition"]));
         anyApplied = true;
     }
 
