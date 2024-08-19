@@ -134,6 +134,10 @@ async function resetFilters() {
     // Disable reset button
     const resetFiltersBtn = document.getElementById('resetFiltersBtn');
     resetFiltersBtn.classList.add('disabled');
+
+    // Display gallery
+    emptyCarryGallery();
+    showResults();
 }
 
 function initialiseButtonData(property) {
@@ -409,10 +413,6 @@ function showAppliedFilters() {
         resetButton.onclick = function() {
             // Clear filters in localStorage
             resetFilters();
-            resetFiltersBtn.classList.add('disabled');
-            // Filter carries by the property selected in the button
-            emptyCarryGallery();
-            showResults();
         };
         filtersApplied.appendChild(resetButton);
     }
