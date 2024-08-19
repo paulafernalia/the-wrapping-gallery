@@ -316,7 +316,17 @@ function showAppliedFilters() {
     let anyApplied = false;
 
     if (localStorage["size"] !== "Any") {
-        filtersApplied.appendChild(createFilterSpan("Size: " + localStorage["size"]));
+        let sizeStr;
+        const sizeInt = parseInt(localStorage["size"]);
+        if (sizeInt === 0) {
+            sizeStr = "Base";
+        } else if (sizeInt > 0) {
+            sizeStr = "Base +" + localStorage["size"];
+        } else {
+            sizeStr = "Base " + localStorage["size"];
+        }
+
+        filtersApplied.appendChild(createFilterSpan("Size: " + sizeStr));
         anyApplied = true;
     }
 
