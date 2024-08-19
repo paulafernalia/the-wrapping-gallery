@@ -31,9 +31,9 @@ class Carry(models.Model):
         choices={
             -1: "Follow tutorial",
             0: "Centred",
-            0.5: "0.5 DH off centre",
+            6: "0.5 DH off centre",
             1: "1 DH off centre",
-            1.5: "1.5 DH off centre",
+            7: "1.5 DH off centre",
             2: "2 DH off centre",
             3: "Centred on your chest",
             4: "Centred on your back",
