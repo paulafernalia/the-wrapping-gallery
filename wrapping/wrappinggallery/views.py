@@ -158,6 +158,10 @@ def filter_carries(request):
         key: value for value, key in Carry._meta.get_field("mmposition").choices
     }
 
+    finishes = {
+        key: value for value, key in Carry._meta.get_field("finish").choices
+    }
+
     # Initialize a queryset for filtering
     queryset = Ratings.objects.all()
 
@@ -174,7 +178,7 @@ def filter_carries(request):
         elif prop == "mmposition" and val != "Any":
             queryset = queryset.filter(carry__mmposition=mmpositions[val])
         elif prop == "finish" and val != "Any":
-            queryset = queryset.filter(carry__finish=val)
+            queryset = queryset.filter(carry__finish=finishes[val])
         elif prop == "partialname" and val not in ["null", ""] and val:
             queryset = queryset.filter(carry__title__icontains=val)
         elif prop == "difficulty" and val != "Any":
