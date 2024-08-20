@@ -173,6 +173,7 @@ body {
 
 #button-filter {
     font-size: 18px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle grey shadow */
 }
 
 p, li {
@@ -599,6 +600,7 @@ p, li {
 
 #search-input {
     padding-right: 35px; /* Add padding to accommodate the clear button */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle grey shadow */
 }
 
 .clear-btn {
