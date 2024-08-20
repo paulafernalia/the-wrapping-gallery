@@ -678,11 +678,6 @@ function showFilterBoxExt() {
     var targetElement = document.getElementById('filterBoxExt');
     var elementPosition = targetElement.getBoundingClientRect().top;
 
-    window.scrollTo({
-        top: elementPosition,
-        behavior: 'smooth'
-    });
-
     // Check if footer position must be updated
     releaseFooter();
 }
