@@ -193,6 +193,8 @@ def filter_carries(request):
             ).filter(rounded_difficulty=difficulties[val])
         elif prop == "pretied" and val == "1":
             queryset = queryset.filter(carry__pretied=val)
+        elif prop == "rings" and val == "1":
+            queryset = queryset.filter(carry__rings=val)
         elif prop == "newborns" and val == "1":
             queryset = queryset.filter(newborns__gte=3.5)
         elif prop == "legstraighteners" and val == "1":
@@ -238,6 +240,7 @@ def filter_carries(request):
             "carry__title",
             "carry__size",
             "carry__pretied",
+            "carry__rings",
             "difficulty",
             "fancy",
         )
