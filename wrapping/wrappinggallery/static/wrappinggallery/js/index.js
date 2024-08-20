@@ -131,6 +131,7 @@ async function resetFilters() {
     localStorage.setItem("finish", "Any");
     localStorage.setItem("fancy", "0");
     localStorage.setItem("pretied", "0");
+    localStorage.setItem("rings", "0");
     localStorage.setItem("newborns", "0");
     localStorage.setItem("legstraighteners", "0");
     localStorage.setItem("leaners", "0");
@@ -264,10 +265,11 @@ async function initialiseFilters() {
     const fil13 = initialiseSwitchData('feeding');
     const fil14 = initialiseSwitchData('quickups');
     const fil15 = initialiseDropdownData('mmposition');
+    const fil16 = initialiseSwitchData('rings');
     initialiseSearchBar();
 
     if (fil1 || fil2 || fil3 || fil4 || fil5 || fil6 || fil7 || fil8 ||
-        fil9 || fil10 || fil11 || fil12 || fil13 || fil14 || fil15) {
+        fil9 || fil10 || fil11 || fil12 || fil13 || fil14 || fil15 || fil16) {
         return true;
     } else {
         return false;
@@ -288,7 +290,7 @@ function isAnyFilterActive() {
 
     const boolProperties = [
         "fancy", "pretied", "newborns", "legstraighteners",
-        "leaners", "bigkids", "feeding", "quickups"
+        "leaners", "bigkids", "feeding", "quickups", "rings"
     ];
 
     for (let i = 0; i < boolProperties.length; i++) {
@@ -322,6 +324,7 @@ async function fetchFilteredCarries(includeAll = false) {
         mmposition: localStorage.getItem("mmposition"),
         partialname: localStorage.getItem("partialname"),
         pretied: localStorage.getItem("pretied"),
+        rings: localStorage.getItem("rings"),
         fancy: localStorage.getItem("fancy"),
         finish: localStorage.getItem("finish"),
         newborns: localStorage.getItem("newborns"),
@@ -427,6 +430,11 @@ function showAppliedFilters() {
 
     if (localStorage["pretied"] === "1") {
         filtersApplied.appendChild(createFilterSpan("Can be pre-tied"));
+        anyApplied = true;
+    }
+
+    if (localStorage["rings"] === "1") {
+        filtersApplied.appendChild(createFilterSpan("Ring(s)"));
         anyApplied = true;
     }
 
