@@ -117,6 +117,13 @@ body {
     padding: 7px 20px;
 }
 
+.poiret-one-regular {
+  font-family: "Poiret One", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+
 
 .btn-custom:focus {
     outline: none;
