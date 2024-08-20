@@ -16,7 +16,7 @@ DIFFICULTY_VALUES = ["Beginner", "Beginner+", "Intermediate", "Advanced", "Pro"]
 def index(request):
     context = {}
 
-    carry_fields = ["size", "shoulders", "layers", "mmposition", "position", "finish"]
+    carry_fields = ["size", "shoulders", "layers", "position", "finish"]
 
     for field in carry_fields:
         idx = 0 if field in ["shoulders", "layers", "size"] else 1
@@ -24,6 +24,14 @@ def index(request):
         context[field + "_values"] = ["Any"] + labels
 
     context["difficulty_values"] = ["Any"] + DIFFICULTY_VALUES
+    context["mmposition_values"] = [
+            "Any",
+            "Centred",
+            "0.5 DH off centre",
+            "1 DH off centre",
+            "1.5 DH off centre",
+            "2 DH off centre",
+    ]
 
     return render(request, "wrappinggallery/index.html", context)
 
@@ -166,10 +174,8 @@ def filter_carries(request):
     queryset = Ratings.objects.all()
 
     # Apply filters based on properties and values
-    for prop, val in zip(properties, values):
-        if prop == "size" and val != "Any":
-            queryset = queryset.filter(carry__size=val)
-        elif prop == "position" and val != "Any":
+    for prop, val in zip(properties, values): 
+        if prop == "position" and val != "Any":
             queryset = queryset.filter(carry__position=val.lower())
         elif prop == "shoulders" and val != "Any":
             queryset = queryset.filter(carry__shoulders=val)
@@ -205,6 +211,10 @@ def filter_carries(request):
     # Extract start and end parameters
     start = int(request.GET.get("start", 0))
     end = int(request.GET.get("end", 8)) + 1  # end is inclusive
+
+    sizes = request.GET.getlist("size[]", "Any")
+    if sizes != ["Any"]:
+        queryset = queryset.filter(carry__size__in=sizes)
 
     # Get the total count of items
     total_count = queryset.count()

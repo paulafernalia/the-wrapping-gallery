@@ -7,6 +7,11 @@ function getButtonByValueAndProperty(property, value) {
     return document.querySelector(`button[data-value="${value}"][data-property="${property}"]`);
 }
 
+function getMultiButtonByValueAndProperty(property, value) {
+    // Get button that matches the data-property and data-value args given
+    return document.querySelector(`button[data-value="${value}"][data-property="${property}"]`);
+}
+
 function getDropdownByValueAndProperty(property, value) {
     // Get button that matches the data-property and data-value args given
     return document.querySelector(`option[value="${value}"][data-property="${property}"]`);
@@ -19,6 +24,14 @@ function getSwitchByProperty(property) {
 async function clickFilterButton(button) {
     // Set this button as active
     setActiveButton(button);
+
+    // Filter carries by the property selected in the button
+    await updateButtonBox();
+}
+
+async function clickFilterMultiButton(button) {
+    // Set this button as active
+    setActiveMultiButton(button);
 
     // Filter carries by the property selected in the button
     await updateButtonBox();
@@ -109,7 +122,7 @@ function showAllFilters() {
 }
 
 async function resetFilters() {
-    localStorage.setItem("size", "Any");
+    localStorage.setItem("size", JSON.stringify(['Any']));
     localStorage.setItem("position", "Any");
     localStorage.setItem("mmposition", "Any");
     localStorage.setItem("layers", "Any");
@@ -170,6 +183,40 @@ function initialiseButtonData(property) {
     return false;
 }
 
+
+function initialiseMultiButtonData(property) {
+    let init = 'Any';
+    if (!localStorage.getItem(property)) {
+        // If not, set the counter to 0 in local storage
+        localStorage.setItem(property, JSON.stringify(['Any']));
+    } else {
+        initString = localStorage.getItem(property);
+        init = JSON.parse(initString);
+    }
+
+    // Get button with this property and value
+    const button = getButtonByValueAndProperty(property, init[0]);
+    const btnGroup = button.parentElement;
+    const buttons = btnGroup.getElementsByClassName('btn-custom');
+
+    // Set all other buttons as inactive
+    for (let btn of buttons) {
+        btn.classList.remove('active');
+    }
+
+    for (let size of init) {
+        // Get button with this size
+        const button = getButtonByValueAndProperty(property, size);
+        button.classList.add('active');
+    }
+
+    if (init !== ["Any"]) {
+        return true;
+    }
+
+    return false;
+}
+
 function initialiseDropdownData(property) {
     let init = 'Any';
     if (!localStorage.getItem(property)) {
@@ -202,7 +249,7 @@ function initialiseSearchBar() {
 }
 
 async function initialiseFilters() {
-    const fil1 = initialiseButtonData('size');
+    const fil1 = initialiseMultiButtonData('size');
     const fil2 = initialiseButtonData('position');
     const fil3 = initialiseButtonData('shoulders');
     const fil4 = initialiseButtonData('layers');
@@ -268,7 +315,6 @@ async function fetchFilteredCarries(includeAll = false) {
 
     // Read the property of the button group and the button value
     const filters = {
-        size: localStorage.getItem("size"),
         position: localStorage.getItem("position"),
         shoulders: localStorage.getItem("shoulders"),
         layers: localStorage.getItem("layers"),
@@ -285,11 +331,16 @@ async function fetchFilteredCarries(includeAll = false) {
         feeding: localStorage.getItem("feeding"),
         quickups: localStorage.getItem("quickups"),
     };
+
+    // size: localStorage.getItem("size"),
+    const sizeString = localStorage.getItem("size"); // Extract the size values
+    const sizes = JSON.parse(sizeString);
     
     // Build the query string from the filters object
     const queryString = Object.entries(filters)
         .map(([property, value]) => `property[]=${encodeURIComponent(property)}&value[]=${encodeURIComponent(value)}`)
         .concat([`start=${start}`, `end=${end}`])  // Add start and end parameters
+        .concat(sizes.map(val => `size[]=${encodeURIComponent(val)}`))  // Add size values separately
         .join('&');
 
     // Filter carries by using filter values
@@ -319,17 +370,22 @@ function showAppliedFilters() {
 
     let anyApplied = false;
 
-    if (localStorage["size"] !== "Any") {
-        let sizeStr;
-        const sizeInt = parseInt(localStorage["size"]);
-        if (sizeInt === 0) {
-            sizeStr = "Base";
-        } else if (sizeInt > 0) {
-            sizeStr = "Base +" + localStorage["size"];
-        } else {
-            sizeStr = "Base " + localStorage["size"];
+    sizes = JSON.parse(localStorage["size"]);
+    let sizeStr = "";
+    for (let size of sizes) {
+        if (size !== "Any") {
+            const sizeInt = parseInt(size);
+            if (sizeInt === 0) {
+                sizeStr += " Base";
+            } else if (sizeInt > 0) {
+                sizeStr += " Base +" + size;
+            } else {
+                sizeStr += " Base " + size;
+            }
         }
+    }
 
+    if (sizeStr !== "") {
         filtersApplied.appendChild(createFilterSpan("Size: " + sizeStr));
         anyApplied = true;
     }
@@ -483,6 +539,61 @@ function setActiveButton(button) {
 
     // Store selected value in local storage
     localStorage.setItem(button.dataset.property, button.dataset.value);
+}
+
+function setActiveMultiButton(button) {
+    // Make the selected filter button active when clicking on it
+    const btnGroup = button.parentElement;
+    const buttons = btnGroup.getElementsByClassName('btn-custom');
+    const property = button.dataset.property;
+    const selected = button.dataset.value;
+
+    // Make all buttons inactive
+    for (let btn of buttons) {
+        btn.classList.remove('active');
+        btn.blur();
+        btn.classList.remove('hover');
+    }
+
+    let values;
+    // If button is any, disable all other buttons
+    if (selected === "Any") {
+        // Create jsonified array with single value Any
+        values = ["Any"];
+    } else {
+        // Get current list
+        let valueString = localStorage.getItem(property); // Extract the values
+        values = JSON.parse(valueString);
+
+        // Ensure "Any" is not in the array
+        values = values.filter(val => val !== "Any");
+
+        // Append clicked on val to list
+        if (!values.includes(selected)) {
+            // If the value is not in the array, add it
+            values.push(selected);
+        } else {
+            // If it is in the array, remove it
+            values = values.filter(val => val !== selected);
+
+            // If we removed the last value, change to "Any"
+            if (values.length === 0) {
+                values = ["Any"];
+            }
+        }
+    }
+
+    // Make all selected buttons active
+    for (let val of values) {
+        const button = getButtonByValueAndProperty(property, val);
+        button.classList.add('active');
+    }
+
+    // Stringify new array
+    valueString = JSON.stringify(values);
+    
+    // Store selected value in local storage
+    localStorage.setItem(button.dataset.property, valueString);
 }
 
 async function toggleFilterBox(button) {

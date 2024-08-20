@@ -43,7 +43,7 @@
         <p class="poppins-bold fs16"> Size <span class="poppins-light">(referenced to base size)</span> </p>
         <div class="button-filters" data-property="size">
             {% for value in size_values %}
-                <button type="button" class="btn btn-custom mx-1 poppins-regular fs16" data-property="size" data-value="{{ value }}" onclick="clickFilterButton(this)">{{ value }}</button>
+                <button type="button" class="btn btn-custom mx-1 poppins-regular fs16" data-property="size" data-value="{{ value }}" onclick="clickFilterMultiButton(this)">{{ value }}</button>
             {% endfor %}
         </div>
         
@@ -63,7 +63,7 @@
         <br>
         <br>
 
-        <p class="poppins-bold fs16"> Middle marker position</p>
+        <p class="poppins-bold fs16"> MM position (back carries)</p>
         <div class="dropdown poppins-light fs16">
             <select id="mmposition-select fs16" onchange="handleSelectChange(this)">
                 {% for value in mmposition_values %}
@@ -165,11 +165,11 @@
 
 <div class="fixed-container">
     <div id=buttonBox style="display: block;">
-            <div class="row justify-content-center">
-                 <button id="showResultsBtn" type="button" class="btn btn-custom mx-1 poppins-regular disabled fs16" onclick="showResults()">Show results</button>
-                <button id="resetFiltersBtn" type="button" class="btn pinkbg btn-custom mx-1 poppins-regular fs16" onclick="resetFilters()">Reset filters</button>
-            </div>
+        <div class="row justify-content-center">
+             <button id="showResultsBtn" type="button" class="btn btn-custom mx-1 poppins-regular disabled fs16" onclick="showResults()">Show results</button>
+            <button id="resetFiltersBtn" type="button" class="btn pinkbg btn-custom mx-1 poppins-regular fs16" onclick="resetFilters()">Reset filters</button>
         </div>
+    </div>
 </div>
 
 <div id="count-text" style="display: none;" class="title-container poppins-bold fs16">
