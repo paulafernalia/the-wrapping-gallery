@@ -28,6 +28,10 @@ body {
     margin: 0 auto;
 }
 
+.navbar-toggler {
+    border: 2px solid grey !important;
+}
+
 
 #buttonBox {
     max-width: 100%;
@@ -43,6 +47,16 @@ body {
     margin-right: 20px;
     cursor: pointer;
 }
+
+
+
+#logo {
+    width: 30px;
+    height: 30px;
+    vertical-align: middle;
+    margin-right: 8px;
+}
+
 
 .button-filters {
     display: flex;
@@ -114,7 +128,7 @@ body {
     margin-bottom: 5px;
     font-size: 14px;
     font-weight: 700;
-    padding: 7px 20px;
+    padding: 9px 20px;
 }
 
 .poiret-one-regular {
@@ -458,14 +472,23 @@ p, li {
     }   
 
     .navbar-toggler {
-        width: 40px;
+        width: 50px;
         padding: 7px;
-        font-size: 13px;
+        font-size: 18px;
     }
 
     .navbar-title {
         display: none;
     }
+
+    #logo {
+        width: 40px;
+        height: 40px;
+        vertical-align: middle;
+        margin-right: 8px;
+        font-size: 20px;
+    }
+
 }
 
 @media only screen and (max-width: 768px) {
@@ -572,7 +595,7 @@ p, li {
 #copy-right {
     color: #e0e0e0;
     font-size: 13px;
-    padding-left: 30px;
+    padding-left: 10px;
 }
 
 #social {
