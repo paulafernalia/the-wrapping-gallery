@@ -18,6 +18,7 @@ class CarryTestCase(TestCase):
             mmposition=0,
             position="back",
             pretied=False,  # corrected boolean value
+            rings=False,
             finish="TIF",
         )
 

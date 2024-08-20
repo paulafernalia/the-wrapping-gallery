@@ -57,6 +57,7 @@ class Carry(models.Model):
     description = models.TextField(blank=True, null=True)
 
     pretied = models.BooleanField(default=False)
+    rings = models.BooleanField(default=False)
 
     finish = models.CharField(
         max_length=16,
@@ -92,6 +93,7 @@ class Carry(models.Model):
             "position": self.get_position_display(),
             "finish": self.get_finish_display(),
             "pretied": self.pretied,
+            "rings": self.rings,
             "description": self.description,
             "videotutorial": self.videotutorial,
             "videoauthor": self.videoauthor,
