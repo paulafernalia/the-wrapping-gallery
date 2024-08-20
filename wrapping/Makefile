@@ -50,3 +50,9 @@ test:
 
 load-csv-data:
 	$(PYTHON) manage.py load_csv_data initial_data.csv --settings=wrapping.settings.development
+
+dev-docker-down:
+	docker compose -f docker-compose.dev.yml down -v
+
+dev-docker-up:
+	docker compose -f docker-compose.dev.yml up --build -d
