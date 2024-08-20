@@ -7,7 +7,7 @@
 }
 
 .bg-dark {
-    background-color: #222 !important;
+    background-color: #2e2d2d !important;
 }
 
 #header {
@@ -74,7 +74,7 @@ body {
 }
 
 .navbar-nav .nav-link:hover {
-    color: #222 !important;
+    color: #2e2d2d !important;
     background-color: #888 !important;
 }
 
@@ -101,13 +101,13 @@ body {
 
 /* Ensure active state is black */
 .btn-custom.active {
-    background-color: #222 !important;
+    background-color: #2e2d2d !important;
     color: white !important;
 }
 
 .btn-custom {
-    color: #222 !important;
-    border: 2px solid #222;
+    color: #2e2d2d !important;
+    border: 2px solid #2e2d2d;
     border-radius: 10px;
     margin-right: 30px;
     margin-top: 5px;
@@ -117,11 +117,18 @@ body {
     padding: 7px 20px;
 }
 
+.poiret-one-regular {
+  font-family: "Poiret One", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+
 
 .btn-custom:focus {
     outline: none;
     box-shadow: none;
-    color: black;
+    color: #2e2d2d;
 }
 
 /* Disabled state */
@@ -146,13 +153,13 @@ body {
     border-radius: 15px;
     width: 50px;
     z-index: 800;
-    background-color: black;
-    border: black;
+    background-color: #2e2d2d;
+    border: #2e2d2d;
 }
 
 .btn-outline-secondary:focus {
-    background-color: black; /* Ensures it stays black after clicking */
-    border-color: black; /* Ensures border stays black after clicking */
+    background-color: #2e2d2d; /* Ensures it stays black after clicking */
+    border-color: #2e2d2d; /* Ensures border stays black after clicking */
 }
 
 
@@ -246,7 +253,7 @@ p, li {
     cursor: pointer;
     font-size: 14px;
     text-decoration: underline;
-    color: black;
+    color: #2e2d2d;
 }
 
 .show-button:focus {
@@ -273,7 +280,7 @@ p, li {
 
 /* Checkbox checked state with solid black background */
 .checkbox-group input[type="checkbox"]:checked {
-    background-color: black;
+    background-color: #2e2d2d;
     border: none;
 }
 
@@ -302,22 +309,22 @@ p, li {
     width: 200px;
     height: 40px; /* Set a fixed height for the dropdown */
     padding: 6px;
-    border: 2px solid #222;
+    border: 2px solid #2e2d2d;
     border-radius: 10px;
     background-color: white;
     cursor: pointer;
 }
 
 .dropdown {
-    color: black; /* Ensure the text color of the dropdown is set to black */
+    color: #2e2d2d; /* Ensure the text color of the dropdown is set to black */
 }
 
 .dropdown select {
-    color: black !important; /* Ensure the text color of the dropdown is set to black */
+    color: #2e2d2d !important; /* Ensure the text color of the dropdown is set to black */
 }
 
 .dropdown option {
-    color: black !important; /* Ensure the text color of the options is set to black */
+    color: #2e2d2d !important; /* Ensure the text color of the options is set to black */
 }
 
 .container {
@@ -335,7 +342,7 @@ p, li {
 
 .main-content {
     width: 70%;
-    background-color: #d3d3d3;
+    background-color: #dcdad8;
     padding: 50px;
     box-sizing: border-box;
     position: relative;
@@ -455,6 +462,10 @@ p, li {
         padding: 7px;
         font-size: 13px;
     }
+
+    .navbar-title {
+        display: none;
+    }
 }
 
 @media only screen and (max-width: 768px) {
@@ -490,14 +501,14 @@ p, li {
     }
     
     .btn-custom {
-        color: #222;
+        color: #2e2d2d;
         border-radius: 12px;
         margin-right: 3px !important;
         padding: 5px 12px;
     }
 
     .dropdown select {
-        border: 2px solid #222;
+        border: 2px solid #2e2d2d;
     }
 
     #button-filter {
@@ -537,8 +548,8 @@ p, li {
 
 
 .footer {
-    background-color: black;
     color: white;
+    background-color: #2e2d2d;
     padding: 10px 20px; /* Padding inside the footer */
     position: fixed;
     bottom: 0;
