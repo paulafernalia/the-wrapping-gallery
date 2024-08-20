@@ -1,5 +1,6 @@
 from supabase import create_client, Client
 from django.conf import settings
+from django.contrib.staticfiles.storage import staticfiles_storage
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from django.http import JsonResponse
 import os
@@ -45,21 +46,16 @@ def generate_signed_urls(file_paths, bucket, supabase=supabase_client):
 
 
 def generate_server_url(file_name, position):
-    static_url = settings.STATIC_URL + "/wrappinggallery/illustrations/"
-    static_path = os.path.join(settings.STATIC_ROOT, "wrappinggallery", "illustrations")
-
-    image_url = static_url + f"{file_name}.png"
-    image_path = os.path.join(static_path, f"{file_name}.png")
+    filepath = f'wrappinggallery/illustrations/{file_name}.png'
     
-    if not os.path.exists(image_path):
+    if not staticfiles_storage.exists(filepath):
         if position in ["back", "front"]:
-            image_url = static_url + f"placeholder_{position}.png"
-            image_path = os.path.join(static_path, f"placeholder_{position}.png")
+            filepath = f'wrappinggallery/illustrations/placeholder_{position}.png'
+            assert staticfiles_storage.exists(filepath)
         else:
             print("error position not valid", file_name, position)
             exit(1)
 
-        assert os.path.exists(image_path)
-
+    image_url = staticfiles_storage.url(filepath)
 
     return image_url
