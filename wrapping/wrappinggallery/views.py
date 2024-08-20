@@ -166,10 +166,8 @@ def filter_carries(request):
     queryset = Ratings.objects.all()
 
     # Apply filters based on properties and values
-    for prop, val in zip(properties, values):
-        if prop == "size" and val != "Any":
-            queryset = queryset.filter(carry__size=val)
-        elif prop == "position" and val != "Any":
+    for prop, val in zip(properties, values): 
+        if prop == "position" and val != "Any":
             queryset = queryset.filter(carry__position=val.lower())
         elif prop == "shoulders" and val != "Any":
             queryset = queryset.filter(carry__shoulders=val)
@@ -205,6 +203,10 @@ def filter_carries(request):
     # Extract start and end parameters
     start = int(request.GET.get("start", 0))
     end = int(request.GET.get("end", 8)) + 1  # end is inclusive
+
+    sizes = request.GET.getlist("size[]", "Any")
+    if sizes != ["Any"]:
+        queryset = queryset.filter(carry__size__in=sizes)
 
     # Get the total count of items
     total_count = queryset.count()
