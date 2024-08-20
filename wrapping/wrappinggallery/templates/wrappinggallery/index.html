@@ -43,7 +43,7 @@
         <p class="poppins-bold fs16"> Size <span class="poppins-light">(referenced to base size)</span> </p>
         <div class="button-filters" data-property="size">
             {% for value in size_values %}
-                <button type="button" class="btn btn-custom mx-1 poppins-regular fs16" data-property="size" data-value="{{ value }}" onclick="clickFilterButton(this)">{{ value }}</button>
+                <button type="button" class="btn btn-custom mx-1 poppins-regular fs16" data-property="size" data-value="{{ value }}" onclick="clickFilterMultiButton(this)">{{ value }}</button>
             {% endfor %}
         </div>
         
