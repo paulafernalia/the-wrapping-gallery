@@ -42,17 +42,22 @@
     </svg>
     <div id="header"> 
       <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a class="navbar-brand playfair" href="{% url 'index' %}">THE WRAPPING GALLERY</a>
+        <a class="navbar-brand poiret-one-regular" href="{% url 'index' %}">
+            <!-- Logo SVG -->
+            <img src="{% static 'wrappinggallery/icons/heart.svg' %}" alt="Logo" style="width: 30px; height: 30px; vertical-align: middle; margin-right: 8px;">
+            <!-- Title -->
+            <span class="navbar-title">the wrapping gallery</span>
+        </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a class="nav-link poppins-light {% if request.path == '/about/' %}active{% endif %}" data-page="about-page" href="{% url 'about' %}">About</a>
+                    <a class="nav-link poppins-light {% if request.path == '/about/' %}active{% endif %}" data-page="about-page" href="{% url 'about' %}">ABOUT</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link poppins-light {% if request.path == '/' %}active{% endif %}" data-page="carries-page" href="{% url 'index' %}">Carries</a>
+                    <a class="nav-link poppins-light {% if request.path == '/' %}active{% endif %}" data-page="carries-page" href="{% url 'index' %}">CARRIES</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link poppins-light {% if request.path == '/faq/' %}active{% endif %}" data-page="faq-page" href="{% url 'faq' %}">FAQ</a>

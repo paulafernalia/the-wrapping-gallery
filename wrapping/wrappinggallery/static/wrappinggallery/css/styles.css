@@ -342,7 +342,7 @@ p, li {
 
 .main-content {
     width: 70%;
-    background-color: #d3d3d3;
+    background-color: #dcdad8;
     padding: 50px;
     box-sizing: border-box;
     position: relative;
@@ -461,6 +461,10 @@ p, li {
         width: 40px;
         padding: 7px;
         font-size: 13px;
+    }
+
+    .navbar-title {
+        display: none;
     }
 }
 
