@@ -537,6 +537,11 @@ p, li {
     .pinkbg {
         padding: 10px 12px;
     }
+
+    #picture-tutorial-grid {
+        padding: 0px !important;
+    }
+
 }
 
 
