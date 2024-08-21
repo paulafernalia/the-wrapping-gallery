@@ -210,27 +210,11 @@ def filter_carries(request):
         elif prop == "fancy" and val == "1":
             queryset = queryset.filter(fancy__gte=3.5)
 
-    # Extract start and end parameters
-    start = int(request.GET.get("start", 0))
-    end = int(request.GET.get("end", 8)) + 1  # end is inclusive
-
     sizes = request.GET.getlist("size[]", "Any")
     if sizes != ["Any"]:
         queryset = queryset.filter(carry__size__in=sizes)
 
-    # Get the total count of items
-    total_count = queryset.count()
-
-    # Ensure that start and end are within the bounds
-    if start < 0:
-        start = 0
-    if end > total_count:
-        end = total_count
-
     sorted_queryset = queryset.order_by('carry__title')
-
-    # Apply pagination
-    sorted_queryset = sorted_queryset[start:end]
 
     # Serialize the results
     results = list(
