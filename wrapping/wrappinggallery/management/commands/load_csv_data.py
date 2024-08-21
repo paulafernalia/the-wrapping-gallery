@@ -53,6 +53,7 @@ class Command(BaseCommand):
                         position=row["position"],
                         description=row["description"],
                         pretied=row["pretied"],
+                        rings=row["rings"],
                         finish=row["finish"],
                     )
 

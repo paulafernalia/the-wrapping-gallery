@@ -131,6 +131,7 @@ async function resetFilters() {
     localStorage.setItem("finish", "Any");
     localStorage.setItem("fancy", "0");
     localStorage.setItem("pretied", "0");
+    localStorage.setItem("rings", "0");
     localStorage.setItem("newborns", "0");
     localStorage.setItem("legstraighteners", "0");
     localStorage.setItem("leaners", "0");
@@ -147,6 +148,7 @@ async function resetFilters() {
     // Disable reset button
     const resetFiltersBtn = document.getElementById('resetFiltersBtn');
     resetFiltersBtn.classList.add('disabled');
+    resetFiltersBtn.disabled = true;
 
     // Display gallery
     emptyCarryGallery();
@@ -210,7 +212,7 @@ function initialiseMultiButtonData(property) {
         button.classList.add('active');
     }
 
-    if (init !== ["Any"]) {
+    if (init.length !== 1 || init[0] !== "Any") {
         return true;
     }
 
@@ -264,10 +266,11 @@ async function initialiseFilters() {
     const fil13 = initialiseSwitchData('feeding');
     const fil14 = initialiseSwitchData('quickups');
     const fil15 = initialiseDropdownData('mmposition');
+    const fil16 = initialiseSwitchData('rings');
     initialiseSearchBar();
 
     if (fil1 || fil2 || fil3 || fil4 || fil5 || fil6 || fil7 || fil8 ||
-        fil9 || fil10 || fil11 || fil12 || fil13 || fil14 || fil15) {
+        fil9 || fil10 || fil11 || fil12 || fil13 || fil14 || fil15 || fil16) {
         return true;
     } else {
         return false;
@@ -276,7 +279,7 @@ async function initialiseFilters() {
 
 function isAnyFilterActive() {
     const choiceProperties = [
-        "size", "position", "difficulty", "finish",
+        "position", "difficulty", "finish",
         "layers", "shoulders", "mmposition"
     ];
 
@@ -286,9 +289,15 @@ function isAnyFilterActive() {
         }
     }
 
+    let sizeString = localStorage.getItem("size");
+    let sizes = JSON.parse(sizeString);
+    if (sizes.length > 1 || sizes[0] != "Any") {
+        return true;
+    }
+
     const boolProperties = [
         "fancy", "pretied", "newborns", "legstraighteners",
-        "leaners", "bigkids", "feeding", "quickups"
+        "leaners", "bigkids", "feeding", "quickups", "rings"
     ];
 
     for (let i = 0; i < boolProperties.length; i++) {
@@ -322,6 +331,7 @@ async function fetchFilteredCarries(includeAll = false) {
         mmposition: localStorage.getItem("mmposition"),
         partialname: localStorage.getItem("partialname"),
         pretied: localStorage.getItem("pretied"),
+        rings: localStorage.getItem("rings"),
         fancy: localStorage.getItem("fancy"),
         finish: localStorage.getItem("finish"),
         newborns: localStorage.getItem("newborns"),
@@ -430,6 +440,11 @@ function showAppliedFilters() {
         anyApplied = true;
     }
 
+    if (localStorage["rings"] === "1") {
+        filtersApplied.appendChild(createFilterSpan("Ring(s)"));
+        anyApplied = true;
+    }
+
     if (localStorage["leaners"] === "1") {
         filtersApplied.appendChild(createFilterSpan("Good for leaners"));
         anyApplied = true;
@@ -504,10 +519,12 @@ async function updateButtonBox() {
         if (carries.length === 0) {
             showResultsBtn.classList.remove('active');
             showResultsBtn.classList.add('disabled');
+            showResultsBtn.disabled = true;
             showResultsBtn.textContent = "No results";
             countText.textContent = "No carries found";
         } else {
             showResultsBtn.classList.remove('disabled');
+            showResultsBtn.disabled = false;
             showResultsBtn.classList.add('active');
             showResultsBtn.textContent = "Show " + filteredResults + " results";
             countText.textContent = "Showing " + filteredResults + " carries.";
@@ -521,8 +538,10 @@ async function updateButtonBox() {
 
     if (isAnyFilterActive()) {
         resetFiltersBtn.classList.remove('disabled');
+        resetFiltersBtn.disabled = false;
     } else {
         resetFiltersBtn.classList.add('disabled');
+        resetFiltersBtn.disabled = true;
     }
 }
 
@@ -669,11 +688,6 @@ function showFilterBoxExt() {
 
     var targetElement = document.getElementById('filterBoxExt');
     var elementPosition = targetElement.getBoundingClientRect().top;
-
-    window.scrollTo({
-        top: elementPosition,
-        behavior: 'smooth'
-    });
 
     // Check if footer position must be updated
     releaseFooter();
@@ -881,6 +895,38 @@ document.getElementById('search-input').addEventListener('input', function() {
 });
 
 
+let lastScrollTop = 0;
+const header = document.getElementById('header');
+let isScrollingUp = false;
+let isScrollingDown = false;
+
+window.addEventListener('scroll', function() {
+    let currentScrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+    if (currentScrollTop > lastScrollTop) {
+        // Scrolling down
+        if (isScrollingUp) {
+            window.scrollTo(0, currentScrollTop + 80);  // Adjust scroll position upwards
+            isScrollingUp = false;
+        }
+        header.classList.remove('fixed');
+        isScrollingDown = true;
+
+    } else {
+        // Scrolling up
+        if (isScrollingDown) {
+            window.scrollTo(0, currentScrollTop - 80);  // Adjust scroll position downwards
+            isScrollingDown = false;
+        }
+        if (currentScrollTop > 100) {  // Add a condition to only show after scrolling a certain amount
+            header.classList.add('fixed');
+            isScrollingUp = true;
+        }
+    }
+    lastScrollTop = currentScrollTop <= 0 ? 0 : currentScrollTop; // For Mobile or negative scrolling
+});
+
+
 document.addEventListener('DOMContentLoaded', async function() { 
     // Reset gallery
     emptyCarryGallery();
@@ -902,9 +948,11 @@ document.addEventListener('DOMContentLoaded', async function() {
         showAllFilters();
 
         resetFiltersBtn.classList.remove('disabled');
+        resetFiltersBtn.disabled = false;
     } else {
         // Get all carries with session data and update gallery
         resetFiltersBtn.classList.add('disabled');
+        resetFiltersBtn.disabled = true;
 
         // Filter carries by the property selected in the button
         emptyCarryGallery();
