@@ -211,7 +211,7 @@ function initialiseMultiButtonData(property) {
         button.classList.add('active');
     }
 
-    if (init !== ["Any"]) {
+    if (init.length !== 1 || init[0] !== "Any") {
         return true;
     }
 
@@ -278,7 +278,7 @@ async function initialiseFilters() {
 
 function isAnyFilterActive() {
     const choiceProperties = [
-        "size", "position", "difficulty", "finish",
+        "position", "difficulty", "finish",
         "layers", "shoulders", "mmposition"
     ];
 
@@ -286,6 +286,12 @@ function isAnyFilterActive() {
         if (localStorage.getItem(choiceProperties[i]) != "Any") {
             return true;
         }
+    }
+
+    let sizeString = localStorage.getItem("size");
+    let sizes = JSON.parse(sizeString);
+    if (sizes.length > 1 || sizes[0] != "Any") {
+        return true;
     }
 
     const boolProperties = [
