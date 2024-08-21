@@ -898,6 +898,7 @@ document.getElementById('search-input').addEventListener('input', function() {
 let lastScrollTop = 0;
 const header = document.getElementById('header');
 let isScrollingUp = false;
+let isScrollingDown = false;
 
 window.addEventListener('scroll', function() {
     let currentScrollTop = window.pageYOffset || document.documentElement.scrollTop;
@@ -905,12 +906,18 @@ window.addEventListener('scroll', function() {
     if (currentScrollTop > lastScrollTop) {
         // Scrolling down
         if (isScrollingUp) {
-            window.scrollTo(0, currentScrollTop + 80);  // Scroll up by 100px
+            window.scrollTo(0, currentScrollTop + 80);  // Adjust scroll position upwards
             isScrollingUp = false;
         }
         header.classList.remove('fixed');
+        isScrollingDown = true;
+
     } else {
         // Scrolling up
+        if (isScrollingDown) {
+            window.scrollTo(0, currentScrollTop - 80);  // Adjust scroll position downwards
+            isScrollingDown = false;
+        }
         if (currentScrollTop > 100) {  // Add a condition to only show after scrolling a certain amount
             header.classList.add('fixed');
             isScrollingUp = true;
