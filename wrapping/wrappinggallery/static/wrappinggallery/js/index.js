@@ -148,6 +148,7 @@ async function resetFilters() {
     // Disable reset button
     const resetFiltersBtn = document.getElementById('resetFiltersBtn');
     resetFiltersBtn.classList.add('disabled');
+    resetFiltersBtn.disabled = true;
 
     // Display gallery
     emptyCarryGallery();
@@ -518,10 +519,12 @@ async function updateButtonBox() {
         if (carries.length === 0) {
             showResultsBtn.classList.remove('active');
             showResultsBtn.classList.add('disabled');
+            showResultsBtn.disabled = true;
             showResultsBtn.textContent = "No results";
             countText.textContent = "No carries found";
         } else {
             showResultsBtn.classList.remove('disabled');
+            showResultsBtn.disabled = false;
             showResultsBtn.classList.add('active');
             showResultsBtn.textContent = "Show " + filteredResults + " results";
             countText.textContent = "Showing " + filteredResults + " carries.";
@@ -535,8 +538,10 @@ async function updateButtonBox() {
 
     if (isAnyFilterActive()) {
         resetFiltersBtn.classList.remove('disabled');
+        resetFiltersBtn.disabled = false;
     } else {
         resetFiltersBtn.classList.add('disabled');
+        resetFiltersBtn.disabled = true;
     }
 }
 
@@ -911,9 +916,11 @@ document.addEventListener('DOMContentLoaded', async function() {
         showAllFilters();
 
         resetFiltersBtn.classList.remove('disabled');
+        resetFiltersBtn.disabled = false;
     } else {
         // Get all carries with session data and update gallery
         resetFiltersBtn.classList.add('disabled');
+        resetFiltersBtn.disabled = true;
 
         // Filter carries by the property selected in the button
         emptyCarryGallery();

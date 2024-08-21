@@ -102,12 +102,6 @@ body {
 }
 
 
-
-.pinkbg {
-    background-color: #ad9393;
-    border: 2px solid #ad9393 !important;
-}
-
 .btn-group {
     display: flex;
     flex-wrap: wrap;
@@ -115,12 +109,13 @@ body {
 
 /* Ensure active state is black */
 .btn-custom.active {
-    background-color: #2e2d2d !important;
+    background-color: #2e2d2d;
     color: white !important;
 }
 
+
 .btn-custom {
-    color: #2e2d2d !important;
+    color: #2e2d2d;
     border: 2px solid #2e2d2d;
     border-radius: 10px;
     margin-right: 30px;
@@ -144,22 +139,6 @@ body {
     box-shadow: none;
     color: #2e2d2d;
 }
-
-/* Disabled state */
-.btn-custom.disabled {
-    background-color: lightgrey;
-    color: grey;
-    cursor: not-allowed;
-    border: 2px solid grey;
-}
-
-.btn-custom.disabled:hover {
-    background-color: white !important;
-    color: #ddd !important;
-    cursor: not-allowed;
-    border: 2px solid #ddd;
-}
-
 
 .btn-outline-secondary {
     margin-left: -10px !important;
@@ -527,6 +506,7 @@ p, li {
         color: #2e2d2d;
         border-radius: 12px;
         margin-right: 3px !important;
+        margin-left: 3px !important;
         padding: 5px 12px;
     }
 
@@ -537,6 +517,10 @@ p, li {
     #button-filter {
         padding: 5px 10px !important;
         font-size: 15px !important;
+    }
+
+    .pinkbg {
+        padding: 10px 12px;
     }
 }
 
@@ -707,4 +691,19 @@ p, li {
     border-radius: 50%;
     margin-left: 2px;
     vertical-align: middle;
+}
+
+
+.pinkbg {
+    background-color: #ad9393 !important;
+    border: 2px solid #ad9393 !important;
+    color: white;
+}
+
+
+.pinkbg.disabled {
+    cursor: not-allowed;
+    border: 2px solid #ad9393 !important;
+    background-color: transparent !important;
+    color: #ad9393;
 }
