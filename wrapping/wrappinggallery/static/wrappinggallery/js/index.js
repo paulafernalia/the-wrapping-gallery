@@ -1,4 +1,3 @@
-let counter = 0
 let isFetching = false
 let filteredResults = 0;
 
@@ -311,17 +310,7 @@ function isAnyFilterActive() {
 
 
 
-async function fetchFilteredCarries(includeAll = false) {
-    let start = counter;
-    let end = counter + 17;
-
-    if (includeAll) {
-        start = 0;
-        end = 1000;
-    } else {
-        counter = end + 1;
-    }
-
+async function fetchFilteredCarries() {
     // Read the property of the button group and the button value
     const filters = {
         position: localStorage.getItem("position"),
@@ -349,7 +338,6 @@ async function fetchFilteredCarries(includeAll = false) {
     // Build the query string from the filters object
     const queryString = Object.entries(filters)
         .map(([property, value]) => `property[]=${encodeURIComponent(property)}&value[]=${encodeURIComponent(value)}`)
-        .concat([`start=${start}`, `end=${end}`])  // Add start and end parameters
         .concat(sizes.map(val => `size[]=${encodeURIComponent(val)}`))  // Add size values separately
         .join('&');
 
@@ -513,7 +501,7 @@ async function updateButtonBox() {
 
     let num_carries = 0;
     try {
-        const carries = await fetchFilteredCarries(true);
+        const carries = await fetchFilteredCarries();
         filteredResults = carries.length;
         
         if (carries.length === 0) {
@@ -732,9 +720,6 @@ function emptyCarryGallery() {
 
     const gridContainer = document.getElementById('imageGrid');
     gridContainer.innerHTML = '';
-
-    // Reset counter whenever we empty the gallery
-    counter = 0;
 }
 
 
@@ -848,40 +833,6 @@ async function updateCarryGallery(carries) {
 }
 
 
-// Define the async function to handle scrolling
-async function handleScroll() {
-    const gridContainer = document.getElementById('imageGrid');
-    const loadingSpinner = document.getElementById('loadingSpinner');
-
-    if (gridContainer.innerHTML === '') {
-        return;
-    }
-
-    // Check if a request is already in progress
-    if (isFetching) return;
-
-    // Check if the user has scrolled to the bottom of the page
-    if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
-        isFetching = true;  // Set the flag to indicate a request is in progress
-        loadingSpinner.style.display = 'block';  // Show the spinner
-
-        try {
-            const carries = await fetchFilteredCarries();
-            updateCarryGallery(carries);
-        } catch (error) {
-            console.error('Error fetching carries:', error);
-        } finally {
-            isFetching = false;  // Reset the flag after the request completes
-            loadingSpinner.style.display = 'none';  // Hide the spinner
-        }
-    }
-}
-
-
-// Attach the async scroll handler to the window's scroll event
-window.onscroll = handleScroll;
-
-
 function clearSearch() {
     document.getElementById('search-input').value = '';
     document.getElementById('search-input').focus();
@@ -900,31 +851,6 @@ const header = document.getElementById('header');
 let isScrollingUp = false;
 let isScrollingDown = false;
 
-window.addEventListener('scroll', function() {
-    let currentScrollTop = window.pageYOffset || document.documentElement.scrollTop;
-
-    if (currentScrollTop > lastScrollTop) {
-        // Scrolling down
-        if (isScrollingUp) {
-            window.scrollTo(0, currentScrollTop + 80);  // Adjust scroll position upwards
-            isScrollingUp = false;
-        }
-        header.classList.remove('fixed');
-        isScrollingDown = true;
-
-    } else {
-        // Scrolling up
-        if (isScrollingDown) {
-            window.scrollTo(0, currentScrollTop - 80);  // Adjust scroll position downwards
-            isScrollingDown = false;
-        }
-        if (currentScrollTop > 100) {  // Add a condition to only show after scrolling a certain amount
-            header.classList.add('fixed');
-            isScrollingUp = true;
-        }
-    }
-    lastScrollTop = currentScrollTop <= 0 ? 0 : currentScrollTop; // For Mobile or negative scrolling
-});
 
 
 document.addEventListener('DOMContentLoaded', async function() { 
