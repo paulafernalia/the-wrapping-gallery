@@ -40,7 +40,7 @@ async function handleSelectChange(dropdown) {
     const selectedOption = dropdown.options[dropdown.selectedIndex];
 
     // Store selected value in local storage
-    localStorage.setItem(selectedOption.dataset.property, selectedOption.value);
+    sessionStorage.setItem(selectedOption.dataset.property, selectedOption.value);
 
     // Filter carries by the properties selected
     await updateButtonBox();
@@ -54,7 +54,7 @@ async function handleSwitchChange(switch_) {
     }
 
     // Store selected value in local storage
-    localStorage.setItem(switch_.dataset.property, checked);
+    sessionStorage.setItem(switch_.dataset.property, checked);
 
     // Filter carries by the properties selected
     await updateButtonBox();
@@ -63,7 +63,7 @@ async function handleSwitchChange(switch_) {
 
 async function handleInputChange() {
     const searchInput = document.getElementById('search-input');
-    localStorage.setItem('partialname', searchInput.value);
+    sessionStorage.setItem('partialname', searchInput.value);
 
     // Filter carries by the properties selected
     await updateButtonBox();
@@ -76,10 +76,10 @@ async function handleInputChange() {
 function initialiseSwitchData(property) {
     let init = 0;
 
-    if (!localStorage.getItem(property)) {
-        localStorage.setItem(property, 0);
+    if (!sessionStorage.getItem(property)) {
+        sessionStorage.setItem(property, 0);
     } else {
-        init = localStorage.getItem(property);
+        init = sessionStorage.getItem(property);
     }
 
     // Get switch with this property and value
@@ -121,22 +121,22 @@ function showAllFilters() {
 }
 
 async function resetFilters() {
-    localStorage.setItem("size", JSON.stringify(['Any']));
-    localStorage.setItem("position", "Any");
-    localStorage.setItem("mmposition", "Any");
-    localStorage.setItem("layers", "Any");
-    localStorage.setItem("shoulders", "Any");
-    localStorage.setItem("difficulty", "Any");
-    localStorage.setItem("finish", "Any");
-    localStorage.setItem("fancy", "0");
-    localStorage.setItem("pretied", "0");
-    localStorage.setItem("rings", "0");
-    localStorage.setItem("newborns", "0");
-    localStorage.setItem("legstraighteners", "0");
-    localStorage.setItem("leaners", "0");
-    localStorage.setItem("bigkids", "0");
-    localStorage.setItem("feeding", "0");
-    localStorage.setItem("quickups", "0");
+    sessionStorage.setItem("size", JSON.stringify(['Any']));
+    sessionStorage.setItem("position", "Any");
+    sessionStorage.setItem("mmposition", "Any");
+    sessionStorage.setItem("layers", "Any");
+    sessionStorage.setItem("shoulders", "Any");
+    sessionStorage.setItem("difficulty", "Any");
+    sessionStorage.setItem("finish", "Any");
+    sessionStorage.setItem("fancy", "0");
+    sessionStorage.setItem("pretied", "0");
+    sessionStorage.setItem("rings", "0");
+    sessionStorage.setItem("newborns", "0");
+    sessionStorage.setItem("legstraighteners", "0");
+    sessionStorage.setItem("leaners", "0");
+    sessionStorage.setItem("bigkids", "0");
+    sessionStorage.setItem("feeding", "0");
+    sessionStorage.setItem("quickups", "0");
 
     // Set initial values of filters
     initialiseFilters();
@@ -156,11 +156,11 @@ async function resetFilters() {
 
 function initialiseButtonData(property) {
     let init = 'Any';
-    if (!localStorage.getItem(property)) {
+    if (!sessionStorage.getItem(property)) {
         // If not, set the counter to 0 in local storage
-        localStorage.setItem(property, 'Any');
+        sessionStorage.setItem(property, 'Any');
     } else {
-        init = localStorage.getItem(property);
+        init = sessionStorage.getItem(property);
     }
 
     // Get button with this property and value
@@ -187,11 +187,11 @@ function initialiseButtonData(property) {
 
 function initialiseMultiButtonData(property) {
     let init = 'Any';
-    if (!localStorage.getItem(property)) {
+    if (!sessionStorage.getItem(property)) {
         // If not, set the counter to 0 in local storage
-        localStorage.setItem(property, JSON.stringify(['Any']));
+        sessionStorage.setItem(property, JSON.stringify(['Any']));
     } else {
-        initString = localStorage.getItem(property);
+        initString = sessionStorage.getItem(property);
         init = JSON.parse(initString);
     }
 
@@ -220,11 +220,11 @@ function initialiseMultiButtonData(property) {
 
 function initialiseDropdownData(property) {
     let init = 'Any';
-    if (!localStorage.getItem(property)) {
+    if (!sessionStorage.getItem(property)) {
         // If not, set the counter to 0 in local storage
-        localStorage.setItem(property, 'Any');
+        sessionStorage.setItem(property, 'Any');
     } else {
-        init = localStorage.getItem(property);
+        init = sessionStorage.getItem(property);
     }
 
     // If it's not a button, it may be a dropdown
@@ -242,10 +242,10 @@ function initialiseDropdownData(property) {
 
 
 function initialiseSearchBar() {
-    // Set content to localstorage if available
-    if (localStorage.getItem('partialname')) {
+    // Set content to sessionStorage if available
+    if (sessionStorage.getItem('partialname')) {
         const searchInput = document.getElementById('search-input');
-        searchInput.value = localStorage.getItem('partialname');
+        searchInput.value = sessionStorage.getItem('partialname');
     }
 }
 
@@ -283,12 +283,12 @@ function isAnyFilterActive() {
     ];
 
     for (let i = 0; i < choiceProperties.length; i++) {
-        if (localStorage.getItem(choiceProperties[i]) != "Any") {
+        if (sessionStorage.getItem(choiceProperties[i]) != "Any") {
             return true;
         }
     }
 
-    let sizeString = localStorage.getItem("size");
+    let sizeString = sessionStorage.getItem("size");
     let sizes = JSON.parse(sizeString);
     if (sizes.length > 1 || sizes[0] != "Any") {
         return true;
@@ -300,7 +300,7 @@ function isAnyFilterActive() {
     ];
 
     for (let i = 0; i < boolProperties.length; i++) {
-        if (localStorage.getItem(boolProperties[i]) == "1") {
+        if (sessionStorage.getItem(boolProperties[i]) == "1") {
             return true;
         }
     }
@@ -313,26 +313,26 @@ function isAnyFilterActive() {
 async function fetchFilteredCarries() {
     // Read the property of the button group and the button value
     const filters = {
-        position: localStorage.getItem("position"),
-        shoulders: localStorage.getItem("shoulders"),
-        layers: localStorage.getItem("layers"),
-        difficulty: localStorage.getItem("difficulty"),
-        mmposition: localStorage.getItem("mmposition"),
-        partialname: localStorage.getItem("partialname"),
-        pretied: localStorage.getItem("pretied"),
-        rings: localStorage.getItem("rings"),
-        fancy: localStorage.getItem("fancy"),
-        finish: localStorage.getItem("finish"),
-        newborns: localStorage.getItem("newborns"),
-        legstraighteners: localStorage.getItem("legstraighteners"),
-        leaners: localStorage.getItem("leaners"),
-        bigkids: localStorage.getItem("bigkids"),
-        feeding: localStorage.getItem("feeding"),
-        quickups: localStorage.getItem("quickups"),
+        position: sessionStorage.getItem("position"),
+        shoulders: sessionStorage.getItem("shoulders"),
+        layers: sessionStorage.getItem("layers"),
+        difficulty: sessionStorage.getItem("difficulty"),
+        mmposition: sessionStorage.getItem("mmposition"),
+        partialname: sessionStorage.getItem("partialname"),
+        pretied: sessionStorage.getItem("pretied"),
+        rings: sessionStorage.getItem("rings"),
+        fancy: sessionStorage.getItem("fancy"),
+        finish: sessionStorage.getItem("finish"),
+        newborns: sessionStorage.getItem("newborns"),
+        legstraighteners: sessionStorage.getItem("legstraighteners"),
+        leaners: sessionStorage.getItem("leaners"),
+        bigkids: sessionStorage.getItem("bigkids"),
+        feeding: sessionStorage.getItem("feeding"),
+        quickups: sessionStorage.getItem("quickups"),
     };
 
-    // size: localStorage.getItem("size"),
-    const sizeString = localStorage.getItem("size"); // Extract the size values
+    // size: sessionStorage.getItem("size"),
+    const sizeString = sessionStorage.getItem("size"); // Extract the size values
     const sizes = JSON.parse(sizeString);
     
     // Build the query string from the filters object
@@ -368,7 +368,7 @@ function showAppliedFilters() {
 
     let anyApplied = false;
 
-    sizes = JSON.parse(localStorage["size"]);
+    sizes = JSON.parse(sessionStorage["size"]);
     let sizeStr = "";
     for (let size of sizes) {
         if (size !== "Any") {
@@ -388,77 +388,77 @@ function showAppliedFilters() {
         anyApplied = true;
     }
 
-    if (localStorage["difficulty"] !== "Any") {
-        filtersApplied.appendChild(createFilterSpan("Difficulty: " + localStorage["difficulty"]));
+    if (sessionStorage["difficulty"] !== "Any") {
+        filtersApplied.appendChild(createFilterSpan("Difficulty: " + sessionStorage["difficulty"]));
         anyApplied = true;
     }
 
-    if (localStorage["position"] !== "Any") {
-        filtersApplied.appendChild(createFilterSpan(localStorage["position"] + " carries"));
+    if (sessionStorage["position"] !== "Any") {
+        filtersApplied.appendChild(createFilterSpan(sessionStorage["position"] + " carries"));
         anyApplied = true;
     }
 
-    if (localStorage["finish"] !== "Any") {
-        filtersApplied.appendChild(createFilterSpan("Finish: " + localStorage["finish"]));
+    if (sessionStorage["finish"] !== "Any") {
+        filtersApplied.appendChild(createFilterSpan("Finish: " + sessionStorage["finish"]));
         anyApplied = true;
     }
 
-    if (localStorage["mmposition"] !== "Any") {
-        filtersApplied.appendChild(createFilterSpan("MM position: " + localStorage["mmposition"]));
+    if (sessionStorage["mmposition"] !== "Any") {
+        filtersApplied.appendChild(createFilterSpan("MM position: " + sessionStorage["mmposition"]));
         anyApplied = true;
     }
 
-    if (localStorage["layers"] !== "Any") {
-        filtersApplied.appendChild(createFilterSpan(localStorage["layers"] + " layers"));
+    if (sessionStorage["layers"] !== "Any") {
+        filtersApplied.appendChild(createFilterSpan(sessionStorage["layers"] + " layers"));
         anyApplied = true;
     }
 
-    if (localStorage["shoulders"] !== "Any") {
-        filtersApplied.appendChild(createFilterSpan(localStorage["shoulders"] + " shoulders"));
+    if (sessionStorage["shoulders"] !== "Any") {
+        filtersApplied.appendChild(createFilterSpan(sessionStorage["shoulders"] + " shoulders"));
         anyApplied = true;
     }
 
-    if (localStorage["bigkids"] === "1") {
+    if (sessionStorage["bigkids"] === "1") {
         filtersApplied.appendChild(createFilterSpan("Good for big kids"));
         anyApplied = true;
     }
 
-    if (localStorage["pretied"] === "1") {
+    if (sessionStorage["pretied"] === "1") {
         filtersApplied.appendChild(createFilterSpan("Can be pre-tied"));
         anyApplied = true;
     }
 
-    if (localStorage["rings"] === "1") {
+    if (sessionStorage["rings"] === "1") {
         filtersApplied.appendChild(createFilterSpan("Ring(s)"));
         anyApplied = true;
     }
 
-    if (localStorage["leaners"] === "1") {
+    if (sessionStorage["leaners"] === "1") {
         filtersApplied.appendChild(createFilterSpan("Good for leaners"));
         anyApplied = true;
     }
 
-    if (localStorage["quickups"] === "1") {
+    if (sessionStorage["quickups"] === "1") {
         filtersApplied.appendChild(createFilterSpan("Good for quickups"));
         anyApplied = true;
     }
 
-    if (localStorage["legstraighteners"] === "1") {
+    if (sessionStorage["legstraighteners"] === "1") {
         filtersApplied.appendChild(createFilterSpan("Good for leg straighteners"));
         anyApplied = true;
     }
 
-    if (localStorage["feeding"] === "1") {
+    if (sessionStorage["feeding"] === "1") {
         filtersApplied.appendChild(createFilterSpan("Good for feeding"));
         anyApplied = true;
     }
 
-    if (localStorage["newborns"] === "1") {
+    if (sessionStorage["newborns"] === "1") {
         filtersApplied.appendChild(createFilterSpan("Good for newborns"));
         anyApplied = true;
     }
 
-    if (localStorage["fancy"] === "1") {
+    if (sessionStorage["fancy"] === "1") {
         filtersApplied.appendChild(createFilterSpan("Fancy carry"));
         anyApplied = true;
     }
@@ -470,7 +470,7 @@ function showAppliedFilters() {
         resetButton.innerHTML = '&times;';  // Use &times; HTML entity for ×
         resetButton.title = 'Reset Filters';
         resetButton.onclick = function() {
-            // Clear filters in localStorage
+            // Clear filters in sessionStorage
             resetFilters();
         };
         filtersApplied.appendChild(resetButton);
@@ -545,7 +545,7 @@ function setActiveButton(button) {
     button.classList.add('active');
 
     // Store selected value in local storage
-    localStorage.setItem(button.dataset.property, button.dataset.value);
+    sessionStorage.setItem(button.dataset.property, button.dataset.value);
 }
 
 function setActiveMultiButton(button) {
@@ -569,7 +569,7 @@ function setActiveMultiButton(button) {
         values = ["Any"];
     } else {
         // Get current list
-        let valueString = localStorage.getItem(property); // Extract the values
+        let valueString = sessionStorage.getItem(property); // Extract the values
         values = JSON.parse(valueString);
 
         // Ensure "Any" is not in the array
@@ -600,7 +600,7 @@ function setActiveMultiButton(button) {
     valueString = JSON.stringify(values);
     
     // Store selected value in local storage
-    localStorage.setItem(button.dataset.property, valueString);
+    sessionStorage.setItem(button.dataset.property, valueString);
 }
 
 async function toggleFilterBox(button) {
