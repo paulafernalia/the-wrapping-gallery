@@ -186,7 +186,7 @@ function initialiseButtonData(property) {
 
 
 function initialiseMultiButtonData(property) {
-    let init = 'Any';
+    let init = ['Any'];
     if (!sessionStorage.getItem(property)) {
         // If not, set the counter to 0 in local storage
         sessionStorage.setItem(property, JSON.stringify(['Any']));
@@ -196,6 +196,7 @@ function initialiseMultiButtonData(property) {
     }
 
     // Get button with this property and value
+    console.log(init, "trying to get button", property, init[0]);
     const button = getButtonByValueAndProperty(property, init[0]);
     const btnGroup = button.parentElement;
     const buttons = btnGroup.getElementsByClassName('btn-custom');
