@@ -12,12 +12,17 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 from pathlib import Path
 import os
-from decouple import Config, RepositoryEnv
+from decouple import Config, RepositoryEnv, config as decouple_config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
-config = Config(RepositoryEnv('.env.dev'))
+env_file = '.env.dev'
+if os.path.exists(env_file):
+    config = Config(RepositoryEnv(env_file))
+else:
+    # Fallback to standard config that reads from environment variables
+    config = decouple_config
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
