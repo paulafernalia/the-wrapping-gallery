@@ -214,7 +214,7 @@ def filter_carries(request):
     if sizes != ["Any"]:
         queryset = queryset.filter(carry__size__in=sizes)
 
-    sorted_queryset = queryset.order_by('carry__title')
+    sorted_queryset = queryset.order_by('carry__longtitle')
 
     # Serialize the results
     results = list(
@@ -222,6 +222,7 @@ def filter_carries(request):
             "carry__name",
             "carry__position",
             "carry__title",
+            "carry__longtitle",
             "carry__size",
             "carry__pretied",
             "carry__rings",
