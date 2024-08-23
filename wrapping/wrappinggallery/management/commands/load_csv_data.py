@@ -40,6 +40,7 @@ class Command(BaseCommand):
                     carry = Carry.objects.create(
                         name=row["name"],
                         title=row["title"],
+                        longtitle=row["longtitle"],
                         size=row["size"],
                         shoulders=row["shoulders"],
                         layers=row["layers"],

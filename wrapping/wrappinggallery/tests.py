@@ -12,6 +12,7 @@ class CarryTestCase(TestCase):
         self.c1 = Carry.objects.create(
             name="CarryTestCase",
             title="Ruck",
+            longtitle="Ruck",
             size=0,
             shoulders=2,
             layers=1,
@@ -113,6 +114,7 @@ class CarryVideoTest(TestCase):
         carry = Carry(
             name="test_carry",
             title="Test Carry",
+            longtitle="Test Carry",
             size=0,
             shoulders=2,
             layers=2,
@@ -131,6 +133,7 @@ class CarryVideoTest(TestCase):
         carry = Carry(
             name="test_carry",
             title="Test Carry",
+            longtitle="Test Carry",
             size=0,
             shoulders=2,
             layers=2,
@@ -151,6 +154,7 @@ class CarryVideoTest(TestCase):
         carry = Carry(
             name="test_carry",
             title="Test Carry",
+            longtitle="Test Carry",
             size=0,
             shoulders=2,
             layers=2,
@@ -175,6 +179,7 @@ class CarryVideoTest(TestCase):
         carry = Carry(
             name="carry_test_1",
             title="Test Carry 1",
+            longtitle="Test Carry",
             size=0,
             shoulders=2,
             layers=2,
@@ -210,6 +215,7 @@ class CarryVideoTest(TestCase):
         carry = Carry(
             name="carry_test_2",
             title="Test Carry 2",
+            longtitle="Test Carry",
             size=0,
             shoulders=2,
             layers=2,
@@ -251,6 +257,7 @@ class CarryVideoTest(TestCase):
         carry = Carry(
             name="carry_test_3",
             title="Test Carry 3",
+            longtitle="Test Carry",
             size=0,
             shoulders=2,
             layers=2,
