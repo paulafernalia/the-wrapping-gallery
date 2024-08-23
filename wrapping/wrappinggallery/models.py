@@ -9,6 +9,7 @@ class Carry(models.Model):
     name = models.CharField(max_length=64, primary_key=True)
 
     title = models.CharField(max_length=64)
+    longtitle = models.CharField(max_length=128)
 
     size = models.IntegerField(
         choices={
@@ -86,6 +87,7 @@ class Carry(models.Model):
         return {
             "name": self.name,
             "title": self.title,
+            "longtitle": self.longtitle,
             "size": self.get_size_display(),
             "shoulders": self.get_shoulders_display(),
             "layers": self.get_layers_display(),
