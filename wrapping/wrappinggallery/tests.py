@@ -21,6 +21,7 @@ class CarryTestCase(TestCase):
             pretied=False,  # corrected boolean value
             rings=False,
             finish="TIF",
+            pass_ruck=1,
         )
 
     def test_carries_count(self):
@@ -124,6 +125,7 @@ class CarryVideoTest(TestCase):
             videoauthor=None,
             videoauthor2="Author 2",
             videotutorial2="video2",
+            pass_sling=2,
         )
 
         with self.assertRaises(ValidationError):
@@ -145,6 +147,7 @@ class CarryVideoTest(TestCase):
             videoauthor2=None,
             videoauthor3="Author 3",
             videotutorial3="video3",
+            pass_sling=2,
         )
 
         with self.assertRaises(ValidationError):
@@ -167,6 +170,7 @@ class CarryVideoTest(TestCase):
             videoauthor="Author 1",
             videoauthor2="Author 2",
             videoauthor3="Author 3",
+            pass_sling=2,
         )
 
         try:
@@ -185,7 +189,8 @@ class CarryVideoTest(TestCase):
             layers=2,
             mmposition=0,
             position="front",
-            finish="TUB"
+            finish="TUB",
+            pass_sling=2,
         )
         try:
             carry.full_clean()  # This should pass
@@ -224,6 +229,7 @@ class CarryVideoTest(TestCase):
             finish="TUB",
             videoauthor="Author 1",
             videotutorial="http://example.com/video1",
+            pass_sling=2,
         )
 
         # Test case where both fields are blank
@@ -268,6 +274,7 @@ class CarryVideoTest(TestCase):
             videotutorial="http://example.com/video1",
             videoauthor2="Author 2",
             videotutorial2="http://example.com/video2",
+            pass_sling=2,
         )
 
         # Test case where both fields are blank

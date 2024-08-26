@@ -79,6 +79,27 @@ class Carry(models.Model):
         },
     )
 
+    PASS_CHOICES = {0: "", 1: "", 2: "(2)", 3: "(3)"}
+
+    pass_horizontal = models.IntegerField(default=0, choices=PASS_CHOICES)
+    pass_sling = models.IntegerField(default=0, choices=PASS_CHOICES)
+    pass_cross = models.IntegerField(default=0, choices=PASS_CHOICES)
+    pass_reinforcing_cross = models.IntegerField(default=0, choices=PASS_CHOICES)
+    pass_reinforcing_horizontal = models.IntegerField(default=0, choices=PASS_CHOICES)
+    pass_poppins = models.IntegerField(default=0, choices=PASS_CHOICES)
+    pass_ruck = models.IntegerField(default=0, choices=PASS_CHOICES)
+    pass_kangaroo = models.IntegerField(default=0, choices=PASS_CHOICES)
+
+    other_chestpass = models.BooleanField(default=0)
+    other_bunchedpasses = models.BooleanField(default=0)
+    other_shoulderflip = models.BooleanField(default=0)
+    other_twistedpass = models.BooleanField(default=0)
+    other_waistband = models.BooleanField(default=0)
+    other_legpasses = models.BooleanField(default=0)
+    other_s2s = models.BooleanField(default=0)
+    other_eyelet = models.BooleanField(default=0)
+
+
     def __str__(self):
         return f"{self.name}: {self.position} carry, {self.size}, {self.mmposition}"
         
@@ -103,32 +124,112 @@ class Carry(models.Model):
             "videoauthor2": self.videoauthor2,
             "videotutorial3": self.videotutorial3,
             "videoauthor3": self.videoauthor3,
+            "passes": [
+                pass_name for pass_name in [
+                    f"horizontal (2)" if self.pass_horizontal == 2 else "horizontal" if self.pass_horizontal == 1 else None,
+                    f"sling (2)" if self.pass_sling == 2 else "sling" if self.pass_sling == 1 else None,
+                    f"cross (2)" if self.pass_cross == 2 else "cross" if self.pass_cross == 1 else None,
+                    f"reinforcing cross (2)" if self.pass_reinforcing_cross == 2 else "reinforcing cross" if self.pass_reinforcing_cross == 1 else None,
+                    f"reinforcing horizontal (2)" if self.pass_reinforcing_horizontal == 2 else "reinforcing horizontal" if self.pass_reinforcing_horizontal == 1 else None,
+                    f"poppins (2)" if self.pass_poppins == 2 else "poppins" if self.pass_poppins == 1 else None,
+                    f"ruck (2)" if self.pass_ruck == 2 else "ruck" if self.pass_ruck == 1 else None,
+                    f"kangaroo (2)" if self.pass_kangaroo == 2 else "kangaroo" if self.pass_kangaroo == 1 else None,
+                ]  if pass_name is not None
+            ],
+            "other": [
+                other_name for other_name in [
+                    "chest pass" if self.other_chestpass == True else None,
+                    "bunched passes" if self.other_bunchedpasses == True else None,
+                    "shoulder flip" if self.other_shoulderflip == True else None,
+                    "twisted pass" if self.other_twistedpass == True else None,
+                    "waist band" if self.other_waistband == True else None,
+                    "leg passes" if self.other_legpasses == True else None,
+                    "shoulder to shoulder" if self.other_chestpass == True else None,
+                    "eyelet" if self.other_eyelet == True else None,
+                ] if other_name is not None
+            ]
         }
 
 
     def clean(self):
         # Ensure carry cannot be pretied if it is a back carry
         if self.pretied == 1 and self.position == "back":
-            raise ValidationError("a back carry cannot be pretied")
+            raise ValidationError(
+                "a back carry cannot be pretied"
+            )
 
         # Ensure videoauthor2 cannot be not null if videoauthor is null
         if self.videoauthor2 and not self.videoauthor:
-            raise ValidationError("videoauthor2 cannot be set if videoauthor is null.")
+            raise ValidationError(
+                "videoauthor2 cannot be set if videoauthor is null."
+            )
 
         # Ensure videoauthor3 cannot be not null if videoauthor2 is null
         if self.videoauthor3 and not self.videoauthor2:
-            raise ValidationError("videoauthor3 cannot be set if videoauthor2 is null.")
+            raise ValidationError(
+                "videoauthor3 cannot be set if videoauthor2 is null."
+            )
 
         # Ensure that if one of the pair is set, the other must also be set
-        if (self.videotutorial and not self.videoauthor) or (not self.videotutorial and self.videoauthor):
-            raise ValidationError("Both videoauthor and videotutorial must be either set or both blank.")
+        if (self.videotutorial and not self.videoauthor) or \
+           (not self.videotutorial and self.videoauthor):
+            raise ValidationError(
+                "Both videoauthor and videotutorial must be either set or both blank."
+            )
 
-        if (self.videotutorial2 and not self.videoauthor2) or (not self.videotutorial2 and self.videoauthor2):
-            raise ValidationError("Both videoauthor2 and videotutorial2 must be either set or both blank.")
+        if (self.videotutorial2 and not self.videoauthor2) or \
+           (not self.videotutorial2 and self.videoauthor2):
+            raise ValidationError(
+                "Both videoauthor2 and videotutorial2 must be either set or both blank."
+            )
 
-        if (self.videotutorial3 and not self.videoauthor3) or (not self.videotutorial3 and self.videoauthor3):
-            raise ValidationError("Both videoauthor3 and videotutorial3 must be either set or both blank.")
+        if (self.videotutorial3 and not self.videoauthor3) or \
+           (not self.videotutorial3 and self.videoauthor3):
+            raise ValidationError(
+                "Both videoauthor3 and videotutorial3 must be either set or both blank."
+            )
 
+        num_passes = self.pass_sling
+        num_passes += self.pass_ruck
+        num_passes += self.pass_horizontal
+        num_passes += self.pass_cross
+        num_passes += self.pass_kangaroo
+        num_passes += self.pass_reinforcing_cross
+        num_passes += self.pass_reinforcing_horizontal
+        num_passes += 2 * self.pass_poppins
+        if self.layers != num_passes:
+            raise ValidationError(
+                f"Layers ({self.layers}) inconsistent with passes ({num_passes})"
+            )
+
+        num_shoulders = self.pass_cross
+        num_shoulders += self.pass_sling
+        num_shoulders += 2 * self.pass_ruck
+        num_shoulders += 2 * self.pass_kangaroo
+        if (self.name != "ruck_celtic_knot") and \
+           ('fwcc' not in self.name) and \
+           ('frts' not in self.name) and \
+           ('poppins' not in self.name) and \
+           (self.shoulders != num_shoulders):
+            raise ValidationError(
+                f"Shoulders ({self.shoulders}) inconsistent with passes ({num_shoulders})"
+            )
+
+        if not self.other_legpasses and self.pass_reinforcing_cross + self.pass_cross > 0:
+            raise ValidationError(
+                f"Leg passes cannot be 0 with cross and reinforcing cross pass"
+            )
+
+        if "dh" in self.name and self.other_chestpass == False:
+            raise ValidationError(
+                f"Chest pass cannot be 0 in a double hammock variation"
+            )
+
+        if (self.name != "ruckless_bikini_carry") and \
+            ("ruck" in self.name and self.pass_ruck == 0):
+            raise ValidationError(
+                f"Ruck pass cannot be empty in a ruck variation"
+            )
 
     def save(self, *args, **kwargs):
         self.clean()
