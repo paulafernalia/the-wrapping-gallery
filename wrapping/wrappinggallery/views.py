@@ -193,6 +193,38 @@ def filter_carries(request):
             ).filter(rounded_difficulty=difficulties[val])
         elif prop == "pretied" and val == "1":
             queryset = queryset.filter(carry__pretied=val)
+        elif prop == "pass_sling" and val == "1":
+            queryset = queryset.filter(carry__pass_sling=val)
+        elif prop == "pass_ruck" and val == "1":
+            queryset = queryset.filter(carry__pass_ruck=val)
+        elif prop == "pass_kangaroo" and val == "1":
+            queryset = queryset.filter(carry__pass_kangaroo=val)
+        elif prop == "pass_cross" and val == "1":
+            queryset = queryset.filter(carry__pass_cross=val)
+        elif prop == "pass_reinforcing_cross" and val == "1":
+            queryset = queryset.filter(carry__pass_reinforcing_cross=val)
+        elif prop == "pass_reinforcing_horizontal" and val == "1":
+            queryset = queryset.filter(carry__pass_reinforcing_horizontal=val)
+        elif prop == "pass_horizontal" and val == "1":
+            queryset = queryset.filter(carry__pass_horizontal=val)
+        elif prop == "pass_poppins" and val == "1":
+            queryset = queryset.filter(carry__pass_poppins=val)
+        elif prop == "no_pass_sling" and val == "1":
+            queryset = queryset.filter(carry__pass_sling="0")
+        elif prop == "no_pass_ruck" and val == "1":
+            queryset = queryset.filter(carry__pass_ruck="0")
+        elif prop == "no_pass_kangaroo" and val == "1":
+            queryset = queryset.filter(carry__pass_kangaroo="0")
+        elif prop == "no_pass_cross" and val == "1":
+            queryset = queryset.filter(carry__pass_cross="0")
+        elif prop == "no_pass_reinforcing_cross" and val == "1":
+            queryset = queryset.filter(carry__pass_reinforcing_cross="0")
+        elif prop == "no_pass_reinforcing_horizontal" and val == "1":
+            queryset = queryset.filter(carry__pass_reinforcing_horizontal="0")
+        elif prop == "no_pass_horizontal" and val == "1":
+            queryset = queryset.filter(carry__pass_horizontal="0")
+        elif prop == "no_pass_poppins" and val == "1":
+            queryset = queryset.filter(carry__pass_poppins="0")
         elif prop == "rings" and val == "1":
             queryset = queryset.filter(carry__rings=val)
         elif prop == "newborns" and val == "1":
@@ -209,6 +241,22 @@ def filter_carries(request):
             queryset = queryset.filter(quickups__gte=3.5)
         elif prop == "fancy" and val == "1":
             queryset = queryset.filter(fancy__gte=3.5)
+        elif prop == "other_chestpass" and val == "1":
+            queryset = queryset.filter(carry__other_chestpass=val)
+        elif prop == "other_bunchedpasses" and val == "1":
+            queryset = queryset.filter(carry__other_bunchedpasses=val)
+        elif prop == "other_shoulderflip" and val == "1":
+            queryset = queryset.filter(carry__other_shoulderflip=val)
+        elif prop == "other_twistedpass" and val == "1":
+            queryset = queryset.filter(carry__other_twistedpass=val)
+        elif prop == "other_waistband" and val == "1":
+            queryset = queryset.filter(carry__other_waistband=val)
+        elif prop == "other_legpasses" and val == "1":
+            queryset = queryset.filter(carry__other_legpasses=val)
+        elif prop == "other_s2s" and val == "1":
+            queryset = queryset.filter(carry__other_s2s=val)
+        elif prop == "other_eyelet" and val == "1":
+            queryset = queryset.filter(carry__other_eyelet=val)
 
     sizes = request.GET.getlist("size[]", "Any")
     if sizes != ["Any"]:
