@@ -867,3 +867,18 @@ document.addEventListener('DOMContentLoaded', async function() {
         }
     });
 });
+
+
+function togglePasses(iconElement, group) {
+    const passesGroup = document.getElementById(group);
+
+    if (passesGroup.style.display === "none") {
+        passesGroup.style.display = "block";
+        iconElement.classList.remove("fa-caret-down");
+        iconElement.classList.add("fa-caret-up");
+    } else {
+        passesGroup.style.display = "none";
+        iconElement.classList.remove("fa-caret-up");
+        iconElement.classList.add("fa-caret-down");
+    }
+}
