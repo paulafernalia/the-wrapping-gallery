@@ -1,6 +1,19 @@
 let isFetching = false
 let filteredResults = 0;
 
+const booleanProps = [
+    'fancy', 'pretied', 'newborns', 'legstraighteners', 'leaners', 
+    'bigkids', 'feeding', 'quickups', 'rings', 'pass_sling', 
+    'pass_ruck', 'pass_kangaroo', 'pass_cross', 'pass_reinforcing_cross', 
+    'pass_reinforcing_horizontal', 'pass_horizontal', 'pass_poppins', 
+    'other_chestpass', 'other_bunchedpasses', 'other_shoulderflip', 
+    'other_twistedpass', 'other_waistband', 'other_legpasses', 
+    'other_s2s', 'other_eyelet', 'no_pass_sling',
+    'no_pass_ruck', 'no_pass_kangaroo', 'no_pass_cross',
+    'no_pass_reinforcing_cross', 'no_pass_reinforcing_horizontal',
+    'no_pass_horizontal', 'no_pass_poppins', 
+];
+
 function getButtonByValueAndProperty(property, value) {
     // Get button that matches the data-property and data-value args given
     return document.querySelector(`button[data-value="${value}"][data-property="${property}"]`);
@@ -121,22 +134,23 @@ function showAllFilters() {
 }
 
 async function resetFilters() {
-    sessionStorage.setItem("size", JSON.stringify(['Any']));
-    sessionStorage.setItem("position", "Any");
-    sessionStorage.setItem("mmposition", "Any");
-    sessionStorage.setItem("layers", "Any");
-    sessionStorage.setItem("shoulders", "Any");
-    sessionStorage.setItem("difficulty", "Any");
-    sessionStorage.setItem("finish", "Any");
-    sessionStorage.setItem("fancy", "0");
-    sessionStorage.setItem("pretied", "0");
-    sessionStorage.setItem("rings", "0");
-    sessionStorage.setItem("newborns", "0");
-    sessionStorage.setItem("legstraighteners", "0");
-    sessionStorage.setItem("leaners", "0");
-    sessionStorage.setItem("bigkids", "0");
-    sessionStorage.setItem("feeding", "0");
-    sessionStorage.setItem("quickups", "0");
+    const filterDefaults = {
+        size: JSON.stringify(['Any']),
+        position: "Any",
+        mmposition: "Any",
+        layers: "Any",
+        shoulders: "Any",
+        difficulty: "Any",
+        finish: "Any"
+    };
+
+    Object.entries(filterDefaults).forEach(([key, value]) => {
+        sessionStorage.setItem(key, value);
+    });
+
+    booleanProps.forEach(key => {
+        sessionStorage.setItem(key, "0");
+    });    
 
     // Set initial values of filters
     initialiseFilters();
@@ -251,31 +265,22 @@ function initialiseSearchBar() {
 }
 
 async function initialiseFilters() {
-    const fil1 = initialiseMultiButtonData('size');
-    const fil2 = initialiseButtonData('position');
-    const fil3 = initialiseButtonData('shoulders');
-    const fil4 = initialiseButtonData('layers');
-    const fil5 = initialiseDropdownData('difficulty');
-    const fil6 = initialiseDropdownData('finish');
-    const fil7 = initialiseSwitchData('fancy');
-    const fil8 = initialiseSwitchData('pretied');
-    const fil9 = initialiseSwitchData('newborns');
-    const fil10 = initialiseSwitchData('legstraighteners');
-    const fil11 = initialiseSwitchData('leaners');
-    const fil12 = initialiseSwitchData('bigkids');
-    const fil13 = initialiseSwitchData('feeding');
-    const fil14 = initialiseSwitchData('quickups');
-    const fil15 = initialiseDropdownData('mmposition');
-    const fil16 = initialiseSwitchData('rings');
+    const multiButtonProps = ['size'];
+    const buttonProps = ['position', 'shoulders', 'layers'];
+    const dropdownProps = ['difficulty', 'finish', 'mmposition'];
+
+    const filters = [
+        ...multiButtonProps.map(prop => initialiseMultiButtonData(prop)),
+        ...buttonProps.map(prop => initialiseButtonData(prop)),
+        ...dropdownProps.map(prop => initialiseDropdownData(prop)),
+        ...booleanProps.map(prop => initialiseSwitchData(prop))
+    ];
+
     initialiseSearchBar();
 
-    if (fil1 || fil2 || fil3 || fil4 || fil5 || fil6 || fil7 || fil8 ||
-        fil9 || fil10 || fil11 || fil12 || fil13 || fil14 || fil15 || fil16) {
-        return true;
-    } else {
-        return false;
-    }
+    return filters.some(filter => filter);
 }
+
 
 function isAnyFilterActive() {
     const choiceProperties = [
@@ -295,13 +300,8 @@ function isAnyFilterActive() {
         return true;
     }
 
-    const boolProperties = [
-        "fancy", "pretied", "newborns", "legstraighteners",
-        "leaners", "bigkids", "feeding", "quickups", "rings"
-    ];
-
-    for (let i = 0; i < boolProperties.length; i++) {
-        if (sessionStorage.getItem(boolProperties[i]) == "1") {
+    for (let i = 0; i < booleanProps.length; i++) {
+        if (sessionStorage.getItem(booleanProps[i]) == "1") {
             return true;
         }
     }
@@ -313,24 +313,15 @@ function isAnyFilterActive() {
 
 async function fetchFilteredCarries() {
     // Read the property of the button group and the button value
-    const filters = {
-        position: sessionStorage.getItem("position"),
-        shoulders: sessionStorage.getItem("shoulders"),
-        layers: sessionStorage.getItem("layers"),
-        difficulty: sessionStorage.getItem("difficulty"),
-        mmposition: sessionStorage.getItem("mmposition"),
-        partialname: sessionStorage.getItem("partialname"),
-        pretied: sessionStorage.getItem("pretied"),
-        rings: sessionStorage.getItem("rings"),
-        fancy: sessionStorage.getItem("fancy"),
-        finish: sessionStorage.getItem("finish"),
-        newborns: sessionStorage.getItem("newborns"),
-        legstraighteners: sessionStorage.getItem("legstraighteners"),
-        leaners: sessionStorage.getItem("leaners"),
-        bigkids: sessionStorage.getItem("bigkids"),
-        feeding: sessionStorage.getItem("feeding"),
-        quickups: sessionStorage.getItem("quickups"),
-    };
+    const nonBooleanProps = [
+        "position", "shoulders", "layers", "difficulty", "mmposition", 
+        "partialname", "finish"];
+
+    const filterKeys = nonBooleanProps.concat(booleanProps);
+
+    const filters = Object.fromEntries(
+        filterKeys.map(key => [key, sessionStorage.getItem(key)])
+    );
 
     // size: sessionStorage.getItem("size"),
     const sizeString = sessionStorage.getItem("size"); // Extract the size values
@@ -384,85 +375,66 @@ function showAppliedFilters() {
         }
     }
 
-    if (sizeStr !== "") {
-        filtersApplied.appendChild(createFilterSpan("Size: " + sizeStr));
-        anyApplied = true;
-    }
+    const filterConditions = [
+        { key: "size", value: sizeStr, format: val => `size: ${val}`, condition: val => val !== "" },
+        { key: "difficulty", value: sessionStorage["difficulty"], format: val => `difficulty: ${val}`, condition: val => val !== "Any" },
+        { key: "position", value: sessionStorage["position"], format: val => `${val} carries`, condition: val => val !== "Any" },
+        { key: "finish", value: sessionStorage["finish"], format: val => `finish: ${val}`, condition: val => val !== "Any" },
+        { key: "mmposition", value: sessionStorage["mmposition"], format: val => `MM position: ${val}`, condition: val => val !== "Any" },
+        { key: "layers", value: sessionStorage["layers"], format: val => `${val} layers`, condition: val => val !== "Any" },
+        { key: "shoulders", value: sessionStorage["shoulders"], format: val => `${val} shoulders`, condition: val => val !== "Any" },
+    ];
 
-    if (sessionStorage["difficulty"] !== "Any") {
-        filtersApplied.appendChild(createFilterSpan("Difficulty: " + sessionStorage["difficulty"]));
-        anyApplied = true;
-    }
+    const booleanFilters = [
+        { key: "bigkids", label: "good for big kids" },
+        { key: "pretied", label: "can be pre-tied" },
+        { key: "rings", label: "ring(s)" },
+        { key: "leaners", label: "good for leaners" },
+        { key: "quickups", label: "good for quickups" },
+        { key: "legstraighteners", label: "good for leg straighteners" },
+        { key: "feeding", label: "good for feeding" },
+        { key: "newborns", label: "good for newborns" },
+        { key: "pass_sling", label: "sling pass" },
+        { key: "pass_ruck", label: "ruck pass" },
+        { key: "pass_kangaroo", label: "kangaroo pass" },
+        { key: "pass_cross", label: "cross pass" },
+        { key: "pass_reinforcing_cross", label: "reinforcing cross pass" },
+        { key: "pass_reinforcing_horizontal", label: "reinforcing horizontal pass" },
+        { key: "pass_horizontal", label: "horizontal pass" },
+        { key: "pass_poppins", label: "poppins pass" },
+        { key: "no_pass_sling", label: "no sling pass" },
+        { key: "no_pass_ruck", label: "no ruck pass" },
+        { key: "no_pass_kangaroo", label: "no kangaroo pass" },
+        { key: "no_pass_cross", label: "no cross pass" },
+        { key: "no_pass_reinforcing_cross", label: "no reinforcing cross pass" },
+        { key: "no_pass_reinforcing_horizontal", label: "no reinforcing horizontal pass" },
+        { key: "no_pass_horizontal", label: "no horizontal pass" },
+        { key: "no_pass_poppins", label: "no poppins pass" },
+        { key: "other_chestpass", label: "chest pass" },
+        { key: "other_bunchedpasses", label: "bunched pass(es)" },
+        { key: "other_shoulderflip", label: "shoulder flip" },
+        { key: "other_twistedpass", label: "twisted pass" },
+        { key: "other_s2s", label: "S2S" },
+        { key: "other_waistband", label: "waist band" },
+        { key: "other_legpasses", label: "leg pass(es)" },
+        { key: "other_eyelet", label: "eyelet" }
+    ];
 
-    if (sessionStorage["position"] !== "Any") {
-        filtersApplied.appendChild(createFilterSpan(sessionStorage["position"] + " carries"));
-        anyApplied = true;
-    }
+    // Process the filter conditions
+    filterConditions.forEach(({ key, value, format, condition }) => {
+        if (condition(value)) {
+            filtersApplied.appendChild(createFilterSpan(format(value)));
+            anyApplied = true;
+        }
+    });
 
-    if (sessionStorage["finish"] !== "Any") {
-        filtersApplied.appendChild(createFilterSpan("Finish: " + sessionStorage["finish"]));
-        anyApplied = true;
-    }
-
-    if (sessionStorage["mmposition"] !== "Any") {
-        filtersApplied.appendChild(createFilterSpan("MM position: " + sessionStorage["mmposition"]));
-        anyApplied = true;
-    }
-
-    if (sessionStorage["layers"] !== "Any") {
-        filtersApplied.appendChild(createFilterSpan(sessionStorage["layers"] + " layers"));
-        anyApplied = true;
-    }
-
-    if (sessionStorage["shoulders"] !== "Any") {
-        filtersApplied.appendChild(createFilterSpan(sessionStorage["shoulders"] + " shoulders"));
-        anyApplied = true;
-    }
-
-    if (sessionStorage["bigkids"] === "1") {
-        filtersApplied.appendChild(createFilterSpan("Good for big kids"));
-        anyApplied = true;
-    }
-
-    if (sessionStorage["pretied"] === "1") {
-        filtersApplied.appendChild(createFilterSpan("Can be pre-tied"));
-        anyApplied = true;
-    }
-
-    if (sessionStorage["rings"] === "1") {
-        filtersApplied.appendChild(createFilterSpan("Ring(s)"));
-        anyApplied = true;
-    }
-
-    if (sessionStorage["leaners"] === "1") {
-        filtersApplied.appendChild(createFilterSpan("Good for leaners"));
-        anyApplied = true;
-    }
-
-    if (sessionStorage["quickups"] === "1") {
-        filtersApplied.appendChild(createFilterSpan("Good for quickups"));
-        anyApplied = true;
-    }
-
-    if (sessionStorage["legstraighteners"] === "1") {
-        filtersApplied.appendChild(createFilterSpan("Good for leg straighteners"));
-        anyApplied = true;
-    }
-
-    if (sessionStorage["feeding"] === "1") {
-        filtersApplied.appendChild(createFilterSpan("Good for feeding"));
-        anyApplied = true;
-    }
-
-    if (sessionStorage["newborns"] === "1") {
-        filtersApplied.appendChild(createFilterSpan("Good for newborns"));
-        anyApplied = true;
-    }
-
-    if (sessionStorage["fancy"] === "1") {
-        filtersApplied.appendChild(createFilterSpan("Fancy carry"));
-        anyApplied = true;
-    }
+    // Process the boolean filters
+    booleanFilters.forEach(({ key, label }) => {
+        if (sessionStorage[key] === "1") {
+            filtersApplied.appendChild(createFilterSpan(label));
+            anyApplied = true;
+        }
+    });
 
     // If any filters were added, add the reset "x" button
     if (anyApplied) {
