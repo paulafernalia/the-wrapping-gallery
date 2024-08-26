@@ -727,3 +727,9 @@ p, li {
     background-color: transparent !important;
     color: #ad9393;
 }
+
+.toggle-icon {
+    cursor: pointer;
+    margin-left: 10px; /* Adjust the spacing here as needed */
+    font-size: 16px; /* Adjust size if needed */
+}
