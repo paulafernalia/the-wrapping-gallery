@@ -210,7 +210,6 @@ function initialiseMultiButtonData(property) {
     }
 
     // Get button with this property and value
-    console.log(init, "trying to get button", property, init[0]);
     const button = getButtonByValueAndProperty(property, init[0]);
     const btnGroup = button.parentElement;
     const buttons = btnGroup.getElementsByClassName('btn-custom');
