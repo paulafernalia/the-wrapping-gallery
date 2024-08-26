@@ -151,7 +151,7 @@ class Carry(models.Model):
         }
 
 
-    def validate(self):
+    def clean(self):
         # Ensure carry cannot be pretied if it is a back carry
         if self.pretied == 1 and self.position == "back":
             raise ValidationError(
@@ -232,7 +232,7 @@ class Carry(models.Model):
             )
 
     def save(self, *args, **kwargs):
-        self.validate()
+        self.clean()
         super().save(*args, **kwargs)
 
 
