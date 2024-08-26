@@ -144,7 +144,7 @@ class Carry(models.Model):
                     "twisted pass" if self.other_twistedpass == True else None,
                     "waist band" if self.other_waistband == True else None,
                     "leg passes" if self.other_legpasses == True else None,
-                    "shoulder to shoulder" if self.other_chestpass == True else None,
+                    "shoulder to shoulder" if self.other_s2s == True else None,
                     "eyelet" if self.other_eyelet == True else None,
                 ] if other_name is not None
             ]
