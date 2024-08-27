@@ -105,46 +105,287 @@
         </div>
         <hr>
 
-        <p class="poppins-bold fs16"> Must be suitable for</p>
-        <div class="checkbox-group poppins-light fs16">
+        <p class="poppins-bold fs16">
+            Must be suitable for
+            <i class="fa-solid fa-caret-down toggle-icon" onclick="togglePasses(this, 'suitableGroup')" style="cursor: pointer;"></i>
+        </p>
+        <div id="suitableGroup" class="checkbox-group poppins-light fs16" style="display: none;">
+            <div class="checkbox-group poppins-light fs16">
+                <div>
+                    <label>
+                        <input type="checkbox" data-property="newborns" onclick="handleSwitchChange(this)">
+                        Newborns
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        <input type="checkbox" data-property="legstraighteners" onclick="handleSwitchChange(this)">
+                        Leg straighteners
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        <input type="checkbox" data-property="leaners" onclick="handleSwitchChange(this)">
+                        Leaners
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        <input type="checkbox" data-property="bigkids" onclick="handleSwitchChange(this)">
+                        Big kids
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        <input type="checkbox" data-property="feeding" onclick="handleSwitchChange(this)">
+                        Feeding
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        <input type="checkbox" data-property="quickups" onclick="handleSwitchChange(this)">
+                        Quick ups
+                    </label>
+                </div>
+            </div>
+            <br>
+        </div>
+        <hr>
+
+        <p class="poppins-bold fs16">
+            Passes (must contain)
+            <i class="fa-solid fa-caret-down toggle-icon" onclick="togglePasses(this, 'passesGroup')" style="cursor: pointer;"></i>
+        </p>
+        <div id="passesGroup" class="checkbox-group poppins-light fs16" style="display: none;">
             <div>
                 <label>
-                    <input type="checkbox" data-property="newborns" onclick="handleSwitchChange(this)">
-                    Newborns
+                    <input type="checkbox" data-property="pass_sling" onclick="handleSwitchChange(this)">
+                    Sling
                 </label>
             </div>
             <div>
                 <label>
-                    <input type="checkbox" data-property="legstraighteners" onclick="handleSwitchChange(this)">
-                    Leg straighteners
+                    <input type="checkbox" data-property="pass_ruck" onclick="handleSwitchChange(this)">
+                    Ruck
                 </label>
             </div>
             <div>
                 <label>
-                    <input type="checkbox" data-property="leaners" onclick="handleSwitchChange(this)">
-                    Leaners
+                    <input type="checkbox" data-property="pass_kangaroo" onclick="handleSwitchChange(this)">
+                    Kangaroo
                 </label>
             </div>
             <div>
                 <label>
-                    <input type="checkbox" data-property="bigkids" onclick="handleSwitchChange(this)">
-                    Big kids
+                    <input type="checkbox" data-property="pass_cross" onclick="handleSwitchChange(this)">
+                    Cross
                 </label>
             </div>
             <div>
                 <label>
-                    <input type="checkbox" data-property="feeding" onclick="handleSwitchChange(this)">
-                    Feeding
+                    <input type="checkbox" data-property="pass_reinforcing_cross" onclick="handleSwitchChange(this)">
+                    Reinforcing cross
                 </label>
             </div>
             <div>
                 <label>
-                    <input type="checkbox" data-property="quickups" onclick="handleSwitchChange(this)">
-                    Quick ups
+                    <input type="checkbox" data-property="pass_reinforcing_horizontal" onclick="handleSwitchChange(this)">
+                    Reinforcing horizontal
                 </label>
+            </div>
+
+            <div>
+                <label>
+                    <input type="checkbox" data-property="pass_horizontal" onclick="handleSwitchChange(this)">
+                    Horizontal
+                </label>
+            </div>
+
+            <div>
+                <label>
+                    <input type="checkbox" data-property="pass_poppins" onclick="handleSwitchChange(this)">
+                    Poppins
+                </label>
+            </div>
+            <br>
+        </div>
+
+        <p class="poppins-bold fs16">
+            Passes (exclude)
+            <i class="fa-solid fa-caret-down toggle-icon" onclick="togglePasses(this, 'noPassesGroup')" style="cursor: pointer;"></i>
+        </p>
+        <div id="noPassesGroup" class="checkbox-group poppins-light fs16" style="display: none;">
+            <div>
+                <label>
+                    <input type="checkbox" data-property="no_pass_sling" onclick="handleSwitchChange(this)">
+                    Sling
+                </label>
+            </div>
+            <div>
+                <label>
+                    <input type="checkbox" data-property="no_pass_ruck" onclick="handleSwitchChange(this)">
+                    Ruck
+                </label>
+            </div>
+            <div>
+                <label>
+                    <input type="checkbox" data-property="no_pass_kangaroo" onclick="handleSwitchChange(this)">
+                    Kangaroo
+                </label>
+            </div>
+            <div>
+                <label>
+                    <input type="checkbox" data-property="no_pass_cross" onclick="handleSwitchChange(this)">
+                    Cross
+                </label>
+            </div>
+            <div>
+                <label>
+                    <input type="checkbox" data-property="no_pass_reinforcing_cross" onclick="handleSwitchChange(this)">
+                    Reinforcing cross
+                </label>
+            </div>
+            <div>
+                <label>
+                    <input type="checkbox" data-property="no_pass_reinforcing_horizontal" onclick="handleSwitchChange(this)">
+                    Reinforcing horizontal
+                </label>
+            </div>
+
+            <div>
+                <label>
+                    <input type="checkbox" data-property="no_pass_horizontal" onclick="handleSwitchChange(this)">
+                    Horizontal
+                </label>
+            </div>
+
+            <div>
+                <label>
+                    <input type="checkbox" data-property="no_pass_poppins" onclick="handleSwitchChange(this)">
+                    Poppins
+                </label>
+            </div>
+            <br>
+        </div>
+        <hr>
+        
+        <p class="poppins-bold fs16">
+            Other elements (must contain) 
+            <i class="fa-solid fa-caret-down toggle-icon" onclick="togglePasses(this, 'otherelemGroup')" style="cursor: pointer;"></i>
+        </p>
+        <div id="otherelemGroup" class="checkbox-group poppins-light fs16" style="display: none;">
+            <div class="checkbox-group poppins-light fs16">
+                <div>
+                    <label>
+                        <input type="checkbox" data-property="other_chestpass" onclick="handleSwitchChange(this)">
+                        Chest pass
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        <input type="checkbox" data-property="other_bunchedpasses" onclick="handleSwitchChange(this)">
+                        Bunched pass(es)
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        <input type="checkbox" data-property="other_shoulderflip" onclick="handleSwitchChange(this)">
+                        Shoulder flip
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        <input type="checkbox" data-property="other_twistedpass" onclick="handleSwitchChange(this)">
+                        Twisted pass
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        <input type="checkbox" data-property="other_waistband" onclick="handleSwitchChange(this)">
+                        Waist band
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        <input type="checkbox" data-property="other_legpasses" onclick="handleSwitchChange(this)">
+                        Leg pass(es)
+                    </label>
+                </div>
+
+                <div>
+                    <label>
+                        <input type="checkbox" data-property="other_s2s" onclick="handleSwitchChange(this)">
+                        Shoulder to shoulder
+                    </label>
+                </div>
+
+                <div>
+                    <label>
+                        <input type="checkbox" data-property="other_eyelet" onclick="handleSwitchChange(this)">
+                        Eyelet
+                    </label>
+                </div>
             </div>
         </div>
 
+        <p class="poppins-bold fs16">
+            Other elements (exclude) 
+            <i class="fa-solid fa-caret-down toggle-icon" onclick="togglePasses(this, 'nootherelemGroup')" style="cursor: pointer;"></i>
+        </p>
+        <div id="nootherelemGroup" class="checkbox-group poppins-light fs16" style="display: none;">
+            <div class="checkbox-group poppins-light fs16">
+                <div>
+                    <label>
+                        <input type="checkbox" data-property="no_other_chestpass" onclick="handleSwitchChange(this)">
+                        Chest pass
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        <input type="checkbox" data-property="no_other_bunchedpasses" onclick="handleSwitchChange(this)">
+                        Bunched pass(es)
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        <input type="checkbox" data-property="no_other_shoulderflip" onclick="handleSwitchChange(this)">
+                        Shoulder flip
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        <input type="checkbox" data-property="no_other_twistedpass" onclick="handleSwitchChange(this)">
+                        Twisted pass
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        <input type="checkbox" data-property="no_other_waistband" onclick="handleSwitchChange(this)">
+                        Waist band
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        <input type="checkbox" data-property="no_other_legpasses" onclick="handleSwitchChange(this)">
+                        Leg pass(es)
+                    </label>
+                </div>
+
+                <div>
+                    <label>
+                        <input type="checkbox" data-property="no_other_s2s" onclick="handleSwitchChange(this)">
+                        Shoulder to shoulder
+                    </label>
+                </div>
+
+                <div>
+                    <label>
+                        <input type="checkbox" data-property="no_other_eyelet" onclick="handleSwitchChange(this)">
+                        Eyelet
+                    </label>
+                </div>
+            </div>
+        </div>
         <hr>
 
         <p class="poppins-bold fs16"> Shoulders </p>

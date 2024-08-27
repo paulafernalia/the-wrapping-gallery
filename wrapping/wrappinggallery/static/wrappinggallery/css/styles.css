@@ -236,7 +236,7 @@ p, li {
 }
 
 .fscarry {
-    font-size: 15px;
+    font-size: 13px;
 }
 
 .fsplus {
@@ -726,4 +726,27 @@ p, li {
     border: 2px solid #ad9393 !important;
     background-color: transparent !important;
     color: #ad9393;
+}
+
+.toggle-icon {
+    cursor: pointer;
+    margin-left: 10px; /* Adjust the spacing here as needed */
+    font-size: 16px; /* Adjust size if needed */
+}
+
+
+hr {
+    margin-top: 20px;  /* Adjust this value to increase/decrease padding above */
+    margin-bottom: 20px;  /* Adjust this value to increase/decrease padding below */
+}
+
+.instagram-media {
+    margin: 0 auto;
+}
+
+.instagram-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
 }

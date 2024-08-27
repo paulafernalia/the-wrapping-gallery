@@ -26,13 +26,21 @@ h4 {
 .three-column-container .column {
     display: flex;
     flex-direction: column;
-    padding: 0px;
-    box-sizing: border-box;
+    padding: 0; /* Ensure no padding affects the width */
+    box-sizing: border-box; /* Include padding and border in width */
+    flex: 0 0 32%; /* Each column will take exactly 30% of the container width */
 }
 
-/* Specific widths for each column */
+/* Remove any default margin or padding from the container or columns */
+.three-column-container, 
 .three-column-container .column {
-    flex: 0 0 30%; /* Each column will take 30% of the container width */
+    margin: 0;
+    padding: 0;
+}
+
+/* Optional: If you notice spacing issues, check for additional styles */
+.three-column-container .column {
+    min-width: 0; /* Prevent columns from growing beyond their flex-basis */
 }
 
 /* Styling for the image */
@@ -48,15 +56,15 @@ h4 {
 
 /* Specific widths for each column using nth-child */
 .three-column-container .column:nth-child(1) {
-    flex: 0 0 30%; /* First column takes 25% of the container's width */
+    flex: 0 0 28%; /* First column takes 25% of the container's width */
 }
 
 .three-column-container .column:nth-child(2) {
-    flex: 0 0 42%; /* Second column takes 40% of the container's width */
+    flex: 0 0 32%; /* Second column takes 40% of the container's width */
 }
 
 .three-column-container .column:nth-child(3) {
-    flex: 0 0 28%; /* Third column takes 35% of the container's width */
+    flex: 0 0 32%; /* Third column takes 35% of the container's width */
 }
 
 
@@ -155,4 +163,9 @@ h4 {
     .fa-star {
         font-size: 15px !important; /* Adjust this value to change the size of the stars */
     }
+}
+
+
+#imageGrid {
+    padding: 30px;
 }

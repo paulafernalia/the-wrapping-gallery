@@ -15,7 +15,7 @@
             <br>
         </div>
         <div class="column">
-            <h4 class="dancing fs32">Carry features</p>
+            <h4 class="poppins-bold fsmedium">Carry features</p>
                 <div class="feature poppins-light fscarry"><span class="poppins-bold pink-span">TYPE: </span> {{position}} carry </div>
                 <div class="feature poppins-light fscarry">
                     <span class="poppins-bold pink-span">MM POSITION:</span>
@@ -25,6 +25,14 @@
                 <div class="feature poppins-light fscarry">
                     <span class="poppins-bold pink-span">CAN BE PRE-TIED: </span> 
                         {% if pretied %}
+                            Yes
+                        {% else %}
+                            No
+                        {% endif %}
+                </div>
+                <div class="feature poppins-light fscarry">
+                    <span class="poppins-bold pink-span">USES RING(S): </span> 
+                        {% if rings %}
                             Yes
                         {% else %}
                             No
@@ -48,7 +56,7 @@
         </div>
         <div class="column">
             <div class="icon-container">
-                <h4 class="dancing fs32">Ratings</h4>
+                <h4 class="poppins-bold fsmedium">Ratings</h4>
                 <a href="{% url 'faq' %}#faq_ratings" class="info-icon" title="How do I interpret these ratings">i</a>
             </div>
 
@@ -56,7 +64,7 @@
                 <span class="poppins-light fscarry"> Good for newborns</span>
             </div>
             <div id="legstraightener-rating" class="rating-group" data-property="{{legstraighteners}}">
-                <span class="poppins-light fscarry> Good for leg straighteners</span>
+                <span class="poppins-light fscarry"> Good for leg straighteners</span>
             </div>
             <div id="leaners-rating" class="rating-group" data-property="{{leaners}}">
                 <span class="poppins-light fscarry"> Good for leaners</span>
@@ -74,6 +82,25 @@
         </div>
 
     </div>
+</div>
+
+<div class="title-container fs16">
+<br>
+<div>
+    <span class="poppins-bold">Passes:</span><a href="{% url 'faq' %}#faq_passes" class="info-icon" title="What does this mean">i</a>
+    {% for pass in passes %}
+        <span class="filter-tag">{{ pass }}</span>
+    {% endfor %}
+</div>
+</div>
+
+<div class="title-container fs16">
+<div>
+    <span class="poppins-bold">Other elements:</span>
+    {% for element in other %}
+        <span class="filter-tag">{{ element }}</span>
+    {% endfor %}
+</div>
 </div>
 
 {% if videoauthor != 'NA' %}
@@ -135,6 +162,7 @@
     <br>
 </div>
 {% endif %}
+
 
 <div id="loadingSpinner" class="loading-spinner"></div>
 <br><br>
