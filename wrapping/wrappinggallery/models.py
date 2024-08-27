@@ -189,6 +189,9 @@ class Carry(models.Model):
                 "Both videoauthor3 and videotutorial3 must be either set or both blank."
             )
 
+        if not (self.rings) == ("ring" in self.title.lower()):
+            raise ValidationError("inconsistent information regarding ring(s)")
+
         num_passes = self.pass_sling
         num_passes += self.pass_ruck
         num_passes += self.pass_horizontal
