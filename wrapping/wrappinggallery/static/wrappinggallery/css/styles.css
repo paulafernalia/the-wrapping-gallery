@@ -733,3 +733,9 @@ p, li {
     margin-left: 10px; /* Adjust the spacing here as needed */
     font-size: 16px; /* Adjust size if needed */
 }
+
+
+hr {
+    margin-top: 20px;  /* Adjust this value to increase/decrease padding above */
+    margin-bottom: 20px;  /* Adjust this value to increase/decrease padding below */
+}
