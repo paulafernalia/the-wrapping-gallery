@@ -257,6 +257,22 @@ def filter_carries(request):
             queryset = queryset.filter(carry__other_s2s=val)
         elif prop == "other_eyelet" and val == "1":
             queryset = queryset.filter(carry__other_eyelet=val)
+        elif prop == "no_other_chestpass" and val == "1":
+            queryset = queryset.filter(carry__other_chestpass="0")
+        elif prop == "no_other_bunchedpasses" and val == "1":
+            queryset = queryset.filter(carry__other_bunchedpasses="0")
+        elif prop == "no_other_shoulderflip" and val == "1":
+            queryset = queryset.filter(carry__other_shoulderflip="0")
+        elif prop == "no_other_twistedpass" and val == "1":
+            queryset = queryset.filter(carry__other_twistedpass="0")
+        elif prop == "no_other_waistband" and val == "1":
+            queryset = queryset.filter(carry__other_waistband="0")
+        elif prop == "no_other_legpasses" and val == "1":
+            queryset = queryset.filter(carry__other_legpasses="0")
+        elif prop == "no_other_s2s" and val == "1":
+            queryset = queryset.filter(carry__other_s2s="0")
+        elif prop == "no_other_eyelet" and val == "1":
+            queryset = queryset.filter(carry__other_eyelet="0")
 
     sizes = request.GET.getlist("size[]", "Any")
     if sizes != ["Any"]:

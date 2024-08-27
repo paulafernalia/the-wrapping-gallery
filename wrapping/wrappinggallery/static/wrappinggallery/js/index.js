@@ -11,7 +11,10 @@ const booleanProps = [
     'other_s2s', 'other_eyelet', 'no_pass_sling',
     'no_pass_ruck', 'no_pass_kangaroo', 'no_pass_cross',
     'no_pass_reinforcing_cross', 'no_pass_reinforcing_horizontal',
-    'no_pass_horizontal', 'no_pass_poppins', 
+    'no_pass_horizontal', 'no_pass_poppins',
+    'no_other_chestpass', 'no_other_bunchedpasses', 'no_other_shoulderflip', 
+    'no_other_twistedpass', 'no_other_waistband', 'no_other_legpasses', 
+    'no_other_s2s', 'no_other_eyelet'
 ];
 
 function getButtonByValueAndProperty(property, value) {
@@ -416,7 +419,15 @@ function showAppliedFilters() {
         { key: "other_s2s", label: "S2S" },
         { key: "other_waistband", label: "waist band" },
         { key: "other_legpasses", label: "leg pass(es)" },
-        { key: "other_eyelet", label: "eyelet" }
+        { key: "other_eyelet", label: "eyelet" },
+        { key: "no_other_chestpass", label: "no chest pass" },
+        { key: "no_other_bunchedpasses", label: "no bunched pass(es)" },
+        { key: "no_other_shoulderflip", label: "no shoulder flip" },
+        { key: "no_other_twistedpass", label: "no twisted pass" },
+        { key: "no_other_s2s", label: "no S2S" },
+        { key: "no_other_waistband", label: "no waist band" },
+        { key: "no_other_legpasses", label: "no leg pass(es)" },
+        { key: "no_other_eyelet", label: "no eyelet" }
     ];
 
     // Process the filter conditions
