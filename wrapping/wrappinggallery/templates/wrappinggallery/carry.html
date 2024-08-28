@@ -94,6 +94,7 @@
 </div>
 </div>
 
+{% if other %}
 <div class="title-container fs16">
 <div>
     <span class="poppins-bold">Other elements:</span>
@@ -102,9 +103,17 @@
     {% endfor %}
 </div>
 </div>
+{% endif %}
+
+{% if position == 'Back' %}
+<br>
+<div class="title-container fssmall poppins-regular">
+    <span class="info-icon">i </span><a style="color: grey;" href="{% url 'faq' %}#faq_ontoback"> How do I get baby onto my back?</a>
+</div>
+{% endif %}
 
 {% if videoauthor != 'NA' %}
-<br><br>
+<br>
 <div class="title-container poppins-bold fsmedium">
     Video tutorial by {{videoauthor}}
 </div>
@@ -181,8 +190,7 @@
     <br>
 </div>
 
-
-
+<br><br><br>
 <script src="{% static 'wrappinggallery/js/carry.js' %}"></script>
 
 
