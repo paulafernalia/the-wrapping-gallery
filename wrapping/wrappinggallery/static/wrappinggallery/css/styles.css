@@ -574,15 +574,10 @@ p, li {
 }
 
 
-.footer {
-    color: white;
-    background-color: #2e2d2d;
-    padding: 10px 20px; /* Padding inside the footer */
-    position: fixed;
-    bottom: 0;
-    align-items: center;
-    width: 100%;
-    height: 60px;
+footer {
+    color: white !important;
+    background-color: #2e2d2d !important;
+    padding: 10px; /* Padding inside the footer */
 }
 
 .footer-content {
@@ -593,6 +588,10 @@ p, li {
 
 .footer-right {
     padding-right: 20px; /* Padding to the right of "blu" */
+}
+
+.my-4 {
+    margin-bottom: 0px !important;
 }
 
 
@@ -738,6 +737,10 @@ p, li {
 hr {
     margin-top: 20px;  /* Adjust this value to increase/decrease padding above */
     margin-bottom: 20px;  /* Adjust this value to increase/decrease padding below */
+}
+
+.nav-link {
+    color: white !important;
 }
 
 .instagram-media {
