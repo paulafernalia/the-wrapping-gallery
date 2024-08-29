@@ -55,9 +55,6 @@
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a class="nav-link poppins-light {% if request.path == '/about/' %}active{% endif %}" data-page="about-page" href="{% url 'about' %}">ABOUT</a>
-                </li>
-                <li class="nav-item">
                     <a class="nav-link poppins-light {% if request.path == '/' %}active{% endif %}" data-page="carries-page" href="{% url 'index' %}">CARRIES</a>
                 </li>
                 <li class="nav-item">
@@ -70,15 +67,18 @@
     {% block body %}
     {% endblock %}
 
-    <footer class="footer">
-        <div class="footer-content">
-            <span id=copy-right>&copy; 2024 The Wrapping Gallery</span>
-            <ul id=social class="nav col-md-4 justify-content-end list-unstyled d-flex">
-                <li class="ms-3"><a class="text-muted" href="https://www.instagram.com/paulafermincueto/" target="_blank"><svg class="bi" width="24" height="24"><use xlink:href="#instagram"/></svg></a></li>
-                <li class="ms-3"><a class="text-muted" href="https://github.com/paulafernalia/the-wrapping-gallery" target="_blank"><svg class="bi" width="24" height="24"><use xlink:href="#github"/></svg></a></li>
-        </ul>
-        </div>
-    </footer>
+
+    <div class='footer-container bg-dark'>
+    <footer class="py-3 my-4">
+    <ul class="nav justify-content-center border-bottom pb-3 mb-3 bg-dark">
+      <li class="nav-item"><a href="{% url 'about' %}" class="nav-link px-2 text-body-secondary">About</a></li>
+      <li class="nav-item"><a href="{% url 'termsandconditions' %}" class="nav-link px-2 text-body-secondary">T&C</a></li>
+      <li class="nav-item"><a href="https://www.instagram.com/paulafermincueto/" class="nav-link px-2 text-body-secondary" target="_blank"><svg class="bi" width="20" height="20"><use xlink:href="#instagram"/></svg></a></li>
+      <li class="nav-item"><a href="https://github.com/paulafernalia/the-wrapping-gallery" class="nav-link px-2 text-body-secondary" target="_blank"><svg class="bi" width="20" height="20"><use xlink:href="#github"/></svg></a></li>
+    </ul>
+    <p class="text-center text-body-secondary bg-dark">© 2024 The Wrapping Gallery</p>
+  </footer>
+</div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
