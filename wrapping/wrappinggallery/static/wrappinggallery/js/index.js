@@ -793,9 +793,6 @@ async function updateCarryGallery(carries) {
             const carriesTab = document.querySelector('.nav-link[data-page="carries-page"]');
             carriesTab.classList.remove('active');
 
-            const aboutTab = document.querySelector('.nav-link[data-page="about-page"]');
-            aboutTab.classList.remove('active');
-
             const faqTab = document.querySelector('.nav-link[data-page="faq-page"]');
             faqTab.classList.remove('active');
 
