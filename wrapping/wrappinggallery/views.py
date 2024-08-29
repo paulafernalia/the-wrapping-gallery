@@ -35,6 +35,14 @@ def index(request):
 
     return render(request, "wrappinggallery/index.html", context)
 
+def termsandconditions(request):
+    context = {}
+
+    image_url = utils.generate_server_url("profile", "back")
+
+    context = {"imageSrc": image_url}
+    return render(request, "wrappinggallery/termsandconditions.html", context)
+
 
 def about(request):
     context = {}
