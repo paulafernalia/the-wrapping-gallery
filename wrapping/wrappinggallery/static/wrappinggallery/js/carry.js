@@ -16,45 +16,9 @@ function addStarsToRatingGroup(groupId) {
         } else {
             star.classList.add('notchecked');
         }
-        // Insert star before the last span (text)
-        ratingGroup.insertBefore(star, ratingGroup.lastElementChild);
+        // Append the star to the rating group
+        ratingGroup.appendChild(star);
     }
-}
-
-function updateFooterPosition() {
-    releaseFooter();
-
-    // print position of footer
-    let element = document.querySelector('footer');
-    elementPosition = 0;
-
-    while(element) {
-        elementPosition += element.offsetTop;
-        element = element.offsetParent;
-    }
-
-    let viewportHeight = window.innerHeight;
-
-    if (elementPosition < viewportHeight) {
-        fixFooter();
-    } else {
-        releaseFooter();
-    }
-}
-
-function releaseFooter() {
-    const footer = document.querySelector('footer');
-    footer.style.position = 'static'; // Reset to default position
-    footer.style.bottom = 'auto'; // Reset to default value
-    footer.style.width = 'auto'; // Reset to default width
-}
-
-
-function fixFooter() {
-    const footer = document.querySelector('footer');
-    footer.style.position = 'fixed'; 
-    footer.style.bottom = '0';
-    footer.style.width = '100%';
 }
 
 
@@ -106,16 +70,13 @@ async function loadTutorialImages() {
 
 
 document.addEventListener('DOMContentLoaded', async function() { 
-    // Load images
-    await loadTutorialImages();
-
-
-
     // Add stars to the rating groups based on their data attributes
     const ratingGroups = document.querySelectorAll('.rating-group');
     ratingGroups.forEach(group => {
         addStarsToRatingGroup(group.id);
     });
 
-    updateFooterPosition();
+    // Load images
+    await loadTutorialImages();
+
 });
