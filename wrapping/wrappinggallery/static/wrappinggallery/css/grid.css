@@ -47,6 +47,7 @@ h2 {
     height: auto; /* Maintain aspect ratio */
     display: block;
     object-fit: cover; /* Cover the container */
+    opacity: 1;
 }
 
 .clickable-grid-item img {
