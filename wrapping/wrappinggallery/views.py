@@ -139,7 +139,7 @@ def carry(request, name):
         carry_dict["videotutorial3"] = "NA"
 
     # Get image from name 
-    image_url = utils.generate_server_url(name, carry_dict["position"].lower())
+    image_url = utils.generate_server_url(name, carry_dict["position"].lower(), True)
     carry_dict["imageSrc"] = image_url
 
     # Add ratings

@@ -45,12 +45,18 @@ def generate_signed_urls(file_paths, bucket, supabase=supabase_client):
     return signed_urls
 
 
-def generate_server_url(file_name, position):
-    filepath = f'wrappinggallery/illustrations/{file_name}.png'
+def generate_server_url(file_name, position, dark=False):
+    if not dark:
+        filepath = f'wrappinggallery/illustrations/{file_name}.png'
+    else:
+        filepath = f'wrappinggallery/illustrations/{file_name}_dark.png'
     
     if not staticfiles_storage.exists(filepath):
         if position in ["back", "front"]:
-            filepath = f'wrappinggallery/illustrations/placeholder_{position}.png'
+            if dark:
+                filepath = f'wrappinggallery/illustrations/placeholder_{position}_dark.png'
+            else:
+                filepath = f'wrappinggallery/illustrations/placeholder_{position}.png'
             assert staticfiles_storage.exists(filepath)
         else:
             print("error position not valid", file_name, position)

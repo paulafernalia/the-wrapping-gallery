@@ -4,67 +4,113 @@ h1 {
 }
 
 h3 {
-    font-family: "Dancing Script", cursive;
     font-size: 22px; /* Adjust font size as needed */
 }
 
 h4 {
-    font-family: "Helvetica";
     font-size: 18px;
-/*    margin-left: 20px;*/
 }
 
-/* Flexbox container for three-column layout */
-.three-column-container {
+.back-button {
+    border: none;
+    background-color: #F5F7F8;
+    color: black;
+}
+
+.back-button:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+.back-button:hover {
+    outline: none;
+    box-shadow: none;
+    color: grey;
+}
+
+
+/* Base styles for two-column layout */
+.two-column-container {
     display: flex;
-    margin-top: 20px; /* Add some space above */
-    justify-content: space-between; /* Distribute space between columns */
-    align-items: flex-start; /* Align items to the top */
+    margin-top: 20px;
+    justify-content: space-between;
+    align-items: stretch; /* Ensure columns stretch to the full height of the container */
+    position: relative; /* Make the container a relative-positioned element */
 }
 
-/* Column widths and alignment */
-.three-column-container .column {
+/* Column styles */
+.two-column-container .column {
     display: flex;
     flex-direction: column;
-    padding: 0; /* Ensure no padding affects the width */
-    box-sizing: border-box; /* Include padding and border in width */
-    flex: 0 0 32%; /* Each column will take exactly 30% of the container width */
-}
-
-/* Remove any default margin or padding from the container or columns */
-.three-column-container, 
-.three-column-container .column {
-    margin: 0;
     padding: 0;
+    box-sizing: border-box;
+    flex: 1; /* Allow columns to grow and shrink equally */
+    min-width: 0;
+    height: 100%;
 }
 
-/* Optional: If you notice spacing issues, check for additional styles */
-.three-column-container .column {
-    min-width: 0; /* Prevent columns from growing beyond their flex-basis */
-}
-
-/* Styling for the image */
-.three-column-container .column img {
-    max-width: 100%; /* Ensures the image does not exceed the container's width */
-    height: auto; /* Maintains the aspect ratio */
-    max-height: 250px; /* Sets the maximum height */
+/* Image styling */
+.two-column-container .column img {
+    max-width: 100%;
+    height: auto;
+    max-height: 275px;
     display: block;
-    margin: 0 auto; /* Center the image within the column */
-    object-fit: contain; /* Ensures the image fits within the max-height while maintaining the aspect ratio */
+    margin: 0 auto;
+    object-fit: contain;
+    opacity: 1;
+}
+
+/* Adjust column widths */
+.two-column-container .column:nth-child(1) {
+    flex: 0 0 35%;
+}
+
+.two-column-container .column:nth-child(2) {
+    flex: 0 0 65%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end; /* Align content to the bottom */
+}
+
+/* Additional styles for text alignment */
+.fsfeature {
+    font-size: 13px;
 }
 
 
-/* Specific widths for each column using nth-child */
-.three-column-container .column:nth-child(1) {
-    flex: 0 0 28%; /* First column takes 25% of the container's width */
-}
+/* Overlapping effect on small screens */
+@media only screen and (max-width: 1024px) {
+    .two-column-container {
+        flex-direction: column; /* Stack items vertically */
+        align-items: flex-start;
+        height: 500px; /* Adjust the height based on your content */
+    }
 
-.three-column-container .column:nth-child(2) {
-    flex: 0 0 32%; /* Second column takes 40% of the container's width */
-}
+    .fsfeature {
+        font-size: 11px;
+    }
 
-.three-column-container .column:nth-child(3) {
-    flex: 0 0 32%; /* Third column takes 35% of the container's width */
+    .carry-card {
+        margin: 10px;
+        border-radius: 10px;
+    }
+
+    .two-column-container .column {
+        position: absolute;
+        width: 100%;
+    }
+
+    .two-column-container .column:nth-child(1) {
+        top: 0;
+        left: 0;
+        align-self: center; /* Center the image column */
+    }
+
+    .two-column-container .column:nth-child(2) {
+        bottom: 0;
+        left: 0;
+        padding: 10px; /* Optional: Add padding to the text column */
+    }
 }
 
 
@@ -112,8 +158,9 @@ h4 {
 
 
 .pink-span {
-    margin-right: 10px;
-    color: #ad9393;
+    color: #816b6b
+
+;
 }
 
 #carryTitle {
@@ -123,6 +170,7 @@ h4 {
 
 .fa-star {
     font-size: 20px !important; /* Adjust this value to change the size of the stars */
+    padding:2px;
 }
 
 /* Styles for checked stars */
@@ -132,13 +180,9 @@ h4 {
 
 /* Styles for unchecked stars */
 .notchecked {
-    color: #f0f0f0 !important; /* Almost #e0e0e0 color for unchecked stars */
+    color: lightgrey; !important; /* Almost #e0e0e0 color for unchecked stars */
 }
 
-/* Add vertical padding between rating groups */
-.rating-group {
-    margin-bottom: 12px; /* Adjust this value to change the space between groups */
-}
 
 /* Add vertical padding between rating groups */
 .feature {
@@ -147,25 +191,67 @@ h4 {
 
 /* Media query for small screens */
 @media only screen and (max-width: 1024px) {
-    .three-column-container .column img {
-        max-height: 300px;
-    }
-
-    .three-column-container {
-        flex-direction: column; /* Stack items vertically */
-        align-items: flex-start; /* Left-align all columns */
-    }
-
-    .three-column-container .column:first-child {
-        align-self: center; /* Center the first column (the image) */
-    }
-
     .fa-star {
-        font-size: 15px !important; /* Adjust this value to change the size of the stars */
+        font-size: 17px !important; /* Adjust this value to change the size of the stars */
     }
 }
 
 
+
 #imageGrid {
     padding: 30px;
+}
+
+.carry-card {
+    background-color: #b6a89e;
+}
+
+@media only screen and (max-width: 425px) { 
+    .carry-card {
+        min-height: 600px;
+    }
+}
+
+
+
+.table-container {
+    max-width: 600px; /* Adjust based on your layout */
+    padding: 20px;
+}
+
+.table-item {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 20px; /* Space between items */
+}
+
+.table-icon {
+    font-size: 24px; /* Adjust the size of the icon */
+    margin-right: 15px; /* Space between icon and text */
+    color: #ad9393; /* Example color */
+}
+
+.table-content {
+    width: 100%; /* Adjust based on your layout */
+}
+
+.table-title-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px; /* Space between title and description */
+}
+
+.table-title {
+    font-family: "Poppins";
+    font-weight: 600;
+    font-size: 14px;
+    margin: 0; /* Remove margin */
+}
+
+.table-description {
+    font-family: "Poppins";
+    font-weight: 300;
+    font-size: 13px;
+    margin: 5px 0 0 0; /* Adjust space between title and description */
 }

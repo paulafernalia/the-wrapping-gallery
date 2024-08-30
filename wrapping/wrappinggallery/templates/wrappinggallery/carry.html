@@ -3,114 +3,203 @@
 {% load static %}
 
 {% block body %}
-<div id="carryTitle" class="title-container poppins-bold fsmedium">
-    <h1 id="carryName">{{longtitle}}</h2>
-    <h3 id="carrySize">{{size}}</h3>
+
+<br>
+<div class="title-container">
+    <a href="{% url 'index' %}" class="back-button poppins-light fssmall">
+  <i class="fas fa-chevron-left"></i> Home
+</a>
 </div>
 
-<div class="content-container">
-    <div class="three-column-container">
-        <div class="column">
-            <img id="carryImage" alt="{{name}}" src="{{imageSrc}}">
-            <br>
-        </div>
-        <div class="column">
-            <h4 class="poppins-bold fsmedium">Carry features</p>
-                <div class="feature poppins-light fscarry"><span class="poppins-bold pink-span">TYPE: </span> {{position}} carry </div>
-                <div class="feature poppins-light fscarry">
-                    <span class="poppins-bold pink-span">MM POSITION:</span>
-                    {{ mmposition }}
-                    <a href="{% url 'faq' %}#faq_mm" class="info-icon" title="What does this mean">i</a>
-                </div>
-                <div class="feature poppins-light fscarry">
-                    <span class="poppins-bold pink-span">CAN BE PRE-TIED: </span> 
-                        {% if pretied %}
-                            Yes
-                        {% else %}
-                            No
-                        {% endif %}
-                </div>
-                <div class="feature poppins-light fscarry">
-                    <span class="poppins-bold pink-span">USES RING(S): </span> 
-                        {% if rings %}
-                            Yes
-                        {% else %}
-                            No
-                        {% endif %}
-                </div>
-                <div class="feature poppins-light fscarry">
-                    <span class="poppins-bold pink-span">DIFFICULTY:</span>
-                    {{ difficulty }} / 5
-                    <a href="{% url 'faq' %}#faq_ratings" class="info-icon" title="How do I interpret this rating?">i</a>
-                </div>
-                <div class="feature poppins-light fscarry">
-                    <span class="poppins-bold pink-span">FANCY:</span>
-                    {{ fancy }} / 5
-                    <a href="{% url 'faq' %}#faq_ratings" class="info-icon" title="How do I interpret this rating?">i</a>
-                </div>
-
-
-                <div class="feature poppins-light fscarry"><span class="poppins-bold pink-span">LAYERS: </span> {{layers}} </div>
-                <div class="feature poppins-light fscarry"><span class="poppins-bold pink-span">SHOULDERS: </span> {{shoulders}} </div>
+<br>
+<div class="carry-card">
+    <div id="carryTitle" class="title-container fsmedium">
+        <div class="two-column-container">
+            <div class="column">
+                <img id="carryImage" alt="{{name}}" src="{{imageSrc}}">
                 <br>
-        </div>
-        <div class="column">
-            <div class="icon-container">
-                <h4 class="poppins-bold fsmedium">Ratings</h4>
-                <a href="{% url 'faq' %}#faq_ratings" class="info-icon" title="How do I interpret these ratings">i</a>
             </div>
 
-            <div id="newborn-rating" class="rating-group" data-property="{{newborns}}">
-                <span class="poppins-light fscarry"> Good for newborns</span>
+            <div class="column">
+                 <h4 class="poppins-light" id="carrySize">{{size|upper}}</h4>
+                <br>
+                <h1 id="carryName">{{longtitle}}</h1>
+                <br>
+
+
+                <div class="feature poppins-light fsfeature"><span class="poppins-bold pink-span">Type: </span>&nbsp;{{position}} carry </div>
+                <div class="feature poppins-light fsfeature">
+                    <span class="poppins-bold pink-span">MM position:</span>
+                    <a href="{% url 'faq' %}#faq_mm" class="info-icon-dark" title="What does this mean">i</a>
+                    &nbsp;{{ mmposition }}
+                </div>
+                <div class="feature poppins-light fsfeature">
+                    <span class="poppins-bold pink-span">Passes :</span><a href="{% url 'faq' %}#faq_passes" class="info-icon-dark" title="What does this mean">i</a>&nbsp;
+                    {% for pass in passes %}
+                       {{ pass }}{% if not forloop.last %} &#8226; {% endif %}
+                    {% endfor %}
+                </div>
+
+                {% if other %}
+                <div class="feature poppins-light fsfeature">
+                    <span class="poppins-bold pink-span">Other elements: </span>&nbsp;
+                    {% for element in other %}
+                        {{ element }}{% if not forloop.last %} &#8226; {% endif %}
+                    {% endfor %}
+                </div>
+                {% endif %}
+                <div class="feature poppins-light fsfeature">
+                    <span class="poppins-bold pink-span">Other features: </span>&nbsp;
+                        {% if pretied %}
+                            Can be pre-tied
+                        {% else %}
+                            Cannot be pre-tied
+                        {% endif %}&#8226;
+                        {% if pretied %}
+                            uses rings
+                        {% else %}
+                            no rings
+                        {% endif %}&#8226; {{shoulders}} shoulders &#8226; {{layers}} layers
+                </div>
             </div>
-            <div id="legstraightener-rating" class="rating-group" data-property="{{legstraighteners}}">
-                <span class="poppins-light fscarry"> Good for leg straighteners</span>
+        </div>
+    </div>
+</div>
+<div class="title-container">
+    <br><br>
+    
+    <div class="table-container">
+        <div class="table-item">
+            <div class="table-icon">
+                <img src="{% static 'wrappinggallery/icons/leaners.svg' %}" alt="Icon description" width="30" height="30">
             </div>
-            <div id="leaners-rating" class="rating-group" data-property="{{leaners}}">
-                <span class="poppins-light fscarry"> Good for leaners</span>
+            <div class="table-content">
+                <div class="table-title-container">
+                    <p class="table-title">Good for leaners<a href="{% url 'faq' %}#faq_ratings" class="info-icon" title="What does this mean">i</a></p>
+                    <div id="leaners-rating" class="rating-group" data-property="{{leaners}}">
+                    </div>
+                </div>
+                <p class="table-description">How good is this carry for containing a leaner, including while you are wrapping?</p>
             </div>
-            <div id="bigkids-rating" class="rating-group" data-property="{{bigkids}}">
-                <span class="poppins-light fscarry"> Good for big kids</span>
-            </div>
-            <div id="quickups-rating" class="rating-group" data-property="{{quickups}}">
-                <span class="poppins-light fscarry"> Good for quick ups</span>
-            </div>
-             <div id="feeding-rating" class="rating-group" data-property="{{feeding}}">
-                <span class="poppins-light fscarry"> Good for feeding</span>
-            </div>
-            <br>
         </div>
 
+         <div class="table-item">
+            <div class="table-icon">
+                <img src="{% static 'wrappinggallery/icons/legstraighteners.svg' %}" alt="Icon description" width="30" height="30">
+            </div>
+             <div class="table-content">
+                <div class="table-title-container">
+                    <p class="table-title">Good for leg straighteners<a href="{% url 'faq' %}#faq_ratings" class="info-icon" title="What does this mean">i</a></p>
+                    <div id="legstraighteners-rating" class="rating-group" data-property="{{legstraighteners}}">
+                    </div>
+                </div>
+                <p class="table-description">Is this carry seat popper friendly? Does it have leg passes? A deep seat?</p>
+            </div>
+        </div>
+
+        <div class="table-item">
+            <div class="table-icon">
+                <img src="{% static 'wrappinggallery/icons/newborns.svg' %}" alt="Icon description" width="30" height="30">
+            </div>
+            <div class="table-content">
+                <div class="table-title-container">
+                    <p class="table-title">Good for newborns<a href="{% url 'faq' %}#faq_ratings" class="info-icon" title="What does this mean">i</a></p>
+                    <div id="newborns-rating" class="rating-group" data-property="{{newborns}}">
+                    </div>
+                </div>
+                <p class="table-description">Can it be wrapped high, with no bunched passes under tiny legs, and no head or torso support is required?</p>
+            </div>
+        </div>
+
+        <div class="table-item">
+            <div class="table-icon">
+                <img src="{% static 'wrappinggallery/icons/bigkids.svg' %}" alt="Icon description" width="30" height="30">
+            </div>
+            <div class="table-content">
+                <div class="table-title-container">
+                    <p class="table-title">Good for big kids<a href="{% url 'faq' %}#faq_ratings" class="info-icon" title="What does this mean">i</a></p>
+                    <div id="bigkids-rating" class="rating-group" data-property="{{bigkids}}">
+                    </div>
+                </div>
+                <p class="table-description">Does it allow you to carry a big child comfortably or is this best for short periods and or young babies?</p>
+            </div>
+        </div>
+
+        <div class="table-item">
+            <div class="table-icon">
+                <img src="{% static 'wrappinggallery/icons/feeding.svg' %}" alt="Icon description" width="30" height="30">
+            </div>
+            <div class="table-content">
+                <div class="table-title-container">
+                    <p class="table-title">Good for feeding<a href="{% url 'faq' %}#faq_ratings" class="info-icon" title="What does this mean">i</a></p>
+                    <div id="feeding-rating" class="rating-group" data-property="{{feeding}}">
+                    </div>
+                </div>
+                <p class="table-description">Can you pop a boob out and place baby’s head at boob height with minimal adjustment?</p>
+            </div>
+        </div>
+
+        <div class="table-item">
+            <div class="table-icon">
+                <img src="{% static 'wrappinggallery/icons/quickups.svg' %}" alt="Icon description" width="30" height="30">
+            </div>
+            <div class="table-content">
+                <div class="table-title-container">
+                    <p class="table-title">Good for quick ups<a href="{% url 'faq' %}#faq_ratings" class="info-icon" title="What does this mean">i</a></p>
+                    <div id="quickups-rating" class="rating-group" data-property="{{quickups}}">
+                    </div>
+                </div>
+                <p class="table-description">The more layers and complex elements, the longer it takes to wrap.</p>
+            </div>
+        </div>
+        <br>
+
+        <div class="table-item">
+            <div class="table-icon">
+                <img src="{% static 'wrappinggallery/icons/difficulty.svg' %}" alt="Icon description" width="30" height="30">
+            </div>
+            <div class="table-content">
+                <div class="table-title-container">
+                    <p class="table-title">Difficulty<a href="{% url 'faq' %}#faq_ratings" class="info-icon" title="What does this mean">i</a></p>
+                    <div id="difficulty-rating" class="rating-group" data-property="{{difficulty}}">
+                    </div>
+                </div>
+                <p class="table-description">On a scale from absolute beginners to wrapping guru level</p>
+            </div>
+        </div>
+
+        <div class="table-item">
+            <div class="table-icon">
+                <img src="{% static 'wrappinggallery/icons/fancy.svg' %}" alt="Icon description" width="24" height="24">
+            </div>
+            <div class="table-content">
+                <div class="table-title-container">
+                    <p class="table-title">Fanciness<a href="{% url 'faq' %}#faq_ratings" class="info-icon" title="What does this mean">i</a></p>
+                    <div id="fancy-rating" class="rating-group" data-property="{{fancy}}">
+                    </div>
+                </div>
+                <p class="table-description">All woven wrap carries are aesthetically pleasing, but some more so than others.</p>
+            </div>
+        </div>
     </div>
 </div>
 
-<div class="title-container fs16">
-<br>
-<div>
-    <span class="poppins-bold">Passes:</span><a href="{% url 'faq' %}#faq_passes" class="info-icon" title="What does this mean">i</a>
-    {% for pass in passes %}
-        <span class="filter-tag">{{ pass }}</span>
-    {% endfor %}
-</div>
-</div>
+<div id="loadingSpinner" class="loading-spinner"></div>
+<br><br>
+<div id="tutorial-content">
+    <div class="title-container poppins-bold fsmedium">
+        Picture tutorial
+    </div>
+    <div id="picture-tutorial-grid" class="content-container">
+        <br>
+        <div class="grid" id="imageGrid" data-name="{{name}}">
+        </div>
+        <br>
+    </div>
 
-{% if other %}
-<div class="title-container fs16">
-<div>
-    <span class="poppins-bold">Other elements:</span>
-    {% for element in other %}
-        <span class="filter-tag">{{ element }}</span>
-    {% endfor %}
+    <br>
+    <br>
 </div>
-</div>
-{% endif %}
-
-{% if position == 'Back' %}
-<br>
-<div class="title-container fssmall poppins-regular">
-    <span class="info-icon">i </span><a style="color: grey;" href="{% url 'faq' %}#faq_ontoback"> How do I get baby onto my back?</a>
-</div>
-{% endif %}
 
 {% if videoauthor != 'NA' %}
 <br>
@@ -131,6 +220,7 @@
     <br>
 </div>
 {% endif %}
+
 
 {% if videoauthor2 != 'NA' %}
 <br><br>
@@ -172,23 +262,6 @@
 </div>
 {% endif %}
 
-
-<div id="loadingSpinner" class="loading-spinner"></div>
-<br><br>
-<div id="tutorial-content">
-    <div class="title-container poppins-bold fsplus">
-        Picture tutorial
-    </div>
-    <div id="picture-tutorial-grid" class="content-container">
-        <br>
-        <div class="grid" id="imageGrid" data-name="{{name}}">
-        </div>
-        <br>
-    </div>
-
-    <br>
-    <br>
-</div>
 
 <br><br><br>
 <script src="{% static 'wrappinggallery/js/carry.js' %}"></script>
