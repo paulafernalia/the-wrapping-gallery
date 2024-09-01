@@ -741,6 +741,10 @@ async function updateCarryGallery(carries) {
     const filterBtn = document.getElementById('button-filter');
     filterBtn.classList.add('disabled');
     filterBtn.setAttribute('disabled', true);
+    document.getElementById("search-input").disabled = true;
+
+    const loadingSpinner = document.getElementById('loadingSpinner');
+    loadingSpinner.style.display = 'block';
 
     // Get imageGrid div
     const gridContainer = document.getElementById('imageGrid');
@@ -807,6 +811,9 @@ async function updateCarryGallery(carries) {
     // Reactivate the filter button
     filterBtn.classList.remove('disabled');
     filterBtn.removeAttribute('disabled');
+    document.getElementById("search-input").disabled = false;
+
+    loadingSpinner.style.display = 'none';
 
     // Check if footer must be changed
     updateFooterPosition();
