@@ -695,6 +695,23 @@ footer {
     vertical-align: super; /* Align the icon with the text */
 }
 
+.info-icon-black {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    background-color: black;
+    color: white;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 11px;
+    font-size: 8px;
+    font-family: Arial, sans-serif;
+    text-decoration: none;
+    margin-left: 2px; /* Add some space between the text and the icon */
+    cursor: pointer;
+    vertical-align: super; /* Align the icon with the text */
+}
+
 
 .icon-container {
     display: flex;

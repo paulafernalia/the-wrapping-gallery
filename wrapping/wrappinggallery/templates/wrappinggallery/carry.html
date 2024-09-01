@@ -21,46 +21,40 @@
             </div>
 
             <div class="column">
-                 <h4 class="poppins-light" id="carrySize">{{size|upper}}</h4>
+                 <h4 class="poppins-light" id="carrySize">{{position|upper}} CARRY &nbsp; | &nbsp;{{size|upper}}</h4>
                 <br>
                 <h1 id="carryName">{{longtitle}}</h1>
-                <br>
 
-
-                <div class="feature poppins-light fsfeature"><span class="poppins-bold pink-span">Type: </span>&nbsp;{{position}} carry </div>
-                <div class="feature poppins-light fsfeature">
-                    <span class="poppins-bold pink-span">MM position:</span>
-                    <a href="{% url 'faq' %}#faq_mm" class="info-icon-dark" title="What does this mean">i</a>
-                    &nbsp;{{ mmposition }}
+                <div class="feature poppins-light fsmedium">
+                    <span class="poppins-light">MM position:</span>
+                    &nbsp;{{ mmposition }} <a href="{% url 'faq' %}#faq_mm" class="info-icon-black" title="What does this mean">i</a>
                 </div>
-                <div class="feature poppins-light fsfeature">
-                    <span class="poppins-bold pink-span">Passes :</span><a href="{% url 'faq' %}#faq_passes" class="info-icon-dark" title="What does this mean">i</a>&nbsp;
+                <hr>
+                <div class="feature poppins-light fscarry">
+                    <span class="poppins-bold pink">Other features: </span>&nbsp;
+                        {% if pretied %}
+                            Can be pre-tied &nbsp; &#8226; &nbsp;
+                        {% endif %}
+                        {% if rings %}
+                            uses rings&nbsp;&#8226;&nbsp;
+                        {% endif %} {{shoulders}} shoulders &nbsp; &#8226; &nbsp; {{layers}} layers
+                </div>
+                <div class="feature poppins-light fscarry">
+                    <span class="poppins-bold pink">Passes :</span><a href="{% url 'faq' %}#faq_passes" class="info-icon-dark" title="What does this mean">i</a>&nbsp;
                     {% for pass in passes %}
-                       {{ pass }}{% if not forloop.last %} &#8226; {% endif %}
+                      {{ pass }}{% if not forloop.last %} &nbsp; &#8226; &nbsp; {% endif %}
                     {% endfor %}
                 </div>
 
                 {% if other %}
-                <div class="feature poppins-light fsfeature">
-                    <span class="poppins-bold pink-span">Other elements: </span>&nbsp;
+                <div class="feature poppins-light fscarry">
+                    <span class="poppins-bold pink">Other elements: </span>&nbsp;
                     {% for element in other %}
-                        {{ element }}{% if not forloop.last %} &#8226; {% endif %}
+                        {{ element }}{% if not forloop.last %}&nbsp; &#8226; &nbsp;{% endif %}
                     {% endfor %}
                 </div>
                 {% endif %}
-                <div class="feature poppins-light fsfeature">
-                    <span class="poppins-bold pink-span">Other features: </span>&nbsp;
-                        {% if pretied %}
-                            Can be pre-tied
-                        {% else %}
-                            Cannot be pre-tied
-                        {% endif %}&#8226;
-                        {% if pretied %}
-                            uses rings
-                        {% else %}
-                            no rings
-                        {% endif %}&#8226; {{shoulders}} shoulders &#8226; {{layers}} layers
-                </div>
+
             </div>
         </div>
     </div>
@@ -89,11 +83,11 @@
             </div>
              <div class="table-content">
                 <div class="table-title-container">
-                    <p class="table-title">Good for leg straighteners<a href="{% url 'faq' %}#faq_ratings" class="info-icon" title="What does this mean">i</a></p>
+                    <p class="table-title">Good for seat poppers<a href="{% url 'faq' %}#faq_ratings" class="info-icon" title="What does this mean">i</a></p>
                     <div id="legstraighteners-rating" class="rating-group" data-property="{{legstraighteners}}">
                     </div>
                 </div>
-                <p class="table-description">Is this carry seat popper friendly? Does it have leg passes? A deep seat?</p>
+                <p class="table-description">Is this carry good for leg straighteners? Does it have leg passes? A deep seat?</p>
             </div>
         </div>
 
@@ -170,7 +164,7 @@
 
         <div class="table-item">
             <div class="table-icon">
-                <img src="{% static 'wrappinggallery/icons/fancy.svg' %}" alt="Icon description" width="24" height="24">
+                <img src="{% static 'wrappinggallery/icons/fancy.svg' %}" alt="Icon description" width="30" height="30">
             </div>
             <div class="table-content">
                 <div class="table-title-container">

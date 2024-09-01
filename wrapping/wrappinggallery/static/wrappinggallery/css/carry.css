@@ -157,10 +157,8 @@ h4 {
 }
 
 
-.pink-span {
-    color: #816b6b
-
-;
+.pink {
+    color: #816b6b;
 }
 
 #carryTitle {
@@ -216,7 +214,7 @@ h4 {
 
 .table-container {
     max-width: 600px; /* Adjust based on your layout */
-    padding: 20px;
+    padding: 0px;
 }
 
 .table-item {
