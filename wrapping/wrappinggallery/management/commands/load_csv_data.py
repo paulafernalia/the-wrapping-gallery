@@ -58,6 +58,8 @@ class Command(BaseCommand):
             'other_waistband': 'bool',
             'other_legpasses': 'bool',
             'other_s2s': 'bool',
+            'other_sternum': 'bool',
+            'other_poppins': 'bool',
         }
 
         table = pd.read_csv(csv_file, dtype=dtype_dict)
@@ -105,6 +107,8 @@ class Command(BaseCommand):
                     other_legpasses=row["other_legpasses"],
                     other_s2s=row["other_s2s"],
                     other_eyelet=row["other_eyelet"],
+                    other_poppins=row["other_poppins"],
+                    other_sternum=row["other_sternum"],
                 )
 
                 # Create the Ratings instance
