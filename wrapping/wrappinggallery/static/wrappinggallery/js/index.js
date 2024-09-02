@@ -857,21 +857,14 @@ document.addEventListener('DOMContentLoaded', async function() {
     // Update reset filters button
     resetFiltersBtn = document.getElementById('resetFiltersBtn');
 
-    // If any filters applied, show filter box to alert user
-    if (anyapplied > 0) {
-        showAllFilters();
+    // Get all carries with session data and update gallery
+    resetFiltersBtn.classList.add('disabled');
+    resetFiltersBtn.disabled = true;
 
-        resetFiltersBtn.classList.remove('disabled');
-        resetFiltersBtn.disabled = false;
-    } else {
-        // Get all carries with session data and update gallery
-        resetFiltersBtn.classList.add('disabled');
-        resetFiltersBtn.disabled = true;
-
-        // Filter carries by the property selected in the button
-        emptyCarryGallery();
-        showResults();
-    }
+    // Filter carries by the property selected in the button
+    emptyCarryGallery();
+    showResults();
+    // }
 
     const searchInput = document.getElementById('search-input');
     searchInput.addEventListener('keydown', function(event) {
