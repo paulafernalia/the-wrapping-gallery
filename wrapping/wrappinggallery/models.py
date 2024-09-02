@@ -98,6 +98,8 @@ class Carry(models.Model):
     other_legpasses = models.BooleanField(default=0)
     other_s2s = models.BooleanField(default=0)
     other_eyelet = models.BooleanField(default=0)
+    other_sternum = models.BooleanField(default=0)
+    other_poppins = models.BooleanField(default=0)
 
 
     def __str__(self):
@@ -146,6 +148,8 @@ class Carry(models.Model):
                     "leg passes" if self.other_legpasses == True else None,
                     "shoulder to shoulder" if self.other_s2s == True else None,
                     "eyelet" if self.other_eyelet == True else None,
+                    "sternum belt" if self.other_sternum == True else None,
+                    "poppins" if self.other_poppins == True else None,
                 ] if other_name is not None
             ]
         }
@@ -189,7 +193,8 @@ class Carry(models.Model):
                 "Both videoauthor3 and videotutorial3 must be either set or both blank."
             )
 
-        if not (self.rings) == ("ring" in self.title.lower()):
+        if not (self.rings) == ("ring" in self.title.lower()) and \
+            ("xena" not in self.name) and ("mermaid" not in self.name):
             raise ValidationError("inconsistent information regarding ring(s)")
 
         num_passes = self.pass_sling
@@ -223,12 +228,13 @@ class Carry(models.Model):
                 f"Leg passes cannot be 0 with cross and reinforcing cross pass"
             )
 
-        if "dh" in self.name and self.other_chestpass == False:
+        if "dh" in self.name and self.other_chestpass == False and self.position != "front":
             raise ValidationError(
                 f"Chest pass cannot be 0 in a double hammock variation"
             )
 
         if (self.name != "ruckless_bikini_carry") and \
+            ("christina" not in self.name) and \
             ("ruck" in self.name and self.pass_ruck == 0):
             raise ValidationError(
                 f"Ruck pass cannot be empty in a ruck variation"
