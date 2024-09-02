@@ -508,8 +508,6 @@ async function showResults() {
 
 
 async function loadMore(button) {
-    console.log("trying to show page", resultsPage);
-
     resultsPage += 1;
     const carries = await fetchFilteredCarries(resultsPage, pageSize);
     await updateCarryGallery(carries);
