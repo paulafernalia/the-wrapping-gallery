@@ -1,5 +1,7 @@
 let isFetching = false
 let filteredResults = 0;
+let resultsPage = 1;
+let pageSize = 36;
 
 const booleanProps = [
     'fancy', 'pretied', 'newborns', 'legstraighteners', 'leaners', 
@@ -122,6 +124,8 @@ function hideAllFilters() {
     const filtersContainer = document.getElementById('filters-container');
     filtersContainer.style.display = 'none';
 
+    const footer = document.querySelector('footer');
+    footer.style.display = 'block';
 }
 
 
@@ -134,6 +138,9 @@ function showAllFilters() {
 
     const buttonBox = document.getElementById('buttonBox');
     buttonBox.style.display = 'block';
+
+    const footer = document.querySelector('footer');
+    footer.style.display = 'none';
 }
 
 async function resetFilters() {
@@ -313,11 +320,12 @@ function isAnyFilterActive() {
 
 
 
-async function fetchFilteredCarries() {
+async function fetchFilteredCarries(page = 1, pageSize = 36) {
     // Read the property of the button group and the button value
     const nonBooleanProps = [
         "position", "shoulders", "layers", "difficulty", "mmposition", 
-        "partialname", "finish"];
+        "partialname", "finish"
+    ];
 
     const filterKeys = nonBooleanProps.concat(booleanProps);
 
@@ -335,8 +343,14 @@ async function fetchFilteredCarries() {
         .concat(sizes.map(val => `size[]=${encodeURIComponent(val)}`))  // Add size values separately
         .join('&');
 
+    // Add pagination parameters to the query string
+    const paginationParams = `page=${encodeURIComponent(page)}&page_size=${encodeURIComponent(pageSize)}`;
+
+    // Combine filters and pagination parameters
+    const fullQueryString = `${queryString}&${paginationParams}`;
+
     // Filter carries by using filter values
-    const response = await fetch(`/api/filter-carries/?${queryString}`);
+    const response = await fetch(`/api/filter-carries/?${fullQueryString}`);
 
     if (!response.ok) {
         throw new Error('Network response was not ok');
@@ -389,6 +403,7 @@ function showAppliedFilters() {
 
     const booleanFilters = [
         { key: "bigkids", label: "good for big kids" },
+        { key: "fancy", label: "fancy" },
         { key: "pretied", label: "can be pre-tied" },
         { key: "rings", label: "ring(s)" },
         { key: "leaners", label: "good for leaners" },
@@ -470,11 +485,35 @@ async function showResults() {
     showAppliedFilters();
 
     // Populate gallery
-    const carries = await fetchFilteredCarries();
+    resultsPage = 1;
+    const carries = await fetchFilteredCarries(resultsPage, pageSize);
 
     await updateCarryGallery(carries);
 
     updateFooterPosition();
+
+    let button = document.getElementById("loadMore");
+    if (resultsPage * pageSize < filteredResults) {
+        // there is nothing else to load, so hide load button
+        button.style.display = 'inline-block';
+    } else {
+        button.style.display = 'none';
+    }
+}
+
+
+async function loadMore(button) {
+    console.log("trying to show page", resultsPage);
+
+    resultsPage += 1;
+    const carries = await fetchFilteredCarries(resultsPage, pageSize);
+    await updateCarryGallery(carries);
+
+    // Check if even more could be loaded
+    if (resultsPage * pageSize >= filteredResults) {
+        // there is nothing else to load, so hide load button
+        button.style.display = 'none';
+    }
 }
 
 
@@ -484,7 +523,7 @@ async function updateButtonBox() {
 
     let num_carries = 0;
     try {
-        const carries = await fetchFilteredCarries();
+        const carries = await fetchFilteredCarries(1, 300);
         filteredResults = carries.length;
         
         if (carries.length === 0) {
@@ -598,8 +637,14 @@ async function toggleFilterBox(button) {
         const buttonBox = document.getElementById('buttonBox');
         buttonBox.style.display = 'block';
 
+        const footer = document.querySelector('footer');
+        footer.style.display = 'none';
+
         // Empty gallery
         emptyCarryGallery();
+
+        const loadMoreBtn = document.getElementById('loadMore');
+        loadMoreBtn.style.display = 'none';
 
     } else {
         hideAllFilters();
@@ -607,7 +652,8 @@ async function toggleFilterBox(button) {
         // Show applied filters
         showAppliedFilters();
 
-        const carries = await fetchFilteredCarries();
+        resultsPage = 1;
+        const carries = await fetchFilteredCarries(resultsPage, pageSize);
         updateCarryGallery(carries);
     }
 
@@ -856,21 +902,14 @@ document.addEventListener('DOMContentLoaded', async function() {
     // Update reset filters button
     resetFiltersBtn = document.getElementById('resetFiltersBtn');
 
-    // If any filters applied, show filter box to alert user
-    if (anyapplied > 0) {
-        showAllFilters();
+    // Get all carries with session data and update gallery
+    resetFiltersBtn.classList.add('disabled');
+    resetFiltersBtn.disabled = true;
 
-        resetFiltersBtn.classList.remove('disabled');
-        resetFiltersBtn.disabled = false;
-    } else {
-        // Get all carries with session data and update gallery
-        resetFiltersBtn.classList.add('disabled');
-        resetFiltersBtn.disabled = true;
-
-        // Filter carries by the property selected in the button
-        emptyCarryGallery();
-        showResults();
-    }
+    // Filter carries by the property selected in the button
+    emptyCarryGallery();
+    showResults();
+    // }
 
     const searchInput = document.getElementById('search-input');
     searchInput.addEventListener('keydown', function(event) {
