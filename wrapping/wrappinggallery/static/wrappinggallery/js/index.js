@@ -122,6 +122,8 @@ function hideAllFilters() {
     const filtersContainer = document.getElementById('filters-container');
     filtersContainer.style.display = 'none';
 
+    const footer = document.querySelector('footer');
+    footer.style.display = 'block';
 }
 
 
@@ -134,6 +136,9 @@ function showAllFilters() {
 
     const buttonBox = document.getElementById('buttonBox');
     buttonBox.style.display = 'block';
+
+    const footer = document.querySelector('footer');
+    footer.style.display = 'none';
 }
 
 async function resetFilters() {
@@ -598,6 +603,9 @@ async function toggleFilterBox(button) {
 
         const buttonBox = document.getElementById('buttonBox');
         buttonBox.style.display = 'block';
+
+        const footer = document.querySelector('footer');
+        footer.style.display = 'none';
 
         // Empty gallery
         emptyCarryGallery();
