@@ -10,13 +10,14 @@ const booleanProps = [
     'pass_reinforcing_horizontal', 'pass_horizontal', 'pass_poppins', 
     'other_chestpass', 'other_bunchedpasses', 'other_shoulderflip', 
     'other_twistedpass', 'other_waistband', 'other_legpasses', 
-    'other_s2s', 'other_eyelet', 'no_pass_sling',
+    'other_s2s', 'other_eyelet', 'other_sternum', 'other_poppins',
+    'no_pass_sling',
     'no_pass_ruck', 'no_pass_kangaroo', 'no_pass_cross',
     'no_pass_reinforcing_cross', 'no_pass_reinforcing_horizontal',
     'no_pass_horizontal', 'no_pass_poppins',
     'no_other_chestpass', 'no_other_bunchedpasses', 'no_other_shoulderflip', 
     'no_other_twistedpass', 'no_other_waistband', 'no_other_legpasses', 
-    'no_other_s2s', 'no_other_eyelet'
+    'no_other_s2s', 'no_other_eyelet', 'no_other_sternum', 'no_other_poppins'
 ];
 
 function getButtonByValueAndProperty(property, value) {
@@ -435,6 +436,8 @@ function showAppliedFilters() {
         { key: "other_waistband", label: "waist band" },
         { key: "other_legpasses", label: "leg pass(es)" },
         { key: "other_eyelet", label: "eyelet" },
+        { key: "other_poppins", label: "poppins (not as a pass)" },
+        { key: "other_sternum", label: "pond" },
         { key: "no_other_chestpass", label: "no chest pass" },
         { key: "no_other_bunchedpasses", label: "no bunched pass(es)" },
         { key: "no_other_shoulderflip", label: "no shoulder flip" },
@@ -442,7 +445,9 @@ function showAppliedFilters() {
         { key: "no_other_s2s", label: "no S2S" },
         { key: "no_other_waistband", label: "no waist band" },
         { key: "no_other_legpasses", label: "no leg pass(es)" },
-        { key: "no_other_eyelet", label: "no eyelet" }
+        { key: "no_other_eyelet", label: "no eyelet" },
+        { key: "no_other_poppins", label: "no poppins (not as a pass)" },
+        { key: "no_other_sternum", label: "no pond" },
     ];
 
     // Process the filter conditions
