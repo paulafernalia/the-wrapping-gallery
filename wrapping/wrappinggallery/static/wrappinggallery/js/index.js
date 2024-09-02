@@ -389,6 +389,7 @@ function showAppliedFilters() {
 
     const booleanFilters = [
         { key: "bigkids", label: "good for big kids" },
+        { key: "fancy", label: "fancy" },
         { key: "pretied", label: "can be pre-tied" },
         { key: "rings", label: "ring(s)" },
         { key: "leaners", label: "good for leaners" },
