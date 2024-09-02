@@ -167,6 +167,8 @@ def filter_carries(request):
     # Extract lists of properties and values from GET parameters
     properties = request.GET.getlist("property[]")
     values = request.GET.getlist("value[]")
+    page = int(request.GET.get("page"))
+    pagesize = int(request.GET.get("page_size"))
 
     difficulties = dict(zip(DIFFICULTY_VALUES, [1, 2, 3, 4, 5]))
 
@@ -288,9 +290,13 @@ def filter_carries(request):
 
     sorted_queryset = queryset.order_by('carry__longtitle')
 
+    start =(page - 1) * pagesize
+    end = page * pagesize
+    page_results = sorted_queryset[start:end]
+
     # Serialize the results
     results = list(
-        sorted_queryset.values(
+        page_results.values(
             "carry__name",
             "carry__position",
             "carry__title",

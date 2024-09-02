@@ -178,6 +178,7 @@ body {
 .btn-outline-secondary.disabled {
     cursor: not-allowed;
     background-color: lightgrey;
+    opacity: 1;
 }
 
 
@@ -598,6 +599,25 @@ footer {
 #social {
     padding-right: 30px;
     max-width: 100px !important;
+}
+
+#loadMore {
+    border: 2px solid #ad9393;
+    border-radius: 5px;
+    padding: 5px 20px;
+    align-items: center;
+    background-color: transparent;
+    color: #ad9393;
+}
+
+#loadMore:focus {
+    outline: none;
+}
+
+
+#loadMore:hover {
+    outline: none;
+    background-color: white;
 }
 
 
