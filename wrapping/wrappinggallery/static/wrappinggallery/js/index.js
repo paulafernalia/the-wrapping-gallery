@@ -336,7 +336,11 @@ async function fetchFilteredCarries(page = 1, pageSize = 36) {
 
     // size: sessionStorage.getItem("size"),
     const sizeString = sessionStorage.getItem("size"); // Extract the size values
-    const sizes = JSON.parse(sizeString);
+
+    let sizes = ["Any"];
+    if (sizeString !== null) {
+        sizes = JSON.parse(sizeString);
+    }
     
     // Build the query string from the filters object
     const queryString = Object.entries(filters)
