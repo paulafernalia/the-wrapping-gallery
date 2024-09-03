@@ -185,19 +185,19 @@ def filter_carries(request):
 
     # Apply filters based on properties and values
     for prop, val in zip(properties, values): 
-        if prop == "position" and val != "Any":
+        if prop == "position" and val not in ["Any", "null"]:
             queryset = queryset.filter(carry__position=val.lower())
-        elif prop == "shoulders" and val != "Any":
+        elif prop == "shoulders" and val not in ["Any", "null"]:
             queryset = queryset.filter(carry__shoulders=val)
-        elif prop == "layers" and val != "Any":
+        elif prop == "layers" and val not in ["Any", "null"]:
             queryset = queryset.filter(carry__layers=val)
-        elif prop == "mmposition" and val != "Any":
+        elif prop == "mmposition" and val not in ["Any", "null"]:
             queryset = queryset.filter(carry__mmposition=mmpositions[val])
-        elif prop == "finish" and val != "Any":
+        elif prop == "finish" and val not in ["Any", "null"]:
             queryset = queryset.filter(carry__finish=finishes[val])
         elif prop == "partialname" and val not in ["null", ""] and val:
             queryset = queryset.filter(carry__title__icontains=val)
-        elif prop == "difficulty" and val != "Any":
+        elif prop == "difficulty" and val not in ["Any", "null"]:
             queryset = queryset.annotate(
                 rounded_difficulty=Round(F("difficulty"))
             ).filter(rounded_difficulty=difficulties[val])
