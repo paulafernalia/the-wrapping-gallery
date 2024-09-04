@@ -197,10 +197,6 @@ def filter_carries(request):
             queryset = queryset.filter(carry__finish=finishes[val])
         elif prop == "partialname" and val not in ["null", ""] and val:
             queryset = queryset.filter(carry__title__icontains=val)
-        elif prop == "difficulty" and val not in ["Any", "null"]:
-            queryset = queryset.annotate(
-                rounded_difficulty=Round(F("difficulty"))
-            ).filter(rounded_difficulty=difficulties[val])
         elif prop == "pretied" and val == "1":
             queryset = queryset.filter(carry__pretied=val)
         elif prop == "pass_sling" and val == "1":
@@ -295,6 +291,12 @@ def filter_carries(request):
     sizes = request.GET.getlist("size[]", "Any")
     if sizes != ["Any"]:
         queryset = queryset.filter(carry__size__in=sizes)
+
+    filteredDiffs = request.GET.getlist("difficulty[]", "Any")
+    if filteredDiffs != ["Any"]:
+        queryset = queryset.annotate(
+            rounded_difficulty=Round(F("difficulty"))
+        ).filter(rounded_difficulty__in=[difficulties[v] for v in filteredDiffs])
 
     sorted_queryset = queryset.order_by('carry__longtitle')
 
