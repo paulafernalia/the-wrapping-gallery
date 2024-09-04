@@ -706,7 +706,12 @@ async function toggleFilterBox(button) {
         const carries = await fetchFilteredCarries(resultsPage, pageSize);
         updateCarryGallery(carries);
 
-        document.getElementById('loadMore').style.display = 'inline-block';
+        if (resultsPage * pageSize < filteredResults) {
+        // there is nothing else to load, so hide load button
+            document.getElementById('loadMore').style.display = 'inline-block';
+        } else {
+            document.getElementById('loadMore').style.display = 'none';
+        }
     }
 
     updateFooterPosition();
