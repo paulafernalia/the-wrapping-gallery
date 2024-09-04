@@ -412,7 +412,8 @@ function showAppliedFilters() {
     }
 
     let sizeStr = "";
-    for (let size of sizes) {
+    for (let i = 0; i < sizes.length; i++) {
+        let size = sizes[i];
         if (size !== "Any") {
             const sizeInt = parseInt(size);
             if (sizeInt === 0) {
@@ -421,6 +422,9 @@ function showAppliedFilters() {
                 sizeStr += " Base +" + size;
             } else {
                 sizeStr += " Base " + size;
+            }
+            if (i < sizes.length - 1) {
+                sizeStr += ", ";
             }
         }
     }
