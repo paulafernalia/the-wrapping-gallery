@@ -304,8 +304,12 @@ function isAnyFilterActive() {
         }
     }
 
-    let sizeString = sessionStorage.getItem("size");
-    let sizes = JSON.parse(sizeString);
+    const sizeString = sessionStorage.getItem("size"); 
+
+    let sizes = ["Any"];
+    if (sizeString !== null) {
+        sizes = JSON.parse(sizeString);
+    }
     if (sizes.length > 1 || sizes[0] != "Any") {
         return true;
     }
@@ -381,7 +385,14 @@ function showAppliedFilters() {
 
     let anyApplied = false;
 
-    sizes = JSON.parse(sessionStorage["size"]);
+    // Extract the size values
+    const sizeString = sessionStorage.getItem("size"); 
+
+    let sizes = ["Any"];
+    if (sizeString !== null) {
+        sizes = JSON.parse(sizeString);
+    }
+
     let sizeStr = "";
     for (let size of sizes) {
         if (size !== "Any") {
