@@ -188,9 +188,11 @@
     <div class="title-container poppins-bold fsmedium">
         Picture tutorial
     </div>
+    {% if position == 'Back' %}
     <div class="title-container poppins-light fssmall">
         <a href="{% url 'faq' %}#faq_ontoback" style="color: grey; text-decoration: underline;">How do I get baby on my back?</a>
     </div>
+    {% endif %}
     <div id="picture-tutorial-grid" class="content-container">
         <br>
         <div class="grid" id="imageGrid" data-name="{{name}}">
