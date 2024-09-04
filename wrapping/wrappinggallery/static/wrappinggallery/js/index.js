@@ -673,6 +673,8 @@ async function toggleFilterBox(button) {
         resultsPage = 1;
         const carries = await fetchFilteredCarries(resultsPage, pageSize);
         updateCarryGallery(carries);
+
+        document.getElementById('loadMore').style.display = 'inline-block';
     }
 
     updateFooterPosition();
