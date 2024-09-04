@@ -1,7 +1,7 @@
 let isFetching = false
 let filteredResults = 0;
 let resultsPage = 1;
-let pageSize = 36;
+let pageSize = 18;
 
 const booleanProps = [
     'fancy', 'pretied', 'newborns', 'legstraighteners', 'leaners', 
@@ -335,7 +335,7 @@ function isAnyFilterActive() {
 
 
 
-async function fetchFilteredCarries(page = 1, pageSize = 36) {
+async function fetchFilteredCarries(page = 1, pageSize = 18) {
     // Read the property of the button group and the button value
     const nonBooleanProps = [
         "position", "shoulders", "layers", "mmposition", 
@@ -412,7 +412,8 @@ function showAppliedFilters() {
     }
 
     let sizeStr = "";
-    for (let size of sizes) {
+    for (let i = 0; i < sizes.length; i++) {
+        let size = sizes[i];
         if (size !== "Any") {
             const sizeInt = parseInt(size);
             if (sizeInt === 0) {
@@ -421,6 +422,9 @@ function showAppliedFilters() {
                 sizeStr += " Base +" + size;
             } else {
                 sizeStr += " Base " + size;
+            }
+            if (i < sizes.length - 1) {
+                sizeStr += ", ";
             }
         }
     }
@@ -702,7 +706,12 @@ async function toggleFilterBox(button) {
         const carries = await fetchFilteredCarries(resultsPage, pageSize);
         updateCarryGallery(carries);
 
-        document.getElementById('loadMore').style.display = 'inline-block';
+        if (resultsPage * pageSize < filteredResults) {
+        // there is nothing else to load, so hide load button
+            document.getElementById('loadMore').style.display = 'inline-block';
+        } else {
+            document.getElementById('loadMore').style.display = 'none';
+        }
     }
 
     updateFooterPosition();
