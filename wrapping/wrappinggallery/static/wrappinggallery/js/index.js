@@ -151,7 +151,7 @@ async function resetFilters() {
         mmposition: "Any",
         layers: "Any",
         shoulders: "Any",
-        difficulty: "Any",
+        difficulty: JSON.stringify(['Any']),
         finish: "Any"
     };
 
@@ -275,9 +275,9 @@ function initialiseSearchBar() {
 }
 
 async function initialiseFilters() {
-    const multiButtonProps = ['size'];
+    const multiButtonProps = ['size', 'difficulty'];
     const buttonProps = ['position', 'shoulders', 'layers'];
-    const dropdownProps = ['difficulty', 'finish', 'mmposition'];
+    const dropdownProps = ['finish', 'mmposition'];
 
     const filters = [
         ...multiButtonProps.map(prop => initialiseMultiButtonData(prop)),
@@ -294,7 +294,7 @@ async function initialiseFilters() {
 
 function isAnyFilterActive() {
     const choiceProperties = [
-        "position", "difficulty", "finish",
+        "position", "finish",
         "layers", "shoulders", "mmposition"
     ];
 
@@ -314,6 +314,16 @@ function isAnyFilterActive() {
         return true;
     }
 
+    const difficultyString = sessionStorage.getItem("difficulty"); 
+
+    let difficulties = ["Any"];
+    if (difficultyString !== null) {
+        difficulties = JSON.parse(difficultyString);
+    }
+    if (difficulties.length > 1 || difficulties[0] != "Any") {
+        return true;
+    }
+
     for (let i = 0; i < booleanProps.length; i++) {
         if (sessionStorage.getItem(booleanProps[i]) == "1") {
             return true;
@@ -328,7 +338,7 @@ function isAnyFilterActive() {
 async function fetchFilteredCarries(page = 1, pageSize = 36) {
     // Read the property of the button group and the button value
     const nonBooleanProps = [
-        "position", "shoulders", "layers", "difficulty", "mmposition", 
+        "position", "shoulders", "layers", "mmposition", 
         "partialname", "finish"
     ];
 
@@ -345,11 +355,19 @@ async function fetchFilteredCarries(page = 1, pageSize = 36) {
     if (sizeString !== null) {
         sizes = JSON.parse(sizeString);
     }
+
+    const difficultyString = sessionStorage.getItem("difficulty"); 
+
+    let difficulties = ["Any"];
+    if (difficultyString !== null) {
+        difficulties = JSON.parse(difficultyString);
+    }
     
     // Build the query string from the filters object
     const queryString = Object.entries(filters)
         .map(([property, value]) => `property[]=${encodeURIComponent(property)}&value[]=${encodeURIComponent(value)}`)
-        .concat(sizes.map(val => `size[]=${encodeURIComponent(val)}`))  // Add size values separately
+        .concat(sizes.map(val => `size[]=${encodeURIComponent(val)}`))  // Add size separately
+        .concat(difficulties.map(val => `difficulty[]=${encodeURIComponent(val)}`))  // Add difficulty separately
         .join('&');
 
     // Add pagination parameters to the query string
@@ -407,9 +425,26 @@ function showAppliedFilters() {
         }
     }
 
+    const difficultyString = sessionStorage.getItem("difficulty"); 
+
+    let difficulties = ["Any"];
+    if (difficultyString !== null) {
+        difficulties = JSON.parse(difficultyString);
+    }
+
+    let difficultyStr = "";
+    for (let i = 0; i < difficulties.length; i++) {
+        let diff = difficulties[i];
+        if (diff !== "Any") {
+            difficultyStr += diff;
+            if (i < difficulties.length - 1) {
+                difficultyStr += ", ";
+            }
+        }
+    }
     const filterConditions = [
         { key: "size", value: sizeStr, format: val => `size: ${val}`, condition: val => val !== "" },
-        { key: "difficulty", value: sessionStorage["difficulty"], format: val => `difficulty: ${val}`, condition: val => val !== "Any" && val !== undefined},
+        { key: "difficulty", value: difficultyStr, format: val => `difficulty: ${val}`, condition: val => val !== "" },
         { key: "position", value: sessionStorage["position"], format: val => `${val} carries`, condition: val => val !== "Any" && val !== undefined},
         { key: "finish", value: sessionStorage["finish"], format: val => `finish: ${val}`, condition: val => val !== "Any" && val !== undefined},
         { key: "mmposition", value: sessionStorage["mmposition"], format: val => `MM position: ${val}`, condition: val => val !== "Any" && val !== undefined},
