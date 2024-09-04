@@ -409,12 +409,12 @@ function showAppliedFilters() {
 
     const filterConditions = [
         { key: "size", value: sizeStr, format: val => `size: ${val}`, condition: val => val !== "" },
-        { key: "difficulty", value: sessionStorage["difficulty"], format: val => `difficulty: ${val}`, condition: val => val !== "Any" },
-        { key: "position", value: sessionStorage["position"], format: val => `${val} carries`, condition: val => val !== "Any" },
-        { key: "finish", value: sessionStorage["finish"], format: val => `finish: ${val}`, condition: val => val !== "Any" },
-        { key: "mmposition", value: sessionStorage["mmposition"], format: val => `MM position: ${val}`, condition: val => val !== "Any" },
-        { key: "layers", value: sessionStorage["layers"], format: val => `${val} layers`, condition: val => val !== "Any" },
-        { key: "shoulders", value: sessionStorage["shoulders"], format: val => `${val} shoulders`, condition: val => val !== "Any" },
+        { key: "difficulty", value: sessionStorage["difficulty"], format: val => `difficulty: ${val}`, condition: val => val !== "Any" && val !== undefined},
+        { key: "position", value: sessionStorage["position"], format: val => `${val} carries`, condition: val => val !== "Any" && val !== undefined},
+        { key: "finish", value: sessionStorage["finish"], format: val => `finish: ${val}`, condition: val => val !== "Any" && val !== undefined},
+        { key: "mmposition", value: sessionStorage["mmposition"], format: val => `MM position: ${val}`, condition: val => val !== "Any" && val !== undefined},
+        { key: "layers", value: sessionStorage["layers"], format: val => `${val} layers`, condition: val => val !== "Any" && val !== undefined},
+        { key: "shoulders", value: sessionStorage["shoulders"], format: val => `${val} shoulders`, condition: val => val !== "Any" && val !== undefined},
     ];
 
     const booleanFilters = [
