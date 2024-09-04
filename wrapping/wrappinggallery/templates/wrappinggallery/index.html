@@ -45,64 +45,18 @@
                 <button type="button" class="btn btn-custom mx-1 poppins-regular fs16" data-property="size" data-value="{{ value }}" onclick="clickFilterMultiButton(this)">{{ value }}</button>
             {% endfor %}
         </div>
+        <br>
+
+        <p class="poppins-bold fs16"> Difficulty </p>
+        <div class="button-filters" data-property="difficulty">
+            {% for value in difficulty_values %}
+                <button type="button" class="btn btn-custom mx-1 poppins-regular fs16" data-property="difficulty" data-value="{{ value }}" onclick="clickFilterMultiButton(this)">{{ value }}</button>
+            {% endfor %}
+        </div>
         
         <button id="showMoreBtn" class="show-button poppins-light fs16" onclick="showFilterBoxExt()">Show more</button>
     </div>
     <div id=filterBoxExt style="display: none;">
-        <hr>
-        
-        <p class="poppins-bold fs16"> Difficulty</p>
-        <div class="dropdown poppins-light fs16">
-            <select id="difficulty-select fs16" onchange="handleSelectChange(this)">
-                {% for value in difficulty_values %}
-                    <option data-property="difficulty" value="{{value}}" selected>{{value}}</option>
-                {% endfor %}
-            </select>
-        </div>
-        <br>
-        <br>
-
-        <p class="poppins-bold fs16"> MM position (back carries)</p>
-        <div class="dropdown poppins-light fs16">
-            <select id="mmposition-select fs16" onchange="handleSelectChange(this)">
-                {% for value in mmposition_values %}
-                    <option data-property="mmposition" value="{{value}}" selected>{{value}}</option>
-                {% endfor %}
-            </select>
-        </div>
-        <br>
-        <br>
-        
-        <p class="poppins-bold fs16"> Finish</p>
-        <div class="dropdown poppins-light fs16">
-            <select id="finish-select" onchange="handleSelectChange(this)">
-                {% for value in finish_values %}
-                    <option data-property="finish" value="{{value}}" selected>{{value}}</option>
-                {% endfor %}
-            </select>
-        </div>
-        <hr>
-
-        <div class="checkbox-group poppins-bold fs16">
-            <label>
-                <input type="checkbox" data-property="pretied" onclick="handleSwitchChange(this)">
-                Can be pre-tied
-            </label>
-        </div>
-
-        <div class="checkbox-group poppins-bold fs16">
-            <label>
-                <input type="checkbox" data-property="rings" onclick="handleSwitchChange(this)">
-                Uses ring(s)
-            </label>
-        </div>
-        
-        <div class="checkbox-group poppins-bold fs16">
-            <label>
-                <input type="checkbox" data-property="fancy" onclick="handleSwitchChange(this)">
-                Looks fancy
-            </label>
-        </div>
         <hr>
 
         <p class="poppins-bold fs16">
@@ -149,6 +103,49 @@
                 </div>
             </div>
             <br>
+        </div>
+        <hr>
+
+        <p class="poppins-bold fs16"> MM position (back carries)</p>
+        <div class="dropdown poppins-light fs16">
+            <select id="mmposition-select fs16" onchange="handleSelectChange(this)">
+                {% for value in mmposition_values %}
+                    <option data-property="mmposition" value="{{value}}" selected>{{value}}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <br>
+        <br>
+        
+        <p class="poppins-bold fs16"> Finish</p>
+        <div class="dropdown poppins-light fs16">
+            <select id="finish-select" onchange="handleSelectChange(this)">
+                {% for value in finish_values %}
+                    <option data-property="finish" value="{{value}}" selected>{{value}}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <hr>
+
+        <div class="checkbox-group poppins-bold fs16">
+            <label>
+                <input type="checkbox" data-property="pretied" onclick="handleSwitchChange(this)">
+                Can be pre-tied
+            </label>
+        </div>
+
+        <div class="checkbox-group poppins-bold fs16">
+            <label>
+                <input type="checkbox" data-property="rings" onclick="handleSwitchChange(this)">
+                Uses ring(s)
+            </label>
+        </div>
+        
+        <div class="checkbox-group poppins-bold fs16">
+            <label>
+                <input type="checkbox" data-property="fancy" onclick="handleSwitchChange(this)">
+                Looks fancy
+            </label>
         </div>
         <hr>
 

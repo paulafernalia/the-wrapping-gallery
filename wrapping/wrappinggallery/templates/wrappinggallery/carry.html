@@ -59,6 +59,10 @@
         </div>
     </div>
 </div>
+<div class="title-container poppins-light fssmall">
+        <p style="color: grey;">Something doesn't look right? <a href="mailto:thewrappinggallery@gmail.com" style='color: grey; text-decoration: underline;'>Email me</a></b></p>
+</div>
+
 <div class="title-container">
     <br><br>
     
@@ -184,9 +188,11 @@
     <div class="title-container poppins-bold fsmedium">
         Picture tutorial
     </div>
+    {% if position == 'Back' %}
     <div class="title-container poppins-light fssmall">
         <a href="{% url 'faq' %}#faq_ontoback" style="color: grey; text-decoration: underline;">How do I get baby on my back?</a>
     </div>
+    {% endif %}
     <div id="picture-tutorial-grid" class="content-container">
         <br>
         <div class="grid" id="imageGrid" data-name="{{name}}">

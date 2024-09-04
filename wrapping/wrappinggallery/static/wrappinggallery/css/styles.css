@@ -423,6 +423,7 @@ p, li {
         margin-left: auto;
         margin-right: auto;
         width: 90% !important;
+        padding: 20px;
     }
 
      .title-container {

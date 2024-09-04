@@ -1,7 +1,7 @@
 let isFetching = false
 let filteredResults = 0;
 let resultsPage = 1;
-let pageSize = 36;
+let pageSize = 18;
 
 const booleanProps = [
     'fancy', 'pretied', 'newborns', 'legstraighteners', 'leaners', 
@@ -151,7 +151,7 @@ async function resetFilters() {
         mmposition: "Any",
         layers: "Any",
         shoulders: "Any",
-        difficulty: "Any",
+        difficulty: JSON.stringify(['Any']),
         finish: "Any"
     };
 
@@ -275,9 +275,9 @@ function initialiseSearchBar() {
 }
 
 async function initialiseFilters() {
-    const multiButtonProps = ['size'];
+    const multiButtonProps = ['size', 'difficulty'];
     const buttonProps = ['position', 'shoulders', 'layers'];
-    const dropdownProps = ['difficulty', 'finish', 'mmposition'];
+    const dropdownProps = ['finish', 'mmposition'];
 
     const filters = [
         ...multiButtonProps.map(prop => initialiseMultiButtonData(prop)),
@@ -294,7 +294,7 @@ async function initialiseFilters() {
 
 function isAnyFilterActive() {
     const choiceProperties = [
-        "position", "difficulty", "finish",
+        "position", "finish",
         "layers", "shoulders", "mmposition"
     ];
 
@@ -304,9 +304,23 @@ function isAnyFilterActive() {
         }
     }
 
-    let sizeString = sessionStorage.getItem("size");
-    let sizes = JSON.parse(sizeString);
+    const sizeString = sessionStorage.getItem("size"); 
+
+    let sizes = ["Any"];
+    if (sizeString !== null) {
+        sizes = JSON.parse(sizeString);
+    }
     if (sizes.length > 1 || sizes[0] != "Any") {
+        return true;
+    }
+
+    const difficultyString = sessionStorage.getItem("difficulty"); 
+
+    let difficulties = ["Any"];
+    if (difficultyString !== null) {
+        difficulties = JSON.parse(difficultyString);
+    }
+    if (difficulties.length > 1 || difficulties[0] != "Any") {
         return true;
     }
 
@@ -321,10 +335,10 @@ function isAnyFilterActive() {
 
 
 
-async function fetchFilteredCarries(page = 1, pageSize = 36) {
+async function fetchFilteredCarries(page = 1, pageSize = 18) {
     // Read the property of the button group and the button value
     const nonBooleanProps = [
-        "position", "shoulders", "layers", "difficulty", "mmposition", 
+        "position", "shoulders", "layers", "mmposition", 
         "partialname", "finish"
     ];
 
@@ -341,11 +355,19 @@ async function fetchFilteredCarries(page = 1, pageSize = 36) {
     if (sizeString !== null) {
         sizes = JSON.parse(sizeString);
     }
+
+    const difficultyString = sessionStorage.getItem("difficulty"); 
+
+    let difficulties = ["Any"];
+    if (difficultyString !== null) {
+        difficulties = JSON.parse(difficultyString);
+    }
     
     // Build the query string from the filters object
     const queryString = Object.entries(filters)
         .map(([property, value]) => `property[]=${encodeURIComponent(property)}&value[]=${encodeURIComponent(value)}`)
-        .concat(sizes.map(val => `size[]=${encodeURIComponent(val)}`))  // Add size values separately
+        .concat(sizes.map(val => `size[]=${encodeURIComponent(val)}`))  // Add size separately
+        .concat(difficulties.map(val => `difficulty[]=${encodeURIComponent(val)}`))  // Add difficulty separately
         .join('&');
 
     // Add pagination parameters to the query string
@@ -381,9 +403,17 @@ function showAppliedFilters() {
 
     let anyApplied = false;
 
-    sizes = JSON.parse(sessionStorage["size"]);
+    // Extract the size values
+    const sizeString = sessionStorage.getItem("size"); 
+
+    let sizes = ["Any"];
+    if (sizeString !== null) {
+        sizes = JSON.parse(sizeString);
+    }
+
     let sizeStr = "";
-    for (let size of sizes) {
+    for (let i = 0; i < sizes.length; i++) {
+        let size = sizes[i];
         if (size !== "Any") {
             const sizeInt = parseInt(size);
             if (sizeInt === 0) {
@@ -393,17 +423,37 @@ function showAppliedFilters() {
             } else {
                 sizeStr += " Base " + size;
             }
+            if (i < sizes.length - 1) {
+                sizeStr += ", ";
+            }
         }
     }
 
+    const difficultyString = sessionStorage.getItem("difficulty"); 
+
+    let difficulties = ["Any"];
+    if (difficultyString !== null) {
+        difficulties = JSON.parse(difficultyString);
+    }
+
+    let difficultyStr = "";
+    for (let i = 0; i < difficulties.length; i++) {
+        let diff = difficulties[i];
+        if (diff !== "Any") {
+            difficultyStr += diff;
+            if (i < difficulties.length - 1) {
+                difficultyStr += ", ";
+            }
+        }
+    }
     const filterConditions = [
         { key: "size", value: sizeStr, format: val => `size: ${val}`, condition: val => val !== "" },
-        { key: "difficulty", value: sessionStorage["difficulty"], format: val => `difficulty: ${val}`, condition: val => val !== "Any" },
-        { key: "position", value: sessionStorage["position"], format: val => `${val} carries`, condition: val => val !== "Any" },
-        { key: "finish", value: sessionStorage["finish"], format: val => `finish: ${val}`, condition: val => val !== "Any" },
-        { key: "mmposition", value: sessionStorage["mmposition"], format: val => `MM position: ${val}`, condition: val => val !== "Any" },
-        { key: "layers", value: sessionStorage["layers"], format: val => `${val} layers`, condition: val => val !== "Any" },
-        { key: "shoulders", value: sessionStorage["shoulders"], format: val => `${val} shoulders`, condition: val => val !== "Any" },
+        { key: "difficulty", value: difficultyStr, format: val => `difficulty: ${val}`, condition: val => val !== "" },
+        { key: "position", value: sessionStorage["position"], format: val => `${val} carries`, condition: val => val !== "Any" && val !== undefined},
+        { key: "finish", value: sessionStorage["finish"], format: val => `finish: ${val}`, condition: val => val !== "Any" && val !== undefined},
+        { key: "mmposition", value: sessionStorage["mmposition"], format: val => `MM position: ${val}`, condition: val => val !== "Any" && val !== undefined},
+        { key: "layers", value: sessionStorage["layers"], format: val => `${val} layers`, condition: val => val !== "Any" && val !== undefined},
+        { key: "shoulders", value: sessionStorage["shoulders"], format: val => `${val} shoulders`, condition: val => val !== "Any" && val !== undefined},
     ];
 
     const booleanFilters = [
@@ -638,21 +688,14 @@ async function toggleFilterBox(button) {
     if (filtersContainer.style.display === 'none') {
         filtersContainer.style.display = 'block';
 
-        const filtertitle = document.getElementById('filter-title');
-        filtertitle.style.display = 'block';
-
-        const buttonBox = document.getElementById('buttonBox');
-        buttonBox.style.display = 'block';
-
-        const footer = document.querySelector('footer');
-        footer.style.display = 'none';
+        document.getElementById('filter-title').style.display = 'block';
+        document.getElementById('buttonBox').style.display = 'block';
+        document.querySelector('footer').style.display = 'none';
 
         // Empty gallery
         emptyCarryGallery();
 
-        const loadMoreBtn = document.getElementById('loadMore');
-        loadMoreBtn.style.display = 'none';
-
+        document.getElementById('loadMore').style.display = 'none';
     } else {
         hideAllFilters();
 
@@ -662,6 +705,13 @@ async function toggleFilterBox(button) {
         resultsPage = 1;
         const carries = await fetchFilteredCarries(resultsPage, pageSize);
         updateCarryGallery(carries);
+
+        if (resultsPage * pageSize < filteredResults) {
+        // there is nothing else to load, so hide load button
+            document.getElementById('loadMore').style.display = 'inline-block';
+        } else {
+            document.getElementById('loadMore').style.display = 'none';
+        }
     }
 
     updateFooterPosition();
@@ -704,25 +754,16 @@ function fixFooter() {
 }
 
 function showFilterBoxExt() {
-    const filterBoxExt = document.getElementById('filterBoxExt');
-    filterBoxExt.style.display = 'block';
-
-    const showMoreBtn = document.getElementById('showMoreBtn');
-    showMoreBtn.style.display = 'none';
-
-    var targetElement = document.getElementById('filterBoxExt');
-    var elementPosition = targetElement.getBoundingClientRect().top;
+    document.getElementById('filterBoxExt').style.display = 'block';
+    document.getElementById('showMoreBtn').style.display = 'none';
 
     // Check if footer position must be updated
     releaseFooter();
 }
 
 function hideFilterBoxExt() {
-    const filterBoxExt = document.getElementById('filterBoxExt');
-    filterBoxExt.style.display = 'none';
-
-    const showMoreBtn = document.getElementById('showMoreBtn');
-    showMoreBtn.style.display = 'block';
+    document.getElementById('filterBoxExt').style.display = 'none';
+    document.getElementById('showMoreBtn').style.display = 'block';
 
     var targetElement = document.getElementById('filterBox');
     var elementPosition = targetElement.getBoundingClientRect().top;
@@ -748,14 +789,9 @@ async function fetchFileUrl(fileName, position) {
 }
 
 function emptyCarryGallery() {
-    const countText = document.getElementById('count-text');
-    countText.style.display = 'none';
-
-    const filtersApplied = document.getElementById('filters-applied');
-    filtersApplied.style.display = 'none';
-
-    const gridContainer = document.getElementById('imageGrid');
-    gridContainer.innerHTML = '';
+    document.getElementById('count-text').style.display = 'none';
+    document.getElementById('filters-applied').style.display = 'none';
+    document.getElementById('imageGrid').innerHTML = '';
 }
 
 
@@ -784,18 +820,14 @@ async function updateCarryGallery(carries) {
     updateFooterPosition();
 
     // // Show text counting results
-    const countText = document.getElementById('count-text');
-    countText.style.display = 'block';
-
-    const filtersApplied = document.getElementById('filters-applied');
-    filtersApplied.style.display = 'block';
+    document.getElementById('count-text').style.display = 'block';
+    document.getElementById('filters-applied').style.display = 'block';
 
     // Disable filters until all images have rendered
     const filterBtn = document.getElementById('button-filter');
     filterBtn.classList.add('disabled');
     filterBtn.setAttribute('disabled', true);
     document.getElementById("search-input").disabled = true;
-
     const loadingSpinner = document.getElementById('loadingSpinner');
     loadingSpinner.style.display = 'block';
 
@@ -884,13 +916,6 @@ document.getElementById('search-input').addEventListener('input', function() {
     const clearBtn = document.getElementById('clear-search');
     clearBtn.style.display = this.value ? 'block' : 'none';
 });
-
-
-let lastScrollTop = 0;
-const header = document.getElementById('header');
-let isScrollingUp = false;
-let isScrollingDown = false;
-
 
 
 document.addEventListener('DOMContentLoaded', async function() { 
