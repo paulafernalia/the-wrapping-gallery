@@ -1,0 +1,71 @@
+{% extends "wrappinggallery/layout.html" %}
+
+{% load static %}
+
+{% block body %}
+
+
+
+<div id="carryTitle" class="title-container poppins-bold fsmedium">
+    <h1 id="carryName" class="poiret-one-regular pink" >DOWNLOADS</h1>
+    <br>
+    <p class="poppins-regular fscarry">
+        Here you can download free booklets with illustrated tutorials for some beginner carries. are provided free of charge for personal use only. You are welcome to use them, print them, share them and distribute, as long as you do not use them for commercial purposes and do not modify them or create derivative works from these booklets or the illustrations in them
+
+        Thank you for respecting these terms and enjoying the tutorials!
+    </p>
+    <br>
+    <p class="poppins-regular fscarry">
+        <i class="fas fa-heart"></i> &nbsp;
+        <a href="{% url 'download_booklet' 'fwcc' %}" style="color: grey; text-decoration: underline;">Front Wrap Cross Carry</a>
+    </p>
+
+
+</div>
+
+
+<script>
+    function releaseFooter() {
+        const footer = document.querySelector('footer');
+        footer.style.position = 'static'; // Reset to default position
+        footer.style.bottom = 'auto'; // Reset to default value
+        footer.style.width = 'auto'; // Reset to default width
+    }
+
+
+    function fixFooter() {
+        const footer = document.querySelector('footer');
+        footer.style.position = 'fixed'; 
+        footer.style.bottom = '0';
+        footer.style.width = '100%';
+    }
+
+
+    function updateFooterPosition() {
+        releaseFooter();
+
+        // print position of footer
+        let element = document.querySelector('footer');
+        elementPosition = 0;
+
+        while(element) {
+            elementPosition += element.offsetTop;
+            element = element.offsetParent;
+        }
+
+        let viewportHeight = window.innerHeight;
+
+        if (elementPosition < viewportHeight) {
+            fixFooter();
+        } else {
+            releaseFooter();
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() { 
+        updateFooterPosition();
+    });
+</script>
+
+
+{% endblock %}
