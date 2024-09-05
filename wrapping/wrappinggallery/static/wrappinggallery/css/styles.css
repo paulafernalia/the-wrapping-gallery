@@ -23,18 +23,8 @@
     left: 0;
     right: 0;
     background-color: #343a40; /* Or any other color matching your navbar */
-    animation: slideDown 0.5s ease-in-out;
 }
 
-
-@keyframes slideDown {
-    from {
-        top: -100px;
-    }
-    to {
-        top: 0;
-    }
-}
 
 
 body {

@@ -10,4 +10,6 @@ urlpatterns = [
     path("carry/<str:name>", views.carry, name="carry"),
     path("file-url/<str:file_name>/", views.file_url, name="file_url"),
     path("step-urls/<str:prefix>/", views.steps_url, name="file_url"),
+    path('downloads/', views.downloads, name='downloads'),
+    path('download-booklet/<str:carry>', views.download_booklet, name='download_booklet'),
 ]
