@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse, JsonResponse, FileResponse
 from django.views.decorators.http import require_GET
 from django.db.models import FloatField, Func, F
 from django.db.models.functions import Round
@@ -51,6 +51,12 @@ def about(request):
 
     context = {"imageSrc": image_url}
     return render(request, "wrappinggallery/about.html", context)
+
+
+def downloads(request):
+    context = {}
+
+    return render(request, "wrappinggallery/downloads.html")
 
 
 def faq(request):
@@ -320,3 +326,11 @@ def filter_carries(request):
     )
 
     return JsonResponse({"carries": results})
+
+
+def download_booklet(request, carry):
+    file_path = os.path.join(settings.MEDIA_ROOT, f'{carry}_booklet.pdf')
+    return FileResponse(
+        open(file_path, 'rb'),
+        as_attachment=True,
+        filename=f'{carry}_booklet.pdf')
