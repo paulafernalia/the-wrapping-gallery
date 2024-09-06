@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import HttpResponse, JsonResponse, FileResponse
+from django.http import HttpResponse, JsonResponse, FileResponse, HttpResponseNotAllowed
 from django.views.decorators.http import require_GET
 from django.db.models import FloatField, Func, F
 from django.db.models.functions import Round
@@ -89,31 +89,35 @@ def faq(request):
 
 
 def steps_url(request, prefix):
-    supabase = utils.initialise_supabase()
-    bucketname = settings.SUPABASE_TUTORIAL_BUCKET
+    if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+        supabase = utils.initialise_supabase()
+        bucketname = settings.SUPABASE_TUTORIAL_BUCKET
 
-    batchsize = 10
-    signed_urls = []
-    counter = 0
-    batch_urls = ["dummy"]
+        batchsize = 10
+        signed_urls = []
+        counter = 0
+        batch_urls = ["dummy"]
 
-    while len(batch_urls) != 0:
-        filenames = []
-        range_start = counter * batchsize
-        range_end = (counter + 1) * batchsize
-        
-        for i in [f"{i+1:02}" for i in range(range_start, range_end)]:
-            filenames.append(f"{prefix}_step{i}.png")
+        while len(batch_urls) != 0:
+            filenames = []
+            range_start = counter * batchsize
+            range_end = (counter + 1) * batchsize
+            
+            for i in [f"{i+1:02}" for i in range(range_start, range_end)]:
+                filenames.append(f"{prefix}_step{i}.png")
 
-        batch_urls_dict = utils.generate_signed_urls(filenames, "tutorials")
-        sorted_keys = sorted(batch_urls_dict.keys())
-        batch_urls = [batch_urls_dict[key] for key in sorted_keys]
+            batch_urls_dict = utils.generate_signed_urls(filenames, "tutorials")
+            sorted_keys = sorted(batch_urls_dict.keys())
+            batch_urls = [batch_urls_dict[key] for key in sorted_keys]
 
-        signed_urls += batch_urls
+            signed_urls += batch_urls
 
-        counter += 1
+            counter += 1
 
-    return JsonResponse({"urls": signed_urls})
+        return JsonResponse({"urls": signed_urls})
+    else:
+        # Return forbidden if not accessed by the valid request
+        return HttpResponseForbidden("Access denied.")
 
 
 
@@ -329,8 +333,10 @@ def filter_carries(request):
 
 
 def download_booklet(request, carry):
-    file_path = os.path.join(settings.MEDIA_ROOT, f'{carry}_booklet.pdf')
-    return FileResponse(
-        open(file_path, 'rb'),
-        as_attachment=True,
-        filename=f'{carry}_booklet.pdf')
+    if request.method == 'POST':
+        file_path = os.path.join(settings.MEDIA_ROOT, f'{carry}_tutorial.pdf')
+        response = FileResponse(open(file_path, 'rb'), as_attachment=True, filename=f'{carry}_tutorial.pdf')
+        return response
+    else:
+        return HttpResponseNotAllowed(['POST'], "You can only download this booklet via the download link.")
+

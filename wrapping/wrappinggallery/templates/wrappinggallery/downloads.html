@@ -15,12 +15,23 @@
         Thank you for respecting these terms and enjoying the tutorials!
     </p>
     <br>
-    <p class="poppins-regular fscarry">
+    <form method="POST" action="{% url 'download_booklet' 'fwcc' %}" style="display:inline;">
+        {% csrf_token %}
         <i class="fas fa-heart"></i> &nbsp;
-        <a href="{% url 'download_booklet' 'fwcc' %}" style="color: grey; text-decoration: underline;">Front Wrap Cross Carry</a>
-    </p>
-
-
+        <a onclick="this.closest('form').submit();" class="poppins-regular fscarry" style="cursor: pointer; color: grey; text-decoration: underline;">Front Wrap Cross Carry</a>
+    </form>
+    <br>
+    <form method="POST" action="{% url 'download_booklet' 'semi_fwcc_pond' %}" style="display:inline;">
+        {% csrf_token %}
+        <i class="fas fa-heart"></i> &nbsp;
+        <a onclick="this.closest('form').submit();" class="poppins-regular fscarry" style="cursor: pointer; color: grey; text-decoration: underline;">Semi Front Wrap Cross Carry with a Pond Finish</a>
+    </form>
+    <br>
+    <form method="POST" action="{% url 'download_booklet' 'ruck_knotless_tibetan' %}" style="display:inline;">
+        {% csrf_token %}
+        <i class="fas fa-heart"></i> &nbsp;
+        <a onclick="this.closest('form').submit();" class="poppins-regular fscarry" style="cursor: pointer; color: grey; text-decoration: underline;">Ruck Knotless Tibetan</a>
+    </form>
 </div>
 
 
