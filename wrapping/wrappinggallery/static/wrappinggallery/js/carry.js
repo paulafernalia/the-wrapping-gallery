@@ -37,7 +37,12 @@ async function loadTutorialImages() {
     loadingSpinner.style.display = 'block';
 
 
-    const response = await fetch(`/step-urls/${carryName}/?bucket=${bucketName}`);
+    const response = await fetch(`/step-urls/${carryName}/?bucket=${bucketName}`, {
+        method: 'GET',
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest',  // Custom header to identify AJAX request
+        }
+    });
     
     if (!response.ok) {
         return;
