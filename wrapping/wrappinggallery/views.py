@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import HttpResponse, JsonResponse, FileResponse, HttpResponseNotAllowed
+from django.http import HttpResponse, JsonResponse, FileResponse
 from django.views.decorators.http import require_GET
 from django.db.models import FloatField, Func, F
 from django.db.models.functions import Round
@@ -333,10 +333,7 @@ def filter_carries(request):
 
 
 def download_booklet(request, carry):
-    if request.method == 'POST':
-        file_path = os.path.join(settings.MEDIA_ROOT, f'{carry}_tutorial.pdf')
-        response = FileResponse(open(file_path, 'rb'), as_attachment=True, filename=f'{carry}_tutorial.pdf')
-        return response
-    else:
-        return HttpResponseNotAllowed(['POST'], "You can only download this booklet via the download link.")
+    file_path = os.path.join(settings.MEDIA_ROOT, f'{carry}_tutorial.pdf')
+    response = FileResponse(open(file_path, 'rb'), as_attachment=True, filename=f'{carry}_tutorial.pdf')
+    return response
 
