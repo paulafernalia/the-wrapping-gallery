@@ -62,7 +62,7 @@ class Command(BaseCommand):
             'other_poppins': 'bool',
         }
 
-        table = pd.read_csv(csv_file, dtype=dtype_dict)
+        table = pd.read_csv(csv_file, dtype=dtype_dict, encoding='latin1')
         table = table.fillna('')
 
         for _, row in table.iterrows():
