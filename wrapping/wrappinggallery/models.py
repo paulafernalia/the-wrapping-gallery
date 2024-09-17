@@ -157,7 +157,7 @@ class Carry(models.Model):
 
     def clean(self):
         # Ensure carry cannot be pretied if it is a back carry
-        if self.pretied == 1 and self.position == "back":
+        if self.pretied == 1 and self.position == "back" and self.name != "traditional_back_carry":
             raise ValidationError(
                 "a back carry cannot be pretied"
             )
@@ -194,7 +194,7 @@ class Carry(models.Model):
             )
 
         if not (self.rings) == ("ring" in self.title.lower()) and \
-            ("xena" not in self.name) and ("mermaid" not in self.name):
+            ("xena" not in self.name) and ("mermaid" not in self.name)  and ("lola" not in self.name):
             raise ValidationError("inconsistent information regarding ring(s)")
 
         num_passes = self.pass_sling

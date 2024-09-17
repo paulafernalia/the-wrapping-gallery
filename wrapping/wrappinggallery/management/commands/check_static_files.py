@@ -9,9 +9,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
         self.stdout.write('Checking static files against database entries...')
-        self.check_static_files_in_db()
 
-    def check_static_files_in_db(self):
         # Determine the path to the "illustrations" folder inside the static directory
         illustrations_subfolder = 'wrappinggallery/illustrations'
 
@@ -26,6 +24,10 @@ class Command(BaseCommand):
                 for root, dirs, files in os.walk(illustrations_path):
                     file_names.extend(files)
 
+        self.check_static_files_in_db(file_names)
+        self.check_dark_variants(file_names)
+
+    def check_static_files_in_db(self, file_names):
         # Normalize filenames to remove ".png" and "_dark.png"
         normalized_file_names = [self.normalize_file_name(file) for file in file_names]
 
@@ -42,7 +44,7 @@ class Command(BaseCommand):
         if missing_in_db:
             self.stdout.write(f"WARNING: Some files not in DB: {missing_in_db}")
         else:
-            self.stdout.write("All illustrations have corresponding database entries.")
+            self.stdout.write("OK: All illustrations have corresponding database entries.")
 
     def normalize_file_name(self, file_name):
         """
@@ -54,3 +56,24 @@ class Command(BaseCommand):
         elif file_name.endswith('.png'):
             return file_name[:-4]  # Remove '.png'
         return file_name  # Return the file name as is if it doesn't match the patterns
+
+
+    def check_dark_variants(self, file_names):
+        missing_dark_files = []
+
+        for file_name in file_names:
+            if file_name.endswith('.png') and 'dark' not in file_name:
+                # Construct the expected dark file name
+                dark_file_name = file_name.replace('.png', '_dark.png')
+                
+                # Check if the dark file exists in the list
+                if dark_file_name not in file_names:
+                    missing_dark_files.append(dark_file_name)
+        
+        if missing_dark_files:
+            self.stdout.write("WARNING: The following dark files are missing:")
+            for missing_file in missing_dark_files:
+                self.stdout.write(missing_file)
+
+        else:
+            self.stdout.write("OK: All illustrations have a dark counterpart.")
