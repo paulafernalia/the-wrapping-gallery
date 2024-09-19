@@ -273,7 +273,7 @@ class Ratings(models.Model):
             "bigkids": round(self.bigkids),
             "feeding": round(self.feeding),
             "quickups": round(self.quickups),
-            "pregnancy": round(self.quickups),
+            "pregnancy": round(self.pregnancy),
             "difficulty": round(self.difficulty),
             "fancy": round(self.fancy),
         }
