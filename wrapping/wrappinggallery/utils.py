@@ -52,7 +52,7 @@ def generate_server_url(file_name, position, dark=False):
         filepath = f'wrappinggallery/illustrations/{file_name}_dark.png'
     
     if not staticfiles_storage.exists(filepath):
-        if position in ["back", "front"]:
+        if position in ["back", "front", "tandem"]:
             if dark:
                 filepath = f'wrappinggallery/illustrations/placeholder_{position}_dark.png'
             else:
