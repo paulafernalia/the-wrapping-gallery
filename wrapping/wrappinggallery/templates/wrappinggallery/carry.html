@@ -130,6 +130,27 @@
 
         <div class="table-item">
             <div class="table-icon">
+                <img src="{% static 'wrappinggallery/icons/newborns.svg' %}" alt="Icon description" width="30" height="30">
+            </div>
+            <div class="table-content">
+                <div class="table-title-container">
+                    <p class="table-title">Good for pregnancy<a href="{% url 'faq' %}#faq_ratings" class="info-icon" title="What does this mean">i</a></p>
+                    
+                    {% if pregnancy != 0 %}
+                    <div id="pregnancy-rating" class="rating-group" data-property="{{pregnancy}}">
+                    </div>
+                    {% else %}
+                    <div class="poppins-bold fscarry pink">Varies</div>
+                    {% endif %}
+                    
+                
+                </div>
+                <p class="table-description">Does this carry apply an uncomfortable pressure on your bump either from baby or the wrap? </p>
+            </div>
+        </div>
+
+        <div class="table-item">
+            <div class="table-icon">
                 <img src="{% static 'wrappinggallery/icons/bigkids.svg' %}" alt="Icon description" width="30" height="30">
             </div>
             <div class="table-content">
