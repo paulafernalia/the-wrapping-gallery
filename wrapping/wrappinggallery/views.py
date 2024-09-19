@@ -201,8 +201,10 @@ def filter_carries(request):
             queryset = queryset.filter(carry__position=val.lower())
         elif prop == "shoulders" and val not in ["Any", "null"]:
             queryset = queryset.filter(carry__shoulders=val)
-        elif prop == "layers" and val not in ["Any", "null"]:
+        elif prop == "layers" and val not in ["Any", "null", "Varies"]:
             queryset = queryset.filter(carry__layers=val)
+        elif prop == "layers" and val == "Varies":
+            queryset = queryset.filter(carry__layers=-1)
         elif prop == "mmposition" and val not in ["Any", "null"]:
             queryset = queryset.filter(carry__mmposition=mmpositions[val])
         elif prop == "finish" and val not in ["Any", "null"]:
