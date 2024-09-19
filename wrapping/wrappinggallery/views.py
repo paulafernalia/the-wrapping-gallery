@@ -23,6 +23,8 @@ def index(request):
         labels = [elem[idx] for elem in Carry._meta.get_field(field).choices]
         context[field + "_values"] = ["Any"] + labels
 
+    context["shoulders_values"] = ["Varies" if x == -1 else x for x in context["shoulders_values"]]
+    context["layers_values"] = ["Varies" if x == -1 else x for x in context["layers_values"]]
     context["difficulty_values"] = ["Any"] + DIFFICULTY_VALUES
     context["mmposition_values"] = [
             "Any",
@@ -199,8 +201,10 @@ def filter_carries(request):
             queryset = queryset.filter(carry__position=val.lower())
         elif prop == "shoulders" and val not in ["Any", "null"]:
             queryset = queryset.filter(carry__shoulders=val)
-        elif prop == "layers" and val not in ["Any", "null"]:
+        elif prop == "layers" and val not in ["Any", "null", "Varies"]:
             queryset = queryset.filter(carry__layers=val)
+        elif prop == "layers" and val == "Varies":
+            queryset = queryset.filter(carry__layers=-1)
         elif prop == "mmposition" and val not in ["Any", "null"]:
             queryset = queryset.filter(carry__mmposition=mmpositions[val])
         elif prop == "finish" and val not in ["Any", "null"]:
