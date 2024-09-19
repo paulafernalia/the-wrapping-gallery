@@ -26,7 +26,7 @@ class Carry(models.Model):
 
     shoulders = models.IntegerField(choices={0: "0", 1: "1", 2: "2"})
 
-    layers = models.IntegerField(choices={1: "1", 2: "2", 3: "3", 4: "4"})
+    layers = models.IntegerField(choices={-1: "Varies", 1: "1", 2: "2", 3: "3", 4: "4"})
 
     mmposition = models.IntegerField(
         choices={
@@ -51,8 +51,8 @@ class Carry(models.Model):
     videoauthor3 = models.CharField(max_length=64, blank=True, null=True)
 
     position = models.CharField(
-        max_length=5,
-        choices={"front": "Front", "back": "Back"},
+        max_length=10,
+        choices={"front": "Front", "back": "Back", "tandem": "Tandem"},
     )
 
     description = models.TextField(blank=True, null=True)
@@ -205,7 +205,7 @@ class Carry(models.Model):
         num_passes += self.pass_reinforcing_cross
         num_passes += self.pass_reinforcing_horizontal
         num_passes += 2 * self.pass_poppins
-        if self.layers != num_passes:
+        if self.layers != num_passes and self.position != "tandem":
             raise ValidationError(
                 f"Layers ({self.layers}) inconsistent with passes ({num_passes})"
             )
@@ -215,6 +215,7 @@ class Carry(models.Model):
         num_shoulders += 2 * self.pass_ruck
         num_shoulders += 2 * self.pass_kangaroo
         if (self.name != "ruck_celtic_knot") and \
+           (self.position != "tandem") and \
            ('fwcc' not in self.name) and \
            ('frts' not in self.name) and \
            ('poppins' not in self.name) and \
@@ -228,7 +229,7 @@ class Carry(models.Model):
                 f"Leg passes cannot be 0 with cross and reinforcing cross pass"
             )
 
-        if "dh" in self.name and self.other_chestpass == False and self.position != "front":
+        if "dh" in self.name and "fdh"not in self.name and self.other_chestpass == False:
             raise ValidationError(
                 f"Chest pass cannot be 0 in a double hammock variation"
             )
@@ -246,13 +247,14 @@ class Carry(models.Model):
 
 
 class Ratings(models.Model):
-    validators = [MinValueValidator(1.0), MaxValueValidator(5.0)]
+    validators = [MinValueValidator(1.0), MaxValueValidator(5)]
+    validators_ext = [MinValueValidator(0.0), MaxValueValidator(5)]
 
     carry = models.OneToOneField(Carry, on_delete=models.CASCADE)
 
     newborns = models.FloatField(validators=validators, default=1)
-    legstraighteners = models.FloatField(validators=validators, default=1)
-    leaners = models.FloatField(validators=validators, default=1)
+    legstraighteners = models.FloatField(validators=validators_ext, default=1)
+    leaners = models.FloatField(validators=validators_ext, default=1)
     bigkids = models.FloatField(validators=validators, default=1)
     feeding = models.FloatField(validators=validators, default=1)
     quickups = models.FloatField(validators=validators, default=1)
@@ -276,15 +278,16 @@ class Ratings(models.Model):
 
 
 class UserRatings(models.Model):
-    validators = [MinValueValidator(1), MaxValueValidator(5)]
+    validators = [MinValueValidator(1.0), MaxValueValidator(5)]
+    validators_ext = [MinValueValidator(0.0), MaxValueValidator(5)]
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     carry = models.ForeignKey(Carry, on_delete=models.CASCADE)
 
     newborns = models.IntegerField(validators=validators)
-    legstraighteners = models.IntegerField(validators=validators)
-    leaners = models.IntegerField(validators=validators)
+    legstraighteners = models.IntegerField(validators=validators_ext)
+    leaners = models.IntegerField(validators=validators_ext)
     bigkids = models.IntegerField(validators=validators)
     feeding = models.IntegerField(validators=validators)
     quickups = models.IntegerField(validators=validators)
