@@ -259,6 +259,7 @@ class Ratings(models.Model):
     feeding = models.FloatField(validators=validators, default=1)
     quickups = models.FloatField(validators=validators, default=1)
 
+    pregnancy = models.FloatField(validators=validators, default=1)
     difficulty = models.FloatField(validators=validators, default=1)
     fancy = models.FloatField(validators=validators, default=1)
 
@@ -272,6 +273,7 @@ class Ratings(models.Model):
             "bigkids": round(self.bigkids),
             "feeding": round(self.feeding),
             "quickups": round(self.quickups),
+            "pregnancy": round(self.quickups),
             "difficulty": round(self.difficulty),
             "fancy": round(self.fancy),
         }
@@ -291,6 +293,7 @@ class UserRatings(models.Model):
     bigkids = models.IntegerField(validators=validators)
     feeding = models.IntegerField(validators=validators)
     quickups = models.IntegerField(validators=validators)
+    pregnancy = models.FloatField(validators=validators, default=1)
 
     difficulty = models.IntegerField(validators=validators)
 
