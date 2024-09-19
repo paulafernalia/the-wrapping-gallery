@@ -249,6 +249,8 @@ def filter_carries(request):
             queryset = queryset.filter(carry__rings=val)
         elif prop == "newborns" and val == "1":
             queryset = queryset.filter(newborns__gte=3.5)
+        elif prop == "pregnancy" and val == "1":
+            queryset = queryset.filter(pregnancy__gte=3.5)
         elif prop == "legstraighteners" and val == "1":
             queryset = queryset.filter(legstraighteners__gte=3.5)
         elif prop == "leaners" and val == "1":

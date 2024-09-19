@@ -60,7 +60,7 @@
         <hr>
 
         <p class="poppins-bold fs16">
-            Must be suitable for
+            Must be good for
             <i class="fa-solid fa-caret-down toggle-icon" onclick="togglePasses(this, 'suitableGroup')" style="cursor: pointer;"></i>
         </p>
         <div id="suitableGroup" class="checkbox-group poppins-light fs16" style="display: none;">
@@ -101,6 +101,15 @@
                         Quick ups
                     </label>
                 </div>
+
+                {% if False %}
+                <div>
+                    <label>
+                        <input type="checkbox" data-property="pregnancy" onclick="handleSwitchChange(this)">
+                        Pregnancy
+                    </label>
+                </div>
+                {% endif %}
             </div>
             <br>
         </div>
