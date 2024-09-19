@@ -74,8 +74,14 @@
             <div class="table-content">
                 <div class="table-title-container">
                     <p class="table-title">Good for leaners<a href="{% url 'faq' %}#faq_ratings" class="info-icon" title="What does this mean">i</a></p>
+
+                    {% if leaners != 0 %}
                     <div id="leaners-rating" class="rating-group" data-property="{{leaners}}">
                     </div>
+                    {% else %}
+                    <div class="poppins-bold fscarry pink">Varies</div>
+                    {% endif %}
+
                 </div>
                 <p class="table-description">How good is this carry for containing a leaner, including while you are wrapping?</p>
             </div>
@@ -88,8 +94,14 @@
              <div class="table-content">
                 <div class="table-title-container">
                     <p class="table-title">Good for seat poppers<a href="{% url 'faq' %}#faq_ratings" class="info-icon" title="What does this mean">i</a></p>
+                    
+                    {% if legstraighteners != 0 %}
                     <div id="legstraighteners-rating" class="rating-group" data-property="{{legstraighteners}}">
                     </div>
+                    {% else %}
+                    <div class="poppins-bold fscarry pink">Varies</div>
+                    {% endif %}
+                    
                 </div>
                 <p class="table-description">Is this carry good for leg straighteners? Does it have leg passes? A deep seat?</p>
             </div>
@@ -102,8 +114,15 @@
             <div class="table-content">
                 <div class="table-title-container">
                     <p class="table-title">Good for newborns<a href="{% url 'faq' %}#faq_ratings" class="info-icon" title="What does this mean">i</a></p>
+                    
+                    {% if newborns != 0 %}
                     <div id="newborns-rating" class="rating-group" data-property="{{newborns}}">
                     </div>
+                    {% else %}
+                    <div class="poppins-bold fscarry pink">Varies</div>
+                    {% endif %}
+                    
+                
                 </div>
                 <p class="table-description">Can it be wrapped high, with no bunched passes under tiny legs, and no head or torso support is required?</p>
             </div>
@@ -116,14 +135,20 @@
             <div class="table-content">
                 <div class="table-title-container">
                     <p class="table-title">Good for big kids<a href="{% url 'faq' %}#faq_ratings" class="info-icon" title="What does this mean">i</a></p>
+                    
+                    {% if newborns != 0 %}
                     <div id="bigkids-rating" class="rating-group" data-property="{{bigkids}}">
                     </div>
+                    {% else %}
+                    <div class="poppins-bold fscarry pink">Varies</div>
+                    {% endif %}
+                
                 </div>
                 <p class="table-description">Does it allow you to carry a big child comfortably or is this best for short periods and or young babies?</p>
             </div>
         </div>
 
-        {% if position == 'Front' %}
+        {% if position != 'Back' %}
         <div class="table-item">
             <div class="table-icon">
                 <img src="{% static 'wrappinggallery/icons/feeding.svg' %}" alt="Icon description" width="30" height="30">
@@ -131,8 +156,14 @@
             <div class="table-content">
                 <div class="table-title-container">
                     <p class="table-title">Good for feeding<a href="{% url 'faq' %}#faq_ratings" class="info-icon" title="What does this mean">i</a></p>
+                    
+                    {% if feeding != 0 %}
                     <div id="feeding-rating" class="rating-group" data-property="{{feeding}}">
                     </div>
+                    {% else %}
+                    <div class="poppins-bold fscarry pink">Varies</div>
+                    {% endif %}
+                
                 </div>
                 <p class="table-description">Can you pop a boob out and place baby’s head at boob height with minimal adjustment?</p>
             </div>

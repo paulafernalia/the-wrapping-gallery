@@ -23,6 +23,8 @@ def index(request):
         labels = [elem[idx] for elem in Carry._meta.get_field(field).choices]
         context[field + "_values"] = ["Any"] + labels
 
+    context["shoulders_values"] = ["Varies" if x == -1 else x for x in context["shoulders_values"]]
+    context["layers_values"] = ["Varies" if x == -1 else x for x in context["layers_values"]]
     context["difficulty_values"] = ["Any"] + DIFFICULTY_VALUES
     context["mmposition_values"] = [
             "Any",
