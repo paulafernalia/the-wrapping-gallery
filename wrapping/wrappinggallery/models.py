@@ -1,8 +1,15 @@
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
-from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
+from django.contrib.auth.models import AbstractUser
 
+
+class CustomUser(AbstractUser):
+    pass
+    # add additional fields in here
+
+    def __str__(self):
+        return self.username
 
 # Create your models here.
 class Carry(models.Model):
@@ -279,29 +286,6 @@ class Ratings(models.Model):
         }
 
 
-class UserRatings(models.Model):
-    validators = [MinValueValidator(1.0), MaxValueValidator(5)]
-    validators_ext = [MinValueValidator(0.0), MaxValueValidator(5)]
 
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
 
-    carry = models.ForeignKey(Carry, on_delete=models.CASCADE)
 
-    newborns = models.IntegerField(validators=validators)
-    legstraighteners = models.IntegerField(validators=validators_ext)
-    leaners = models.IntegerField(validators=validators_ext)
-    bigkids = models.IntegerField(validators=validators)
-    feeding = models.IntegerField(validators=validators)
-    quickups = models.IntegerField(validators=validators)
-    pregnancy = models.FloatField(validators=validators, default=1)
-
-    difficulty = models.IntegerField(validators=validators)
-
-    fancy = models.IntegerField(validators=validators)
-
-    class Meta:
-        constraints = [
-            models.UniqueConstraint(
-                fields=["user", "carry"], name="unique_foreign_keys"
-            )
-        ]
