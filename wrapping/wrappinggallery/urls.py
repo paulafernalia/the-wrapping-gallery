@@ -12,4 +12,5 @@ urlpatterns = [
     path("step-urls/<str:prefix>/", views.steps_url, name="file_url"),
     path('downloads/', views.downloads, name='downloads'),
     path('download-booklet/<str:carry>', views.download_booklet, name='download_booklet'),
+    path("signup/", views.SignUpView.as_view(), name="signup"),
 ]

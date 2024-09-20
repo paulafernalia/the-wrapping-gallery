@@ -23,6 +23,7 @@ from django.conf import settings
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", include("wrappinggallery.urls")),
+    path("", include("django.contrib.auth.urls")),
 ]
 
 if settings.DEBUG:
