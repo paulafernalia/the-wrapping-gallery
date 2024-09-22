@@ -128,6 +128,8 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 DEBUG = False
 ALLOWED_HOSTS = config('DJANGO_ALLOWED_HOSTS', default='').split(',')
+CSRF_TRUSTED_ORIGINS = config('CSRF_TRUSTED_ORIGINS', default='').split(',')
+
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
