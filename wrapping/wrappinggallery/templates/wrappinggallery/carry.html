@@ -64,6 +64,16 @@
 </div>
 
 <div class="title-container">
+  <form action="{% if user.is_authenticated %}{% if is_done %}{% url 'remove_done' name %}{% else %}{% url 'mark_as_done' name %}{% endif %}{% else %}{% url 'login' %}{% endif %}" method="post">
+    {% csrf_token %}
+    <button id="markasdonebtn" type="submit" class="btn pinkbg btn-custom mx-1 poppins-regular fs16">
+      {% if is_done %}Remove from collection{% else %}Mark as done{% endif %}
+    </button>
+  </form>
+</div>
+
+
+<div class="title-container">
     <br><br>
     
     <div class="table-container">
@@ -243,6 +253,8 @@
     <p style="color: grey;">Something doesn't look right? <a href="mailto:thewrappinggallery@gmail.com" style='color: grey; text-decoration: underline;'>Email me</a></b></p>
 </div>
 
+
+
 <div id="loadingSpinner" class="loading-spinner"></div>
 <br><br>
 <div id="tutorial-content">
@@ -253,6 +265,9 @@
     <div class="title-container poppins-light fssmall">
         <a href="{% url 'faq' %}#faq_ontoback" style="color: grey; text-decoration: underline;">How do I get baby on my back?</a>
     </div>
+
+    
+
     {% endif %}
     <div id="picture-tutorial-grid" class="content-container">
         <br>

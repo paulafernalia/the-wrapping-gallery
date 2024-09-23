@@ -2,7 +2,7 @@ import csv
 import json
 import os
 import pandas as pd
-from wrappinggallery.models import Carry, Ratings
+from wrappinggallery.models import Carry, Rating
 from django.core.management.base import BaseCommand
 from django.core.exceptions import ValidationError
 
@@ -21,10 +21,10 @@ class Command(BaseCommand):
             raise ValidationError(f'{csv_file} does not exist')
 
         # Check if the database is empty
-        if Carry.objects.exists() or Ratings.objects.exists():
-            self.stdout.write('Carry or Ratings not empty. Clearing both.')
+        if Carry.objects.exists() or Rating.objects.exists():
+            self.stdout.write('Carry or Rating not empty. Clearing both.')
             Carry.objects.all().delete()
-            Ratings.objects.all().delete()
+            Rating.objects.all().delete()
 
         dtype_dict = {
             'rings': 'bool',
@@ -112,8 +112,8 @@ class Command(BaseCommand):
                     other_sternum=row["other_sternum"],
                 )
 
-                # Create the Ratings instance
-                Ratings.objects.create(
+                # Create the Rating instance
+                Rating.objects.create(
                     carry=carry,
                     newborns=row["newborns"],
                     legstraighteners=row["legstraighteners"],

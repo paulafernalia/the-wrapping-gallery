@@ -13,4 +13,8 @@ urlpatterns = [
     path('downloads/', views.downloads, name='downloads'),
     path('download-booklet/<str:carry>', views.download_booklet, name='download_booklet'),
     path("accounts/signup/", views.SignUpView.as_view(), name="signup"),
+    path('collection/', views.collection, name="collection"),
+    path('mark-done/<str:carry_name>/', views.mark_as_done, name='mark_as_done'),
+    path('remove-done/<str:carry_name>/', views.remove_done, name='remove_done'),
+    path('done-carries/', views.get_done_carries, name='get_done_carries'),
 ]

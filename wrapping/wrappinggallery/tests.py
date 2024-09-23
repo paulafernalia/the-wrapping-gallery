@@ -1,5 +1,5 @@
 from django.test import TestCase
-from .models import Carry, Ratings
+from .models import Carry, Rating
 from django.db import IntegrityError
 from django.core.exceptions import ValidationError
 
@@ -30,7 +30,7 @@ class CarryTestCase(TestCase):
 
     def test_add_rating(self):
         # Add a rating to the Carry instance.
-        rating = Ratings.objects.create(
+        rating = Rating.objects.create(
             carry=self.c1,
             newborns=4.0,
             legstraighteners=3.0,
@@ -44,7 +44,7 @@ class CarryTestCase(TestCase):
         )
         
         # Fetch the rating and check its values.
-        r = Ratings.objects.get(carry=self.c1)
+        r = Rating.objects.get(carry=self.c1)
         self.assertEqual(r.newborns, 4.0)
         self.assertEqual(r.legstraighteners, 3.0)
         self.assertEqual(r.leaners, 5.0)
@@ -57,7 +57,7 @@ class CarryTestCase(TestCase):
 
     def test_cascade_delete_carry(self):
         # Add a rating to the Carry instance.
-        rating = Ratings.objects.create(
+        rating = Rating.objects.create(
             carry=self.c1,
             newborns=4.0,
             legstraighteners=3.0,
@@ -75,13 +75,13 @@ class CarryTestCase(TestCase):
         self.c1.delete()
 
         # Check that the rating is also deleted.
-        ratings_count = Ratings.objects.filter(carry__name=carry_name).count()
+        ratings_count = Rating.objects.filter(carry__name=carry_name).count()
         self.assertEqual(ratings_count, 0)
 
 
     def test_no_duplicate_ratings(self):
         # Add a rating to the Carry instance.
-        rating = Ratings.objects.create(
+        rating = Rating.objects.create(
             carry=self.c1,
             newborns=4.0,
             legstraighteners=3.0,
@@ -96,7 +96,7 @@ class CarryTestCase(TestCase):
 
         # Attempt to add another rating for the same Carry instance.
         with self.assertRaises(IntegrityError):
-            Ratings.objects.create(
+            Rating.objects.create(
                 carry=self.c1,
                 newborns=5.0,
                 legstraighteners=4.0,

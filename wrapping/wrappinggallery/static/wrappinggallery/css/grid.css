@@ -9,6 +9,16 @@ h2 {
     margin: 20px;
 }
 
+.card-grid {
+    border: none;
+    margin: 0 auto;
+    padding: 10px;
+    max-width: 1100px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); /* Responsive grid layout */
+    gap: 20px; /* Space between grid items, reduced from 50px */
+}
+
 .grid {
     border: none;
     margin: 0 auto;
@@ -26,6 +36,29 @@ h2 {
     display: flex; /* Enables flexbox layout */
     justify-content: center; /* Centers the image horizontally */
     align-items: center; /* Centers the image vertically */
+}
+
+.card-grid-item {
+    position: relative; /* Allows absolute positioning of child elements */
+    overflow: hidden;
+    border: 2px solid lightgrey;
+    border-radius: 10px;
+    display: flex; /* Enables flexbox layout */
+    justify-content: center; /* Centers the image horizontally */
+    align-items: center; /* Centers the image vertically */
+    background-color: white;
+    padding: 10px;
+    height: 130px;
+}
+
+.card-desc-container {
+    position: absolute; /* Position absolutely within the grid item */
+    bottom: 5px; /* Space from the bottom of the grid item */
+    width: 100%; /* Full width of the grid item */
+    padding: 0px; /* Padding around the text */
+    margin-bottom: 20px;
+    box-sizing: border-box; /* Ensure padding does not overflow the container */
+    background-color: rgba(245, 247, 248, 0.0); /* Semi-transparent background */
 }
 
 .clickable-grid-item:hover {
@@ -48,6 +81,15 @@ h2 {
     display: block;
     object-fit: cover; /* Cover the container */
     opacity: 1;
+}
+
+.card-grid-item img {
+    width: 100%; /* Full width of the grid item */
+    max-width: 200px; /* Maximum width of images */
+    height: auto; /* Maintain aspect ratio */
+    display: block;
+    object-fit: cover; /* Cover the container */
+    opacity: 0.6;
 }
 
 .clickable-grid-item img {

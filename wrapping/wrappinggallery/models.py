@@ -253,7 +253,7 @@ class Carry(models.Model):
         super().save(*args, **kwargs)
 
 
-class Ratings(models.Model):
+class Rating(models.Model):
     validators = [MinValueValidator(1.0), MaxValueValidator(5)]
     validators_ext = [MinValueValidator(0.0), MaxValueValidator(5)]
 
@@ -286,6 +286,18 @@ class Ratings(models.Model):
         }
 
 
+class FavouriteCarry(models.Model):
+    carry = models.ForeignKey(Carry, on_delete=models.CASCADE)
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
 
+
+class DoneCarry(models.Model):
+    carry = models.ForeignKey(Carry, on_delete=models.CASCADE)
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+
+
+class TodoCarry(models.Model):
+    carry = models.ForeignKey(Carry, on_delete=models.CASCADE)
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
 
 

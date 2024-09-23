@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Carry, Ratings
+from .models import Carry, Rating, FavouriteCarry, DoneCarry, TodoCarry
 
 from django.contrib.auth.admin import UserAdmin
 
@@ -8,7 +8,10 @@ from .models import CustomUser
 
 # Register your models here.
 admin.site.register(Carry)
-admin.site.register(Ratings)
+admin.site.register(Rating)
+admin.site.register(FavouriteCarry)
+admin.site.register(DoneCarry)
+admin.site.register(TodoCarry)
 
 class CustomUserAdmin(UserAdmin):
     add_form = CustomUserCreationForm

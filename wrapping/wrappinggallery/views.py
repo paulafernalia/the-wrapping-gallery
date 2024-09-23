@@ -3,7 +3,9 @@ from django.http import HttpResponse, JsonResponse, FileResponse
 from django.views.decorators.http import require_GET
 from django.db.models import FloatField, Func, F
 from django.db.models.functions import Round
-from .models import Carry, Ratings
+from django.shortcuts import redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
+from .models import Carry, Rating, DoneCarry
 from . import utils
 from django.conf import settings
 import os
@@ -49,8 +51,6 @@ def index(request):
     return render(request, "wrappinggallery/index.html", context)
 
 def termsandconditions(request):
-    context = {}
-
     image_url = utils.generate_server_url("profile", "back")
 
     context = {"imageSrc": image_url}
@@ -58,8 +58,6 @@ def termsandconditions(request):
 
 
 def about(request):
-    context = {}
-
     image_url = utils.generate_server_url("profile", "back")
 
     context = {"imageSrc": image_url}
@@ -67,9 +65,17 @@ def about(request):
 
 
 def downloads(request):
-    context = {}
 
     return render(request, "wrappinggallery/downloads.html")
+
+
+def collection(request):
+    sizes = range(-5, 3)  # Generates sizes from -5 to 2
+    positions = ["front", "back", "tandem"]
+
+    context = {"sizes": sizes, "positions": positions}
+
+    return render(request, "wrappinggallery/collection.html", context)
 
 
 def faq(request):
@@ -134,44 +140,19 @@ def steps_url(request, prefix):
 
 
 
+
 def carry(request, name):
-    # Initialize a queryset for filtering
-    queryset = Carry.objects.all()
-    queryset = queryset.filter(name=name)
-
-    assert len(queryset) == 1
-
-    carry_dict = queryset[0].to_dict()
-
-    if carry_dict["videoauthor"] == "" or carry_dict["videoauthor"] is None:
-        assert carry_dict["videotutorial"] == "" or carry_dict["videotutorial"] is None
-
-        carry_dict["videoauthor"] = "NA"
-        carry_dict["videotutorial"] = "NA"
-
-    if carry_dict["videoauthor2"] == "" or carry_dict["videoauthor2"] is None:
-        assert carry_dict["videotutorial2"] == "" or carry_dict["videotutorial2"] is None
-
-        carry_dict["videoauthor2"] = "NA"
-        carry_dict["videotutorial2"] = "NA"
-
-    if carry_dict["videoauthor3"] == "" or carry_dict["videoauthor3"] is None:
-        assert carry_dict["videotutorial3"] == "" or carry_dict["videotutorial3"] is None
-
-        carry_dict["videoauthor3"] = "NA"
-        carry_dict["videotutorial3"] = "NA"
-
-    # Get image from name 
-    image_url = utils.generate_server_url(name, carry_dict["position"].lower(), True)
-    carry_dict["imageSrc"] = image_url
-
-    # Add ratings
-    ratingsqueryset = Ratings.objects.all()
-    ratingsqueryset = ratingsqueryset.filter(carry__name=name)
-
-    assert len(ratingsqueryset) == 1
-
-    context = {**carry_dict, **(ratingsqueryset[0].to_dict())}
+    carry = get_object_or_404(Carry, name=name)
+    user = request.user
+    
+    # Check if the carry is already marked as done (exists in the FavouriteCarry table)
+    is_done = DoneCarry.objects.filter(carry=carry, user=user).exists()
+    
+    # Get the carry context
+    carry_context = utils.get_carry_context(name)
+    
+    # Add 'is_done' to the context
+    context = {**carry_context, 'is_done': is_done}
 
     return render(request, "wrappinggallery/carry.html", context)
 
@@ -181,8 +162,6 @@ def file_url(request, file_name):
     image_url = utils.generate_server_url(file_name, position)
 
     return JsonResponse({"url": image_url})
-
-
 
 
 @require_GET
@@ -204,116 +183,12 @@ def filter_carries(request):
     }
 
     # Initialize a queryset for filtering
-    queryset = Ratings.objects.all()
+    queryset = Rating.objects.all()
 
     # Apply filters based on properties and values
-    for prop, val in zip(properties, values): 
-        if prop == "position" and val not in ["Any", "null"]:
-            queryset = queryset.filter(carry__position=val.lower())
-        elif prop == "shoulders" and val not in ["Any", "null"]:
-            queryset = queryset.filter(carry__shoulders=val)
-        elif prop == "layers" and val not in ["Any", "null", "Varies"]:
-            queryset = queryset.filter(carry__layers=val)
-        elif prop == "layers" and val == "Varies":
-            queryset = queryset.filter(carry__layers=-1)
-        elif prop == "mmposition" and val not in ["Any", "null"]:
-            queryset = queryset.filter(carry__mmposition=mmpositions[val])
-        elif prop == "finish" and val not in ["Any", "null"]:
-            queryset = queryset.filter(carry__finish=finishes[val])
-        elif prop == "partialname" and val not in ["null", ""] and val:
-            queryset = queryset.filter(carry__title__icontains=val)
-        elif prop == "pretied" and val == "1":
-            queryset = queryset.filter(carry__pretied=val)
-        elif prop == "pass_sling" and val == "1":
-            queryset = queryset.filter(carry__pass_sling=val)
-        elif prop == "pass_ruck" and val == "1":
-            queryset = queryset.filter(carry__pass_ruck=val)
-        elif prop == "pass_kangaroo" and val == "1":
-            queryset = queryset.filter(carry__pass_kangaroo=val)
-        elif prop == "pass_cross" and val == "1":
-            queryset = queryset.filter(carry__pass_cross=val)
-        elif prop == "pass_reinforcing_cross" and val == "1":
-            queryset = queryset.filter(carry__pass_reinforcing_cross=val)
-        elif prop == "pass_reinforcing_horizontal" and val == "1":
-            queryset = queryset.filter(carry__pass_reinforcing_horizontal=val)
-        elif prop == "pass_horizontal" and val == "1":
-            queryset = queryset.filter(carry__pass_horizontal=val)
-        elif prop == "pass_poppins" and val == "1":
-            queryset = queryset.filter(carry__pass_poppins=val)
-        elif prop == "no_pass_sling" and val == "1":
-            queryset = queryset.filter(carry__pass_sling="0")
-        elif prop == "no_pass_ruck" and val == "1":
-            queryset = queryset.filter(carry__pass_ruck="0")
-        elif prop == "no_pass_kangaroo" and val == "1":
-            queryset = queryset.filter(carry__pass_kangaroo="0")
-        elif prop == "no_pass_cross" and val == "1":
-            queryset = queryset.filter(carry__pass_cross="0")
-        elif prop == "no_pass_reinforcing_cross" and val == "1":
-            queryset = queryset.filter(carry__pass_reinforcing_cross="0")
-        elif prop == "no_pass_reinforcing_horizontal" and val == "1":
-            queryset = queryset.filter(carry__pass_reinforcing_horizontal="0")
-        elif prop == "no_pass_horizontal" and val == "1":
-            queryset = queryset.filter(carry__pass_horizontal="0")
-        elif prop == "no_pass_poppins" and val == "1":
-            queryset = queryset.filter(carry__pass_poppins="0")
-        elif prop == "rings" and val == "1":
-            queryset = queryset.filter(carry__rings=val)
-        elif prop == "newborns" and val == "1":
-            queryset = queryset.filter(newborns__gte=3.5)
-        elif prop == "pregnancy" and val == "1":
-            queryset = queryset.filter(pregnancy__gte=3.5)
-        elif prop == "legstraighteners" and val == "1":
-            queryset = queryset.filter(legstraighteners__gte=3.5)
-        elif prop == "leaners" and val == "1":
-            queryset = queryset.filter(leaners__gte=3.5)
-        elif prop == "bigkids" and val == "1":
-            queryset = queryset.filter(bigkids__gte=3.5)
-        elif prop == "feeding" and val == "1":
-            queryset = queryset.filter(feeding__gte=3.5)
-        elif prop == "quickups" and val == "1":
-            queryset = queryset.filter(quickups__gte=3.5)
-        elif prop == "fancy" and val == "1":
-            queryset = queryset.filter(fancy__gte=3.5)
-        elif prop == "other_chestpass" and val == "1":
-            queryset = queryset.filter(carry__other_chestpass=val)
-        elif prop == "other_bunchedpasses" and val == "1":
-            queryset = queryset.filter(carry__other_bunchedpasses=val)
-        elif prop == "other_shoulderflip" and val == "1":
-            queryset = queryset.filter(carry__other_shoulderflip=val)
-        elif prop == "other_twistedpass" and val == "1":
-            queryset = queryset.filter(carry__other_twistedpass=val)
-        elif prop == "other_waistband" and val == "1":
-            queryset = queryset.filter(carry__other_waistband=val)
-        elif prop == "other_legpasses" and val == "1":
-            queryset = queryset.filter(carry__other_legpasses=val)
-        elif prop == "other_s2s" and val == "1":
-            queryset = queryset.filter(carry__other_s2s=val)
-        elif prop == "other_eyelet" and val == "1":
-            queryset = queryset.filter(carry__other_eyelet=val)
-        elif prop == "other_poppins" and val == "1":
-            queryset = queryset.filter(carry__other_poppins=val)
-        elif prop == "other_sternum" and val == "1":
-            queryset = queryset.filter(carry__other_sternum=val)
-        elif prop == "no_other_chestpass" and val == "1":
-            queryset = queryset.filter(carry__other_chestpass="0")
-        elif prop == "no_other_bunchedpasses" and val == "1":
-            queryset = queryset.filter(carry__other_bunchedpasses="0")
-        elif prop == "no_other_shoulderflip" and val == "1":
-            queryset = queryset.filter(carry__other_shoulderflip="0")
-        elif prop == "no_other_twistedpass" and val == "1":
-            queryset = queryset.filter(carry__other_twistedpass="0")
-        elif prop == "no_other_waistband" and val == "1":
-            queryset = queryset.filter(carry__other_waistband="0")
-        elif prop == "no_other_legpasses" and val == "1":
-            queryset = queryset.filter(carry__other_legpasses="0")
-        elif prop == "no_other_s2s" and val == "1":
-            queryset = queryset.filter(carry__other_s2s="0")
-        elif prop == "no_other_eyelet" and val == "1":
-            queryset = queryset.filter(carry__other_eyelet="0")
-        elif prop == "no_other_sternum" and val == "1":
-            queryset = queryset.filter(carry__other_sternum="0")
-        elif prop == "no_other_poppins" and val == "1":
-            queryset = queryset.filter(carry__other_poppins="0")
+    queryset = utils.apply_filters(
+        queryset, properties, values, mmpositions, finishes, difficulties
+    )
 
     sizes = request.GET.getlist("size[]", "Any")
     if sizes != ["Any"]:
@@ -354,3 +229,37 @@ def download_booklet(request, carry):
     response = FileResponse(open(file_path, 'rb'), as_attachment=True, filename=f'{carry}_tutorial.pdf')
     return response
 
+
+@login_required
+def mark_as_done(request, carry_name):
+    carry = get_object_or_404(Carry, name=carry_name)
+    user = request.user
+    
+    # Check if the done already entry exists
+    if not DoneCarry.objects.filter(carry=carry, user=user).exists():
+        print("ADDED!")
+        DoneCarry.objects.create(carry=carry, user=user)
+    else:
+        print("already exists")
+    
+    # Render the page again
+    return redirect('carry', name=carry_name)
+
+
+@login_required
+def remove_done(request, carry_name):
+    carry = get_object_or_404(Carry, name=carry_name)
+    user = request.user
+
+    # Remove from favorites if it exists
+    DoneCarry.objects.filter(carry=carry, user=user).delete()
+
+    return redirect('carry', name=carry_name)
+
+
+def get_done_carries(request):
+    if request.user.is_authenticated:
+        carries = DoneCarry.objects.filter(user=request.user).values_list('carry__name', flat=True)
+        return JsonResponse({"carries": list(carries)})
+    else:
+        return JsonResponse({"error": "User not authenticated"}, status=403)
