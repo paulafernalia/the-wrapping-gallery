@@ -70,12 +70,47 @@ def downloads(request):
 
 
 def collection(request):
-    sizes = range(-5, 3)  # Generates sizes from -5 to 2
-    positions = ["front", "back", "tandem"]
+    user = request.user  # Get the logged-in user
+    positions = Carry.objects.values_list('position', flat=True).distinct()  # Get distinct positions
+    sizes = Carry.objects.values_list('size', flat=True).distinct()  # Get distinct sizes
 
-    context = {"sizes": sizes, "positions": positions}
+    # Separate data structures
+    total_carries = {}
+    done_counts = {}
+    done_carry_names = {}
+
+    # Loop through each position and size to calculate total carries and user carries
+    for position in positions:
+        total_carries[position] = {}
+        done_counts[position] = {}
+        done_carry_names[position] = {}
+
+        for size in sizes:
+            # Total carries in this position and size
+            total_carries[position][size] = Carry.objects.filter(position=position, size=size).count()
+            
+            # Carries done by the user in this position and size
+            user_done_carries = DoneCarry.objects.filter(
+                user=user,
+                carry__position=position,
+                carry__size=size
+            )
+            
+            # Done count and names of done carries
+            done_counts[position][size] = user_done_carries.count()
+            done_carry_names[position][size] = list(user_done_carries.values_list('carry__name', flat=True))  # Get carry names
+
+    # Pass the separated carries information to the template
+    context = {
+        'positions': positions,
+        'sizes': sizes,
+        'total_carries': total_carries,
+        'done_counts': done_counts,
+        'done_carry_names': done_carry_names,
+    }
 
     return render(request, "wrappinggallery/collection.html", context)
+
 
 
 def faq(request):
@@ -237,10 +272,7 @@ def mark_as_done(request, carry_name):
     
     # Check if the done already entry exists
     if not DoneCarry.objects.filter(carry=carry, user=user).exists():
-        print("ADDED!")
         DoneCarry.objects.create(carry=carry, user=user)
-    else:
-        print("already exists")
     
     # Render the page again
     return redirect('carry', name=carry_name)

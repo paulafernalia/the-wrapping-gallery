@@ -2,6 +2,9 @@
 
 {% load static %}
 
+{% load custom_filters %}
+
+
 {% block body %}
 
 
@@ -9,22 +12,45 @@
 <div id="carryTitle" class="title-container poppins-bold fsmedium">
 
     {% for position in positions %}
-        <h3 id="carryName" class="poiret-one-regular pink">{{ position|upper }} CARRIES</h3>
+        <h3 class="poiret-one-regular pink">{{ position|upper }} CARRIES</h3>
+        <br>
         {% for size in sizes %}
-            <p class="poppins-bold fs16" data-size="{{ size }}" data-position="{{ position }}">
-                Base {% if size < 0 %} {{ size|slice:":-1" }}{% elif size == 0 %}{% else %}+{{ size }}{% endif %}
-                <i class="fa-solid fa-caret-right toggle-icon" onclick="toggleGroup(this)" style="cursor: pointer;" data-size="{{ size }}" data-position="{{ position }}"></i>
-            </p>
-            <div class="collapsable" data-size="{{ size }}" data-position="{{ position }}" style="display: none;">
-                <div class="card-grid" data-size="{{ size }}" data-position="{{ position }}"></div>
-            </div>
+            {% if total_carries|get_item:position|get_item:size > 0 %}
+                <p class="fs16" data-size="{{ size }}" data-position="{{ position }}">
+                    <span class="poppins-bold">Base {% if size < 0 %} {{ size|slice:":-1" }}{% elif size == 0 %}{% else %}+{{ size }}{% endif %}</span>
+                    &nbsp;<span class="filter-tag-mini poppins-bold">{{ done_counts|get_item:position|get_item:size }} /
+                    {{ total_carries|get_item:position|get_item:size }}</span>
+                    <i class="fa-solid fa-caret-right toggle-icon" onclick="toggleGroup(this)" style="cursor: pointer;" data-size="{{ size }}" data-position="{{ position }}"></i>
+                </p>
+                <div class="collapsable" data-size="{{ size }}" data-position="{{ position }}" style="display: none;">
+                    <div class="card-grid" data-size="{{ size }}" data-position="{{ position }}" data-base-url-pattern="{% url 'carry' 'PLACEHOLDER' %}"></div>
+                    <br>
+                </div>
+            {% endif %}
         {% endfor %}
         <br>
     {% endfor %}
 
+
+
     <div id="loadingSpinner" class="loading-spinner"></div>
     
 </div>
+
+<script>
+    const carriesInfo = {
+        {% for position in positions %}
+            '{{ position }}': {
+                {% for size in sizes %}
+                    '{{ size }}': {{ done_carry_names|get_item:position|get_item:size|safe }},
+                {% endfor %}
+            },
+        {% endfor %}
+    };
+
+    // Now you can access carriesInfo in your JavaScript code
+    console.log(carriesInfo);
+</script>
 
 <script src="{% static 'wrappinggallery/js/collection.js' %}"></script>
 <script>

@@ -58,9 +58,52 @@ async function fetchFilteredCarries(page = 1, pageSize = 18, size, position) {
 }
 
 
+function handleMouseEnter(event, carry, hoverLabel) {
+    const rect = event.currentTarget.getBoundingClientRect();
+    hoverLabel.style.left = `${rect.left + window.scrollX}px`;
+    hoverLabel.style.top = `${rect.top + window.scrollY - 40}px`;
+    hoverLabel.style.display = 'block'; // Show the label
+    hoverLabel.textContent = carry.carry__title;
+}
+
+function handleMouseLeave(hoverLabel) {
+    hoverLabel.style.display = 'none'; // Hide the label
+}
+
+
+function handleGridItemClick(gridItem, carry, baseUrlPattern) {
+    const hasBeenClicked = gridItem.dataset.clicked === 'true';
+
+    if (!hasBeenClicked) {
+        // Show the hover label
+        const hoverLabel = document.querySelector('.hover-label');
+        const rect = gridItem.getBoundingClientRect();
+        hoverLabel.style.left = `${rect.left + window.scrollX}px`;
+        hoverLabel.style.top = `${rect.top + window.scrollY - 40}px`;
+        hoverLabel.style.display = 'block'; // Show the label
+        hoverLabel.textContent = carry.carry__title;
+
+        // Mark the gridItem as clicked
+        gridItem.dataset.clicked = 'true';
+    } else {
+        // Redirect to the constructed URL
+        const url = `${baseUrlPattern}${carry.carry__name}`;
+
+        // Deselect tabs
+        document.querySelector('.nav-link[data-page="carries-page"]').classList.remove('active');
+        document.querySelector('.nav-link[data-page="faq-page"]').classList.remove('active');
+
+        // Redirect to the constructed URL
+        window.location.href = url;
+    }
+}
+
+
 async function loadMyCarries(size, position) {
     const gridContainer = document.querySelector(`.card-grid[data-size="${size}"][data-position="${position}"]`);
     gridContainer.innerHTML = '';
+
+    const baseUrlPattern = gridContainer.dataset.baseUrlPattern.replace('PLACEHOLDER', '');
 
     const loadingSpinner = document.getElementById('loadingSpinner');
     loadingSpinner.style.display = 'block';
@@ -68,51 +111,54 @@ async function loadMyCarries(size, position) {
     resultsPage = 1;
     const carries = await fetchFilteredCarries(resultsPage, pageSize, size, position);
 
+    // Create a hover label element outside the loop
+    const hoverLabel = document.createElement('div');
+    hoverLabel.className = 'hover-label poppins-regular'; // Class for styling the label
+    hoverLabel.style.display = 'none'; // Hide by default
+    document.body.appendChild(hoverLabel); // Append hover label to body
+
     // Create an array of promises to fetch all image URLs
     for (const carry of carries) {
         // Create grid item
         const gridItem = document.createElement('div');
         gridItem.className = 'card-grid-item clickable-grid-item';
 
-        // Create image
-        const img = document.createElement('img');
-        let fileUrl = await fetchFileUrl(
-            carry.carry__name, carry.carry__position);
+        // Check if carry is done
+        const isDone = carriesInfo[position][size].includes(carry.carry__name);
 
+        let fileUrl = await fetchFileUrl(carry.carry__name, carry.carry__position);
+
+        const img = document.createElement('img');
         img.src = fileUrl;
         img.alt = carry.carry__title;
         img.loading = 'lazy'; // Enable lazy loading
         img.className = 'grid-item'; // Optional: Add class for styling
 
-        // Create description container
-        const descContainer = document.createElement('div');
-        descContainer.className = 'card-desc-container';
+        if (!isDone) {
+            img.style.opacity = '0.5'; // Set opacity of the image to 50%
 
-        // Create carrydesc
-        // const carrydesc = document.createElement('div');
-        // carrydesc.className = 'carrydesc poppins-regular fssmall';
-        // carrydesc.textContent = carry.carry__title;
-
-        // Append descriptions to the description container
-        // descContainer.appendChild(carrydesc);
+            // Create overlay
+            const overlay = document.createElement('div');
+            overlay.classList.add('overlay'); // Add the overlay class to the div
+            gridItem.appendChild(overlay);
+            gridItem.style.border = "none";
+        } else {
+            gridItem.classList.add("shadow");
+        }
 
         // Append image and description container to grid item
         gridItem.appendChild(img);
-        gridItem.appendChild(descContainer);
 
-        // Make the entire grid item clickable
-        gridItem.addEventListener('click', () => {
-            const url = `${baseUrlPattern}${carry.carry__name}`;
-
-            const carriesTab = document.querySelector('.nav-link[data-page="carries-page"]');
-            carriesTab.classList.remove('active');
-
-            const faqTab = document.querySelector('.nav-link[data-page="faq-page"]');
-            faqTab.classList.remove('active');
-
-            // Redirect to the constructed URL
-            window.location.href = url;
+        // Event listeners for hover and click
+        gridItem.addEventListener('mouseenter', (event) => {
+            handleMouseEnter(event, carry, hoverLabel);
         });
+
+        // Event listeners for hover and click
+        gridItem.addEventListener('mouseleave', () => {
+            handleMouseLeave(hoverLabel);
+        });
+        gridItem.addEventListener('click', () => handleGridItemClick(gridItem, carry, baseUrlPattern));
 
         // Append grid item to fragment
         gridContainer.appendChild(gridItem);
@@ -146,57 +192,7 @@ async function toggleGroup(iconElement) {
 }
 
 
-async function initialiseSections() {
-     const cats = document.querySelectorAll('p[data-size]');
-
-    for (const element of cats) {
-        const size = element.getAttribute('data-size');
-        const position = element.getAttribute('data-position');
-
-        const carries = await fetchFilteredCarries(resultsPage, pageSize, size, position);
-        const carriesCount = Array.isArray(carries) ? carries.length : 0;
-        
-        // Create a new text node with conditional text
-        const newText = document.createElement('span');
-        newText.style.color = 'lightgrey'; // Set the font color to grey
-        newText.textContent = `\u00A0 ( /${carriesCount})`;
-
-        // Find the caret icon (<i> element)
-        const caretIcon = element.querySelector('.toggle-icon');
-
-        element.insertBefore(newText, caretIcon);
-
-        if (carriesCount === 0) {
-            element.style.display = "none";
-        }
-
-    };
-}
-
-
-function fetchDoneCarries() {
-    fetch('/done-carries/')
-        .then(response => response.json())
-        .then(data => {
-            if (data.carries) {
-                console.log("Carries:", data.carries);  // This will log the array of carries
-                // You can use data.carries as an array here
-                // For example: 
-                data.carries.forEach(carry => {
-                    // Do something with each carry
-                    console.log("Carry name:", carry);
-                });
-            } else {
-                console.error(data.error);
-            }
-        })
-        .catch(error => console.error('Error fetching carries:', error));
-}
-
 
 document.addEventListener('DOMContentLoaded', async function() {    
     updateFooterPosition();
-
-    fetchDoneCarries();
-    initialiseSections();
 });
