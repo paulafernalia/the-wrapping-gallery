@@ -181,7 +181,10 @@ def carry(request, name):
     user = request.user
     
     # Check if the carry is already marked as done (exists in the FavouriteCarry table)
-    is_done = DoneCarry.objects.filter(carry=carry, user=user).exists()
+    if request.user.is_authenticated:
+        is_done = DoneCarry.objects.filter(carry=carry, user=request.user).exists()
+    else:
+        is_done = False  # or handle the case appropriately
     
     # Get the carry context
     carry_context = utils.get_carry_context(name)
@@ -288,10 +291,37 @@ def remove_done(request, carry_name):
 
     return redirect('carry', name=carry_name)
 
-
+@login_required
 def get_done_carries(request):
     if request.user.is_authenticated:
         carries = DoneCarry.objects.filter(user=request.user).values_list('carry__name', flat=True)
         return JsonResponse({"carries": list(carries)})
     else:
         return JsonResponse({"error": "User not authenticated"}, status=403)
+
+
+@login_required
+def submit_review(request, carry_name):
+    if request.method == "POST":
+        # Get the rating values from the form
+        leaners_vote = request.POST.get('leaners_vote')
+        legstraighteners_vote = request.POST.get('legstraighteners_vote')
+        newborns_vote = request.POST.get('newborns_vote')
+        bigkids_vote = request.POST.get('bigkids_vote')
+        feeding_vote = request.POST.get('feeding_vote')
+        quickups_vote = request.POST.get('quickups_vote')
+        difficulty_vote = request.POST.get('difficulty_vote')
+        fancy_vote = request.POST.get('fancy_vote')
+
+        user = request.user
+
+        # Process the ratings as needed (e.g., save to the database)
+        # You may want to create or update a record for the user and carry name
+        # YourModel.objects.create(
+        #     user=request.user,
+        #     carry_name=carry_name,
+        #     leaners_rating=leaners_rating,
+        #     newborns_rating=newborns_rating
+        # )
+
+    return redirect('carry', name=carry_name)

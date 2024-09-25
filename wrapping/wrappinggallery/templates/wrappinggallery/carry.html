@@ -63,14 +63,130 @@
     <p class="poppins-regular fssmall">Listen to your body and don't forget the <a href="https://babyslingsafety.co.uk/ticks.pdf" target="_blank">T.I.C.K.S.</a> rules to keep your baby safe.
 </div>
 
-<div class="title-container">
-  <form action="{% if user.is_authenticated %}{% if is_done %}{% url 'remove_done' name %}{% else %}{% url 'mark_as_done' name %}{% endif %}{% else %}{% url 'login' %}{% endif %}" method="post">
-    {% csrf_token %}
-    <button id="markasdonebtn" type="submit" class="btn pinkbg btn-custom mx-1 poppins-regular fs16">
-      {% if is_done %}Remove from collection{% else %}Mark as done{% endif %}
+<br>
+<div class="title-container flex-container">
+   <form action="{% if user.is_authenticated %}{% if is_done %}{% url 'remove_done' name %}{% else %}{% url 'mark_as_done' name %}{% endif %}{% else %}{% url 'login' %}{% endif %}" method="post">
+        {% csrf_token %}
+        <button id="markasdonebtn" type="submit" class="btn pinkbg btn-custom mx-1 poppins-regular fs16">
+          {% if is_done %}Remove from collection{% else %}Mark as done{% endif %}
+        </button>
+    </form>
+    <button id="reviewcarry" onclick="return openReviewForm()" class="btn pinkbg btn-custom mx-1 poppins-regular fs16">
+      Review this carry
     </button>
-  </form>
 </div>
+
+
+
+<form id="review-form" method="post" action="{% url 'submit_review' name %}" id="rating-form" style="display: none;">
+    {% csrf_token %}
+    <br>
+    <div class="title-container poppins-bold fsmedium">
+        Review this carry
+    </div>
+    
+    <div class="title-container poppins-light fssmall">
+        <div class="table-title-container" data-property="leaners">
+            <p class="table-title"><span class="poppins-light" id="leaners-vote"></span> Leaners</p>
+            <div class="vote-group">
+                <span class="fa fa-star big notchecked" data-value="1"></span>
+                <span class="fa fa-star big notchecked" data-value="2"></span>
+                <span class="fa fa-star big notchecked" data-value="3"></span>
+                <span class="fa fa-star big notchecked" data-value="4"></span>
+                <span class="fa fa-star big notchecked" data-value="5"></span>
+                <input type="hidden" name="leaners_vote" id="leaners-input" value="0">
+            </div>
+        </div>
+
+        <div class="table-title-container" data-property="legstraighteners">
+            <p class="table-title"><span class="poppins-light" id="legstraighteners-vote"></span> Seat poppers</p>
+            <div class="vote-group">
+                <span class="fa fa-star big notchecked" data-value="1"></span>
+                <span class="fa fa-star big notchecked" data-value="2"></span>
+                <span class="fa fa-star big notchecked" data-value="3"></span>
+                <span class="fa fa-star big notchecked" data-value="4"></span>
+                <span class="fa fa-star big notchecked" data-value="5"></span>
+                <input type="hidden" name="legstraighteners_vote" id="legstraighteners-input" value="0">
+            </div>
+        </div>
+
+        <div class="table-title-container" data-property="newborns">
+            <p class="table-title"><span class="poppins-light" id="newborns-vote"></span> Newborns</p>
+            <div class="vote-group">
+                <span class="fa fa-star big notchecked" data-value="1"></span>
+                <span class="fa fa-star big notchecked" data-value="2"></span>
+                <span class="fa fa-star big notchecked" data-value="3"></span>
+                <span class="fa fa-star big notchecked" data-value="4"></span>
+                <span class="fa fa-star big notchecked" data-value="5"></span>
+                <input type="hidden" name="newborns_vote" id="newborns-input" value="0">
+            </div>
+        </div>
+
+        <div class="table-title-container" data-property="bigkids">
+            <p class="table-title"><span class="poppins-light" id="bigkids-vote"></span> Big kids</p>
+            <div class="vote-group">
+                <span class="fa fa-star big notchecked" data-value="1"></span>
+                <span class="fa fa-star big notchecked" data-value="2"></span>
+                <span class="fa fa-star big notchecked" data-value="3"></span>
+                <span class="fa fa-star big notchecked" data-value="4"></span>
+                <span class="fa fa-star big notchecked" data-value="5"></span>
+                <input type="hidden" name="bigkids_vote" id="bigkids-input" value="0">
+            </div>
+        </div>
+
+        <div class="table-title-container" data-property="feeding">
+            <p class="table-title"><span class="poppins-light" id="feeding-vote"></span> Feeding</p>
+            <div class="vote-group">
+                <span class="fa fa-star big notchecked" data-value="1"></span>
+                <span class="fa fa-star big notchecked" data-value="2"></span>
+                <span class="fa fa-star big notchecked" data-value="3"></span>
+                <span class="fa fa-star big notchecked" data-value="4"></span>
+                <span class="fa fa-star big notchecked" data-value="5"></span>
+                <input type="hidden" name="feeding_vote" id="feeding-input" value="0">
+            </div>
+        </div>
+
+        <div class="table-title-container" data-property="quickups">
+            <p class="table-title"><span class="poppins-light" id="quickups-vote"></span> Quick ups</p>
+            <div class="vote-group">
+                <span class="fa fa-star big notchecked" data-value="1"></span>
+                <span class="fa fa-star big notchecked" data-value="2"></span>
+                <span class="fa fa-star big notchecked" data-value="3"></span>
+                <span class="fa fa-star big notchecked" data-value="4"></span>
+                <span class="fa fa-star big notchecked" data-value="5"></span>
+                <input type="hidden" name="quickups_vote" id="quickups-input" value="0">
+            </div>
+        </div>
+
+        <div class="table-title-container" data-property="difficulty">
+            <p class="table-title">Difficulty<span class="poppins-light" id="difficulty-vote"></span> </p>
+            <div class="vote-group">
+                <span class="fa fa-star big notchecked" data-value="1"></span>
+                <span class="fa fa-star big notchecked" data-value="2"></span>
+                <span class="fa fa-star big notchecked" data-value="3"></span>
+                <span class="fa fa-star big notchecked" data-value="4"></span>
+                <span class="fa fa-star big notchecked" data-value="5"></span>
+                <input type="hidden" name="difficulty_vote" id="difficulty-input" value="0">
+            </div>
+        </div>
+
+        <div class="table-title-container" data-property="fancy">
+            <p class="table-title">Fancy<span class="poppins-light" id="fancy-vote"></span> </p>
+            <div class="vote-group">
+                <span class="fa fa-star big notchecked" data-value="1"></span>
+                <span class="fa fa-star big notchecked" data-value="2"></span>
+                <span class="fa fa-star big notchecked" data-value="3"></span>
+                <span class="fa fa-star big notchecked" data-value="4"></span>
+                <span class="fa fa-star big notchecked" data-value="5"></span>
+                <input type="hidden" name="fancy_vote" id="fancy-input" value="0">
+            </div>
+        </div>
+        <br>
+         <button type="submit" class="submit-button">Submit votes</button>
+    </div>
+
+   
+</form>
 
 
 <div class="title-container">
@@ -344,6 +460,30 @@
 
 <br><br><br>
 <script src="{% static 'wrappinggallery/js/carry.js' %}"></script>
+
+
+<script>
+    function openReviewForm() {
+        {% if user.is_authenticated %}
+            // Call the reviewCarry JavaScript function
+            const reviewForm = document.getElementById('review-form');
+            reviewForm.style.display = 'block';
+
+            // Scroll to the review form minus 100px for the header
+            const elementPosition = reviewForm.getBoundingClientRect().top + window.scrollY;
+            const offsetPosition = elementPosition - 100;
+
+            window.scrollTo({
+                top: offsetPosition,
+                behavior: 'smooth' // Smooth scrolling
+            });
+
+        {% else %}
+            // Redirect to the login page
+            window.location.href = "{% url 'login' %}";
+        {% endif %}
+    }
+</script>
 
 
 {% endblock %}
