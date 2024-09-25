@@ -71,7 +71,104 @@ async function loadTutorialImages() {
     loadingSpinner.style.display = 'none';
 }
 
+// Function to update the label on slider move
+function updateVoteText(category, rating) {
+    if (category === "difficulty") {
+        switch (rating) {
+            case 1:
+                return ': Beginner';
+            case 2:
+                return ': Beginner +';
+            case 3:
+                return ': Intermediate';
+            case 4:
+                return ': Advanced';
+            case 5:
+                return ': Guru';
+        }
+    } else if (category === "fancy") {
+        switch (rating) {
+            case 1:
+                return ': 1/5';
+            case 2:
+                return ': 2/5';
+            case 3:
+                return ': 3/5';
+            case 4:
+                return ': 4/5';
+            case 5:
+                return ': 5/5';
+        }
+    } else {
+        switch (rating) {
+            case 1:
+                return 'Avoid with';
+            case 2:
+                return 'Not great for';
+            case 3:
+                return 'Okay for';
+            case 4:
+                return 'Good for';
+            case 5:
+                return 'Great for';
+        }
+    }
+}
 
+document.querySelectorAll('.vote-group').forEach(voteGroup => {
+    const stars = voteGroup.querySelectorAll('.fa-star');
+    const title = voteGroup.previousElementSibling; // The <p> element
+    const hiddenInput = voteGroup.querySelector('input[type="hidden"]'); // Get the hidden input
+
+    const category = voteGroup.parentElement.dataset.property;
+
+    stars.forEach(star => {
+        star.addEventListener('click', function() {
+            const rating = parseInt(this.getAttribute('data-value'));
+
+            // Update the classes of the stars based on the clicked star
+            stars.forEach((s, index) => {
+                if (index < rating) {
+                    s.classList.remove('notchecked');
+                    s.classList.add('checked');
+                } else {
+                    s.classList.remove('checked');
+                    s.classList.add('notchecked');
+                }
+            });
+
+            // Update the rating text
+            const textLabel = updateVoteText(category, rating);
+            title.querySelector('span').textContent = textLabel; // Update the rating in the <p
+
+            // Update the hidden input value
+            hiddenInput.value = rating; // Set the hidden input to the selected rating
+        });
+    });
+});
+
+
+const stars = document.querySelectorAll('.star');
+const ratingValue = document.getElementById('ratingValue');
+
+// Function to update the star ratings based on user click
+stars.forEach(star => {
+    star.addEventListener('click', function() {
+        const rating = parseInt(this.getAttribute('data-value'));
+        updateStars(rating);
+    });
+});
+
+
+function updateStars(rating) {
+    stars.forEach(star => {
+        star.classList.remove('filled'); // Clear existing filled stars
+        if (parseInt(star.getAttribute('data-value')) <= rating) {
+            star.classList.add('filled'); // Fill stars up to the selected rating
+        }
+    });
+    ratingValue.textContent = rating; // Update the displayed rating
+}
 
 
 document.addEventListener('DOMContentLoaded', async function() { 

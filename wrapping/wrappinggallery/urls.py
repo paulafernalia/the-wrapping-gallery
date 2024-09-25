@@ -17,4 +17,5 @@ urlpatterns = [
     path('mark-done/<str:carry_name>/', views.mark_as_done, name='mark_as_done'),
     path('remove-done/<str:carry_name>/', views.remove_done, name='remove_done'),
     path('done-carries/', views.get_done_carries, name='get_done_carries'),
+    path('submit-review/<str:carry_name>/', views.submit_review, name='submit_review'),
 ]
