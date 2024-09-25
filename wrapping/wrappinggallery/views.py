@@ -5,7 +5,7 @@ from django.db.models import FloatField, Func, F
 from django.db.models.functions import Round
 from django.shortcuts import redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from .models import Carry, Rating, DoneCarry
+from .models import Carry, Rating, DoneCarry, UserRating
 from . import utils
 from django.conf import settings
 import os
@@ -179,18 +179,38 @@ def steps_url(request, prefix):
 def carry(request, name):
     carry = get_object_or_404(Carry, name=name)
     user = request.user
+
+    user_ratings_data = {
+        "newborns": 0,
+        "legstraighteners": 0,
+        "leaners": 0,
+        "bigkids": 0,
+        "feeding": 0,
+        "quickups": 0,
+        "pregnancy": 0,
+        "difficulty": 0,
+        "fancy": 0,
+    }
     
-    # Check if the carry is already marked as done (exists in the FavouriteCarry table)
-    if request.user.is_authenticated:
-        is_done = DoneCarry.objects.filter(carry=carry, user=request.user).exists()
+    if user.is_authenticated:
+        is_done = DoneCarry.objects.filter(carry=carry, user=user).exists()
+        
+        # Fetch the user's rating for the carry, if it exists
+        user_rating = UserRating.objects.filter(carry=carry, user=user).first()
+
+        if user_rating:
+            user_ratings_data = user_rating.to_dict()
     else:
-        is_done = False  # or handle the case appropriately
-    
+        is_done = False
+        
+
     # Get the carry context
     carry_context = utils.get_carry_context(name)
     
-    # Add 'is_done' to the context
-    context = {**carry_context, 'is_done': is_done}
+    # Add 'is_done' and user ratings to the context
+    context = {**carry_context, 'is_done': is_done, 'user_ratings': user_ratings_data}
+
+    print(context)
 
     return render(request, "wrappinggallery/carry.html", context)
 
@@ -302,26 +322,27 @@ def get_done_carries(request):
 
 @login_required
 def submit_review(request, carry_name):
-    if request.method == "POST":
+    if request.method == "POST" and request.user.is_authenticated:
         # Get the rating values from the form
-        leaners_vote = request.POST.get('leaners_vote')
-        legstraighteners_vote = request.POST.get('legstraighteners_vote')
-        newborns_vote = request.POST.get('newborns_vote')
-        bigkids_vote = request.POST.get('bigkids_vote')
-        feeding_vote = request.POST.get('feeding_vote')
-        quickups_vote = request.POST.get('quickups_vote')
-        difficulty_vote = request.POST.get('difficulty_vote')
-        fancy_vote = request.POST.get('fancy_vote')
-
         user = request.user
 
-        # Process the ratings as needed (e.g., save to the database)
-        # You may want to create or update a record for the user and carry name
-        # YourModel.objects.create(
-        #     user=request.user,
-        #     carry_name=carry_name,
-        #     leaners_rating=leaners_rating,
-        #     newborns_rating=newborns_rating
-        # )
+        # Fetch the relevant carry object based on carry_name
+        carry = Carry.objects.get(name=carry_name)
+
+        # Create or update the UserRating instance
+        user_rating, created = UserRating.objects.update_or_create(
+            user=request.user,
+            carry=carry,
+            defaults={
+                'newborns': request.POST.get('newborns_vote', 0),
+                'legstraighteners': request.POST.get('legstraighteners_vote', 0),
+                'leaners': request.POST.get('leaners_vote', 0),
+                'bigkids': request.POST.get('bigkids_vote', 0),
+                'feeding': request.POST.get('feeding_vote', 0),
+                'quickups': request.POST.get('quickups_vote', 0),
+                'difficulty': request.POST.get('difficulty_vote', 0),
+                'fancy': request.POST.get('fancy_vote', 0),
+            }
+        )
 
     return redirect('carry', name=carry_name)

@@ -115,6 +115,29 @@ function updateVoteText(category, rating) {
     }
 }
 
+
+function handleStarClick(stars, rating, title, category, hiddenInput) {
+
+    console.log("handle", rating, title, category, hiddenInput);
+    // Update the classes of the stars based on the clicked star
+    stars.forEach((s, index) => {
+        if (index < rating) {
+            s.classList.remove('notchecked');
+            s.classList.add('checked');
+        } else {
+            s.classList.remove('checked');
+            s.classList.add('notchecked');
+        }
+    });
+
+    // Update the rating text
+    const textLabel = updateVoteText(category, rating);
+    title.querySelector('span').textContent = textLabel; // Update the rating in the <p>
+
+    // Update the hidden input value
+    hiddenInput.value = rating; // Set the hidden input to the selected rating
+}
+
 document.querySelectorAll('.vote-group').forEach(voteGroup => {
     const stars = voteGroup.querySelectorAll('.fa-star');
     const title = voteGroup.previousElementSibling; // The <p> element
@@ -125,24 +148,7 @@ document.querySelectorAll('.vote-group').forEach(voteGroup => {
     stars.forEach(star => {
         star.addEventListener('click', function() {
             const rating = parseInt(this.getAttribute('data-value'));
-
-            // Update the classes of the stars based on the clicked star
-            stars.forEach((s, index) => {
-                if (index < rating) {
-                    s.classList.remove('notchecked');
-                    s.classList.add('checked');
-                } else {
-                    s.classList.remove('checked');
-                    s.classList.add('notchecked');
-                }
-            });
-
-            // Update the rating text
-            const textLabel = updateVoteText(category, rating);
-            title.querySelector('span').textContent = textLabel; // Update the rating in the <p
-
-            // Update the hidden input value
-            hiddenInput.value = rating; // Set the hidden input to the selected rating
+            handleStarClick(stars, rating, title, category, hiddenInput); // Call the separate function on click
         });
     });
 });
@@ -181,4 +187,19 @@ document.addEventListener('DOMContentLoaded', async function() {
     // Load images
     await loadTutorialImages();
 
+
+    document.querySelectorAll('.vote-group').forEach(voteGroup => {
+        const stars = voteGroup.querySelectorAll('.fa-star');
+        const hiddenInput = voteGroup.querySelector('input[type="hidden"]'); 
+        const title = voteGroup.previousElementSibling; // The <p> element
+        const category = voteGroup.parentElement.dataset.property;
+        
+        // Call the function to set initial values based on the hidden input when the DOM loads
+        const initialRating = parseInt(hiddenInput.value);
+        if (initialRating) {
+            handleStarClick(stars, initialRating, title, category, hiddenInput); // Set initial star ratings
+        } else {
+            handleStarClick(stars, 0, title, category, hiddenInput); // Set initial star ratings
+        }
+    });
 });
