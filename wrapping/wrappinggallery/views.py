@@ -201,16 +201,13 @@ def carry(request, name):
         if user_rating:
             user_ratings_data = user_rating.to_dict()
     else:
-        is_done = False
-        
+        is_done = False        
 
     # Get the carry context
     carry_context = utils.get_carry_context(name)
     
     # Add 'is_done' and user ratings to the context
     context = {**carry_context, 'is_done': is_done, 'user_ratings': user_ratings_data}
-
-    print(context)
 
     return render(request, "wrappinggallery/carry.html", context)
 
@@ -344,5 +341,7 @@ def submit_review(request, carry_name):
                 'fancy': request.POST.get('fancy_vote', 0),
             }
         )
+
+        utils.update_rating(carry)
 
     return redirect('carry', name=carry_name)

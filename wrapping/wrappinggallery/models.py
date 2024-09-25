@@ -254,14 +254,13 @@ class Carry(models.Model):
 
 
 class Rating(models.Model):
-    validators = [MinValueValidator(1.0), MaxValueValidator(5)]
-    validators_ext = [MinValueValidator(0.0), MaxValueValidator(5)]
+    validators = [MinValueValidator(0.0), MaxValueValidator(5)]
 
     carry = models.OneToOneField(Carry, on_delete=models.CASCADE)
 
     newborns = models.FloatField(validators=validators, default=1)
-    legstraighteners = models.FloatField(validators=validators_ext, default=1)
-    leaners = models.FloatField(validators=validators_ext, default=1)
+    legstraighteners = models.FloatField(validators=validators, default=1)
+    leaners = models.FloatField(validators=validators, default=1)
     bigkids = models.FloatField(validators=validators, default=1)
     feeding = models.FloatField(validators=validators, default=1)
     quickups = models.FloatField(validators=validators, default=1)
@@ -283,18 +282,18 @@ class Rating(models.Model):
             "pregnancy": round(self.pregnancy),
             "difficulty": round(self.difficulty),
             "fancy": round(self.fancy),
+            "votes": self.votes,
         }
 
 class UserRating(models.Model):
-    validators = [MinValueValidator(1.0), MaxValueValidator(5)]
-    validators_ext = [MinValueValidator(0.0), MaxValueValidator(5)]
+    validators = [MinValueValidator(0.0), MaxValueValidator(5)]
 
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     carry = models.OneToOneField(Carry, on_delete=models.CASCADE)
 
     newborns = models.FloatField(validators=validators, default=1)
-    legstraighteners = models.FloatField(validators=validators_ext, default=1)
-    leaners = models.FloatField(validators=validators_ext, default=1)
+    legstraighteners = models.FloatField(validators=validators, default=1)
+    leaners = models.FloatField(validators=validators, default=1)
     bigkids = models.FloatField(validators=validators, default=1)
     feeding = models.FloatField(validators=validators, default=1)
     quickups = models.FloatField(validators=validators, default=1)
