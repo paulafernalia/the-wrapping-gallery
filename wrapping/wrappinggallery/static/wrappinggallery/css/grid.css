@@ -9,6 +9,16 @@ h2 {
     margin: 20px;
 }
 
+.card-grid {
+    border: none;
+    margin: 0 auto;
+    padding: 10px;
+    max-width: 1100px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); /* Responsive grid layout */
+    gap: 20px; /* Space between grid items, reduced from 50px */
+}
+
 .grid {
     border: none;
     margin: 0 auto;
@@ -28,6 +38,43 @@ h2 {
     align-items: center; /* Centers the image vertically */
 }
 
+.card-grid-item {
+    position: relative; /* Allows absolute positioning of child elements */
+    overflow: hidden;
+    border: 1px solid lightgrey;
+    border-radius: 10px;
+    display: flex; /* Enables flexbox layout */
+    justify-content: center; /* Centers the image horizontally */
+    align-items: center; /* Centers the image vertically */
+    background-color: white;
+    padding: 10px;
+    height: 130px;
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.1); /* Semi-transparent black */
+    z-index: 1; /* Ensure the overlay is on top of the image */
+}
+
+.shadow {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle grey shadow */
+}
+
+.card-desc-container {
+    position: absolute; /* Position absolutely within the grid item */
+    bottom: 5px; /* Space from the bottom of the grid item */
+    width: 100%; /* Full width of the grid item */
+    padding: 0px; /* Padding around the text */
+    margin-bottom: 20px;
+    box-sizing: border-box; /* Ensure padding does not overflow the container */
+    background-color: rgba(245, 247, 248, 0.0); /* Semi-transparent background */
+}
+
 .clickable-grid-item:hover {
     transition: transform 0.8s ease; /* Smooth transition for hover effect */
 }
@@ -42,6 +89,15 @@ h2 {
 
 
 .grid-item img {
+    width: 100%; /* Full width of the grid item */
+    max-width: 200px; /* Maximum width of images */
+    height: auto; /* Maintain aspect ratio */
+    display: block;
+    object-fit: cover; /* Cover the container */
+    opacity: 1;
+}
+
+.card-grid-item img {
     width: 100%; /* Full width of the grid item */
     max-width: 200px; /* Maximum width of images */
     height: auto; /* Maintain aspect ratio */
@@ -70,6 +126,22 @@ h2 {
     margin: 0; /* Remove default margin */
 }
 
+.hover-label {
+    position: absolute; /* Absolute positioning to place it independently */
+    background-color: #2e2d2d; /* Black background */
+    color: white; /* White text */
+    padding: 5px 20px; /* Padding around the text */
+    border-radius: 5px; /* Rounded corners */
+    font-size: 12px; /* Font size */
+    white-space: nowrap; /* Ensure text stays on one line */
+    display: none; /* Hidden by default */
+    z-index: 10; /* Ensure it appears above other elements */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle grey shadow */
+}
+
+.card-grid-item:hover .hover-label {
+    opacity: 1; /* Fade in the label when hovered */
+}
 
 
 /* Media query for very narrow viewports */
@@ -77,4 +149,22 @@ h2 {
     .grid {
         grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); /* Responsive grid layout */
     }
+}
+
+
+.plus-icon {
+    position: absolute; /* Ensure positioning is absolute */
+    top: 3px; /* Positioning can be adjusted */
+    left: 3px; /* Positioning can be adjusted */
+    background-color: lightgrey !important;
+    border: 1px solid #B0B0B0;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    padding: 2px 8px;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10; /* Make sure it's above other elements */
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2); /* Subtle grey shadow */
 }
