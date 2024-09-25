@@ -285,6 +285,38 @@ class Rating(models.Model):
             "fancy": round(self.fancy),
         }
 
+class UserRating(models.Model):
+    validators = [MinValueValidator(1.0), MaxValueValidator(5)]
+    validators_ext = [MinValueValidator(0.0), MaxValueValidator(5)]
+
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    carry = models.OneToOneField(Carry, on_delete=models.CASCADE)
+
+    newborns = models.FloatField(validators=validators, default=1)
+    legstraighteners = models.FloatField(validators=validators_ext, default=1)
+    leaners = models.FloatField(validators=validators_ext, default=1)
+    bigkids = models.FloatField(validators=validators, default=1)
+    feeding = models.FloatField(validators=validators, default=1)
+    quickups = models.FloatField(validators=validators, default=1)
+
+    pregnancy = models.FloatField(validators=validators, default=1)
+    difficulty = models.FloatField(validators=validators, default=1)
+    fancy = models.FloatField(validators=validators, default=1)
+
+    def to_dict(self):
+        return {
+            "newborns": round(self.newborns),
+            "legstraighteners": round(self.legstraighteners),
+            "leaners": round(self.leaners),
+            "bigkids": round(self.bigkids),
+            "feeding": round(self.feeding),
+            "quickups": round(self.quickups),
+            "pregnancy": round(self.pregnancy),
+            "difficulty": round(self.difficulty),
+            "fancy": round(self.fancy),
+            "username": self.user.username,  # Get the username from CustomUser
+            "carry_name": self.carry.name,    # Get the name from Carry
+        }
 
 class FavouriteCarry(models.Model):
     carry = models.ForeignKey(Carry, on_delete=models.CASCADE)
