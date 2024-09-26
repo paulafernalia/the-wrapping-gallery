@@ -1,8 +1,15 @@
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
-from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
+from django.contrib.auth.models import AbstractUser
+from django.db.models import Sum, Count, Case, When, IntegerField, FloatField
 
+class CustomUser(AbstractUser):
+    pass
+    # add additional fields in here
+
+    def __str__(self):
+        return self.username
 
 # Create your models here.
 class Carry(models.Model):
@@ -243,18 +250,37 @@ class Carry(models.Model):
 
     def save(self, *args, **kwargs):
         self.clean()
-        super().save(*args, **kwargs)
+        super().save(*args, **kwargs)  # Save the Carry instance first
+
+        # Check if a Rating entry exists for this carry
+        rating, created = Rating.objects.get_or_create(
+            carry=self,
+            defaults={
+                "newborns": 0,
+                "legstraighteners": 0,
+                "leaners": 0,
+                "bigkids": 0,
+                "feeding": 0,
+                "quickups": 0,
+                "pregnancy": 0,
+                "difficulty": 0,
+                "fancy": 0,
+                "votes": 0,
+            }
+        )
+
+        if created:
+            print(f"- Rating entry has been created for {self.name}")  # Log when a new Rating is created
 
 
-class Ratings(models.Model):
-    validators = [MinValueValidator(1.0), MaxValueValidator(5)]
-    validators_ext = [MinValueValidator(0.0), MaxValueValidator(5)]
+class Rating(models.Model):
+    validators = [MinValueValidator(0.0), MaxValueValidator(5)]
 
     carry = models.OneToOneField(Carry, on_delete=models.CASCADE)
 
     newborns = models.FloatField(validators=validators, default=1)
-    legstraighteners = models.FloatField(validators=validators_ext, default=1)
-    leaners = models.FloatField(validators=validators_ext, default=1)
+    legstraighteners = models.FloatField(validators=validators, default=1)
+    leaners = models.FloatField(validators=validators, default=1)
     bigkids = models.FloatField(validators=validators, default=1)
     feeding = models.FloatField(validators=validators, default=1)
     quickups = models.FloatField(validators=validators, default=1)
@@ -276,32 +302,141 @@ class Ratings(models.Model):
             "pregnancy": round(self.pregnancy),
             "difficulty": round(self.difficulty),
             "fancy": round(self.fancy),
+            "votes": self.votes,
         }
 
 
-class UserRatings(models.Model):
-    validators = [MinValueValidator(1.0), MaxValueValidator(5)]
-    validators_ext = [MinValueValidator(0.0), MaxValueValidator(5)]
+def NZ_AVG(queryset, field_name):
+    # Count non-zero values
+    count_non_zero = queryset.filter(**{field_name + '__gt': 0}).count()
+    
+    # Sum non-zero values
+    sum_non_zero = queryset.filter(**{field_name + '__gt': 0}).aggregate(Sum(field_name))[f"{field_name}__sum"] or 0
 
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    # Calculate average, return 0 if there are no non-zero values
+    return sum_non_zero / count_non_zero if count_non_zero > 0 else 0
 
+
+class UserRating(models.Model):
+    validators = [MinValueValidator(0.0), MaxValueValidator(5)]
+
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     carry = models.ForeignKey(Carry, on_delete=models.CASCADE)
 
-    newborns = models.IntegerField(validators=validators)
-    legstraighteners = models.IntegerField(validators=validators_ext)
-    leaners = models.IntegerField(validators=validators_ext)
-    bigkids = models.IntegerField(validators=validators)
-    feeding = models.IntegerField(validators=validators)
-    quickups = models.IntegerField(validators=validators)
+    newborns = models.FloatField(validators=validators, default=1)
+    legstraighteners = models.FloatField(validators=validators, default=1)
+    leaners = models.FloatField(validators=validators, default=1)
+    bigkids = models.FloatField(validators=validators, default=1)
+    feeding = models.FloatField(validators=validators, default=1)
+    quickups = models.FloatField(validators=validators, default=1)
+
     pregnancy = models.FloatField(validators=validators, default=1)
-
-    difficulty = models.IntegerField(validators=validators)
-
-    fancy = models.IntegerField(validators=validators)
+    difficulty = models.FloatField(validators=validators, default=1)
+    fancy = models.FloatField(validators=validators, default=1)
 
     class Meta:
-        constraints = [
-            models.UniqueConstraint(
-                fields=["user", "carry"], name="unique_foreign_keys"
+        unique_together = ('user', 'carry')
+
+    def to_dict(self):
+        return {
+            "newborns": round(self.newborns),
+            "legstraighteners": round(self.legstraighteners),
+            "leaners": round(self.leaners),
+            "bigkids": round(self.bigkids),
+            "feeding": round(self.feeding),
+            "quickups": round(self.quickups),
+            "pregnancy": round(self.pregnancy),
+            "difficulty": round(self.difficulty),
+            "fancy": round(self.fancy),
+            "username": self.user.username,  # Get the username from CustomUser
+            "carry_name": self.carry.name,    # Get the name from Carry
+        }
+
+    def update_rating(self):
+        # Now update the corresponding Rating entry
+        try:
+            # Fetch the Rating entry for the associated carry
+            rating = Rating.objects.get(carry=self.carry)
+
+            # Fetch all UserRating entries for this carry and calculate averages in one query
+            user_ratings = UserRating.objects.filter(carry=self.carry)
+
+            # Calculate counts of non-zero entries
+            non_zero_counts = user_ratings.aggregate(
+                newborns_count=Count(Case(When(newborns__gt=0, then=1), output_field=IntegerField())),
+                legstraighteners_count=Count(Case(When(legstraighteners__gt=0, then=1), output_field=IntegerField())),
+                leaners_count=Count(Case(When(leaners__gt=0, then=1), output_field=IntegerField())),
+                bigkids_count=Count(Case(When(bigkids__gt=0, then=1), output_field=IntegerField())),
+                feeding_count=Count(Case(When(feeding__gt=0, then=1), output_field=IntegerField())),
+                quickups_count=Count(Case(When(quickups__gt=0, then=1), output_field=IntegerField())),
+                pregnancy_count=Count(Case(When(pregnancy__gt=0, then=1), output_field=IntegerField())),
+                difficulty_count=Count(Case(When(difficulty__gt=0, then=1), output_field=IntegerField())),
+                fancy_count=Count(Case(When(fancy__gt=0, then=1), output_field=IntegerField())),
             )
-        ]
+
+            # Calculate sums of non-zero entries
+            total_sums = user_ratings.aggregate(
+                newborns_sum=Sum(Case(When(newborns__gt=0, then='newborns'), default=0, output_field=FloatField())),
+                legstraighteners_sum=Sum(Case(When(legstraighteners__gt=0, then='legstraighteners'), default=0, output_field=FloatField())),
+                leaners_sum=Sum(Case(When(leaners__gt=0, then='leaners'), default=0, output_field=FloatField())),
+                bigkids_sum=Sum(Case(When(bigkids__gt=0, then='bigkids'), default=0, output_field=FloatField())),
+                feeding_sum=Sum(Case(When(feeding__gt=0, then='feeding'), default=0, output_field=FloatField())),
+                quickups_sum=Sum(Case(When(quickups__gt=0, then='quickups'), default=0, output_field=FloatField())),
+                pregnancy_sum=Sum(Case(When(pregnancy__gt=0, then='pregnancy'), default=0, output_field=FloatField())),
+                difficulty_sum=Sum(Case(When(difficulty__gt=0, then='difficulty'), default=0, output_field=FloatField())),
+                fancy_sum=Sum(Case(When(fancy__gt=0, then='fancy'), default=0, output_field=FloatField())),
+            )
+
+            # Update the rating fields using the sums and counts
+            rating.newborns = total_sums['newborns_sum'] / non_zero_counts['newborns_count'] if non_zero_counts['newborns_count'] > 0 else 0
+            rating.legstraighteners = total_sums['legstraighteners_sum'] / non_zero_counts['legstraighteners_count'] if non_zero_counts['legstraighteners_count'] > 0 else 0
+            rating.leaners = total_sums['leaners_sum'] / non_zero_counts['leaners_count'] if non_zero_counts['leaners_count'] > 0 else 0
+            rating.bigkids = total_sums['bigkids_sum'] / non_zero_counts['bigkids_count'] if non_zero_counts['bigkids_count'] > 0 else 0
+            rating.feeding = total_sums['feeding_sum'] / non_zero_counts['feeding_count'] if non_zero_counts['feeding_count'] > 0 else 0
+            rating.quickups = total_sums['quickups_sum'] / non_zero_counts['quickups_count'] if non_zero_counts['quickups_count'] > 0 else 0
+            rating.pregnancy = total_sums['pregnancy_sum'] / non_zero_counts['pregnancy_count'] if non_zero_counts['pregnancy_count'] > 0 else 0
+            rating.difficulty = total_sums['difficulty_sum'] / non_zero_counts['difficulty_count'] if non_zero_counts['difficulty_count'] > 0 else 0
+            rating.fancy = total_sums['fancy_sum'] / non_zero_counts['fancy_count'] if non_zero_counts['fancy_count'] > 0 else 0
+
+            # Update the vote field with the count of UserRating entries for this carry
+            rating.votes = user_ratings.count()
+
+            rating.save()  # Save the updated Rating entry
+
+        except Rating.DoesNotExist:
+            print("Rating does not exist for the given carry.")
+        except Exception as e:
+            print(str(e))
+
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)  # Call the parent class's save method
+
+        # Call your shared logic
+        self.update_rating()
+        
+
+    def delete(self, *args, **kwargs):
+        super().delete(*args, **kwargs)  # Call the parent class's delete method
+        
+        # Call your shared logic
+        self.update_rating()
+
+        
+
+
+class FavouriteCarry(models.Model):
+    carry = models.ForeignKey(Carry, on_delete=models.CASCADE)
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+
+
+class DoneCarry(models.Model):
+    carry = models.ForeignKey(Carry, on_delete=models.CASCADE)
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+
+
+class TodoCarry(models.Model):
+    carry = models.ForeignKey(Carry, on_delete=models.CASCADE)
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+
+

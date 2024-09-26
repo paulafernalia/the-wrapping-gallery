@@ -167,8 +167,17 @@ h4 {
 }
 
 .fa-star {
-    font-size: 20px !important; /* Adjust this value to change the size of the stars */
+    font-size: 20px; /* Adjust this value to change the size of the stars */
     padding:2px;
+}
+
+.big {
+    font-size: 24px !important; /* Adjust this value to change the size of the stars */
+    cursor: pointer;
+}
+
+.small-star {
+    font-size: 22px !important; /* Adjust this value to change the size of the stars */
 }
 
 /* Styles for checked stars */
@@ -189,8 +198,13 @@ h4 {
 
 /* Media query for small screens */
 @media only screen and (max-width: 1024px) {
-    .fa-star {
+    .small-star {
         font-size: 17px !important; /* Adjust this value to change the size of the stars */
+    }
+
+    .big {
+        font-size: 20px !important;
+        cursor: pointer;
     }
 }
 
@@ -238,6 +252,7 @@ h4 {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 5px; /* Space between title and description */
+    max-width: 600px;
 }
 
 .table-title {
@@ -245,6 +260,7 @@ h4 {
     font-weight: 600;
     font-size: 14px;
     margin: 0; /* Remove margin */
+    max-width: 200px;
 }
 
 .table-description {
@@ -253,3 +269,20 @@ h4 {
     font-size: 13px;
     margin: 5px 0 0 0; /* Adjust space between title and description */
 }
+
+
+.submit-button {
+    background: none;         /* No background */
+    border: none;            /* No border */
+    text-decoration: underline; /* Underlined text */
+    color: inherit;          /* Inherit the text color from the parent */
+    cursor: pointer;         /* Change cursor to pointer on hover */
+    padding: 0;              /* Remove default padding */
+    font: inherit;           /* Inherit font properties */
+}
+
+.flex-container {
+    display: flex;
+    align-items: center; /* Center items vertically */
+}
+

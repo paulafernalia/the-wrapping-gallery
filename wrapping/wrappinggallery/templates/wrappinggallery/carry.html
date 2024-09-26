@@ -63,8 +63,170 @@
     <p class="poppins-regular fssmall">Listen to your body and don't forget the <a href="https://babyslingsafety.co.uk/ticks.pdf" target="_blank">T.I.C.K.S.</a> rules to keep your baby safe.
 </div>
 
-<div class="title-container">
-    <br><br>
+<br>
+<div class="title-container flex-container">
+   <form action="{% if user.is_authenticated %}{% if is_done %}{% url 'remove_done' name %}{% else %}{% url 'mark_as_done' name %}{% endif %}{% else %}{% url 'login' %}{% endif %}" method="post">
+        {% csrf_token %}
+        <button id="markasdonebtn" type="submit" class="btn pinkbg btn-custom mx-1 poppins-regular fs16">
+          {% if is_done %}Remove from collection{% else %}Mark as done{% endif %}
+        </button>
+    </form>
+    <button id="reviewcarry" onclick="return openReviewForm()" class="btn pinkbg btn-custom mx-1 poppins-regular fs16">
+      Review this carry
+    </button>
+</div>
+
+
+
+<form id="review-form" method="post" action="{% url 'submit_review' name %}" id="rating-form" style="display: none;">
+    {% csrf_token %}
+    <br>
+    <div class="title-container poppins-bold fsmedium">
+        Review this carry
+    </div>
+    
+    <div class="title-container poppins-light fssmall">
+        <div class="table-title-container" data-property="leaners">
+            <p class="table-title"><span class="poppins-light" id="leaners-vote"></span> Leaners</p>
+            <div class="vote-group">
+                {% if position != "Tandem" %}
+                <span class="fa fa-star big notchecked" data-value="1"></span>
+                <span class="fa fa-star big notchecked" data-value="2"></span>
+                <span class="fa fa-star big notchecked" data-value="3"></span>
+                <span class="fa fa-star big notchecked" data-value="4"></span>
+                <span class="fa fa-star big notchecked" data-value="5"></span>
+                <input type="hidden" name="leaners_vote" id="leaners-input" value="{{ user_ratings.leaners }}">
+                {% else %}
+                <div class="poppins-bold fscarry pink">N/A</div>
+                <input type="hidden" name="leaners_vote" id="leaners-input" value="0">
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="table-title-container" data-property="legstraighteners">
+            <p class="table-title"><span class="poppins-light" id="legstraighteners-vote"></span> Seat poppers</p>
+            <div class="vote-group">
+                {% if position != "Tandem" %}
+                <span class="fa fa-star big notchecked" data-value="1"></span>
+                <span class="fa fa-star big notchecked" data-value="2"></span>
+                <span class="fa fa-star big notchecked" data-value="3"></span>
+                <span class="fa fa-star big notchecked" data-value="4"></span>
+                <span class="fa fa-star big notchecked" data-value="5"></span>
+                <input type="hidden" name="legstraighteners_vote" id="legstraighteners-input" value="{{ user_ratings.legstraighteners }}">
+                {% else %}
+                <div class="poppins-bold fscarry pink">N/A</div>
+                <input type="hidden" name="legstraighteners_vote" id="legstraighteners-input" value="0">
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="table-title-container" data-property="newborns">
+            <p class="table-title"><span class="poppins-light" id="newborns-vote"></span> Newborns</p>
+            <div class="vote-group">
+                {% if position != "Tandem" %}
+                <span class="fa fa-star big notchecked" data-value="1"></span>
+                <span class="fa fa-star big notchecked" data-value="2"></span>
+                <span class="fa fa-star big notchecked" data-value="3"></span>
+                <span class="fa fa-star big notchecked" data-value="4"></span>
+                <span class="fa fa-star big notchecked" data-value="5"></span>
+                <input type="hidden" name="newborns_vote" id="newborns-input" value="{{ user_ratings.newborns }}">
+                {% else %}
+                <div class="poppins-bold fscarry pink">N/A</div>
+                <input type="hidden" name="newborns_vote" id="newborns-input" value="0">
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="table-title-container" data-property="bigkids">
+            <p class="table-title"><span class="poppins-light" id="bigkids-vote"></span> Big kids</p>
+            <div class="vote-group">
+                {% if position != "Tandem" %}
+                <span class="fa fa-star big notchecked" data-value="1"></span>
+                <span class="fa fa-star big notchecked" data-value="2"></span>
+                <span class="fa fa-star big notchecked" data-value="3"></span>
+                <span class="fa fa-star big notchecked" data-value="4"></span>
+                <span class="fa fa-star big notchecked" data-value="5"></span>
+                <input type="hidden" name="bigkids_vote" id="bigkids-input" value="{{ user_ratings.bigkids }}">
+                {% else %}
+                <div class="poppins-bold fscarry pink">N/A</div>
+                <input type="hidden" name="bigkids_vote" id="bigkids-input" value="0">
+                {% endif %}
+                
+            </div>
+        </div>
+
+        <div class="table-title-container" data-property="pregnancy">
+            <p class="table-title"><span class="poppins-light" id="pregnancy-vote"></span> Pregnancy</p>
+            <div class="vote-group">
+                <span class="fa fa-star big notchecked" data-value="1"></span>
+                <span class="fa fa-star big notchecked" data-value="2"></span>
+                <span class="fa fa-star big notchecked" data-value="3"></span>
+                <span class="fa fa-star big notchecked" data-value="4"></span>
+                <span class="fa fa-star big notchecked" data-value="5"></span>
+                <input type="hidden" name="pregnancy_vote" id="pregnancy-input" value="{{ user_ratings.pregnancy }}">
+            </div>
+        </div>
+
+        <div class="table-title-container" data-property="feeding">
+            <p class="table-title"><span class="poppins-light" id="feeding-vote"></span> Feeding</p>
+            <div class="vote-group">
+                <span class="fa fa-star big notchecked" data-value="1"></span>
+                <span class="fa fa-star big notchecked" data-value="2"></span>
+                <span class="fa fa-star big notchecked" data-value="3"></span>
+                <span class="fa fa-star big notchecked" data-value="4"></span>
+                <span class="fa fa-star big notchecked" data-value="5"></span>
+                <input type="hidden" name="feeding_vote" id="feeding-input" value="{{ user_ratings.feeding }}">
+            </div>
+        </div>
+
+        <div class="table-title-container" data-property="quickups">
+            <p class="table-title"><span class="poppins-light" id="quickups-vote"></span> Quick ups</p>
+            <div class="vote-group">
+                <span class="fa fa-star big notchecked" data-value="1"></span>
+                <span class="fa fa-star big notchecked" data-value="2"></span>
+                <span class="fa fa-star big notchecked" data-value="3"></span>
+                <span class="fa fa-star big notchecked" data-value="4"></span>
+                <span class="fa fa-star big notchecked" data-value="5"></span>
+                <input type="hidden" name="quickups_vote" id="quickups-input" value="{{ user_ratings.quickups }}">
+            </div>
+        </div>
+
+        <div class="table-title-container" data-property="difficulty">
+            <p class="table-title">Difficulty<span class="poppins-light" id="difficulty-vote"></span> </p>
+            <div class="vote-group">
+                <span class="fa fa-star big notchecked" data-value="1"></span>
+                <span class="fa fa-star big notchecked" data-value="2"></span>
+                <span class="fa fa-star big notchecked" data-value="3"></span>
+                <span class="fa fa-star big notchecked" data-value="4"></span>
+                <span class="fa fa-star big notchecked" data-value="5"></span>
+                <input type="hidden" name="difficulty_vote" id="difficulty-input" value="{{ user_ratings.difficulty }}">
+            </div>
+        </div>
+
+        <div class="table-title-container" data-property="fancy">
+            <p class="table-title">Fancy<span class="poppins-light" id="fancy-vote"></span> </p>
+            <div class="vote-group">
+                <span class="fa fa-star big notchecked" data-value="1"></span>
+                <span class="fa fa-star big notchecked" data-value="2"></span>
+                <span class="fa fa-star big notchecked" data-value="3"></span>
+                <span class="fa fa-star big notchecked" data-value="4"></span>
+                <span class="fa fa-star big notchecked" data-value="5"></span>
+                <input type="hidden" name="fancy_vote" id="fancy-input" value="{{ user_ratings.fancy }}">
+            </div>
+        </div>
+        <br>
+         <button type="submit" class="submit-button">Submit votes</button>
+    </div>
+
+   
+</form>
+<br><br>
+
+<div class="title-container" id="avg-ratings">
+    <div class="poppins-bold fsmedium">
+        User ratings <span class="filter-tag-mini poppins-bold">{{ votes }} {{ votes|pluralize:"vote,votes" }}</span>
+    </div>
+    <br>
     
     <div class="table-container">
         <div class="table-item">
@@ -75,7 +237,7 @@
                 <div class="table-title-container">
                     <p class="table-title">Good for leaners<a href="{% url 'faq' %}#faq_ratings" class="info-icon" title="What does this mean">i</a></p>
 
-                    {% if leaners != 0 %}
+                    {% if position != 'Tandem' %}
                     <div id="leaners-rating" class="rating-group" data-property="{{leaners}}">
                     </div>
                     {% else %}
@@ -95,7 +257,7 @@
                 <div class="table-title-container">
                     <p class="table-title">Good for seat poppers<a href="{% url 'faq' %}#faq_ratings" class="info-icon" title="What does this mean">i</a></p>
                     
-                    {% if legstraighteners != 0 %}
+                    {% if position != 'Tandem' %}
                     <div id="legstraighteners-rating" class="rating-group" data-property="{{legstraighteners}}">
                     </div>
                     {% else %}
@@ -115,7 +277,7 @@
                 <div class="table-title-container">
                     <p class="table-title">Good for newborns<a href="{% url 'faq' %}#faq_ratings" class="info-icon" title="What does this mean">i</a></p>
                     
-                    {% if newborns != 0 %}
+                    {% if position != 'Tandem' %}
                     <div id="newborns-rating" class="rating-group" data-property="{{newborns}}">
                     </div>
                     {% else %}
@@ -128,29 +290,6 @@
             </div>
         </div>
 
-        {% if False %}
-        <div class="table-item">
-            <div class="table-icon">
-                <img src="{% static 'wrappinggallery/icons/pregnant.png' %}" alt="Icon description" width="30" height="30">
-
-            </div>
-            <div class="table-content">
-                <div class="table-title-container">
-                    <p class="table-title">Good for pregnancy<a href="{% url 'faq' %}#faq_ratings" class="info-icon" title="What does this mean">i</a></p>
-                    
-                    {% if pregnancy != 0 %}
-                    <div id="pregnancy-rating" class="rating-group" data-property="{{pregnancy}}">
-                    </div>
-                    {% else %}
-                    <div class="poppins-bold fscarry pink">Varies</div>
-                    {% endif %}
-                    
-                
-                </div>
-                <p><span class="table-description">Does this carry apply an uncomfortable pressure on your bump either from baby or the wrap? </span> <a class="table-description" href="https://www.carryingmatters.co.uk/carrying-while-pregnant/" target="blank_" style="color: blue;">Can I carry while pregnant? </a></p>
-            </div>
-        </div>
-        {% endif %}
 
         <div class="table-item">
             <div class="table-icon">
@@ -160,7 +299,7 @@
                 <div class="table-title-container">
                     <p class="table-title">Good for big kids<a href="{% url 'faq' %}#faq_ratings" class="info-icon" title="What does this mean">i</a></p>
                     
-                    {% if newborns != 0 %}
+                    {% if position != 'Tandem' %}
                     <div id="bigkids-rating" class="rating-group" data-property="{{bigkids}}">
                     </div>
                     {% else %}
@@ -169,6 +308,22 @@
                 
                 </div>
                 <p class="table-description">Does it allow you to carry a big child comfortably or is this best for short periods and or young babies?</p>
+            </div>
+        </div>
+
+        <div class="table-item">
+            <div class="table-icon">
+                <img src="{% static 'wrappinggallery/icons/pregnant.png' %}" alt="Icon description" width="30" height="30">
+
+            </div>
+            <div class="table-content">
+                <div class="table-title-container">
+                    <p class="table-title">Good for pregnancy<a href="{% url 'faq' %}#faq_ratings" class="info-icon" title="What does this mean">i</a></p>
+                    
+                    <div id="pregnancy-rating" class="rating-group" data-property="{{pregnancy}}">
+                    </div>
+                </div>
+                <p><span class="table-description">Does this carry apply an uncomfortable pressure on your bump either from baby or the wrap? </span> <a class="table-description" href="https://www.carryingmatters.co.uk/carrying-while-pregnant/" target="blank_" style="color: blue;">Can I carry while pregnant? </a></p>
             </div>
         </div>
 
@@ -181,12 +336,8 @@
                 <div class="table-title-container">
                     <p class="table-title">Good for feeding<a href="{% url 'faq' %}#faq_ratings" class="info-icon" title="What does this mean">i</a></p>
                     
-                    {% if feeding != 0 %}
                     <div id="feeding-rating" class="rating-group" data-property="{{feeding}}">
                     </div>
-                    {% else %}
-                    <div class="poppins-bold fscarry pink">Varies</div>
-                    {% endif %}
                 
                 </div>
                 <p class="table-description">Can you pop a boob out and place baby’s head at boob height with minimal adjustment? <a class="table-description" href="https://www.carryingmatters.co.uk/breast-and-bottle-feeding-safely-in-a-sling-3/" target="blank_" style="color: blue;">Can I feed safely in a wrap?</a></p>
@@ -243,6 +394,8 @@
     <p style="color: grey;">Something doesn't look right? <a href="mailto:thewrappinggallery@gmail.com" style='color: grey; text-decoration: underline;'>Email me</a></b></p>
 </div>
 
+
+
 <div id="loadingSpinner" class="loading-spinner"></div>
 <br><br>
 <div id="tutorial-content">
@@ -253,6 +406,9 @@
     <div class="title-container poppins-light fssmall">
         <a href="{% url 'faq' %}#faq_ontoback" style="color: grey; text-decoration: underline;">How do I get baby on my back?</a>
     </div>
+
+    
+
     {% endif %}
     <div id="picture-tutorial-grid" class="content-container">
         <br>
@@ -329,6 +485,33 @@
 
 <br><br><br>
 <script src="{% static 'wrappinggallery/js/carry.js' %}"></script>
+
+
+<script>
+    function openReviewForm() {
+        {% if user.is_authenticated %}
+            // Call the reviewCarry JavaScript function
+            const reviewForm = document.getElementById('review-form');
+            reviewForm.style.display = 'block';
+
+            const avgRatings = document.getElementById('avg-ratings');
+            avgRatings.style.display = 'none';
+
+            // Scroll to the review form minus 100px for the header
+            const elementPosition = reviewForm.getBoundingClientRect().top + window.scrollY;
+            const offsetPosition = elementPosition - 100;
+
+            window.scrollTo({
+                top: offsetPosition,
+                behavior: 'smooth' // Smooth scrolling
+            });
+
+        {% else %}
+            // Redirect to the login page
+            window.location.href = "{% url 'login' %}";
+        {% endif %}
+    }
+</script>
 
 
 {% endblock %}

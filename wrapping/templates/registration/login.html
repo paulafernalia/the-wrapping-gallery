@@ -1,0 +1,29 @@
+{% extends "wrappinggallery/layout.html" %}
+
+{% load static %}
+
+{% block body %}
+
+<br>
+<br>
+
+<div class="auth-container poppins-light">
+  <h2 class="pink playfair">Log in</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <p>Forgot password? <a href="{% url 'password_reset' %}">Reset it</a></p>
+    <button class="btn pinkbg btn-custom mx-1 poppins-regular fs16" style="width: 100%; border-radius: 5px;" type="submit">Log in</button>
+
+  </form>
+
+  
+</div>
+
+<br>
+<div class="title-container poppins-light" style="max-width: 600px">
+  <p>Don't have an account? <a href="{% url 'signup' %}">Sign up</a></p>
+</div>
+<br>
+
+{% endblock %}

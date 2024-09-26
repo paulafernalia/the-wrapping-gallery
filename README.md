@@ -2,7 +2,7 @@
 
 This is a project for a website with content related to babywearing with woven wraps created using python/Django and JavaScript.
 
-The production environment uses a PostgreSQL database hosted in Supabase, the development environment uses a SQLite database. Both the development and the production environment use images stored in a S3 bucket in Supabase. When environment variables describing the connection details to the Supabase S3 bucket are not available, the app will use default images in the project's static folder.
+The production and development environments use a PostgreSQL database hosted in Supabase. This database contains a bunch of tables with data needed to run the app as well as a S3 bucket where tutorial images are stored.
 
 To run the app in development mode, follow these steps:
 
@@ -14,13 +14,31 @@ To run the app in development mode, follow these steps:
 6. To view on mobile: open http://`<your-local-ip>`:8000/ on your phone. 
 7. Run `docker compose -f docker-compose.dev.yml down` to stop running the app and remove the Docker container.
 
-The `.env.dev` file must be at the same level as `manage.py` and list the following variable:
+The `.env.dev` file must be at the same level as `manage.py` and list the following variables:
 
 ```
+SECRET_KEY=<your-secret-key>
+
 DJANGO_SETTINGS_MODULE=wrapping.settings.development
+
+SUPABASE_URL=<SUPABASE_URL>
+SUPABASE_TUTORIAL_BUCKET=<SUPABASE_TUTORIAL_BUCKET>
+SERVICE_ROLE_KEY=<your-service-role-key>
+DB_NAME=<DB_NAME>
+DB_USER=<DB_USER>
+DB_PASSWORD=<DB_PASSWORD>
+DB_HOST=<DB_HOST>
+DB_PORT=<DB_PORT>
+
+EMAIL_HOST_USER=<EMAIL_HOST_USER>
+EMAIL_HOST_PASSWORD=<EMAIL_HOST_PASSWORD>
+
 ```
 
 To find `<your-local-ip>` execute `ifconfig` on your terminal (linux/macOS) and look for the "IPv4 Address" under the section for your active network connection.
+
+
+If you create a database to test this in development, before running the `docker compose -f docker-compose.dev.yml up --build -d` for the first time, you must run `python manage.py createsuperuser` to create a superuser and then `python manage.py load_csv_data initial_data.csv` to load some initial data to the database.
 
 
 ## Licensing

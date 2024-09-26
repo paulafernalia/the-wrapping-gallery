@@ -1,0 +1,56 @@
+{% extends "wrappinggallery/layout.html" %}
+
+{% load static %}
+
+{% block body %}
+
+<br>
+<div class="auth-container poppins-light">
+  <h2 class="pink playfair">Sign up for free</h2>
+  <br>
+  <p class="poppins-light">Username must contain 150 characters or fewer. Letters, digits and @/./+/-/_ only. Your password must contain at least 8 characters, it can’t be a commonly used password and it can’t be entirely numeric.</p>
+  <form id="signup-form" method="post" class="fs16">
+    {% csrf_token %}
+    {{ form.as_p }}
+
+    <div>
+      <input type="checkbox" id="terms-checkbox" required>
+      <label for="terms-checkbox" class="fs16">
+          I agree to the <a href="{% url 'termsandconditions' %}" onclick="openTerms(); return false;">terms and conditions</a>
+      </label>
+    </div>
+
+    <br>
+    <button class="btn pinkbg btn-custom mx-1 poppins-regular fs16" style="width: 100%; border-radius: 5px;" type="submit">Sign up</button>
+
+  </form>
+</div>
+
+<br>
+<div class="title-container poppins-light" style="max-width: 600px">
+  <p>Do you have an account? <a href="{% url 'login' %}">Log in</a> instead.</p>
+</div>
+<br>
+
+<script>
+    function openTerms() {
+      // Get the dimensions of the screen
+      const width = 600;
+      const height = 400;
+      const left = (window.innerWidth / 2) - (width / 2);
+      const top = (window.innerHeight / 2) - (height / 2);
+
+      window.open("{% url 'termsandconditions' %}", 'Terms and Conditions', 'width=600,height=400');
+    }
+
+    document.getElementById('signup-form').onsubmit = function() {
+        if (!document.getElementById('terms-checkbox').checked) {
+            alert('You must agree to the terms and conditions before signing up.');
+            return false;
+        }
+        return true;
+    };
+</script>
+
+
+{% endblock %}

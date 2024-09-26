@@ -68,7 +68,7 @@ ROOT_URLCONF = "wrapping.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [BASE_DIR / "templates"],  # new
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -81,11 +81,17 @@ TEMPLATES = [
     },
 ]
 
+LOGIN_REDIRECT_URL = "/"
+LOGOUT_REDIRECT_URL = "/"
+
 WSGI_APPLICATION = "wrapping.wsgi.application"
 
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
+
+AUTH_USER_MODEL = "wrappinggallery.CustomUser"  # new
+
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -119,6 +125,14 @@ USE_TZ = True
 STATIC_URL = "/static/"
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = config("EMAIL_HOST_USER", default=""),
+EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD", default=""),
 
 
 # Default primary key field type
