@@ -352,10 +352,7 @@ class UserRating(models.Model):
             "carry_name": self.carry.name,    # Get the name from Carry
         }
 
-
-    def save(self, *args, **kwargs):
-        super().save(*args, **kwargs)  # Save the UserRating instance first
-
+    def update_rating(self):
         # Now update the corresponding Rating entry
         try:
             # Fetch the Rating entry for the associated carry
@@ -410,6 +407,22 @@ class UserRating(models.Model):
             print("Rating does not exist for the given carry.")
         except Exception as e:
             print(str(e))
+
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)  # Call the parent class's save method
+
+        # Call your shared logic
+        self.update_rating()
+        
+
+    def delete(self, *args, **kwargs):
+        super().delete(*args, **kwargs)  # Call the parent class's delete method
+        
+        # Call your shared logic
+        self.update_rating()
+
+        
 
 
 class FavouriteCarry(models.Model):
