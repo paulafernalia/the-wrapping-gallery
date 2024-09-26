@@ -2,7 +2,36 @@
 <form method="post">
   {% csrf_token %}
   {{ form.as_p }}
+
+  <div>
+    <input type="checkbox" id="terms-checkbox" required>
+    <label for="terms-checkbox">
+        I agree to the <a href="{% url 'termsandconditions' %}" onclick="openTerms(); return false;">terms and conditions</a>
+    </label>
+  </div>
+
   <button type="submit">Sign Up</button>
+
 </form>
 
 <p>Do you have an account? <a href="{% url 'login' %}">Log in</a> instead.</p>
+
+<script>
+    function openTerms() {
+      // Get the dimensions of the screen
+      const width = 600;
+      const height = 400;
+      const left = (window.innerWidth / 2) - (width / 2);
+      const top = (window.innerHeight / 2) - (height / 2);
+
+      window.open("{% url 'termsandconditions' %}", 'Terms and Conditions', 'width=600,height=400');
+    }
+
+    document.getElementById('signup-form').onsubmit = function() {
+        if (!document.getElementById('terms-checkbox').checked) {
+            alert('You must agree to the terms and conditions before signing up.');
+            return false;
+        }
+        return true;
+    };
+</script>
