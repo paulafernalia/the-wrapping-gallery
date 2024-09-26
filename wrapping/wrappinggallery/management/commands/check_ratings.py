@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand
-from wrappinggallery.models import Carry, Ratings
+from wrappinggallery.models import Carry, Rating
 
 
 class Command(BaseCommand):
@@ -10,7 +10,7 @@ class Command(BaseCommand):
         carries_without_ratings = [
             carry
             for carry in all_carries
-            if not Ratings.objects.filter(carry=carry).exists()
+            if not Rating.objects.filter(carry=carry).exists()
         ]
 
         if carries_without_ratings:
@@ -19,7 +19,7 @@ class Command(BaseCommand):
             )
             self.stdout.write(
                 self.style.ERROR(
-                    f"The following Carry IDs do not have corresponding Ratings: {missing_carries}"
+                    f"The following Carry IDs do not have corresponding Rating: {missing_carries}"
                 )
             )
             self.stdout.write(

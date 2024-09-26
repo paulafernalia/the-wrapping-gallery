@@ -4,7 +4,7 @@ let resultsPage = 1;
 let pageSize = 18;
 
 const booleanProps = [
-    'fancy', 'pretied', 'newborns', 'legstraighteners', 'leaners', 
+    'fancy', 'pretied', 'newborns', 'legstraighteners', 'leaners', 'pregnancy',
     'bigkids', 'feeding', 'quickups', 'rings', 'pass_sling', 
     'pass_ruck', 'pass_kangaroo', 'pass_cross', 'pass_reinforcing_cross', 
     'pass_reinforcing_horizontal', 'pass_horizontal', 'pass_poppins', 
@@ -466,6 +466,7 @@ function showAppliedFilters() {
         { key: "legstraighteners", label: "good for leg straighteners" },
         { key: "feeding", label: "good for feeding" },
         { key: "newborns", label: "good for newborns" },
+        { key: "pregnancy", label: "good for pregnancy" },
         { key: "pass_sling", label: "sling pass" },
         { key: "pass_ruck", label: "ruck pass" },
         { key: "pass_kangaroo", label: "kangaroo pass" },

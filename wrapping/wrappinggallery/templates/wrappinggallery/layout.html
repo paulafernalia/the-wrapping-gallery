@@ -66,13 +66,35 @@
                 <li class="nav-item">
                     <a class="nav-link poppins-light {% if request.path == '/downloads/' %}active{% endif %}" data-page="downloads" href="{% url 'downloads' %}">DOWNLOADS</a>
                 </li>
+                {% if user.is_authenticated %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-user"></i>
+                        </a>
+                        <div class="dropdown-menu poppins-light fssmall" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="{% url 'collection' %}">COLLECTION</a>
+                            <a class="dropdown-item" href="{% url 'password_change' %}">CHANGE PASSWORD</a>
+                            <form action="{% url 'logout' %}" method="post" class="dropdown-item m-0">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-link dropdown-item poppins-light fssmall" style="padding: 0; margin: 0;">LOG OUT</button>
+                            </form>
+                        </div>
+                    </li>
+                {% else %}
+                    {% if False %}
+                    <li class="nav-item">
+                        <a class="nav-link poppins-light" href="{% url 'login' %}">LOG IN</a>
+                    </li>
+                    {% endif %}
+                {% endif %}
             </ul>
         </div>
+
       </nav>
     </div>
+
     {% block body %}
     {% endblock %}
-
 
     <div class='footer-container bg-dark'>
     <footer class="py-3 my-4">
@@ -93,3 +115,53 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </body>
 </html>
+
+
+<script type="text/javascript">
+    function releaseFooter() {
+        const footer = document.querySelector('footer');
+        footer.style.position = 'static'; // Reset to default position
+        footer.style.bottom = 'auto'; // Reset to default value
+        footer.style.width = 'auto'; // Reset to default width
+    }
+
+
+    function fixFooter() {
+        const footer = document.querySelector('footer');
+        footer.style.position = 'fixed'; 
+        footer.style.bottom = '0';
+        footer.style.width = '100%';
+    }
+
+    function exploreCarriesBtnClick() {
+        window.location.href = "{% url 'index' %}";
+    }
+
+    function updateFooterPosition() {
+        releaseFooter();
+
+        // print position of footer
+        let element = document.querySelector('footer');
+        elementPosition = 0;
+
+        while(element) {
+            elementPosition += element.offsetTop;
+            element = element.offsetParent;
+        }
+
+        let viewportHeight = window.innerHeight;
+
+        if (elementPosition + 80 < viewportHeight) {
+            fixFooter();
+        } else {
+            releaseFooter();
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() { 
+        updateFooterPosition();
+    });
+
+
+</script>
+

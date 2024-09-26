@@ -17,6 +17,6 @@ RUN pip install -r requirements.txt
 COPY . /code/
 
 # Start Gunicorn server
-CMD ["sh", "-c", "python manage.py migrate --settings=wrapping.settings.development --noinput && python manage.py load_csv_data initial_data.csv --settings=wrapping.settings.development && python manage.py check_ratings && python manage.py collectstatic --no-input --clear && python manage.py check_static_files && python manage.py runserver 0.0.0.0:8000 --settings=wrapping.settings.development"]
+CMD ["sh", "-c", "python manage.py makemigrations && python manage.py migrate --settings=wrapping.settings.development --noinput && python manage.py collectstatic --no-input --clear && python manage.py check_static_files && python manage.py runserver 0.0.0.0:8000 --settings=wrapping.settings.development"]
 
 
