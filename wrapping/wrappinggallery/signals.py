@@ -1,8 +1,9 @@
-from django.db.models.signals import post_save
 from django.dispatch import receiver
-from .models import Carry, Rating
+from .models import Carry, UserRating, CustomUser
+from django.db.models.signals import pre_delete
 
-# @receiver(post_save, sender=Carry)
-# def create_ratings_for_carry(sender, instance, created, **kwargs):
-#     if created:  # Check if the Carry instance was created
-#         Rating.objects.get_or_create(carry=instance)
+@receiver(pre_delete, sender=CustomUser)
+def user_rating_cleanup(sender, instance, **kwargs):
+    user_ratings = UserRating.objects.filter(user=instance)
+    for user_rating in user_ratings:
+        user_rating.delete()  # This will call the delete method you defined
