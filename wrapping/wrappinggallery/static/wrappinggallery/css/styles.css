@@ -367,6 +367,17 @@ p, li {
     border: 1px solid lightgrey;
 }
 
+
+.auth-container {
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 600px;
+    background-color: white;
+    padding: 30px;
+    border-radius: 5px;
+    border: 1px solid lightgrey;
+}
+
 .search-container {
     margin-top: 0px;
     margin-left: auto;
@@ -842,4 +853,31 @@ hr {
     color: black;
     text-decoration: none;
     cursor: pointer;
+}
+
+
+
+.auth-container input[type="text"],
+.auth-container input[type="password"],
+.auth-container input[type="email"] {
+    width: 100%; /* Full width */
+    padding: 10px; /* Space inside the input */
+    margin: 8px 0; /* Space around the input */
+    border: 2px solid #ccc; /* Border color */
+    border-radius: 5px; /* Rounded corners */
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+    font-size: 14px; /* Font size */
+    color: black;
+}
+
+.auth-container input::placeholder {
+    color: #aaa; /* Change this color to your desired placeholder color */
+    opacity: 1; /* Set opacity to 1 to make the placeholder fully visible */
+}
+
+.auth-container input[type="text"]:focus,
+.auth-container input[type="password"]:focus,
+.auth-container input[type="email"]:focus {
+    border-color: #4a90e2; /* Change border color on focus */
+    outline: none; /* Remove outline */
 }

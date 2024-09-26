@@ -30,48 +30,4 @@
 </div>
 
 
-<script>
-    function releaseFooter() {
-        const footer = document.querySelector('footer');
-        footer.style.position = 'static'; // Reset to default position
-        footer.style.bottom = 'auto'; // Reset to default value
-        footer.style.width = 'auto'; // Reset to default width
-    }
-
-
-    function fixFooter() {
-        const footer = document.querySelector('footer');
-        footer.style.position = 'fixed'; 
-        footer.style.bottom = '0';
-        footer.style.width = '100%';
-    }
-
-
-    function updateFooterPosition() {
-        releaseFooter();
-
-        // print position of footer
-        let element = document.querySelector('footer');
-        elementPosition = 0;
-
-        while(element) {
-            elementPosition += element.offsetTop;
-            element = element.offsetParent;
-        }
-
-        let viewportHeight = window.innerHeight;
-
-        if (elementPosition + 80 < viewportHeight) {
-            fixFooter();
-        } else {
-            releaseFooter();
-        }
-    }
-
-    document.addEventListener('DOMContentLoaded', function() { 
-        updateFooterPosition();
-    });
-</script>
-
-
 {% endblock %}
