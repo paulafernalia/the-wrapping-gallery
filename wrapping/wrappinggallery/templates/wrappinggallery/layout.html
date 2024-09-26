@@ -81,9 +81,11 @@
                         </div>
                     </li>
                 {% else %}
+                    {% if False %}
                     <li class="nav-item">
                         <a class="nav-link poppins-light" href="{% url 'login' %}">LOG IN</a>
                     </li>
+                    {% endif %}
                 {% endif %}
             </ul>
         </div>
