@@ -1,5 +1,5 @@
 from django.test import TestCase
-from .models import Carry, Rating
+from .models import Carry, Rating, CustomUser, UserRating
 from django.db import IntegrityError
 from django.core.exceptions import ValidationError
 
@@ -28,48 +28,11 @@ class CarryTestCase(TestCase):
         c = Carry.objects.all()
         self.assertEqual(c.count(), 1)
 
-    def test_add_rating(self):
-        # Add a rating to the Carry instance.
-        rating = Rating.objects.create(
-            carry=self.c1,
-            newborns=4.0,
-            legstraighteners=3.0,
-            leaners=5.0,
-            bigkids=2.0,
-            feeding=4.0,
-            quickups=5.0,
-            difficulty=3.0,
-            fancy=4.0,
-            votes=10,
-        )
-        
-        # Fetch the rating and check its values.
-        r = Rating.objects.get(carry=self.c1)
-        self.assertEqual(r.newborns, 4.0)
-        self.assertEqual(r.legstraighteners, 3.0)
-        self.assertEqual(r.leaners, 5.0)
-        self.assertEqual(r.bigkids, 2.0)
-        self.assertEqual(r.feeding, 4.0)
-        self.assertEqual(r.quickups, 5.0)
-        self.assertEqual(r.difficulty, 3.0)
-        self.assertEqual(r.fancy, 4.0)
-        self.assertEqual(r.votes, 10)
+    def test_ratings_count(self):
+        r = Rating.objects.all()
+        self.assertEqual(r.count(), 1)
 
     def test_cascade_delete_carry(self):
-        # Add a rating to the Carry instance.
-        rating = Rating.objects.create(
-            carry=self.c1,
-            newborns=4.0,
-            legstraighteners=3.0,
-            leaners=5.0,
-            bigkids=2.0,
-            feeding=4.0,
-            quickups=5.0,
-            difficulty=3.0,
-            fancy=4.0,
-            votes=10,
-        )
-
          # Delete the Carry instance.
         carry_name = self.c1.name
         self.c1.delete()
@@ -78,36 +41,6 @@ class CarryTestCase(TestCase):
         ratings_count = Rating.objects.filter(carry__name=carry_name).count()
         self.assertEqual(ratings_count, 0)
 
-
-    def test_no_duplicate_ratings(self):
-        # Add a rating to the Carry instance.
-        rating = Rating.objects.create(
-            carry=self.c1,
-            newborns=4.0,
-            legstraighteners=3.0,
-            leaners=5.0,
-            bigkids=2.0,
-            feeding=4.0,
-            quickups=5.0,
-            difficulty=3.0,
-            fancy=4.0,
-            votes=10,
-        )
-
-        # Attempt to add another rating for the same Carry instance.
-        with self.assertRaises(IntegrityError):
-            Rating.objects.create(
-                carry=self.c1,
-                newborns=5.0,
-                legstraighteners=4.0,
-                leaners=3.0,
-                bigkids=2.0,
-                feeding=1.0,
-                quickups=2.0,
-                difficulty=5.0,
-                fancy=1.0,
-                votes=5,
-            )
 
 class CarryVideoTest(TestCase):
 
@@ -302,3 +235,110 @@ class CarryVideoTest(TestCase):
         carry.videotutorial3 = ""
         with self.assertRaises(ValidationError):
             carry.full_clean()  # This should raise a ValidationError
+
+
+class UserRatingTestCase(TestCase):
+    def setUp(self):
+        # Create a user and a carry for testing
+        self.user = CustomUser.objects.create_user(
+            username='testuser',
+            password='testpassword',
+        )
+
+        self.carry = Carry.objects.create(
+            name="CarryTestCase",
+            title="Ruck",
+            longtitle="Ruck",
+            size=0,
+            shoulders=2,
+            layers=1,
+            mmposition=0,
+            position="back",
+            pretied=False,  # corrected boolean value
+            rings=False,
+            finish="TIF",
+            pass_ruck=1,
+        )
+
+    def test_user_rating_create_updates_rating(self):
+        # Create a UserRating entry
+        user_rating = UserRating.objects.create(
+            user=self.user,
+            carry=self.carry,
+            newborns=4,
+            legstraighteners=3,
+            leaners=5,
+            bigkids=2,
+            feeding=4,
+            quickups=3,
+            pregnancy=2,
+            difficulty=5,
+            fancy=4,
+        )
+
+        # Fetch the corresponding Rating entry
+        updated_rating = Rating.objects.get(carry=self.carry)
+
+        # Check if the Rating entry is updated correctly
+        self.assertEqual(updated_rating.newborns, 4)
+        self.assertEqual(updated_rating.legstraighteners, 3)
+        self.assertEqual(updated_rating.leaners, 5)
+        self.assertEqual(updated_rating.bigkids, 2)
+        self.assertEqual(updated_rating.feeding, 4)
+        self.assertEqual(updated_rating.quickups, 3)
+        self.assertEqual(updated_rating.pregnancy, 2)
+        self.assertEqual(updated_rating.difficulty, 5)
+        self.assertEqual(updated_rating.fancy, 4)
+        self.assertEqual(updated_rating.votes, 1)
+
+    def test_user_rating_update_updates_rating(self):
+        # Create a UserRating entry
+        user_rating = UserRating.objects.create(
+            user=self.user,
+            carry=self.carry,
+            newborns=3,
+            legstraighteners=2,
+            leaners=4,
+            bigkids=1,
+            feeding=3,
+            quickups=2,
+            pregnancy=1,
+            difficulty=4,
+            fancy=3,
+        )
+        
+        # Update the UserRating entry
+        user_rating.newborns = 5
+        user_rating.save()  # This should trigger update_rating
+
+        # Fetch the corresponding Rating entry
+        updated_rating = Rating.objects.get(carry=self.carry)
+
+        # Check if the Rating entry is updated correctly
+        self.assertEqual(updated_rating.newborns, 5)  # This will depend on existing UserRatings
+
+    def test_user_rating_delete_updates_rating(self):
+        # Create a UserRating entry
+        user_rating = UserRating.objects.create(
+            user=self.user,
+            carry=self.carry,
+            newborns=4,
+            legstraighteners=3,
+            leaners=5,
+            bigkids=2,
+            feeding=4,
+            quickups=3,
+            pregnancy=2,
+            difficulty=5,
+            fancy=4,
+        )
+
+        # Delete the UserRating entry
+        user_rating.delete()  # This should trigger update_rating
+
+        # Fetch the corresponding Rating entry
+        updated_rating = Rating.objects.get(carry=self.carry)
+
+        # Check if the Rating entry is updated correctly
+        self.assertEqual(updated_rating.votes, 0)  # Assuming no other UserRatings exist
+
