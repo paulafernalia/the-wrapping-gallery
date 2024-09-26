@@ -1,20 +1,36 @@
-<h2>Sign Up</h2>
-<form method="post">
-  {% csrf_token %}
-  {{ form.as_p }}
+{% extends "wrappinggallery/layout.html" %}
 
-  <div>
-    <input type="checkbox" id="terms-checkbox" required>
-    <label for="terms-checkbox">
-        I agree to the <a href="{% url 'termsandconditions' %}" onclick="openTerms(); return false;">terms and conditions</a>
-    </label>
-  </div>
+{% load static %}
 
-  <button type="submit">Sign Up</button>
+{% block body %}
 
-</form>
+<br>
+<div class="auth-container poppins-light">
+  <h2 class="pink playfair">Sign up for free</h2>
+  <br>
+  <p class="poppins-light">Username must contain 150 characters or fewer. Letters, digits and @/./+/-/_ only. Your password must contain at least 8 characters, it can’t be a commonly used password and it can’t be entirely numeric.</p>
+  <form id="signup-form" method="post" class="fs16">
+    {% csrf_token %}
+    {{ form.as_p }}
 
-<p>Do you have an account? <a href="{% url 'login' %}">Log in</a> instead.</p>
+    <div>
+      <input type="checkbox" id="terms-checkbox" required>
+      <label for="terms-checkbox" class="fs16">
+          I agree to the <a href="{% url 'termsandconditions' %}" onclick="openTerms(); return false;">terms and conditions</a>
+      </label>
+    </div>
+
+    <br>
+    <button class="btn pinkbg btn-custom mx-1 poppins-regular fs16" style="width: 100%; border-radius: 5px;" type="submit">Sign up</button>
+
+  </form>
+</div>
+
+<br>
+<div class="title-container poppins-light" style="max-width: 600px">
+  <p>Do you have an account? <a href="{% url 'login' %}">Log in</a> instead.</p>
+</div>
+<br>
 
 <script>
     function openTerms() {
@@ -35,3 +51,6 @@
         return true;
     };
 </script>
+
+
+{% endblock %}
