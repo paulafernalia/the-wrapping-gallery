@@ -4,7 +4,8 @@ from django.contrib.staticfiles.storage import staticfiles_storage
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from django.http import JsonResponse
 import os
-from .models import Carry, Rating
+from .models import Carry, Rating, UserRating
+from django.db.models import Avg
 
 
 def initialise_supabase():
@@ -217,4 +218,3 @@ def apply_filters(queryset, properties, values, mmpositions, finishes, difficult
             queryset = queryset.filter(carry__other_poppins="0")
 
     return queryset
-

@@ -31,10 +31,9 @@ else:
 SECRET_KEY = config("SECRET_KEY", default="default-development-secret-key")
 
 # Load Supabase configuration from environment variables
+# TODO MIGRATE TO DIFFERENT PROJECT
 SUPABASE_URL = config("SUPABASE_URL", default="https://default.supabase.co")
 SERVICE_ROLE_KEY = config("SERVICE_ROLE_KEY", default="default-service-role-key")
-SUPABASE_COVER_BUCKET = config("SUPABASE_COVER_BUCKET", default="default-bucket-name")
-SUPABASE_MISC_BUCKET = config("SUPABASE_MISC_BUCKET", default="default-bucket-name")
 SUPABASE_TUTORIAL_BUCKET = config("SUPABASE_TUTORIAL_BUCKET", default="default-bucket-name")
 
 
@@ -152,8 +151,12 @@ ALLOWED_HOSTS = ["*"]
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
+        "ENGINE": "django.db.backends.postgresql_psycopg2",
+        "NAME": config("DB_NAME", default="default_db_name"),
+        "USER": config("DB_USER", default="default_user"),
+        "PASSWORD": config("DB_PASSWORD", default="default_password"),
+        "HOST": config("DB_HOST", default="localhost"),
+        "PORT": config("DB_PORT", default="5432"),
     }
 }
 

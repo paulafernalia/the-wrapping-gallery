@@ -10,7 +10,7 @@ function addStarsToRatingGroup(groupId) {
     // Create the stars
     for (let i = 0; i < 5; i++) {
         const star = document.createElement('span');
-        star.classList.add('fa', 'fa-star');
+        star.classList.add('fa', 'fa-star', 'small-star');
         if (i < checkedStars) {
             star.classList.add('checked');
         } else {
