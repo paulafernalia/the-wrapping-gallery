@@ -71,8 +71,13 @@ function handleMouseLeave(hoverLabel) {
 }
 
 
+function isLargeScreenDevice() {
+    return window.innerWidth > 1024; // Example threshold for laptops/desktops
+}
+
+
 function handleGridItemClick(gridItem, carry, baseUrlPattern) {
-    const hasBeenClicked = gridItem.dataset.clicked === 'true';
+    const hasBeenClicked = isLargeScreenDevice() ? true : gridItem.dataset.clicked === 'true';
 
     if (!hasBeenClicked) {
         // Show the hover label

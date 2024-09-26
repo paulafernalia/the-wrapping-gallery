@@ -222,12 +222,11 @@
 </form>
 <br><br>
 
-<div class="title-container">
+<div class="title-container" id="avg-ratings">
     <div class="poppins-bold fsmedium">
         User ratings <span class="filter-tag-mini poppins-bold">{{ votes }} {{ votes|pluralize:"vote,votes" }}</span>
     </div>
     <br>
-    
     
     <div class="table-container">
         <div class="table-item">
@@ -494,6 +493,9 @@
             // Call the reviewCarry JavaScript function
             const reviewForm = document.getElementById('review-form');
             reviewForm.style.display = 'block';
+
+            const avgRatings = document.getElementById('avg-ratings');
+            avgRatings.style.display = 'none';
 
             // Scroll to the review form minus 100px for the header
             const elementPosition = reviewForm.getBoundingClientRect().top + window.scrollY;

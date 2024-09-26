@@ -80,8 +80,8 @@ def collection(request):
     user = request.user  # Get the logged-in user
 
     # Get all distinct positions and sizes
-    positions = Carry.objects.values_list('position', flat=True).distinct()
-    sizes = Carry.objects.values_list('size', flat=True).distinct()
+    positions = Carry.objects.values_list('position', flat=True).distinct().order_by('position')
+    sizes = Carry.objects.values_list('size', flat=True).distinct().order_by('size')
 
     # Pre-fetch all carries and group by position and size
     all_carries = Carry.objects.filter(position__in=positions, size__in=sizes).values('position', 'size').annotate(total_count=Count('name'))
