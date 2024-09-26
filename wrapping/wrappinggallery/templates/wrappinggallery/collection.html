@@ -11,8 +11,12 @@
 
 <div id="carryTitle" class="title-container poppins-bold fsmedium">
 
+    <h1 class="pink poiret-one-regular">{{ user.username|capfirst }}' Collection</h1>
+    <br>
+    <br>
+
     {% for position in positions %}
-        <h3 class="poiret-one-regular pink">{{ position|upper }} CARRIES</h3>
+        <h4 class="poppins-regular pink">{{ position|capfirst }} carries</h4>
         <br>
         {% for size in sizes %}
             {% if total_carries|get_item:position|get_item:size > 0 %}

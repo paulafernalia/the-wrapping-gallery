@@ -89,48 +89,81 @@
         <div class="table-title-container" data-property="leaners">
             <p class="table-title"><span class="poppins-light" id="leaners-vote"></span> Leaners</p>
             <div class="vote-group">
+                {% if position != "Tandem" %}
                 <span class="fa fa-star big notchecked" data-value="1"></span>
                 <span class="fa fa-star big notchecked" data-value="2"></span>
                 <span class="fa fa-star big notchecked" data-value="3"></span>
                 <span class="fa fa-star big notchecked" data-value="4"></span>
                 <span class="fa fa-star big notchecked" data-value="5"></span>
                 <input type="hidden" name="leaners_vote" id="leaners-input" value="{{ user_ratings.leaners }}">
+                {% else %}
+                <div class="poppins-bold fscarry pink">N/A</div>
+                <input type="hidden" name="leaners_vote" id="leaners-input" value="0">
+                {% endif %}
             </div>
         </div>
 
         <div class="table-title-container" data-property="legstraighteners">
             <p class="table-title"><span class="poppins-light" id="legstraighteners-vote"></span> Seat poppers</p>
             <div class="vote-group">
+                {% if position != "Tandem" %}
                 <span class="fa fa-star big notchecked" data-value="1"></span>
                 <span class="fa fa-star big notchecked" data-value="2"></span>
                 <span class="fa fa-star big notchecked" data-value="3"></span>
                 <span class="fa fa-star big notchecked" data-value="4"></span>
                 <span class="fa fa-star big notchecked" data-value="5"></span>
                 <input type="hidden" name="legstraighteners_vote" id="legstraighteners-input" value="{{ user_ratings.legstraighteners }}">
+                {% else %}
+                <div class="poppins-bold fscarry pink">N/A</div>
+                <input type="hidden" name="legstraighteners_vote" id="legstraighteners-input" value="0">
+                {% endif %}
             </div>
         </div>
 
         <div class="table-title-container" data-property="newborns">
             <p class="table-title"><span class="poppins-light" id="newborns-vote"></span> Newborns</p>
             <div class="vote-group">
+                {% if position != "Tandem" %}
                 <span class="fa fa-star big notchecked" data-value="1"></span>
                 <span class="fa fa-star big notchecked" data-value="2"></span>
                 <span class="fa fa-star big notchecked" data-value="3"></span>
                 <span class="fa fa-star big notchecked" data-value="4"></span>
                 <span class="fa fa-star big notchecked" data-value="5"></span>
                 <input type="hidden" name="newborns_vote" id="newborns-input" value="{{ user_ratings.newborns }}">
+                {% else %}
+                <div class="poppins-bold fscarry pink">N/A</div>
+                <input type="hidden" name="newborns_vote" id="newborns-input" value="0">
+                {% endif %}
             </div>
         </div>
 
         <div class="table-title-container" data-property="bigkids">
             <p class="table-title"><span class="poppins-light" id="bigkids-vote"></span> Big kids</p>
             <div class="vote-group">
+                {% if position != "Tandem" %}
                 <span class="fa fa-star big notchecked" data-value="1"></span>
                 <span class="fa fa-star big notchecked" data-value="2"></span>
                 <span class="fa fa-star big notchecked" data-value="3"></span>
                 <span class="fa fa-star big notchecked" data-value="4"></span>
                 <span class="fa fa-star big notchecked" data-value="5"></span>
                 <input type="hidden" name="bigkids_vote" id="bigkids-input" value="{{ user_ratings.bigkids }}">
+                {% else %}
+                <div class="poppins-bold fscarry pink">N/A</div>
+                <input type="hidden" name="bigkids_vote" id="bigkids-input" value="0">
+                {% endif %}
+                
+            </div>
+        </div>
+
+        <div class="table-title-container" data-property="pregnancy">
+            <p class="table-title"><span class="poppins-light" id="pregnancy-vote"></span> Pregnancy</p>
+            <div class="vote-group">
+                <span class="fa fa-star big notchecked" data-value="1"></span>
+                <span class="fa fa-star big notchecked" data-value="2"></span>
+                <span class="fa fa-star big notchecked" data-value="3"></span>
+                <span class="fa fa-star big notchecked" data-value="4"></span>
+                <span class="fa fa-star big notchecked" data-value="5"></span>
+                <input type="hidden" name="pregnancy_vote" id="pregnancy-input" value="{{ user_ratings.pregnancy }}">
             </div>
         </div>
 
@@ -190,7 +223,7 @@
 <br><br>
 
 <div class="title-container">
-    <div class="title-container poppins-bold fsmedium">
+    <div class="poppins-bold fsmedium">
         User ratings <span class="filter-tag-mini poppins-bold">{{ votes }} {{ votes|pluralize:"vote,votes" }}</span>
     </div>
     <br>
@@ -205,7 +238,7 @@
                 <div class="table-title-container">
                     <p class="table-title">Good for leaners<a href="{% url 'faq' %}#faq_ratings" class="info-icon" title="What does this mean">i</a></p>
 
-                    {% if leaners != 0 %}
+                    {% if position != 'Tandem' %}
                     <div id="leaners-rating" class="rating-group" data-property="{{leaners}}">
                     </div>
                     {% else %}
@@ -225,7 +258,7 @@
                 <div class="table-title-container">
                     <p class="table-title">Good for seat poppers<a href="{% url 'faq' %}#faq_ratings" class="info-icon" title="What does this mean">i</a></p>
                     
-                    {% if legstraighteners != 0 %}
+                    {% if position != 'Tandem' %}
                     <div id="legstraighteners-rating" class="rating-group" data-property="{{legstraighteners}}">
                     </div>
                     {% else %}
@@ -245,7 +278,7 @@
                 <div class="table-title-container">
                     <p class="table-title">Good for newborns<a href="{% url 'faq' %}#faq_ratings" class="info-icon" title="What does this mean">i</a></p>
                     
-                    {% if newborns != 0 %}
+                    {% if position != 'Tandem' %}
                     <div id="newborns-rating" class="rating-group" data-property="{{newborns}}">
                     </div>
                     {% else %}
@@ -258,29 +291,6 @@
             </div>
         </div>
 
-        {% if False %}
-        <div class="table-item">
-            <div class="table-icon">
-                <img src="{% static 'wrappinggallery/icons/pregnant.png' %}" alt="Icon description" width="30" height="30">
-
-            </div>
-            <div class="table-content">
-                <div class="table-title-container">
-                    <p class="table-title">Good for pregnancy<a href="{% url 'faq' %}#faq_ratings" class="info-icon" title="What does this mean">i</a></p>
-                    
-                    {% if pregnancy != 0 %}
-                    <div id="pregnancy-rating" class="rating-group" data-property="{{pregnancy}}">
-                    </div>
-                    {% else %}
-                    <div class="poppins-bold fscarry pink">Varies</div>
-                    {% endif %}
-                    
-                
-                </div>
-                <p><span class="table-description">Does this carry apply an uncomfortable pressure on your bump either from baby or the wrap? </span> <a class="table-description" href="https://www.carryingmatters.co.uk/carrying-while-pregnant/" target="blank_" style="color: blue;">Can I carry while pregnant? </a></p>
-            </div>
-        </div>
-        {% endif %}
 
         <div class="table-item">
             <div class="table-icon">
@@ -290,7 +300,7 @@
                 <div class="table-title-container">
                     <p class="table-title">Good for big kids<a href="{% url 'faq' %}#faq_ratings" class="info-icon" title="What does this mean">i</a></p>
                     
-                    {% if newborns != 0 %}
+                    {% if position != 'Tandem' %}
                     <div id="bigkids-rating" class="rating-group" data-property="{{bigkids}}">
                     </div>
                     {% else %}
@@ -299,6 +309,22 @@
                 
                 </div>
                 <p class="table-description">Does it allow you to carry a big child comfortably or is this best for short periods and or young babies?</p>
+            </div>
+        </div>
+
+        <div class="table-item">
+            <div class="table-icon">
+                <img src="{% static 'wrappinggallery/icons/pregnant.png' %}" alt="Icon description" width="30" height="30">
+
+            </div>
+            <div class="table-content">
+                <div class="table-title-container">
+                    <p class="table-title">Good for pregnancy<a href="{% url 'faq' %}#faq_ratings" class="info-icon" title="What does this mean">i</a></p>
+                    
+                    <div id="pregnancy-rating" class="rating-group" data-property="{{pregnancy}}">
+                    </div>
+                </div>
+                <p><span class="table-description">Does this carry apply an uncomfortable pressure on your bump either from baby or the wrap? </span> <a class="table-description" href="https://www.carryingmatters.co.uk/carrying-while-pregnant/" target="blank_" style="color: blue;">Can I carry while pregnant? </a></p>
             </div>
         </div>
 
@@ -311,12 +337,8 @@
                 <div class="table-title-container">
                     <p class="table-title">Good for feeding<a href="{% url 'faq' %}#faq_ratings" class="info-icon" title="What does this mean">i</a></p>
                     
-                    {% if feeding != 0 %}
                     <div id="feeding-rating" class="rating-group" data-property="{{feeding}}">
                     </div>
-                    {% else %}
-                    <div class="poppins-bold fscarry pink">Varies</div>
-                    {% endif %}
                 
                 </div>
                 <p class="table-description">Can you pop a boob out and place baby’s head at boob height with minimal adjustment? <a class="table-description" href="https://www.carryingmatters.co.uk/breast-and-bottle-feeding-safely-in-a-sling-3/" target="blank_" style="color: blue;">Can I feed safely in a wrap?</a></p>
