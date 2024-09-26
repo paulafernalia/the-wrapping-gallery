@@ -143,6 +143,10 @@ h2 {
     opacity: 1; /* Fade in the label when hovered */
 }
 
+.card-grid-item {
+    cursor: pointer;
+}
+
 
 /* Media query for very narrow viewports */
 @media (max-width: 768px) { /* Adjust the max-width as needed */

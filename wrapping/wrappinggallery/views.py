@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse, FileResponse
 from django.views.decorators.http import require_GET
-from django.db.models import FloatField, Func, F
+from django.db.models import FloatField, Func, F, Sum, Count
 from django.db.models.functions import Round
 from django.shortcuts import redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
@@ -9,7 +9,6 @@ from .models import Carry, Rating, DoneCarry, UserRating
 from . import utils
 from django.conf import settings
 import os
-
 from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView
 
@@ -71,34 +70,44 @@ def downloads(request):
 
 def collection(request):
     user = request.user  # Get the logged-in user
-    positions = Carry.objects.values_list('position', flat=True).distinct()  # Get distinct positions
-    sizes = Carry.objects.values_list('size', flat=True).distinct()  # Get distinct sizes
 
-    # Separate data structures
+    # Get all distinct positions and sizes
+    positions = Carry.objects.values_list('position', flat=True).distinct()
+    sizes = Carry.objects.values_list('size', flat=True).distinct()
+
+    # Pre-fetch all carries and group by position and size
+    all_carries = Carry.objects.filter(position__in=positions, size__in=sizes).values('position', 'size').annotate(total_count=Count('name'))
+
+    # Create a dictionary to quickly access the total counts of carries
     total_carries = {}
+    for carry in all_carries:
+        position = carry['position']
+        size = carry['size']
+        count = carry['total_count']
+
+        if position not in total_carries:
+            total_carries[position] = {}
+        total_carries[position][size] = count
+
+    # Get done carries by the user in one query
+    user_done_carries = DoneCarry.objects.filter(user=user).select_related('carry')
+    
+    # Create structures for user carries
     done_counts = {}
     done_carry_names = {}
-
-    # Loop through each position and size to calculate total carries and user carries
+    
+    # Initialize the structures for positions
     for position in positions:
-        total_carries[position] = {}
         done_counts[position] = {}
         done_carry_names[position] = {}
-
+        
         for size in sizes:
-            # Total carries in this position and size
-            total_carries[position][size] = Carry.objects.filter(position=position, size=size).count()
-            
-            # Carries done by the user in this position and size
-            user_done_carries = DoneCarry.objects.filter(
-                user=user,
-                carry__position=position,
-                carry__size=size
-            )
+            # Filter user done carries by position and size
+            user_done = user_done_carries.filter(carry__position=position, carry__size=size)
             
             # Done count and names of done carries
-            done_counts[position][size] = user_done_carries.count()
-            done_carry_names[position][size] = list(user_done_carries.values_list('carry__name', flat=True))  # Get carry names
+            done_counts[position][size] = user_done.count()
+            done_carry_names[position][size] = list(user_done.values_list('carry__name', flat=True))  # Get carry names
 
     # Pass the separated carries information to the template
     context = {
@@ -341,7 +350,5 @@ def submit_review(request, carry_name):
                 'fancy': request.POST.get('fancy_vote', 0),
             }
         )
-
-        utils.update_rating(carry)
 
     return redirect('carry', name=carry_name)
