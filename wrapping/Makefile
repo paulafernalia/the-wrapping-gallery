@@ -29,18 +29,18 @@ migrate-prod:
 check-ratings:
 	$(PYTHON) manage.py check_ratings --settings=$(MYPROJ).settings.development
 
-sync-prod-db:
-	# Dump all data from the development database
-	$(PYTHON) manage.py dumpdata --settings=$(MYPROJ).settings.development --indent 2 > all_data.json
+sync-dev-db:
+	# Dump all data from the production database
+	$(PYTHON) manage.py dumpdata --settings=$(MYPROJ).settings.production --indent 2 > all_data.json
 	
-	# Migrate the production database schema
-	$(PYTHON) manage.py migrate --settings=$(MYPROJ).settings.production
+	# Migrate the development database schema
+	$(PYTHON) manage.py migrate --settings=$(MYPROJ).settings.development
 	
-	# Clear all data in the production database
-	$(PYTHON) manage.py flush --settings=$(MYPROJ).settings.production --noinput
+	# Clear all data in the development database
+	$(PYTHON) manage.py flush --settings=$(MYPROJ).settings.development --noinput
 	
-	# Load all data into the production database
-	$(PYTHON) manage.py loaddata all_data.json --settings=$(MYPROJ).settings.production
+	# Load all data into the development database
+	$(PYTHON) manage.py loaddata all_data.json --settings=$(MYPROJ).settings.development
 	
 	# Clean up temporary data file
 	rm all_data.json
