@@ -82,10 +82,12 @@
 
 <form id="review-form" method="post" action="{% url 'submit_review' name %}" id="rating-form" style="display: none;">
     {% csrf_token %}
-    <br>
     <div class="title-container poppins-bold fsmedium">
+        <hr>
         Review this carry
+        <p style="color: #aaa;">Have you tried this carry? What did you think of it? Feel free to ignore any fields you are not sure about. </p>
     </div>
+
     
     <div class="title-container poppins-light fssmall">
         <div class="table-title-container" data-property="leaners">
@@ -217,10 +219,11 @@
             </div>
         </div>
         <br>
-         <button type="submit" class="submit-button">Submit votes</button>
     </div>
-
-   
+    <div class="title-container poppins-bold pink fs16">
+        <button type="submit" class="submit-button">Update ratings with my votes</button>
+        <hr>
+    </div>
 </form>
 <br><br>
 
@@ -390,6 +393,7 @@
             </div>
         </div>
     </div>
+    <br>
 </div>
 
 <div class="title-container poppins-light fssmall">
