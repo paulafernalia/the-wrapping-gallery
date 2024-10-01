@@ -9,6 +9,7 @@ urlpatterns = [
     path("api/filter-carries/", views.filter_carries, name="filter_carries"),
     path("carry/<str:name>", views.carry, name="carry"),
     path("file-url/<str:file_name>/", views.file_url, name="file_url"),
+    path("achievement-file-url/<str:file_name>/", views.achievement_file_url, name="achievement_file_url"),
     path("step-urls/<str:prefix>/", views.steps_url, name="file_url"),
     path('downloads/', views.downloads, name='downloads'),
     path('download-booklet/<str:carry>', views.download_booklet, name='download_booklet'),
@@ -19,4 +20,5 @@ urlpatterns = [
     path('remove-done/<str:carry_name>/', views.remove_done, name='remove_done'),
     path('done-carries/', views.get_done_carries, name='get_done_carries'),
     path('submit-review/<str:carry_name>/', views.submit_review, name='submit_review'),
+    path('achievements/', views.achievements, name="achievements"),
 ]

@@ -11,7 +11,7 @@ class Command(BaseCommand):
         self.stdout.write('Checking static files against database entries...')
 
         # Determine the path to the "illustrations" folder inside the static directory
-        illustrations_subfolder = 'wrappinggallery/illustrations'
+        illustrations_subfolder = 'wrappinggallery/illustrations/carries'
 
         # Determine the static folder path, depending on environment (STATICFILES_DIRS in dev, STATIC_ROOT in prod)
         static_root = getattr(settings, 'STATIC_ROOT', None)
