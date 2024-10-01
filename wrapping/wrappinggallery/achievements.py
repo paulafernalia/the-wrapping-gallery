@@ -12,20 +12,14 @@ def count_position_carries(user_done_carries, position, threshold):
 def count_ring_carries(user_done_carries, threshold):
     return user_done_carries.filter(carry__rings=True).count() >= threshold
 
-def count_difficulty_carries(user_done_carries, difficulty, threshold):
-    # Get the carry names from user_done_carries
-    carry_names = user_done_carries.values_list('carry__name', flat=True)
-
+def count_difficulty_carries(general_ratings, difficulty, threshold):
     # Filter ratings based on the difficulty
-    count = Rating.objects.filter(
-        carry__name__in=carry_names
-    ).annotate(
+    return general_ratings.annotate(
         rounded_difficulty=Round('difficulty')
     ).filter(
         rounded_difficulty=difficulty
-    ).count()
+    ).count() >= threshold
 
-    return count >= threshold
 
 def count_reviews(user_ratings, threshold):
     return user_ratings.count() >= threshold
@@ -49,50 +43,33 @@ def count_cccb(user_done_carries, threshold):
     return user_done_carries.filter(carry__finish="CCCB").count() >= threshold
 
 def count_shortie_carries(user_done_carries, threshold):
-    # Get the carry names from user_done_carries
-    carry_names = user_done_carries.values_list('carry__name', flat=True)
-
     # Filter ratings based on the difficulty and carry size
-    count = Rating.objects.filter(
-        carry__name__in=carry_names,
+    return user_done_carries.filter(
         carry__size__gte=-5,  # Size greater than or equal to -5
         carry__size__lte=-2   # Size less than or equal to -2
-    ).count()
+    ).count() >= threshold
 
     return count >= threshold
 
 def count_longie_carries(user_done_carries, threshold):
-    # Get the carry names from user_done_carries
-    carry_names = user_done_carries.values_list('carry__name', flat=True)
-
     # Filter ratings based on the difficulty and carry size
-    count = Rating.objects.filter(
-        carry__name__in=carry_names,
+    return user_done_carries.filter(
         carry__size__gte=-1,  # Size greater than or equal to -5
         carry__size__lte=+2   # Size less than or equal to -2
-    ).count()
-
-    return count >= threshold
+    ).count() >= threshold
 
 def count_pirates(user_done_carries, threshold):
     return user_done_carries.filter(carry__name__icontains="pirate").count() >= threshold
 
 
-def count_toddler_prisoner(user_done_carries, threshold):
-    # Get the carry names from user_done_carries
-    carry_names = user_done_carries.values_list('carry__name', flat=True)
-
+def count_toddler_prisoner(general_ratings, threshold):
     # Filter ratings based on the difficulty and carry size
     # Filter ratings based on the difficulty
-    count = Rating.objects.filter(
-        carry__name__in=carry_names,
+    return general_ratings.filter(
         leaners__gte=4, 
         bigkids__gte=4,
         legstraighteners__gte=4   
-    ).count()
-
-    return count >= threshold
-
+    ).count() >= threshold
 
 
 ACHIEVEMENT_FUNCTIONS = {
@@ -112,10 +89,10 @@ ACHIEVEMENT_FUNCTIONS = {
     'fifty_reviews': (count_reviews, 'ratings', {'threshold': 50}),
     'one_month': (count_account_days, 'user', {'threshold': 30}),
     'one_year': (count_account_days, 'user', {'threshold': 365}),
-    'one_beginner_plus': (count_difficulty_carries, 'done_carries', {'difficulty': 2, 'threshold': 1}),
-    'one_intermediate': (count_difficulty_carries, 'done_carries', {'difficulty': 3, 'threshold': 1}),
-    'one_advanced': (count_difficulty_carries, 'done_carries', {'difficulty': 4, 'threshold': 1}),
-    'one_guru': (count_difficulty_carries, 'done_carries', {'difficulty': 5, 'threshold': 1}),
+    'one_beginner_plus': (count_difficulty_carries, 'general_ratings', {'difficulty': 2, 'threshold': 1}),
+    'one_intermediate': (count_difficulty_carries, 'general_ratings', {'difficulty': 3, 'threshold': 1}),
+    'one_advanced': (count_difficulty_carries, 'general_ratings', {'difficulty': 4, 'threshold': 1}),
+    'one_guru': (count_difficulty_carries, 'general_ratings', {'difficulty': 5, 'threshold': 1}),
     'ruck_star': (count_ruck_carries, 'done_carries', {'threshold': 10}),
     'dh_master': (count_dh_carries, 'done_carries', {'threshold': 10}),
     'ruck_rookie': (count_ruck_carries, 'done_carries', {'threshold': 3}),
@@ -124,5 +101,5 @@ ACHIEVEMENT_FUNCTIONS = {
     'longie_supreme': (count_longie_carries, 'done_carries', {'threshold': 10}),
     'sweet_tooth': (count_cccb, 'done_carries', {'threshold': 10}),
     'pirates': (count_pirates, 'done_carries', {'threshold': 3}),
-    'toddler_prisoner': (count_toddler_prisoner, 'done_carries', {'threshold': 5}),
+    'toddler_prisoner': (count_toddler_prisoner, 'general_ratings', {'threshold': 5}),
 }
