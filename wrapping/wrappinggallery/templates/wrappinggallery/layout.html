@@ -9,7 +9,7 @@
     <meta name="color-scheme" content="only light">
 
     <meta property="og:title" content="The Wrapping Gallery">
-    <meta property="og:image" content="{% static 'wrappinggallery/illustrations/placeholder_back.png' %}">
+    <meta property="og:image" content="{% static 'wrappinggallery/illustrations/carries/placeholder_back.png' %}">
     <meta property="og:description" content="The Wrapping Gallery is a place for users of woven wraps to discover new ways to wear their babies and make the most of their wraps.">
     <meta property="og:url" content="https://www.thewrappinggallery.com">
     <meta property="og:type" content="website">
@@ -73,6 +73,8 @@
                         </a>
                         <div class="dropdown-menu poppins-light fssmall" aria-labelledby="navbarDropdown">
                             <a class="dropdown-item" href="{% url 'collection' %}">COLLECTION</a>
+                            <a class="dropdown-item" href="{% url 'achievements' %}">ACHIEVEMENTS</a>
+                            <hr>
                             <a class="dropdown-item" href="{% url 'password_change' %}">CHANGE PASSWORD</a>
                             <form action="{% url 'logout' %}" method="post" class="dropdown-item m-0">
                                 {% csrf_token %}

@@ -5,7 +5,7 @@ from django.db.models import FloatField, Func, F, Sum, Count
 from django.db.models.functions import Round
 from django.shortcuts import redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from .models import Carry, Rating, DoneCarry, UserRating
+from .models import Carry, Rating, DoneCarry, UserRating, Achievement, UserAchievement
 from . import utils
 from django.conf import settings
 import os
@@ -30,6 +30,35 @@ class CustomLoginView(LoginView):
 
 
 DIFFICULTY_VALUES = ["Beginner", "Beginner+", "Intermediate", "Advanced", "Pro"]
+
+
+def achievements(request):
+    # Get all achievements
+    all_achievements = Achievement.objects.all()
+
+    # Get achievements unlocked by the current user
+    user_achievements = UserAchievement.objects.filter(user=request.user).values_list('achievement__name', flat=True)
+
+    # Prepare the context with combined data
+    achievements_data = []
+    for achievement in all_achievements:
+        achievements_data.append({
+            'name': achievement.name,
+            'title': achievement.title,
+            'description': achievement.description,
+            'category': achievement.category,
+            'completed': achievement.name in user_achievements,
+        })
+
+    category_choices = Achievement.CATEGORY_CHOICES
+
+    # Pass combined data to context
+    context = {
+        'achievements': achievements_data,
+        'category_choices': category_choices,
+    }
+
+    return render(request, "wrappinggallery/achievements.html", context)
 
 
 # Create your views here.
@@ -58,14 +87,14 @@ def index(request):
     return render(request, "wrappinggallery/index.html", context)
 
 def termsandconditions(request):
-    image_url = utils.generate_server_url("profile", "back")
+    image_url = utils.generate_carry_url("profile", "back")
 
     context = {"imageSrc": image_url}
     return render(request, "wrappinggallery/termsandconditions.html", context)
 
 
 def about(request):
-    image_url = utils.generate_server_url("profile", "back")
+    image_url = utils.generate_carry_url("profile", "back")
 
     context = {"imageSrc": image_url}
     return render(request, "wrappinggallery/about.html", context)
@@ -231,7 +260,13 @@ def carry(request, name):
 
 def file_url(request, file_name):
     position = request.GET.get("position", "back")
-    image_url = utils.generate_server_url(file_name, position)
+    image_url = utils.generate_carry_url(file_name, position)
+
+    return JsonResponse({"url": image_url})
+
+
+def achievement_file_url(request, file_name):
+    image_url = utils.generate_achievement_url(file_name)
 
     return JsonResponse({"url": image_url})
 
