@@ -73,6 +73,8 @@
                         </a>
                         <div class="dropdown-menu poppins-light fssmall" aria-labelledby="navbarDropdown">
                             <a class="dropdown-item" href="{% url 'collection' %}">COLLECTION</a>
+                            <a class="dropdown-item" href="{% url 'achievements' %}">ACHIEVEMENTS</a>
+                            <hr>
                             <a class="dropdown-item" href="{% url 'password_change' %}">CHANGE PASSWORD</a>
                             <form action="{% url 'logout' %}" method="post" class="dropdown-item m-0">
                                 {% csrf_token %}
