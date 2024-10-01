@@ -5,7 +5,7 @@ from django.db.models import FloatField, Func, F, Sum, Count
 from django.db.models.functions import Round
 from django.shortcuts import redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from .models import Carry, Rating, DoneCarry, UserRating, Achievement, UserAchievement
+from .models import Carry, Rating, DoneCarry, UserRating, Achievement, UserAchievement, CustomUser
 from . import utils
 from django.conf import settings
 import os
@@ -13,28 +13,86 @@ from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView
 from django.contrib.auth.views import LoginView
 from django.contrib import messages
-
-
+from django.shortcuts import render
+from django.contrib.auth.tokens import default_token_generator
 from .forms import CustomUserCreationForm, CustomLoginForm, UserUpdateForm
+from .tokens import account_activation_token  # Add this import
+from django.utils.encoding import force_str
+from django.utils.http import urlsafe_base64_decode
+from django.shortcuts import get_object_or_404
 
 
 class SignUpView(CreateView):
     form_class = CustomUserCreationForm
-    success_url = reverse_lazy("login")
     template_name = "registration/signup.html"
+
+    def form_valid(self, form):
+        user = form.save(commit=False)
+        user.is_active = False  # Deactivate account until email confirmation
+        user.save()
+
+        # Send verification email
+        utils.send_verification_email(user, self.request)
+
+        # Render a template instead of redirecting
+        return render(self.request, 'registration/verification_sent.html', {
+            'email': user.email,
+        })
+
+
+def resend_verification_email(request, user_id):
+    user = get_object_or_404(CustomUser, pk=user_id)  # Safely get the user
+    utils.send_verification_email(user, request)
+
+    # Render a template instead of redirecting
+    return render(request, 'registration/verification_sent.html', {
+        'email': user.email,
+    })
 
 
 class CustomLoginView(LoginView):
     authentication_form = CustomLoginForm
-    template_name = "registration/login.html"
-    success_url = "/"
+    template_name = 'registration/login.html'
+
+    def post(self, request, *args, **kwargs):
+        form = self.get_form()
+        if form.is_valid():
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
+
+    def form_valid(self, form):
+        if form.get_user().is_active:
+            return super().form_valid(form)
+        else:
+            return HttpResponse("Please activate your account.")
 
 
-from django.shortcuts import render
 
+def activate(request, uidb64, token):
+    try:
+        uid = force_str(urlsafe_base64_decode(uidb64))
+        user = CustomUser.objects.get(pk=uid)
+    except (TypeError, ValueError, OverflowError, CustomUser.DoesNotExist):
+        user = None
+
+    if user is not None:
+        if user.is_active:
+            # User is already active, redirect to email_verified template
+            return render(request, 'registration/email_verified.html')
+        
+        if account_activation_token.check_token(user, token):
+            # Token is valid, activate the user
+            user.is_active = True
+            user.save()
+            return render(request, 'registration/email_verified.html')
+    
+    # Token is invalid and user is not active
+    return render(request, 'registration/email_not_verified.html', {'user': user})  # Pass user here
 
 def account_deleted(request):
     return render(request, 'registration/account_deleted.html')
+
 
 
 @login_required

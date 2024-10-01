@@ -24,4 +24,6 @@ urlpatterns = [
     path('accounts/profile/', views.profile_view, name='profile'),
     path('accounts/delete_account/', views.delete_account, name='delete_account'),
     path('accounts/account-deleted/', views.account_deleted, name='account_deleted'),
+    path('activate/<uidb64>/<token>/', views.activate, name='activate'),
+    path('accounts/resend-verification/<int:user_id>/', views.resend_verification_email, name='resend_verification_email'),
 ]

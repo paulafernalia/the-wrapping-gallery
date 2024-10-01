@@ -6,6 +6,25 @@ from django.http import JsonResponse
 import os
 from .models import Carry, Rating, UserRating
 from django.db.models import Avg
+from django.contrib.sites.shortcuts import get_current_site
+from django.template.loader import render_to_string
+from django.utils.http import urlsafe_base64_encode
+from django.utils.encoding import force_bytes
+from .tokens import account_activation_token  # Add this import
+from django.core.mail import send_mail
+
+
+def send_verification_email(user, request):
+    current_site = get_current_site(request)
+    mail_subject = 'Activate your account.'
+    message = render_to_string('registration/activation_email.html', {
+        'user': user,
+        'domain': current_site.domain,
+        'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+        'token': account_activation_token.make_token(user),
+    })
+    to_email = user.email
+    send_mail(mail_subject, message, settings.DEFAULT_FROM_EMAIL, [to_email])
 
 
 def initialise_supabase():

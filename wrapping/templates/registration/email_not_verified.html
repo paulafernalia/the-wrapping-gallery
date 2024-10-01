@@ -1,0 +1,23 @@
+{% extends "wrappinggallery/layout.html" %}
+
+ {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-success">{{ message }}</div>
+    {% endfor %}
+  {% endif %}
+
+{% block body %}
+	<br>
+  <div class="title-container poppins-light fs16">
+    <p class="poppins-light fs16"><strong>Something went wrong</strong></h2>
+    <p class="poppins-light fs16">Click the button below to resend the verification link.</p>
+    <p class="poppins-light fs16">You can also go back to the <a href="{% url 'login' %}">login page</a>.</p>
+    
+    <form method="post" action="{% url 'resend_verification_email' user.id %}">
+      {% csrf_token %}
+      <button class="btn pinkbg btn-custom mx-1 poppins-regular fs16" type="submit">Resend verification email</button>
+    </form>
+    
+    
+  </div>
+{% endblock %}
