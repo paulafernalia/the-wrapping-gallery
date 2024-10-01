@@ -1,0 +1,51 @@
+{% extends "wrappinggallery/layout.html" %}
+
+{% load static %}
+
+{% load custom_filters %}
+
+
+{% block body %}
+<div class="hover-label poppins-regular" style="display: none; position: absolute;">
+    <div class="hover-title fscarry poppins-regular"></div>
+    <div class="hover-description  poppins-light" style="font-size: 0.9em;"></div>
+</div>
+
+
+<div id="carryTitle" class="title-container poppins-bold fsmedium">
+    <h1 class="pink poiret-one-regular">Achievements</h1>
+    <p>Explore different carries and submit ratings to unlock achievements.</p>
+    <br>
+
+    
+        {% for value, display in category_choices %}
+            <p class="fs16"><span class="poppins-bold">{{display}} achievements</span></p>
+            <div class="achievement-grid">
+            
+            {% for achievement in achievements %}
+                {% if achievement.category == value %}
+                   
+                    <div class="achievement-grid-item clickable-grid-item"
+                    data-name="{{ achievement.name }}"
+                    data-title="{{ achievement.title }}"
+                    data-description="{{ achievement.description }}"
+                    data-done="{{ achievement.completed }}">
+                        <img alt="{{achievement.name}}" src="{% static 'wrappinggallery/icons/question.svg' %}" loading="lazy" style="opacity: 0.5;">
+                    </div>
+                {% endif %}
+            {% endfor %}
+            </div>
+            <br>
+        {% endfor %}
+
+    
+
+    <br>
+    <div id="loadingSpinner" class="loading-spinner"></div>
+</div>
+
+
+<script src="{% static 'wrappinggallery/js/achievements.js' %}"></script>
+
+
+{% endblock %}

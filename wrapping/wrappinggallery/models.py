@@ -422,8 +422,6 @@ class UserRating(models.Model):
         # Call your shared logic
         self.update_rating()
 
-        
-
 
 class FavouriteCarry(models.Model):
     carry = models.ForeignKey(Carry, on_delete=models.CASCADE)
@@ -439,4 +437,27 @@ class TodoCarry(models.Model):
     carry = models.ForeignKey(Carry, on_delete=models.CASCADE)
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
 
+
+class Achievement(models.Model):
+    name = models.CharField(max_length=64, primary_key=True, unique=True)
+    title = models.CharField(max_length=64)
+
+    CATEGORY_CHOICES = [
+        (0, "Onboarding"),
+        (1, 'Wrapping'),
+        (2, 'Contributor'),
+        (3, 'Special'),
+    ]
+
+    category = models.IntegerField(
+        choices=CATEGORY_CHOICES
+    )
+
+    description = models.TextField()
+    order = models.FloatField(blank=True)
+
+
+class UserAchievement(models.Model):
+    achievement = models.ForeignKey(Achievement, on_delete=models.CASCADE)
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
 

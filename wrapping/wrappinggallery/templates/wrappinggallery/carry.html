@@ -82,10 +82,12 @@
 
 <form id="review-form" method="post" action="{% url 'submit_review' name %}" id="rating-form" style="display: none;">
     {% csrf_token %}
-    <br>
     <div class="title-container poppins-bold fsmedium">
+        <hr>
         Review this carry
+        <p style="color: #aaa;">Have you tried this carry? What did you think of it? Feel free to ignore any fields you are not sure about. </p>
     </div>
+
     
     <div class="title-container poppins-light fssmall">
         <div class="table-title-container" data-property="leaners">
@@ -217,10 +219,11 @@
             </div>
         </div>
         <br>
-         <button type="submit" class="submit-button">Submit votes</button>
     </div>
-
-   
+    <div class="title-container poppins-bold pink fs16">
+        <button type="submit" class="submit-button">Update ratings with my votes</button>
+        <hr>
+    </div>
 </form>
 <br><br>
 
@@ -242,6 +245,8 @@
                     {% if position != 'Tandem' %}
                     <div id="leaners-rating" class="rating-group" data-property="{{leaners}}">
                     </div>
+                    {% elif leaners == 0 %}
+                    <div class="poppins-bold fscarry pink">No votes</div>
                     {% else %}
                     <div class="poppins-bold fscarry pink">Varies</div>
                     {% endif %}
@@ -262,10 +267,11 @@
                     {% if position != 'Tandem' %}
                     <div id="legstraighteners-rating" class="rating-group" data-property="{{legstraighteners}}">
                     </div>
+                    {% elif legstraighteners == 0 %}
+                    <div class="poppins-bold fscarry pink">No votes</div>
                     {% else %}
                     <div class="poppins-bold fscarry pink">Varies</div>
                     {% endif %}
-                    
                 </div>
                 <p class="table-description">Is this carry good for leg straighteners? Does it have leg passes? A deep seat?</p>
             </div>
@@ -278,14 +284,15 @@
             <div class="table-content">
                 <div class="table-title-container">
                     <p class="table-title">Good for newborns<a href="{% url 'faq' %}#faq_ratings" class="info-icon" title="What does this mean">i</a></p>
-                    
+
                     {% if position != 'Tandem' %}
                     <div id="newborns-rating" class="rating-group" data-property="{{newborns}}">
                     </div>
+                    {% elif newborns == 0 %}
+                    <div class="poppins-bold fscarry pink">No votes</div>
                     {% else %}
                     <div class="poppins-bold fscarry pink">Varies</div>
                     {% endif %}
-                    
                 
                 </div>
                 <p class="table-description">Can it be wrapped high, with no bunched passes under tiny legs, and no head or torso support is required while you are wrapping? <a class="table-description" href="https://www.carryingmatters.co.uk/beginning-to-back-carry/#:~:text=Can%20I%20carry%20my%20newborn,soft%20and%20floppy%20woven%20wrap." target="blank_" style="color: blue;">Can I carry my newborn baby on my back?</a></p>
@@ -300,10 +307,12 @@
             <div class="table-content">
                 <div class="table-title-container">
                     <p class="table-title">Good for big kids<a href="{% url 'faq' %}#faq_ratings" class="info-icon" title="What does this mean">i</a></p>
-                    
+
                     {% if position != 'Tandem' %}
                     <div id="bigkids-rating" class="rating-group" data-property="{{bigkids}}">
                     </div>
+                    {% elif bigkids == 0 %}
+                    <div class="poppins-bold fscarry pink">No votes</div>
                     {% else %}
                     <div class="poppins-bold fscarry pink">Varies</div>
                     {% endif %}
@@ -322,8 +331,13 @@
                 <div class="table-title-container">
                     <p class="table-title">Good for pregnancy<a href="{% url 'faq' %}#faq_ratings" class="info-icon" title="What does this mean">i</a></p>
                     
+                    {% if pregnancy == 0 %}
+                    <div class="poppins-bold fscarry pink">No votes</div>
+                    {% else %}
                     <div id="pregnancy-rating" class="rating-group" data-property="{{pregnancy}}">
                     </div>
+                    {% endif %}
+                    
                 </div>
                 <p><span class="table-description">Does this carry apply an uncomfortable pressure on your bump either from baby or the wrap? </span> <a class="table-description" href="https://www.carryingmatters.co.uk/carrying-while-pregnant/" target="blank_" style="color: blue;">Can I carry while pregnant? </a></p>
             </div>
@@ -337,9 +351,13 @@
             <div class="table-content">
                 <div class="table-title-container">
                     <p class="table-title">Good for feeding<a href="{% url 'faq' %}#faq_ratings" class="info-icon" title="What does this mean">i</a></p>
-                    
+
+                    {% if feeding == 0 %}
+                    <div class="poppins-bold fscarry pink">No votes</div>
+                    {% else %}
                     <div id="feeding-rating" class="rating-group" data-property="{{feeding}}">
                     </div>
+                    {% endif %}
                 
                 </div>
                 <p class="table-description">Can you pop a boob out and place baby’s head at boob height with minimal adjustment? <a class="table-description" href="https://www.carryingmatters.co.uk/breast-and-bottle-feeding-safely-in-a-sling-3/" target="blank_" style="color: blue;">Can I feed safely in a wrap?</a></p>
@@ -354,8 +372,13 @@
             <div class="table-content">
                 <div class="table-title-container">
                     <p class="table-title">Good for quick ups<a href="{% url 'faq' %}#faq_ratings" class="info-icon" title="What does this mean">i</a></p>
+                    
+                    {% if quickups == 0 %}
+                    <div class="poppins-bold fscarry pink">No votes</div>
+                    {% else %}
                     <div id="quickups-rating" class="rating-group" data-property="{{quickups}}">
                     </div>
+                    {% endif %}
                 </div>
                 <p class="table-description">The more layers and complex elements, the longer it takes to wrap.</p>
             </div>
@@ -369,8 +392,13 @@
             <div class="table-content">
                 <div class="table-title-container">
                     <p class="table-title">Difficulty<a href="{% url 'faq' %}#faq_ratings" class="info-icon" title="What does this mean">i</a></p>
+
+                    {% if difficulty == 0 %}
+                    <div class="poppins-bold fscarry pink">No votes</div>
+                    {% else %}
                     <div id="difficulty-rating" class="rating-group" data-property="{{difficulty}}">
                     </div>
+                    {% endif %}
                 </div>
                 <p class="table-description">On a scale from absolute beginners to wrapping guru level</p>
             </div>
@@ -383,13 +411,19 @@
             <div class="table-content">
                 <div class="table-title-container">
                     <p class="table-title">Fanciness<a href="{% url 'faq' %}#faq_ratings" class="info-icon" title="What does this mean">i</a></p>
+
+                    {% if fancy == 0 %}
+                    <div class="poppins-bold fscarry pink">No votes</div>
+                    {% else %}
                     <div id="fancy-rating" class="rating-group" data-property="{{fancy}}">
                     </div>
+                    {% endif %}
                 </div>
                 <p class="table-description">All woven wrap carries are aesthetically pleasing, but some more so than others.</p>
             </div>
         </div>
     </div>
+    <br>
 </div>
 
 <div class="title-container poppins-light fssmall">

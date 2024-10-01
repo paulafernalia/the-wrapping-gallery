@@ -47,30 +47,34 @@ def generate_signed_urls(file_paths, bucket, supabase=supabase_client):
     return signed_urls
 
 
-def generate_server_url(file_name, position, dark=False):
-    if position == "question":
-        if dark:
-            print("error dark not valid with position question")
-            exit(1)
-        else:
-            filepath = f'wrappinggallery/illustrations/question.png'
-        assert staticfiles_storage.exists(filepath)
+def generate_carry_url(carry, position, dark=False):
+    if not dark:
+        filepath = f'wrappinggallery/illustrations/carries/{carry}.png'
     else:
-        if not dark:
-            filepath = f'wrappinggallery/illustrations/{file_name}.png'
-        else:
-            filepath = f'wrappinggallery/illustrations/{file_name}_dark.png'
-        
-        if not staticfiles_storage.exists(filepath):
-            if position in ["back", "front", "tandem"]:
-                if dark:
-                    filepath = f'wrappinggallery/illustrations/placeholder_{position}_dark.png'
-                else:
-                    filepath = f'wrappinggallery/illustrations/placeholder_{position}.png'
-                assert staticfiles_storage.exists(filepath)
+        filepath = f'wrappinggallery/illustrations/carries/{carry}_dark.png'
+    
+    if not staticfiles_storage.exists(filepath):
+        if position in ["back", "front", "tandem"]:
+            if dark:
+                filepath = f'wrappinggallery/illustrations/carries/placeholder_{position}_dark.png'
             else:
-                print("error position not valid", file_name, position)
-                exit(1)
+                filepath = f'wrappinggallery/illustrations/carries/placeholder_{position}.png'
+            assert staticfiles_storage.exists(filepath)
+        else:
+            print("error position not valid", carry, position)
+            exit(1)
+
+    image_url = staticfiles_storage.url(filepath)
+
+    return image_url
+
+
+def generate_achievement_url(achievement):
+    filepath = f'wrappinggallery/illustrations/achievements/{achievement}.png'
+    
+    if not staticfiles_storage.exists(filepath):
+        filepath = f'wrappinggallery/illustrations/carries/placeholder_front.png'
+        assert staticfiles_storage.exists(filepath)
 
     image_url = staticfiles_storage.url(filepath)
 
@@ -98,7 +102,7 @@ def get_carry_context(name):
         carry_dict["videoauthor3"] = "NA"
         carry_dict["videotutorial3"] = "NA"
 
-    image_url = generate_server_url(name, carry_dict["position"].lower(), True)
+    image_url = generate_carry_url(name, carry_dict["position"].lower(), True)
     carry_dict["imageSrc"] = image_url
 
     ratingsqueryset = Rating.objects.all().filter(carry__name=name)
