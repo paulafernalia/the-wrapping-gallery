@@ -781,6 +781,13 @@ footer {
 }
 
 
+.redbg {
+    background-color: #ff6666 !important;
+    border: 2px solid #ff6666 !important;
+    color: white;
+}
+
+
 .pinkbg.disabled {
     cursor: not-allowed;
     border: 2px solid #ad9393 !important;

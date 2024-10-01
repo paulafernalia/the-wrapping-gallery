@@ -21,4 +21,7 @@ urlpatterns = [
     path('done-carries/', views.get_done_carries, name='get_done_carries'),
     path('submit-review/<str:carry_name>/', views.submit_review, name='submit_review'),
     path('achievements/', views.achievements, name="achievements"),
+    path('accounts/profile/', views.profile_view, name='profile'),
+    path('accounts/delete_account/', views.delete_account, name='delete_account'),
+    path('accounts/account-deleted/', views.account_deleted, name='account_deleted'),
 ]
