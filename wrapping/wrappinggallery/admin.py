@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Carry, Rating, FavouriteCarry, DoneCarry, TodoCarry, UserRating
+from .models import Carry, Rating, FavouriteCarry, DoneCarry, TodoCarry, UserRating, Achievement, UserAchievement
 
 from django.contrib.auth.admin import UserAdmin
 
@@ -13,6 +13,8 @@ admin.site.register(FavouriteCarry)
 admin.site.register(DoneCarry)
 admin.site.register(TodoCarry)
 admin.site.register(UserRating)
+admin.site.register(UserAchievement)
+admin.site.register(Achievement)
 
 class CustomUserAdmin(UserAdmin):
     add_form = CustomUserCreationForm
