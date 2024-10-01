@@ -1,0 +1,58 @@
+{% extends "wrappinggallery/layout.html" %}
+
+{% load static %}
+
+{% block body %}
+
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-success">{{ message }}</div>
+    {% endfor %}
+  {% endif %}
+
+  <h2 class="pink playfair">User Profile</h2>
+
+  <div class="auth-container poppins-light">
+    <form method="post">
+      {% csrf_token %}
+      {{ user_form.as_p }}
+      <button class="btn pinkbg btn-custom mx-1 poppins-regular fs16" type="submit">Update Profile</button>
+    </form>
+
+    <hr>
+    <p>Click the button below to delete your account. This will delete any data associated with it. This step cannot be undone.</p>
+    <form method="post" action="{% url 'delete_account' %}" id="delete-account-form" style="display: none;">
+      {% csrf_token %}
+      <button class="btn redbg btn-custom mx-1 poppins-regular fs16" id="red-btn" type="submit" id="confirm-delete-btn" style="display: none;">Delete Account</button>
+    </form>
+    <button class="btn pinkbg btn-custom mx-1 poppins-regular fs16" id="pink-btn" type="button" onclick="confirmDelete()">Delete Account</button>
+    <p id="confirm-message" style="display: none; color: red;">Click again to confirm</p>
+  </div>
+
+  <script>
+    function confirmDelete() {
+      const pinkButton = document.getElementById('pink-btn');
+      const redButton = document.getElementById('red-btn');
+
+      const confirmMessage = document.getElementById('confirm-message');
+      const deleteForm = document.getElementById('delete-account-form');
+
+      // Turn the button red
+      pinkButton.style.display = 'none';
+      redButton.style.display = 'block';
+
+      // Show confirmation message
+      confirmMessage.style.display = 'block';
+
+      // Toggle the form visibility
+      deleteForm.style.display = deleteForm.style.display === 'none' ? 'block' : 'none';
+
+      // Set the onclick event to confirm deletion
+      deleteBtn.onclick = function() {
+        // Submit the form on second click
+        deleteForm.submit();
+      };
+    }
+  </script>
+
+{% endblock %}

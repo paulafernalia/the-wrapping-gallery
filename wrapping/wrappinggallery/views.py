@@ -12,9 +12,10 @@ import os
 from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView
 from django.contrib.auth.views import LoginView
+from django.contrib import messages
 
 
-from .forms import CustomUserCreationForm, CustomLoginForm
+from .forms import CustomUserCreationForm, CustomLoginForm, UserUpdateForm
 
 
 class SignUpView(CreateView):
@@ -27,6 +28,41 @@ class CustomLoginView(LoginView):
     authentication_form = CustomLoginForm
     template_name = "registration/login.html"
     success_url = "/"
+
+
+from django.shortcuts import render
+
+
+def account_deleted(request):
+    return render(request, 'registration/account_deleted.html')
+
+
+@login_required
+def profile_view(request):
+    messages.get_messages(request).used = True  # This will clear out all messages
+    
+    user = request.user
+    if request.method == 'POST':
+        user_form = UserUpdateForm(request.POST, instance=user)
+        if user_form.is_valid():
+            user_form.save()
+            messages.success(request, 'Your profile has been updated!')
+            return redirect('profile')
+    else:
+        user_form = UserUpdateForm(instance=user)
+
+    return render(request, 'registration/profile.html', {'user_form': user_form})
+
+@login_required
+def delete_account(request):
+    messages.get_messages(request).used = True  # This will clear out all messages
+    
+    user = request.user
+    if request.method == 'POST':
+        user.delete()
+        return redirect('account_deleted')
+
+    return render(request, 'registration/delete_account.html', {'user': user})
 
 
 DIFFICULTY_VALUES = ["Beginner", "Beginner+", "Intermediate", "Advanced", "Pro"]
