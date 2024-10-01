@@ -342,3 +342,35 @@ class UserRatingTestCase(TestCase):
         # Check if the Rating entry is updated correctly
         self.assertEqual(updated_rating.votes, 0)  # Assuming no other UserRatings exist
 
+
+from django.core import mail
+from django.test import TestCase
+from django.urls import reverse
+
+class PasswordResetEmailTest(TestCase):
+    def setUp(self):
+        # Create a user for the test
+        self.user = CustomUser.objects.create_user(
+            username='testuser',
+            email='testuser@gmail.com',
+            password='testpassword'
+        )
+
+    def test_password_reset_email(self):
+        # Trigger the password reset process
+        response = self.client.post(reverse('password_reset'), {
+            'email': 'testuser@gmail.com'
+        })
+
+        # Check if an email was sent
+        self.assertEqual(len(mail.outbox), 1)
+
+        # Check the email subject
+        self.assertEqual(mail.outbox[0].subject, 'Password reset on testserver')
+
+        # Check the recipient list
+        self.assertEqual(mail.outbox[0].to, ['testuser@gmail.com'])
+
+        # Optionally check the email body content
+        self.assertIn('you requested a password reset for your user account', mail.outbox[0].body)
+
