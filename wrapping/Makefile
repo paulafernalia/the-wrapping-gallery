@@ -51,6 +51,9 @@ test:
 load-csv-data:
 	$(PYTHON) manage.py load_csv_data initial_data.csv --settings=wrapping.settings.development
 
+load-achievement-data:
+	$(PYTHON) manage.py load_achievement_data --settings=wrapping.settings.development
+
 dev-docker-down:
 	docker compose -f docker-compose.dev.yml down -v
 
