@@ -3,6 +3,13 @@ from django import forms
 
 from .models import CustomUser
 
+
+class UserUpdateForm(forms.ModelForm):
+    class Meta:
+        model = CustomUser
+        fields = ['username', 'email']  # Add any other fields you want to allow updates for
+
+
 class CustomUserCreationForm(UserCreationForm):
     email = forms.EmailField(required=True)
 

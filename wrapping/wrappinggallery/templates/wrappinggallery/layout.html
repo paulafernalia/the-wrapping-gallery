@@ -72,10 +72,11 @@
                             <i class="fas fa-user"></i>
                         </a>
                         <div class="dropdown-menu poppins-light fssmall" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="{% url 'collection' %}">COLLECTION</a>
-                            <a class="dropdown-item" href="{% url 'achievements' %}">ACHIEVEMENTS</a>
+                            <a class="dropdown-item poppins-light" href="{% url 'collection' %}">COLLECTION (beta)</a>
+                            <a class="dropdown-item poppins-light" href="{% url 'achievements' %}">ACHIEVEMENTS (beta)</a>
                             <hr>
-                            <a class="dropdown-item" href="{% url 'password_change' %}">CHANGE PASSWORD</a>
+                            <a class="dropdown-item poppins-light" href="{% url 'profile' %}">PROFILE</a>
+                            <a class="dropdown-item poppins-light" href="{% url 'password_change' %}">CHANGE PASSWORD</a>
                             <form action="{% url 'logout' %}" method="post" class="dropdown-item m-0">
                                 {% csrf_token %}
                                 <button type="submit" class="btn btn-link dropdown-item poppins-light fssmall" style="padding: 0; margin: 0;">LOG OUT</button>
@@ -83,11 +84,9 @@
                         </div>
                     </li>
                 {% else %}
-                    {% if False %}
                     <li class="nav-item">
                         <a class="nav-link poppins-light" href="{% url 'login' %}">LOG IN</a>
                     </li>
-                    {% endif %}
                 {% endif %}
             </ul>
         </div>
