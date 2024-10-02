@@ -76,7 +76,7 @@ function updateVoteText(category, rating) {
     if (category === "difficulty") {
         switch (rating) {
             case 0:
-                return ': I don\'t know';
+                return '';
             case 1:
                 return ': Beginner';
             case 2:
@@ -91,7 +91,7 @@ function updateVoteText(category, rating) {
     } else if (category === "fancy") {
         switch (rating) {
             case 0:
-                return ': I don\'t know';
+                return '';
             case 1:
                 return ': 1/5';
             case 2:
@@ -106,7 +106,7 @@ function updateVoteText(category, rating) {
     } else {
         switch (rating) {
             case 0:
-                return ' - I don\'t know';
+                return '';
             case 1:
                 return ' - Avoid';
             case 2:
