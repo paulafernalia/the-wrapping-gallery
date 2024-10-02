@@ -85,13 +85,13 @@
     <div class="title-container poppins-bold fsmedium">
         <hr>
         Review this carry
-        <p style="color: #aaa;">Have you tried this carry? What did you think of it? Feel free to ignore any fields you are not sure about. </p>
+        <p style="color: #aaa;">How good is this carry in the different situations listed below? How difficult do you find it and how fancy does it look? Ignore any fields you are not sure about. </p>
     </div>
 
     
     <div class="title-container poppins-light fssmall">
         <div class="table-title-container" data-property="leaners">
-            <p class="table-title"><span class="poppins-light" id="leaners-vote"></span> Leaners</p>
+            <p class="table-title">Leaners<span class="poppins-light" id="leaners-vote"></span></p>
             <div class="vote-group">
                 {% if position != "Tandem" %}
                 <span class="fa fa-star big notchecked" data-value="1"></span>
@@ -108,7 +108,7 @@
         </div>
 
         <div class="table-title-container" data-property="legstraighteners">
-            <p class="table-title"><span class="poppins-light" id="legstraighteners-vote"></span> Seat poppers</p>
+            <p class="table-title">Seat poppers<span class="poppins-light" id="legstraighteners-vote"></span></p>
             <div class="vote-group">
                 {% if position != "Tandem" %}
                 <span class="fa fa-star big notchecked" data-value="1"></span>
@@ -125,7 +125,7 @@
         </div>
 
         <div class="table-title-container" data-property="newborns">
-            <p class="table-title"><span class="poppins-light" id="newborns-vote"></span> Newborns</p>
+            <p class="table-title">Newborns<span class="poppins-light" id="newborns-vote"></span></p>
             <div class="vote-group">
                 {% if position != "Tandem" %}
                 <span class="fa fa-star big notchecked" data-value="1"></span>
@@ -142,7 +142,7 @@
         </div>
 
         <div class="table-title-container" data-property="bigkids">
-            <p class="table-title"><span class="poppins-light" id="bigkids-vote"></span> Big kids</p>
+            <p class="table-title">Big kids<span class="poppins-light" id="bigkids-vote"></span></p>
             <div class="vote-group">
                 {% if position != "Tandem" %}
                 <span class="fa fa-star big notchecked" data-value="1"></span>
@@ -160,7 +160,7 @@
         </div>
 
         <div class="table-title-container" data-property="pregnancy">
-            <p class="table-title"><span class="poppins-light" id="pregnancy-vote"></span> Pregnancy</p>
+            <p class="table-title">Pregnancy<span class="poppins-light" id="pregnancy-vote"></span></p>
             <div class="vote-group">
                 <span class="fa fa-star big notchecked" data-value="1"></span>
                 <span class="fa fa-star big notchecked" data-value="2"></span>
@@ -172,7 +172,7 @@
         </div>
 
         <div class="table-title-container" data-property="feeding">
-            <p class="table-title"><span class="poppins-light" id="feeding-vote"></span> Feeding</p>
+            <p class="table-title">Feeding<span class="poppins-light" id="feeding-vote"></span></p>
             <div class="vote-group">
                 <span class="fa fa-star big notchecked" data-value="1"></span>
                 <span class="fa fa-star big notchecked" data-value="2"></span>
@@ -184,7 +184,7 @@
         </div>
 
         <div class="table-title-container" data-property="quickups">
-            <p class="table-title"><span class="poppins-light" id="quickups-vote"></span> Quick ups</p>
+            <p class="table-title">Quick ups<span class="poppins-light" id="quickups-vote"></span></p>
             <div class="vote-group">
                 <span class="fa fa-star big notchecked" data-value="1"></span>
                 <span class="fa fa-star big notchecked" data-value="2"></span>
@@ -194,6 +194,7 @@
                 <input type="hidden" name="quickups_vote" id="quickups-input" value="{{ user_ratings.quickups }}">
             </div>
         </div>
+        <br>
 
         <div class="table-title-container" data-property="difficulty">
             <p class="table-title">Difficulty<span class="poppins-light" id="difficulty-vote"></span> </p>

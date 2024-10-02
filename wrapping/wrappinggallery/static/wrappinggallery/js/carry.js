@@ -76,7 +76,7 @@ function updateVoteText(category, rating) {
     if (category === "difficulty") {
         switch (rating) {
             case 0:
-                return '?';
+                return ': I don\'t know';
             case 1:
                 return ': Beginner';
             case 2:
@@ -91,7 +91,7 @@ function updateVoteText(category, rating) {
     } else if (category === "fancy") {
         switch (rating) {
             case 0:
-                return '?';
+                return ': I don\'t know';
             case 1:
                 return ': 1/5';
             case 2:
@@ -106,17 +106,17 @@ function updateVoteText(category, rating) {
     } else {
         switch (rating) {
             case 0:
-                return '?';
+                return ' - I don\'t know';
             case 1:
-                return 'Avoid with';
+                return ' - Avoid';
             case 2:
-                return 'Not great for';
+                return ' - Not great';
             case 3:
-                return 'Okay for';
+                return ' - Okay';
             case 4:
-                return 'Good for';
+                return ' - Good';
             case 5:
-                return 'Great for';
+                return ' - Great';
         }
     }
 }
