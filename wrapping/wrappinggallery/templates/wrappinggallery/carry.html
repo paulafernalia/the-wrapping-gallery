@@ -243,13 +243,13 @@
                 <div class="table-title-container">
                     <p class="table-title">Good for leaners<a href="{% url 'faq' %}#faq_ratings" class="info-icon" title="What does this mean">i</a></p>
 
-                    {% if position != 'Tandem' %}
-                    <div id="leaners-rating" class="rating-group" data-property="{{leaners}}">
-                    </div>
+                    {% if position == 'Tandem' %}
+                    <div class="poppins-bold fscarry pink">Varies</div>
                     {% elif leaners == 0 %}
                     <div class="poppins-bold fscarry pink">No votes</div>
                     {% else %}
-                    <div class="poppins-bold fscarry pink">Varies</div>
+                    <div id="leaners-rating" class="rating-group" data-property="{{leaners}}">
+                    </div>
                     {% endif %}
 
                 </div>
@@ -265,13 +265,13 @@
                 <div class="table-title-container">
                     <p class="table-title">Good for seat poppers<a href="{% url 'faq' %}#faq_ratings" class="info-icon" title="What does this mean">i</a></p>
                     
-                    {% if position != 'Tandem' %}
-                    <div id="legstraighteners-rating" class="rating-group" data-property="{{legstraighteners}}">
-                    </div>
+                    {% if position == 'Tandem' %}
+                    <div class="poppins-bold fscarry pink">Varies</div>
                     {% elif legstraighteners == 0 %}
                     <div class="poppins-bold fscarry pink">No votes</div>
                     {% else %}
-                    <div class="poppins-bold fscarry pink">Varies</div>
+                    <div id="legstraighteners-rating" class="rating-group" data-property="{{legstraighteners}}">
+                    </div>
                     {% endif %}
                 </div>
                 <p class="table-description">Is this carry good for leg straighteners? Does it have leg passes? A deep seat?</p>
@@ -286,13 +286,13 @@
                 <div class="table-title-container">
                     <p class="table-title">Good for newborns<a href="{% url 'faq' %}#faq_ratings" class="info-icon" title="What does this mean">i</a></p>
 
-                    {% if position != 'Tandem' %}
-                    <div id="newborns-rating" class="rating-group" data-property="{{newborns}}">
-                    </div>
+                    {% if position == 'Tandem' %}
+                    <div class="poppins-bold fscarry pink">Varies</div>
                     {% elif newborns == 0 %}
                     <div class="poppins-bold fscarry pink">No votes</div>
                     {% else %}
-                    <div class="poppins-bold fscarry pink">Varies</div>
+                    <div id="newborns-rating" class="rating-group" data-property="{{newborns}}">
+                    </div>
                     {% endif %}
                 
                 </div>
@@ -309,13 +309,13 @@
                 <div class="table-title-container">
                     <p class="table-title">Good for big kids<a href="{% url 'faq' %}#faq_ratings" class="info-icon" title="What does this mean">i</a></p>
 
-                    {% if position != 'Tandem' %}
-                    <div id="bigkids-rating" class="rating-group" data-property="{{bigkids}}">
-                    </div>
+                    {% if position == 'Tandem' %}
+                    <div class="poppins-bold fscarry pink">Varies</div>
                     {% elif bigkids == 0 %}
                     <div class="poppins-bold fscarry pink">No votes</div>
                     {% else %}
-                    <div class="poppins-bold fscarry pink">Varies</div>
+                    <div id="bigkids-rating" class="rating-group" data-property="{{bigkids}}">
+                    </div>
                     {% endif %}
                 
                 </div>
