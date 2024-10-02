@@ -13,6 +13,7 @@ from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView
 from django.contrib.auth.views import LoginView
 from django.contrib import messages
+from django.shortcuts import render
 
 
 from .forms import CustomUserCreationForm, CustomLoginForm, UserUpdateForm
@@ -30,7 +31,6 @@ class CustomLoginView(LoginView):
     success_url = "/"
 
 
-from django.shortcuts import render
 
 
 def account_deleted(request):
@@ -67,7 +67,7 @@ def delete_account(request):
 
 DIFFICULTY_VALUES = ["Beginner", "Beginner+", "Intermediate", "Advanced", "Pro"]
 
-
+@login_required
 def achievements(request):
     # Get all achievements
     all_achievements = Achievement.objects.all()
@@ -140,7 +140,7 @@ def downloads(request):
 
     return render(request, "wrappinggallery/downloads.html")
 
-
+@login_required
 def collection(request):
     user = request.user  # Get the logged-in user
 
