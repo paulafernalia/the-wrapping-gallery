@@ -1,4 +1,4 @@
-let pageSize = 18;
+let pageSize = 100;
 let resultsPage = 1;
 
 const booleanProps = [
