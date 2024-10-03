@@ -1,5 +1,5 @@
 from django.dispatch import receiver
-from .models import Carry, UserRating, CustomUser, DoneCarry
+from .models import Carry, UserRating, CustomUser, DoneCarry, Rating
 from django.db.models.signals import pre_delete, post_delete, post_save
 from .achievements import ACHIEVEMENT_FUNCTIONS
 from .models import UserAchievement, Achievement
@@ -17,7 +17,7 @@ def recalculate_achievements(user, type):
         support_data = user
     elif type == "general_ratings":
         user_done_carries = DoneCarry.objects.filter(user=user)
-        carry_names = support_data.values_list('carry__name', flat=True)
+        carry_names = user_done_carries.values_list('carry__name', flat=True)
         support_data = Rating.objects.filter(carry__name__in=carry_names)
     else:
         raise ValidationError(f"Unknown type {type}")
@@ -47,6 +47,7 @@ def recalculate_achievements(user, type):
 @receiver(post_save, sender=DoneCarry, weak=False)
 def handle_save(sender, instance, **kwargs):
     recalculate_achievements(instance.user, "done_carries")
+    recalculate_achievements(instance.user, "general_ratings")
 
 # Recalculate achievements after UserRating is created/updated.
 @receiver(post_save, sender=UserRating, weak=False)
@@ -57,6 +58,7 @@ def handle_save(sender, instance, **kwargs):
 @receiver(post_delete, sender=DoneCarry, weak=False)
 def handle_delete(sender, instance, **kwargs):
     recalculate_achievements(instance.user, "done_carries")
+    recalculate_achievements(instance.user, "general_ratings")
 
 # Recalculate achievements after UserRating is deleted.
 @receiver(post_delete, sender=UserRating, weak=False)
@@ -72,3 +74,4 @@ def handle_achievement_save(sender, instance, created, **kwargs):
         recalculate_achievements(user, "ratings")
         recalculate_achievements(user, "done_carries")
         recalculate_achievements(user, "user")
+        recalculate_achievements(user, "general_ratings")
