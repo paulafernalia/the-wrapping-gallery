@@ -44,27 +44,27 @@ def recalculate_achievements(user, type):
 
 
 # Recalculate achievements after DoneCarry is created/updated.
-@receiver(post_save, sender=DoneCarry, weak=True)
+@receiver(post_save, sender=DoneCarry, weak=False)
 def handle_save(sender, instance, **kwargs):
     recalculate_achievements(instance.user, "done_carries")
 
 # Recalculate achievements after UserRating is created/updated.
-@receiver(post_save, sender=UserRating, weak=True)
+@receiver(post_save, sender=UserRating, weak=False)
 def handle_save(sender, instance, **kwargs):
     recalculate_achievements(instance.user, "ratings")
 
 # Recalculate achievements after DoneCarry is deleted.
-@receiver(post_delete, sender=DoneCarry, weak=True)
+@receiver(post_delete, sender=DoneCarry, weak=False)
 def handle_delete(sender, instance, **kwargs):
     recalculate_achievements(instance.user, "done_carries")
 
 # Recalculate achievements after UserRating is deleted.
-@receiver(post_delete, sender=UserRating, weak=True)
+@receiver(post_delete, sender=UserRating, weak=False)
 def handle_delete(sender, instance, **kwargs):
     recalculate_achievements(instance.user, "ratings")
 
 # Recalculate achievements after a new Achievement is created/updated.
-@receiver(post_save, sender=Achievement, weak=True)
+@receiver(post_save, sender=Achievement, weak=False)
 def handle_achievement_save(sender, instance, created, **kwargs):
     # If a new achievement is created, recalculate for all users
     users = CustomUser.objects.all()  # Adjust this if you have a different user model
