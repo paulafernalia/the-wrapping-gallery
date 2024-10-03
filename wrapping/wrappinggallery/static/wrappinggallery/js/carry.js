@@ -123,8 +123,6 @@ function updateVoteText(category, rating) {
 
 
 function handleStarClick(stars, rating, title, category, hiddenInput) {
-
-    console.log("handle", rating, title, category, hiddenInput);
     // Update the classes of the stars based on the clicked star
     stars.forEach((s, index) => {
         if (index < rating) {
@@ -153,7 +151,10 @@ document.querySelectorAll('.vote-group').forEach(voteGroup => {
 
     stars.forEach(star => {
         star.addEventListener('click', function() {
-            const rating = parseInt(this.getAttribute('data-value'));
+            let rating = parseInt(this.getAttribute('data-value'));
+            if (hiddenInput.value === this.getAttribute('data-value')) {
+                rating = 0;
+            }
             handleStarClick(stars, rating, title, category, hiddenInput); // Call the separate function on click
         });
     });
