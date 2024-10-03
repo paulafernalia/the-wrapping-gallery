@@ -123,8 +123,6 @@ function updateVoteText(category, rating) {
 
 
 function handleStarClick(stars, rating, title, category, hiddenInput) {
-
-    console.log("handle", rating, title, category, hiddenInput);
     // Update the classes of the stars based on the clicked star
     stars.forEach((s, index) => {
         if (index < rating) {
