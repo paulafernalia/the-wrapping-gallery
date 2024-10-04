@@ -57,15 +57,6 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
             <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                    <a class="nav-link poppins-light {% if request.path == '/' %}active{% endif %}" data-page="carries-page" href="{% url 'index' %}">CARRIES</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link poppins-light {% if request.path == '/faq/' %}active{% endif %}" data-page="faq-page" href="{% url 'faq' %}">BASICS</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link poppins-light {% if request.path == '/downloads/' %}active{% endif %}" data-page="downloads" href="{% url 'downloads' %}">DOWNLOADS</a>
-                </li>
                 {% if user.is_authenticated %}
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -75,7 +66,7 @@
                             <a class="dropdown-item poppins-light" href="{% url 'collection' %}">COLLECTION (beta)</a>
                             <a class="dropdown-item poppins-light" href="{% url 'achievements' %}">ACHIEVEMENTS (beta)</a>
                             <hr>
-                            <a class="dropdown-item poppins-light" href="{% url 'profile' %}">PROFILE</a>
+                            <a class="dropdown-item poppins-light" href="{% url 'profile' %}">PROFILE ({{ user.username }})</a>
                             <a class="dropdown-item poppins-light" href="{% url 'password_change' %}">CHANGE PASSWORD</a>
                             <form action="{% url 'logout' %}" method="post" class="dropdown-item m-0">
                                 {% csrf_token %}
@@ -90,6 +81,16 @@
                     </li>
                     {% endif %}
                 {% endif %}
+                <li class="nav-item">
+                    <a class="nav-link poppins-light {% if request.path == '/' %}active{% endif %}" data-page="carries-page" href="{% url 'index' %}">CARRIES</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link poppins-light {% if request.path == '/faq/' %}active{% endif %}" data-page="faq-page" href="{% url 'faq' %}">FAQ</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link poppins-light {% if request.path == '/downloads/' %}active{% endif %}" data-page="downloads" href="{% url 'downloads' %}">DOWNLOADS</a>
+                </li>
+                
             </ul>
         </div>
 
