@@ -6,6 +6,7 @@ from django.http import JsonResponse
 import os
 from .models import Carry, Rating, UserRating
 from django.db.models import Avg
+from django.db.models import Q
 
 
 def initialise_supabase():
@@ -127,7 +128,12 @@ def apply_filters(queryset, properties, values, mmpositions, finishes, difficult
         elif prop == "finish" and val not in ["Any", "null"]:
             queryset = queryset.filter(carry__finish=finishes[val])
         elif prop == "partialname" and val not in ["null", ""] and val:
-            queryset = queryset.filter(carry__title__icontains=val)
+            queryset = queryset.filter(
+                Q(carry__title__icontains=val) |
+                Q(carry__longtitle__icontains=val) |
+                Q(carry__name__icontains=val) |
+                Q(carry__finish__icontains=val)
+            )
         elif prop == "pretied" and val == "1":
             queryset = queryset.filter(carry__pretied=val)
         elif prop == "pass_sling" and val == "1":
