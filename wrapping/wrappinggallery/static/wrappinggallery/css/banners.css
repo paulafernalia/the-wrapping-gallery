@@ -1,0 +1,73 @@
+/* Modal background */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999; /* Ensure it stays above other elements */
+}
+
+/* Modal content */
+.modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    max-width: 400px; /* Adjust width as needed */
+    position: relative;
+}
+
+/* Close button */
+.close-btn {
+    position: absolute;
+    top: -40px;
+    right: -30px;
+    font-size: 25px;
+    font-weight: bold;
+    cursor: pointer;
+    color: lightgrey;
+}
+
+.modal h3 {
+    margin: 0 0 10px;
+}
+
+.modal p {
+    margin: 0;
+}
+
+.confetti {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none; /* Allow clicks to pass through */
+    overflow: hidden;
+    z-index: 9999; /* Make sure it's on top */
+}
+
+.confetti .confetti-piece {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background-color: #ff0; /* Default color, can be changed dynamically */
+    border-radius: 50%;
+    opacity: 0.8;
+    animation: fall 3s forwards;
+}
+
+@keyframes fall {
+    0% {
+        transform: translateY(-100%);
+    }
+    100% {
+        transform: translateY(100vh); /* Fall to the bottom of the viewport */
+    }
+}

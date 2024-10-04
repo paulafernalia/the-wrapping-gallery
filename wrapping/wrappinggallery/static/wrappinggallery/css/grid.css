@@ -19,6 +19,13 @@ h2 {
     gap: 20px; /* Space between grid items, reduced from 50px */
 }
 
+.ach-card-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 columns */
+    gap: 1rem; /* Adjust the gap between items as needed */
+    justify-items: center; /* Center items horizontally */
+}
+
 
 .achievement-grid {
     border: none;
@@ -60,6 +67,28 @@ h2 {
     background-color: white;
     padding: 10px;
     height: 130px;
+}
+
+.modal-grid-item {
+    position: relative; /* Allows absolute positioning of child elements */
+    overflow: hidden;
+    border: none;
+    display: flex; /* Enables flexbox layout */
+    justify-content: center; /* Centers the image horizontally */
+    align-items: center; /* Centers the image vertically */
+    background-color: white;
+    padding: 0px;
+    height: 130px;
+}
+
+.modal-grid-item img {
+    width: auto;
+    height: 100%; /* Maintain aspect ratio */
+    display: block;
+    object-fit: cover; /* Cover the container */
+    opacity: 1;
+    text-align: center;
+    padding: 20px;
 }
 
 .achievement-grid-item {
@@ -151,6 +180,18 @@ h2 {
     box-sizing: border-box; /* Ensure padding does not overflow the container */
     background-color: rgba(245, 247, 248, 0.5); /* Semi-transparent background */
 }
+
+.ach-desc-container {
+    position: absolute; /* Position absolutely within the grid item */
+    bottom: -20px; /* Space from the bottom of the grid item */
+    width: 100%; /* Full width of the grid item */
+    padding: 0px; /* Padding around the text */
+    margin-bottom: 20px;
+    box-sizing: border-box; /* Ensure padding does not overflow the container */
+/*    background-color: rgba(245, 247, 248, 0.5); /* Semi-transparent background */*/
+}
+
+
 
 .carrydesc,
 .sizedesc {
