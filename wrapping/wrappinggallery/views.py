@@ -392,7 +392,9 @@ def remove_done(request, carry_name):
     user = request.user
 
     # Remove from favorites if it exists
-    DoneCarry.objects.filter(carry=carry, user=user).delete()
+    done_carries = DoneCarry.objects.filter(carry=carry, user=user)
+    for done_carry in done_carries:
+        done_carry.delete()
 
     return redirect('carry', name=carry_name)
 
