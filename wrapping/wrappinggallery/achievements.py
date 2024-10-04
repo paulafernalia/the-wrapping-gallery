@@ -1,4 +1,3 @@
-from .models import DoneCarry, Rating
 from django.utils import timezone
 from django.db.models.functions import Round
 
@@ -103,3 +102,4 @@ ACHIEVEMENT_FUNCTIONS = {
     'pirates': (count_pirates, 'done_carries', {'threshold': 3}),
     'toddler_prisoner': (count_toddler_prisoner, 'general_ratings', {'threshold': 5}),
 }
+
