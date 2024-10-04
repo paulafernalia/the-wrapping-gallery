@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse, FileResponse
 from django.views.decorators.http import require_GET
-from django.db.models import FloatField, Func, F, Sum, Count
+from django.db.models import FloatField, Func, F, Sum, Count, Q
 from django.db.models.functions import Round
 from django.shortcuts import redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
@@ -287,9 +287,17 @@ def carry(request, name):
 
     # Get the carry context
     carry_context = utils.get_carry_context(name)
+
+    # Retrieve and remove unlocked achievements
+    unlocked_achievements = request.session.pop('unlocked_achievements', [])  
     
     # Add 'is_done' and user ratings to the context
-    context = {**carry_context, 'is_done': is_done, 'user_ratings': user_ratings_data}
+    context = {
+        **carry_context,
+        'is_done': is_done,
+        'user_ratings': user_ratings_data,
+        'unlocked_achievements': unlocked_achievements
+    }
 
     return render(request, "wrappinggallery/carry.html", context)
 
@@ -377,10 +385,25 @@ def download_booklet(request, carry):
 def mark_as_done(request, carry_name):
     carry = get_object_or_404(Carry, name=carry_name)
     user = request.user
+
+    achieved_before = UserAchievement.objects.filter(
+        Q(user=user) & (Q(achievement__category=1) | Q(achievement__category=0))
+    )
+    achieved_before = set(achieved_before.values_list('achievement__title', 'achievement__name'))
     
     # Check if the done already entry exists
     if not DoneCarry.objects.filter(carry=carry, user=user).exists():
         DoneCarry.objects.create(carry=carry, user=user)
+
+    achieved_after = UserAchievement.objects.filter(
+        Q(user=user) & (Q(achievement__category=1) | Q(achievement__category=0))
+    )        
+    
+    achieved_after = set(achieved_after.values_list('achievement__title', 'achievement__name'))
+
+    unlocked = [{'name': tuple_[1], 'title': tuple_[0]} for tuple_ in list(achieved_after - achieved_before)]
+
+    request.session['unlocked_achievements'] = unlocked
     
     # Render the page again
     return redirect('carry', name=carry_name)
@@ -413,6 +436,12 @@ def submit_review(request, carry_name):
         # Get the rating values from the form
         user = request.user
 
+        # Get list of review-related achievements from this user
+        achieved_before = UserAchievement.objects.filter(
+            Q(user=user) & (Q(achievement__category=2) | Q(achievement__category=0))
+        )
+        achieved_before = set(achieved_before.values_list('achievement__title', 'achievement__name'))
+
         # Fetch the relevant carry object based on carry_name
         carry = Carry.objects.get(name=carry_name)
 
@@ -431,5 +460,14 @@ def submit_review(request, carry_name):
                 'fancy': request.POST.get('fancy_vote', 0),
             }
         )
+
+        achieved_after = UserAchievement.objects.filter(
+            Q(user=user) & (Q(achievement__category=2) | Q(achievement__category=0))
+        )
+        
+        achieved_after = set(achieved_after.values_list('achievement__title', 'achievement__name'))
+        unlocked = [{'name': tuple_[1], 'title': tuple_[0]} for tuple_ in list(achieved_after - achieved_before)]
+
+        request.session['unlocked_achievements'] = unlocked
 
     return redirect('carry', name=carry_name)
