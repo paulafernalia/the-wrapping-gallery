@@ -184,6 +184,63 @@ function updateStars(rating) {
 }
 
 
+
+// Handle close button click
+const closeButton = document.querySelector('.close-btn');
+if (closeButton) {
+    closeButton.addEventListener('click', function() {
+        const congratsBox = document.getElementById('congratsBox');
+        if (congratsBox) {
+            congratsBox.style.display = 'none';
+        }
+    });
+}
+
+// Optional: Close modal by clicking outside of the modal content
+const congratsBox = document.getElementById('congratsBox');
+if (congratsBox) {
+    congratsBox.addEventListener('click', function(event) {
+        if (event.target === this) {
+            this.style.display = 'none';
+        }
+    });
+}
+
+function createConfetti() {
+    const colors = [
+        '#e3dbdb', // Light grey
+        '#c8b7b7', // Dark grey
+        '#ac9393', // Grey
+        '#916f6f', // Pink
+        '#6c5353', // Hot pink
+        '#483737'  // Black
+    ];
+
+    const container = document.getElementById('confettiContainer');
+    const numberOfPieces = 100; // Number of confetti pieces to generate
+
+    for (let i = 0; i < numberOfPieces; i++) {
+        const confettiPiece = document.createElement('div');
+        confettiPiece.classList.add('confetti-piece');
+
+        // Set a random color
+        confettiPiece.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+
+        // Randomize position and animation duration
+        confettiPiece.style.left = Math.random() * 100 + 'vw';
+        confettiPiece.style.animationDuration = Math.random() * 2 + 1 + 's'; // Between 1s and 3s
+
+        // Add the confetti piece to the container
+        container.appendChild(confettiPiece);
+
+        // Remove the confetti piece after the animation ends
+        confettiPiece.addEventListener('animationend', () => {
+            confettiPiece.remove();
+        });
+    }
+}
+
+
 document.addEventListener('DOMContentLoaded', async function() { 
     // Add stars to the rating groups based on their data attributes
     const ratingGroups = document.querySelectorAll('.rating-group');
@@ -209,4 +266,8 @@ document.addEventListener('DOMContentLoaded', async function() {
             handleStarClick(stars, 0, title, category, hiddenInput); // Set initial star ratings
         }
     });
+
+    if (document.getElementById('congratsBox')) {
+        createConfetti();
+    }
 });

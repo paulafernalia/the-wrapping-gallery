@@ -519,6 +519,24 @@
 </div>
 {% endif %}
 
+{% if unlocked_achievements %}
+<div id="congratsBox" style="display: block;" class="modal">
+    <div class="modal-content">
+        <span class="close-btn">&times;</span> <!-- The close button -->
+        <h4 class="poppins-bold pink">New achievements unlocked!</h4>
+        <ul>
+        {% for achievement in unlocked_achievements %}
+            <div class="modal-grid-item clickable-grid-item">
+                <img src="/static/wrappinggallery/illustrations/achievements/{{achievement.name}}.png">
+                <div class="ach-desc-container poppins-light fssmall">{{ achievement.title }}</div>
+            </div>
+        {% endfor %}
+        </ul>
+    </div>
+</div>
+
+<div id="confettiContainer" class="confetti"></div>
+{% endif %}
 
 <br><br><br>
 <script src="{% static 'wrappinggallery/js/carry.js' %}"></script>
