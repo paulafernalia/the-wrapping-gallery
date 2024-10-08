@@ -103,6 +103,38 @@ function handleGridItemClick(gridItem, carry, baseUrlPattern) {
     }
 }
 
+// Function to handle "Mark as done" action
+async function addCarryAsDone(carryName, gridItem, img, overlay, addCircle) {
+    loadingSpinner.style.display = 'block';
+    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+    try {
+        // Make an AJAX POST request to mark the carry as done
+        const response = await fetch(`/mark-done/${carryName}/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrfToken
+            },
+            body: JSON.stringify({ carry_name: carryName })
+        });
+
+        if (response.ok) {
+            // Update the UI: Remove opacity, show shadow, and remove "+" icon
+            img.style.opacity = '1';
+            gridItem.classList.add("shadow");
+            gridItem.style.border = "1px solid lightgrey";
+            gridItem.removeChild(overlay);
+            gridItem.removeChild(addCircle); // Remove the "+" icon
+        } else {
+            console.error("Failed to mark carry as done.");
+        }
+    } catch (error) {
+        console.error("Error marking carry as done:", error);
+    }
+
+    loadingSpinner.style.display = 'none';
+}
 
 async function loadMyCarries(size, position) {
     const gridContainer = document.querySelector(`.card-grid[data-size="${size}"][data-position="${position}"]`);
@@ -152,6 +184,12 @@ async function loadMyCarries(size, position) {
             const addCircle = document.createElement('div');
             addCircle.className = 'add-circle'; // Style using the same CSS class as in the example
             addCircle.innerHTML = '<i class="fa fa-plus"></i>'; // Add the "+" icon
+
+            // Separate the click handler
+            addCircle.onclick = function(event) {
+                event.stopPropagation(); // Prevent the click from bubbling up to the grid item
+                addCarryAsDone(carry.carry__name, gridItem, img, overlay, addCircle);
+            };
 
             gridItem.appendChild(addCircle); // Append the circle to the grid item
         } else {
