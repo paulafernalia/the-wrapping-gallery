@@ -15,7 +15,7 @@ from decouple import Config, RepositoryEnv, config as decouple_config
 from .base import *
 
 
-env_file = '.env.prod'
+env_file = '.env.dev'
 if os.path.exists(env_file):
     config = Config(RepositoryEnv(env_file))
 else:
@@ -29,6 +29,7 @@ else:
 SECRET_KEY = config("SECRET_KEY", default="default-development-secret-key")
 
 # Load Supabase configuration from environment variables
+# TODO MIGRATE TO DIFFERENT PROJECT
 SUPABASE_URL = config("SUPABASE_URL", default="https://default.supabase.co")
 SERVICE_ROLE_KEY = config("SERVICE_ROLE_KEY", default="default-service-role-key")
 SUPABASE_TUTORIAL_BUCKET = config("SUPABASE_TUTORIAL_BUCKET", default="default-bucket-name")
@@ -38,25 +39,14 @@ EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD", default="")
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
-ALLOWED_HOSTS = config('DJANGO_ALLOWED_HOSTS', default='').split(',')
-
-# Necessary to enable CSRF tokens in production
-CSRF_TRUSTED_ORIGINS = config('CSRF_TRUSTED_ORIGINS', default='').split(',')
-
-# Adds a unique hash at the end of static files names when running collectstatic
-# It ensures that old static files aren't cached and get reloaded when they change
-STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
+DEBUG = True
+ALLOWED_HOSTS = ["*"]
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "NAME": config("DB_NAME", default="default_db_name"),
-        "USER": config("DB_USER", default="default_user"),
-        "PASSWORD": config("DB_PASSWORD", default="default_password"),
-        "HOST": config("DB_HOST", default="localhost"),
-        "PORT": config("DB_PORT", default="5432"),
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": os.path.join(BASE_DIR, "test_db.sqlite3"),
     }
 }

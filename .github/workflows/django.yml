@@ -29,8 +29,7 @@ jobs:
 
     - name: Set environment variables
       run: |
-        echo "TEST=1" >> $GITHUB_ENV
-        echo "DJANGO_SETTINGS_MODULE=wrapping.settings.development" >> $GITHUB_ENV
+        echo "DJANGO_SETTINGS_MODULE=wrapping.settings.test" >> $GITHUB_ENV
         echo "SUPABASE_URL=${{ secrets.SUPABASE_URL }}" >> $GITHUB_ENV
         echo "SERVICE_ROLE_KEY=${{ secrets.SERVICE_ROLE_KEY }}" >> $GITHUB_ENV
         echo "SUPABASE_BUCKET_NAME=${{ secrets.SUPABASE_BUCKET_NAME }}" >> $GITHUB_ENV
