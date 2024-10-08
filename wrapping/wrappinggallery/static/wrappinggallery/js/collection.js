@@ -110,7 +110,7 @@ async function addCarryAsDone(carryName, gridItem, img, overlay, addCircle) {
 
     try {
         // Make an AJAX POST request to mark the carry as done
-        const response = await fetch(`/mark-done/${carryName}/`, {
+        fetch(`/mark-done/${carryName}/`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -119,16 +119,12 @@ async function addCarryAsDone(carryName, gridItem, img, overlay, addCircle) {
             body: JSON.stringify({ carry_name: carryName })
         });
 
-        if (response.ok) {
-            // Update the UI: Remove opacity, show shadow, and remove "+" icon
-            img.style.opacity = '1';
-            gridItem.classList.add("shadow");
-            gridItem.style.border = "1px solid lightgrey";
-            gridItem.removeChild(overlay);
-            gridItem.removeChild(addCircle); // Remove the "+" icon
-        } else {
-            console.error("Failed to mark carry as done.");
-        }
+        // Update the UI: Remove opacity, show shadow, and remove "+" icon
+        img.style.opacity = '1';
+        gridItem.classList.add("shadow");
+        gridItem.style.border = "1px solid lightgrey";
+        gridItem.removeChild(overlay);
+        gridItem.removeChild(addCircle); // Remove the "+" icon
     } catch (error) {
         console.error("Error marking carry as done:", error);
     }
