@@ -229,19 +229,20 @@ h2 {
 }
 
 
-.plus-icon {
-    position: absolute; /* Ensure positioning is absolute */
-    top: 3px; /* Positioning can be adjusted */
-    left: 3px; /* Positioning can be adjusted */
-    background-color: lightgrey !important;
-    border: 1px solid #B0B0B0;
-    color: white;
+.add-circle {
+    width: 20px;
+    height: 20px;
     border-radius: 50%;
+    background-color: lightgrey;
+    color: white;
     display: flex;
-    padding: 2px 8px;
-    align-items: center;
     justify-content: center;
+    align-items: center;
+    font-size: 12px;
     cursor: pointer;
-    z-index: 10; /* Make sure it's above other elements */
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2); /* Subtle grey shadow */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    position: absolute;
+    top: 0px; /* Adjust to control the button's position */
+    right: 0px; /* Adjust to control the button's position */
+    z-index: 10; /* Ensure it appears above other elements */
 }

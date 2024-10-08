@@ -147,6 +147,13 @@ async function loadMyCarries(size, position) {
             overlay.classList.add('overlay'); // Add the overlay class to the div
             gridItem.appendChild(overlay);
             gridItem.style.border = "none";
+
+            // Create the "+" circle button and append it to the grid item
+            const addCircle = document.createElement('div');
+            addCircle.className = 'add-circle'; // Style using the same CSS class as in the example
+            addCircle.innerHTML = '<i class="fa fa-plus"></i>'; // Add the "+" icon
+
+            gridItem.appendChild(addCircle); // Append the circle to the grid item
         } else {
             gridItem.classList.add("shadow");
         }
