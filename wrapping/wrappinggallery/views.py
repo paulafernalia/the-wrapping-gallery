@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse, FileResponse
-from django.views.decorators.http import require_GET
+from django.views.decorators.http import require_GET, require_POST
 from django.db.models import FloatField, Func, F, Sum, Count, Q
 from django.db.models.functions import Round
 from django.shortcuts import redirect, get_object_or_404
@@ -29,8 +29,6 @@ class CustomLoginView(LoginView):
     authentication_form = CustomLoginForm
     template_name = "registration/login.html"
     success_url = "/"
-
-
 
 
 def account_deleted(request):
@@ -287,16 +285,12 @@ def carry(request, name):
 
     # Get the carry context
     carry_context = utils.get_carry_context(name)
-
-    # Retrieve and remove unlocked achievements
-    unlocked_achievements = request.session.pop('unlocked_achievements', [])  
     
     # Add 'is_done' and user ratings to the context
     context = {
         **carry_context,
         'is_done': is_done,
         'user_ratings': user_ratings_data,
-        'unlocked_achievements': unlocked_achievements
     }
 
     return render(request, "wrappinggallery/carry.html", context)
@@ -382,6 +376,7 @@ def download_booklet(request, carry):
 
 
 @login_required
+@require_POST
 def mark_as_done(request, carry_name):
     carry = get_object_or_404(Carry, name=carry_name)
     user = request.user
@@ -402,14 +397,13 @@ def mark_as_done(request, carry_name):
     achieved_after = set(achieved_after.values_list('achievement__title', 'achievement__name'))
 
     unlocked = [{'name': tuple_[1], 'title': tuple_[0]} for tuple_ in list(achieved_after - achieved_before)]
-
-    request.session['unlocked_achievements'] = unlocked
     
-    # Render the page again
-    return redirect('carry', name=carry_name)
+    # Return a JSON response
+    return JsonResponse({'unlocked_achievements': unlocked})
 
 
 @login_required
+@require_POST
 def remove_done(request, carry_name):
     carry = get_object_or_404(Carry, name=carry_name)
     user = request.user
@@ -419,7 +413,8 @@ def remove_done(request, carry_name):
     for done_carry in done_carries:
         done_carry.delete()
 
-    return redirect('carry', name=carry_name)
+    return JsonResponse({})
+
 
 @login_required
 def get_done_carries(request):
@@ -431,43 +426,41 @@ def get_done_carries(request):
 
 
 @login_required
+@require_POST
 def submit_review(request, carry_name):
-    if request.method == "POST" and request.user.is_authenticated:
-        # Get the rating values from the form
-        user = request.user
+    # Get the rating values from the form
+    user = request.user
 
-        # Get list of review-related achievements from this user
-        achieved_before = UserAchievement.objects.filter(
-            Q(user=user) & (Q(achievement__category=2) | Q(achievement__category=0))
-        )
-        achieved_before = set(achieved_before.values_list('achievement__title', 'achievement__name'))
+    # Get list of review-related achievements from this user
+    achieved_before = UserAchievement.objects.filter(
+        Q(user=user) & (Q(achievement__category=2) | Q(achievement__category=0))
+    )
+    achieved_before = set(achieved_before.values_list('achievement__title', 'achievement__name'))
 
-        # Fetch the relevant carry object based on carry_name
-        carry = Carry.objects.get(name=carry_name)
+    # Fetch the relevant carry object based on carry_name
+    carry = Carry.objects.get(name=carry_name)
 
-        # Create or update the UserRating instance
-        user_rating, created = UserRating.objects.update_or_create(
-            user=request.user,
-            carry=carry,
-            defaults={
-                'newborns': request.POST.get('newborns_vote', 0),
-                'legstraighteners': request.POST.get('legstraighteners_vote', 0),
-                'leaners': request.POST.get('leaners_vote', 0),
-                'bigkids': request.POST.get('bigkids_vote', 0),
-                'feeding': request.POST.get('feeding_vote', 0),
-                'quickups': request.POST.get('quickups_vote', 0),
-                'difficulty': request.POST.get('difficulty_vote', 0),
-                'fancy': request.POST.get('fancy_vote', 0),
-            }
-        )
+    # Create or update the UserRating instance
+    user_rating, created = UserRating.objects.update_or_create(
+        user=request.user,
+        carry=carry,
+        defaults={
+            'newborns': request.POST.get('newborns_vote', 0),
+            'legstraighteners': request.POST.get('legstraighteners_vote', 0),
+            'leaners': request.POST.get('leaners_vote', 0),
+            'bigkids': request.POST.get('bigkids_vote', 0),
+            'feeding': request.POST.get('feeding_vote', 0),
+            'quickups': request.POST.get('quickups_vote', 0),
+            'difficulty': request.POST.get('difficulty_vote', 0),
+            'fancy': request.POST.get('fancy_vote', 0),
+        }
+    )
 
-        achieved_after = UserAchievement.objects.filter(
-            Q(user=user) & (Q(achievement__category=2) | Q(achievement__category=0))
-        )
-        
-        achieved_after = set(achieved_after.values_list('achievement__title', 'achievement__name'))
-        unlocked = [{'name': tuple_[1], 'title': tuple_[0]} for tuple_ in list(achieved_after - achieved_before)]
+    achieved_after = UserAchievement.objects.filter(
+        Q(user=user) & (Q(achievement__category=2) | Q(achievement__category=0))
+    )
+    
+    achieved_after = set(achieved_after.values_list('achievement__title', 'achievement__name'))
+    unlocked = [{'name': tuple_[1], 'title': tuple_[0]} for tuple_ in list(achieved_after - achieved_before)]
 
-        request.session['unlocked_achievements'] = unlocked
-
-    return redirect('carry', name=carry_name)
+    return JsonResponse({'unlocked_achievements': unlocked})

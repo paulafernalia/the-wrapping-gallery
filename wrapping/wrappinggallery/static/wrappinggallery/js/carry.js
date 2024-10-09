@@ -206,38 +206,84 @@ if (congratsBox) {
     });
 }
 
-function createConfetti() {
-    const colors = [
-        '#e3dbdb', // Light grey
-        '#c8b7b7', // Dark grey
-        '#ac9393', // Grey
-        '#916f6f', // Pink
-        '#6c5353', // Hot pink
-        '#483737'  // Black
-    ];
 
-    const container = document.getElementById('confettiContainer');
-    const numberOfPieces = 100; // Number of confetti pieces to generate
 
-    for (let i = 0; i < numberOfPieces; i++) {
-        const confettiPiece = document.createElement('div');
-        confettiPiece.classList.add('confetti-piece');
+function markAsDone(button) {
+    // Create a FormData object to hold any necessary data
+    const formData = new FormData();
+    const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
+    formData.append('csrfmiddlewaretoken', csrfToken);
 
-        // Set a random color
-        confettiPiece.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+    fetch(button.dataset.action, {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'X-CSRFToken': formData.get('csrfmiddlewaretoken'), // Pass CSRF token
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
 
-        // Randomize position and animation duration
-        confettiPiece.style.left = Math.random() * 100 + 'vw';
-        confettiPiece.style.animationDuration = Math.random() * 2 + 1 + 's'; // Between 1s and 3s
+        // Add achievements to congrats box
+        if (data.unlocked_achievements.length > 0) {
+            loadCongratsBox(data.unlocked_achievements);
+            createConfetti();
+        }
 
-        // Add the confetti piece to the container
-        container.appendChild(confettiPiece);
+        button.style.display = "none";
+        document.getElementById('removeBtn').style.display = "block";
+    })
+    .catch(error => console.error('Error:', error));
+}
 
-        // Remove the confetti piece after the animation ends
-        confettiPiece.addEventListener('animationend', () => {
-            confettiPiece.remove();
-        });
-    }
+
+function submitReview(button) {
+    // Create a FormData object to hold any necessary data
+    const formData = new FormData();
+    const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
+    formData.append('csrfmiddlewaretoken', csrfToken);
+
+    fetch(button.dataset.action, {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'X-CSRFToken': formData.get('csrfmiddlewaretoken'), // Pass CSRF token
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        // Add achievements to congrats box
+        if (data.unlocked_achievements.length > 0) {
+            loadCongratsBox(data.unlocked_achievements);
+            createConfetti();
+        }
+
+        document.getElementById('review-form').style.display = 'none';
+
+    })
+    .catch(error => console.error('Error:', error));
+}
+
+function removeFromCollection(button) {
+    // Create a FormData object to hold any necessary data
+    const formData = new FormData();
+    const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
+    formData.append('csrfmiddlewaretoken', csrfToken);
+
+    fetch(button.dataset.action, {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'X-CSRFToken': formData.get('csrfmiddlewaretoken'), // Pass CSRF token
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        button.style.display = "none";
+        document.getElementById('markasdoneBtn').style.display = "block";
+
+    })
+    .catch(error => console.error('Error:', error));
 }
 
 
@@ -266,8 +312,4 @@ document.addEventListener('DOMContentLoaded', async function() {
             handleStarClick(stars, 0, title, category, hiddenInput); // Set initial star ratings
         }
     });
-
-    if (document.getElementById('congratsBox')) {
-        createConfetti();
-    }
 });

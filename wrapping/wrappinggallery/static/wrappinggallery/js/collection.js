@@ -106,18 +106,29 @@ function handleGridItemClick(gridItem, carry, baseUrlPattern) {
 // Function to handle "Mark as done" action
 async function addCarryAsDone(carryName, gridItem, img, overlay, addCircle) {
     loadingSpinner.style.display = 'block';
-    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    
+    const formData = new FormData();
+    const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
+    formData.append('csrfmiddlewaretoken', csrfToken);
 
     try {
         // Make an AJAX POST request to mark the carry as done
         fetch(`/mark-done/${carryName}/`, {
             method: 'POST',
+            body: formData,
             headers: {
-                'Content-Type': 'application/json',
-                'X-CSRFToken': csrfToken
-            },
-            body: JSON.stringify({ carry_name: carryName })
-        });
+                'X-CSRFToken': formData.get('csrfmiddlewaretoken'), // Pass CSRF token
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Add achievements to congrats box
+            if (data.unlocked_achievements.length > 0) {
+                loadCongratsBox(data.unlocked_achievements);
+                createConfetti();
+            }
+        })
+        .catch(error => console.error('Error:', error));
 
         // Update the UI: Remove opacity, show shadow, and remove "+" icon
         img.style.opacity = '1';

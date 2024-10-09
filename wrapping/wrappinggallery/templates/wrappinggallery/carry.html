@@ -67,20 +67,32 @@
 {% if user.is_authenticated %}
 <br>
 <div class="title-container flex-container">
-   <form action="{% if user.is_authenticated %}{% if is_done %}{% url 'remove_done' name %}{% else %}{% url 'mark_as_done' name %}{% endif %}{% else %}{% url 'login' %}{% endif %}" method="post">
-        {% csrf_token %}
-        <button id="markasdonebtn" type="submit" class="btn pinkbg btn-custom mx-1 poppins-regular fs16">
-          {% if is_done %}Remove from collection{% else %}Mark as done{% endif %}
-        </button>
-    </form>
+    <button 
+        id="removeBtn"
+        type="button"
+        style="display: {% if is_done %}block{% else %}none{% endif %};"
+        class="btn pinkbg btn-custom mx-1 poppins-regular fs16"
+        data-action="{% url 'remove_done' name %}"
+        onclick="removeFromCollection(this)">
+        Remove from collection
+    </button>
+    <button
+        id="markasdoneBtn"
+        type="button" 
+        style="display: {% if is_done %}none{% else %}block{% endif %};"
+        class="btn pinkbg btn-custom mx-1 poppins-regular fs16"
+        data-action="{% url 'mark_as_done' name %}"
+        onclick="markAsDone(this)">
+        Mark as done
+    </button>
     <button id="reviewcarry" onclick="return openReviewForm()" class="btn pinkbg btn-custom mx-1 poppins-regular fs16">
-      Review this carry
+        Review this carry
     </button>
 </div>
 {% endif %}
 
 
-<form id="review-form" method="post" action="{% url 'submit_review' name %}" id="rating-form" style="display: none;">
+<div id="review-form" style="display: none;">
     {% csrf_token %}
     <div class="title-container poppins-bold fsmedium">
         <hr>
@@ -222,10 +234,10 @@
         <br>
     </div>
     <div class="title-container poppins-bold pink fs16">
-        <button type="submit" class="submit-button">Update ratings with my votes</button>
+        <button type="button" data-action="{% url 'submit_review' name %}" class="submit-button" onclick="submitReview(this)">Update ratings with my votes</button>
         <hr>
     </div>
-</form>
+</div>
 <br><br>
 
 <div class="title-container" id="avg-ratings">
@@ -519,24 +531,6 @@
 </div>
 {% endif %}
 
-{% if unlocked_achievements %}
-<div id="congratsBox" style="display: block;" class="modal">
-    <div class="modal-content">
-        <span class="close-btn">&times;</span> <!-- The close button -->
-        <h4 class="poppins-bold pink">New achievements unlocked!</h4>
-        <ul>
-        {% for achievement in unlocked_achievements %}
-            <div class="modal-grid-item clickable-grid-item">
-                <img src="/static/wrappinggallery/illustrations/achievements/{{achievement.name}}.png">
-                <div class="ach-desc-container poppins-light fssmall">{{ achievement.title }}</div>
-            </div>
-        {% endfor %}
-        </ul>
-    </div>
-</div>
-
-<div id="confettiContainer" class="confetti"></div>
-{% endif %}
 
 <br><br><br>
 <script src="{% static 'wrappinggallery/js/carry.js' %}"></script>
@@ -548,9 +542,6 @@
             // Call the reviewCarry JavaScript function
             const reviewForm = document.getElementById('review-form');
             reviewForm.style.display = 'block';
-
-            const avgRatings = document.getElementById('avg-ratings');
-            avgRatings.style.display = 'none';
 
             // Scroll to the review form minus 100px for the header
             const elementPosition = reviewForm.getBoundingClientRect().top + window.scrollY;

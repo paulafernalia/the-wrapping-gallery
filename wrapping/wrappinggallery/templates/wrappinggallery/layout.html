@@ -101,6 +101,17 @@
     {% block body %}
     {% endblock %}
 
+    <div id="congratsBox" style="display: none;" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeCongratsBox()">&times;</span> <h4 class="poppins-bold pink">New achievements unlocked!</h4>
+            <ul id="unlockedAchievementsList"></ul> <!-- Empty list to be filled dynamically -->
+        </div>
+    </div>
+
+    <div id="confettiContainer" class="confetti"></div>
+
+    {% csrf_token %}
+
     <div class='footer-container bg-dark'>
     <footer class="py-3 my-4">
     <ul class="nav justify-content-center border-bottom pb-3 mb-3 bg-dark">
@@ -163,10 +174,76 @@
         }
     }
 
+    function createConfetti() {
+        const colors = [
+            '#e3dbdb', // Light grey
+            '#c8b7b7', // Dark grey
+            '#ac9393', // Grey
+            '#916f6f', // Pink
+            '#6c5353', // Hot pink
+            '#483737'  // Black
+        ];
+
+        const container = document.getElementById('confettiContainer');
+        const numberOfPieces = 100; // Number of confetti pieces to generate
+
+        for (let i = 0; i < numberOfPieces; i++) {
+            const confettiPiece = document.createElement('div');
+            confettiPiece.classList.add('confetti-piece');
+
+            // Set a random color
+            confettiPiece.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+
+            // Randomize position and animation duration
+            confettiPiece.style.left = Math.random() * 100 + 'vw';
+            confettiPiece.style.animationDuration = Math.random() * 2 + 1 + 's'; // Between 1s and 3s
+
+            // Add the confetti piece to the container
+            container.appendChild(confettiPiece);
+
+            // Remove the confetti piece after the animation ends
+            confettiPiece.addEventListener('animationend', () => {
+                confettiPiece.remove();
+            });
+        }
+    }
+
+    function loadCongratsBox(achievements) {
+        const unlockedAchievementsList = document.getElementById('unlockedAchievementsList');
+        const congratsBox = document.getElementById('congratsBox');
+
+        // Clear any previous achievements from the list
+        unlockedAchievementsList.innerHTML = '';
+
+        // Populate the list with unlocked achievements
+        achievements.forEach(achievement => {
+            const achievementItem = `
+                <div class="modal-grid-item clickable-grid-item">
+                    <img src="/static/wrappinggallery/illustrations/achievements/${achievement.name}.png">
+                    <div class="ach-desc-container poppins-light fssmall">${achievement.title}</div>
+                </div>
+            `;
+            unlockedAchievementsList.insertAdjacentHTML('beforeend', achievementItem);
+        });
+
+        // Unhide the congrats modal
+        congratsBox.style.display = 'block';
+    }
+
+    // Close modal when clicking outside of it
+    window.addEventListener('click', function (event) {
+        closeCongratsBox();
+    });
+
+    function closeCongratsBox() {
+        if (document.getElementById('congratsBox')) {
+            document.getElementById('congratsBox').style.display = "none";
+        }
+    }
+
     document.addEventListener('DOMContentLoaded', function() { 
         updateFooterPosition();
     });
-
 
 </script>
 
