@@ -325,7 +325,7 @@ def recalculate_achievements(user, type):
         support_data = DoneCarry.objects.filter(user=user)
     elif type == "ratings":
         support_data = UserRating.objects.filter(user=user)
-    elif type == "user":
+    elif type == "time":
         support_data = user
     elif type == "general_ratings":
         user_done_carries = DoneCarry.objects.filter(user=user)
@@ -517,7 +517,7 @@ class Achievement(models.Model):
         for user in users:
             recalculate_achievements(user, "ratings")
             recalculate_achievements(user, "done_carries")
-            recalculate_achievements(user, "user")
+            recalculate_achievements(user, "time")
             recalculate_achievements(user, "general_ratings")
 
 
