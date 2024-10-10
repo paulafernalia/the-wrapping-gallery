@@ -134,6 +134,11 @@
 
 
 <script type="text/javascript">
+    window.addEventListener('pageshow', function (event) {
+        if (event.persisted) {
+            window.location.reload();
+        }
+    });
     function releaseFooter() {
         const footer = document.querySelector('footer');
         footer.style.position = 'static'; // Reset to default position
@@ -240,6 +245,29 @@
             document.getElementById('congratsBox').style.display = "none";
         }
     }
+
+    async function fetchFileUrl(fileName, position) {
+        try {
+            const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+            const response = await fetch('/file-url/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken
+                },
+                body: JSON.stringify({
+                    file_name: fileName,
+                    position: position
+                })
+            });
+
+            const data = await response.json();
+            return data.url;
+        } catch (error) {
+            return null;
+        }
+    }
+
 
     document.addEventListener('DOMContentLoaded', function() { 
         updateFooterPosition();
