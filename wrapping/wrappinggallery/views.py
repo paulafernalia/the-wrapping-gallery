@@ -129,13 +129,10 @@ def termsandconditions(request):
 
 def about(request):
     image_url = utils.generate_carry_url("profile", "back")
-
-    context = {"imageSrc": image_url}
-    return render(request, "wrappinggallery/about.html", context)
+    return render(request, "wrappinggallery/about.html",  {"imageSrc": image_url})
 
 
 def downloads(request):
-
     return render(request, "wrappinggallery/downloads.html")
 
 @login_required
@@ -146,12 +143,15 @@ def collection(request):
     positions = Carry.objects.values_list('position', flat=True).distinct().order_by('position')
     sizes = Carry.objects.values_list('size', flat=True).distinct().order_by('size')
 
-    # Pre-fetch all carries and group by position and size
-    all_carries = Carry.objects.filter(position__in=positions, size__in=sizes).values('position', 'size').annotate(total_count=Count('name'))
+    # Filter carries based on position and size
+    filtered_carries = Carry.objects.filter(position__in=positions, size__in=sizes)
+
+    # Annotate with the total count of names
+    annotated_carries = filtered_carries.values('position', 'size').annotate(total_count=Count('name'))
 
     # Create a dictionary to quickly access the total counts of carries
     total_carries = {}
-    for carry in all_carries:
+    for carry in annotated_carries:
         position = carry['position']
         size = carry['size']
         count = carry['total_count']
@@ -164,8 +164,17 @@ def collection(request):
     user_done_carries = DoneCarry.objects.filter(user=user).select_related('carry')
 
     # Get todo carries by the user in one query
-    user_todo_carries = DoneCarry.objects.filter(user=user).select_related('carry')
+    user_todo_carries = TodoCarry.objects.filter(user=user).select_related('carry')
 
+    # Get list of carries not in to do
+    not_todo_carries = (
+        Carry.objects.all()
+        .values('name', 'longtitle', 'position')
+        .exclude(name__in=user_todo_carries
+        .values_list('carry__name', flat=True))
+        .order_by('title')
+    )
+    
     # Get image urls
     todo_data = []
     for carry in user_todo_carries:
@@ -201,6 +210,7 @@ def collection(request):
 
     # Pass the separated carries information to the template
     context = {
+        'not_todo_carries': not_todo_carries,
         'positions': positions,
         'sizes': sizes,
         'total_carries': total_carries,
@@ -420,6 +430,21 @@ def mark_as_done(request, carry_name):
     
     # Return a JSON response
     return JsonResponse({'unlocked_achievements': unlocked})
+
+
+@login_required
+@require_POST
+def add_to_todo(request, carry_name):
+    carry = get_object_or_404(Carry, name=carry_name)
+    user = request.user
+    
+    # Check if the done already entry exists
+    if not TodoCarry.objects.filter(carry=carry, user=user).exists():
+        TodoCarry.objects.create(carry=carry, user=user)
+
+    
+    # Return a JSON response
+    return JsonResponse({})
 
 
 @login_required

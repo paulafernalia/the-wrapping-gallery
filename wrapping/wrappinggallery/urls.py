@@ -17,6 +17,7 @@ urlpatterns = [
     path('accounts/login/', views.CustomLoginView.as_view(), name='login'),  # If using class-based view
     path('collection/', views.collection, name="collection"),
     path('mark-done/<str:carry_name>/', views.mark_as_done, name='mark_as_done'),
+    path('add-todo/<str:carry_name>/', views.add_to_todo, name='add_to_todo'),
     path('remove-done/<str:carry_name>/', views.remove_done, name='remove_done'),
     path('done-carries/', views.get_done_carries, name='get_done_carries'),
     path('submit-review/<str:carry_name>/', views.submit_review, name='submit_review'),

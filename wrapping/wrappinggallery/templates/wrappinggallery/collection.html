@@ -7,6 +7,7 @@
 
 {% block body %}
 
+<div class="hover-label poppins-regular" style="display: none;"></div>
 
 <div id="carryTitle" class="title-container poppins-bold fsmedium">
 
@@ -15,11 +16,30 @@
     <h3 class="pink playfair">To do list</h3>
     <p>This are the carries I haven't done yet and would like to try.</p>
 
-    <div class="card-grid">
+    <div class="dropdown">
+        <input type="text" class="pretty-input fssmall" id="carrySearch" placeholder="Add carries..." onclick="showDropdown()"
+        onkeyup="filterCarries()" />
+        <div id="carryDropdown" class="dropdown-content">
+            {% for carry in not_todo_carries %}
+                <div
+                    class="dropdown-item fssmall"
+                    data-name="{{ carry.name }}"
+                    data-url="{% url 'carry' carry.name %}"
+                    data-position="{{ carry.position }}"
+                    onclick="addCarryToTodo(this)">
+                    {{ carry.longtitle }}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <br>
+    <br>
+
+    <div class="card-grid" id="todoGrid">
     {% for carry in todo_carries %}
         <div 
             class="card-grid-item clickable-grid-item shadow"
-            data-name="{{carry.title}}"
+            data-title="{{carry.title}}"
             onclick="handleGridItemClick(this, '{{ carry.title|escapejs }}', '{% url 'carry' carry.name %}')"
             onmouseenter="handleMouseEnter(event, '{{carry.title|escapejs}}')"
             onmouseleave="handleMouseLeave()">
@@ -30,7 +50,7 @@
             >
         </div>
     {% endfor %}
-    </div>
+    </div>    
 
     <br>
     <hr>
