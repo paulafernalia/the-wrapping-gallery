@@ -90,6 +90,7 @@ function handleGridItemClick(gridItem, carryTitle, carryUrl) {
         document.querySelector('.nav-link[data-page="faq-page"]').classList.remove('active');
 
         // Redirect to the constructed URL
+        collapseAllGroups();
         window.location.href = carryUrl;
     }
 }
@@ -138,6 +139,18 @@ async function addCarryAsDone(carryName, addCircle) {
     formData.append('csrfmiddlewaretoken', csrfToken);
 
     const gridItem = addCircle.parentElement;
+
+    const size = gridItem.parentElement.dataset.size;
+    const position = gridItem.parentElement.dataset.position;
+
+    const matchingSpan = document.querySelector(`span[data-size="${size}"][data-position="${position}"]`);
+
+    const previousTotal = matchingSpan.dataset.total;
+    const previousCount = matchingSpan.dataset.count;
+    
+    // Update count of carries done
+    matchingSpan.innerText = `${parseInt(previousCount) + 1} / ${previousTotal}`;
+    matchingSpan.dataset.count = String(parseInt(previousCount) + 1); 
 
     try {
         // Make an AJAX POST request to mark the carry as done
@@ -260,6 +273,17 @@ async function loadMyCarries(size, position) {
 
     
     loadingSpinner.style.display = 'none';
+}
+
+
+function collapseAllGroups() {
+    // Get all elements with the specified class
+    const toggleIcons = document.querySelectorAll('.fa-solid.fa-caret-down.toggle-icon');
+    
+    // Loop through each element and call toggleGroup on it
+    toggleIcons.forEach(function(iconElement) {
+        toggleGroup(iconElement);
+    });
 }
 
 

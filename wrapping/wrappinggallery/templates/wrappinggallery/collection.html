@@ -14,7 +14,7 @@
     <h2 class="pink poiret-one-regular">{{ user.username|capfirst }}' Collection</h2>
 
     <h3 class="pink playfair">To do list</h3>
-    <p>This are the carries I haven't done yet and would like to try.</p>
+    <p>Use this area to keep track of carries you would like to try. Click on the search box add carries.</p>
 
     <div class="dropdown">
         <input type="text" class="pretty-input fssmall" id="carrySearch" placeholder="Add carries..." onclick="showDropdown()"
@@ -63,7 +63,7 @@
     <br>
     <hr>
     <h3 class="pink playfair">Progress</h3>
-    <p>This is my collection where I can keep track of all the carries I have tried so far. Click on the + icon to mark is as "done". Click on a carry to open its page.</p>
+    <p>Use this area to keep track of all the carries you have tried so far. Click on the + icon to mark it as "done". Click on a carry to open its page.</p>
 
     <br>
 
@@ -78,7 +78,12 @@
                     <span
                         class="poppins-regular">Base {% if size < 0 %} {{ size|slice:":-1" }}{% elif size == 0 %}{% else %}+{{ size }}{% endif %}
                     </span>&nbsp;<span
-                        class="filter-tag-mini poppins-bold">{{ done_counts|get_item:position|get_item:size }} /
+                        class="filter-tag-mini poppins-bold"
+                        data-size="{{ size }}"
+                        data-position="{{ position }}"
+                        data-count="{{ done_counts|get_item:position|get_item:size }}"
+                        data-total="{{ total_carries|get_item:position|get_item:size }}">
+                        {{ done_counts|get_item:position|get_item:size }} /
                         {{ total_carries|get_item:position|get_item:size }}
                     </span>
                     <i

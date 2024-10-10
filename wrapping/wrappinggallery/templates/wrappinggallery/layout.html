@@ -134,6 +134,11 @@
 
 
 <script type="text/javascript">
+    window.addEventListener('pageshow', function (event) {
+        if (event.persisted) {
+            window.location.reload();
+        }
+    });
     function releaseFooter() {
         const footer = document.querySelector('footer');
         footer.style.position = 'static'; // Reset to default position
@@ -262,6 +267,7 @@
             return null;
         }
     }
+
 
     document.addEventListener('DOMContentLoaded', function() { 
         updateFooterPosition();
