@@ -10,19 +10,24 @@
 
 <div id="carryTitle" class="title-container poppins-bold fsmedium">
 
-    <h1 class="pink poiret-one-regular">{{ user.username|capfirst }}' Collection</h1>
-    <p>This is my collection where I can keep track of all the carries I have tried so far. Click on a carry to open its page, where you can mark it as "done".</p>
+    <h2 class="pink poiret-one-regular">{{ user.username|capfirst }}' Collection</h2>
 
-    <p><strong>Warning:</strong> You are accessing a beta feature. We cannot guarantee the integrity of the data, and features may be unstable or incomplete.</p>
+    <h3 class="pink playfair">To do list</h3>
+    <p>This are the carries I haven't done yet and would like to try.</p>
+
+    <br>
+    <hr>
+    <h3 class="pink playfair">Progress</h3>
+    <p>This is my collection where I can keep track of all the carries I have tried so far. Click on the + icon to mark is as "done". Click on a carry to open its page.</p>
+
     <br>
 
     {% for position in positions %}
-        <h4 class="poppins-regular pink">{{ position|capfirst }} carries</h4>
-        <br>
+        <p class="poppins-bold fs16">{{ position|capfirst }} carries</p>
         {% for size in sizes %}
             {% if total_carries|get_item:position|get_item:size > 0 %}
                 <p class="fs16" data-size="{{ size }}" data-position="{{ position }}">
-                    <span class="poppins-bold">Base {% if size < 0 %} {{ size|slice:":-1" }}{% elif size == 0 %}{% else %}+{{ size }}{% endif %}</span>
+                    <span class="poppins-regular">Base {% if size < 0 %} {{ size|slice:":-1" }}{% elif size == 0 %}{% else %}+{{ size }}{% endif %}</span>
                     &nbsp;<span class="filter-tag-mini poppins-bold">{{ done_counts|get_item:position|get_item:size }} /
                     {{ total_carries|get_item:position|get_item:size }}</span>
                     <i class="fa-solid fa-caret-right toggle-icon" onclick="toggleGroup(this)" style="cursor: pointer;" data-size="{{ size }}" data-position="{{ position }}"></i>
