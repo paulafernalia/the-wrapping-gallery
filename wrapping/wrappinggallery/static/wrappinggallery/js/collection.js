@@ -18,15 +18,6 @@ const booleanProps = [
     'no_other_s2s', 'no_other_eyelet', 'no_other_sternum', 'no_other_poppins'
 ];
 
-async function fetchFileUrl(fileName, position) {
-    try {
-        const response = await fetch(`/file-url/${fileName}/?position=${position}`);
-        const data = await response.json();
-        return data.url;
-    } catch (error) {
-        return null;
-    }
-}
 
 async function fetchFilteredCarries(page = 1, pageSize = 18, size, position) {
     let sizes = [size];

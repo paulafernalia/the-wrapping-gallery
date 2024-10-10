@@ -16,7 +16,7 @@ from django.contrib import messages
 from django.shortcuts import render
 
 from django.db.models import Case, When, BooleanField
-
+import json
 from .forms import CustomUserCreationForm, CustomLoginForm, UserUpdateForm
 
 
@@ -336,9 +336,13 @@ def carry(request, name):
 
     return render(request, "wrappinggallery/carry.html", context)
 
+@require_POST
+def file_url(request):
+     # Parse the request body as JSON to get the data sent in the POST request
+    body = json.loads(request.body)
+    file_name = body.get("file_name")
+    position = body.get("position", "back")
 
-def file_url(request, file_name):
-    position = request.GET.get("position", "back")
     image_url = utils.generate_carry_url(file_name, position)
 
     return JsonResponse({"url": image_url})

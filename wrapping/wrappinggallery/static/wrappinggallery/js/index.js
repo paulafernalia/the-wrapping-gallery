@@ -779,16 +779,6 @@ function hideFilterBoxExt() {
 }
 
 
-async function fetchFileUrl(fileName, position) {
-    try {
-        const response = await fetch(`/file-url/${fileName}/?position=${position}`);
-        const data = await response.json();
-        return data.url;
-    } catch (error) {
-        return null;
-    }
-}
-
 function emptyCarryGallery() {
     document.getElementById('count-text').style.display = 'none';
     document.getElementById('filters-applied').style.display = 'none';
