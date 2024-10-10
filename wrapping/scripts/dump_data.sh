@@ -2,7 +2,7 @@
 
 # Set the path to your Django project
 PROJECT_DIR="$(dirname "$(dirname "$(realpath "$0")")")"  # Moves two directories up
-PYTHON=python  # Adjust this to your Python executable path
+PYTHON="$PROJECT_DIR/../venv/bin/python"  # Adjust this to your Python executable path
 # Set the settings module for Django
 DJANGO_SETTINGS_MODULE="wrapping.settings.production"  # Update with your actual settings module
 

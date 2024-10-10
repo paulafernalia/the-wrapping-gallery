@@ -1,8 +1,10 @@
 from django.test import TestCase
-from .models import Carry, Rating, CustomUser, UserRating
+from .models import Carry, Rating, CustomUser, UserRating, Achievement, UserAchievement, DoneCarry
 from django.db import IntegrityError
 from django.core.exceptions import ValidationError
-
+from django.core import mail
+from django.test import TestCase
+from django.urls import reverse
 
 # Create your tests here.
 class CarryTestCase(TestCase):
@@ -343,10 +345,6 @@ class UserRatingTestCase(TestCase):
         self.assertEqual(updated_rating.votes, 0)  # Assuming no other UserRatings exist
 
 
-from django.core import mail
-from django.test import TestCase
-from django.urls import reverse
-
 class PasswordResetEmailTest(TestCase):
     def setUp(self):
         # Create a user for the test
@@ -374,3 +372,119 @@ class PasswordResetEmailTest(TestCase):
         # Optionally check the email body content
         self.assertIn('you requested a password reset for your user account', mail.outbox[0].body)
 
+
+class DoneCarryAchievementTest(TestCase):
+    def setUp(self):
+        # Set up a user, a carry, and the one_carry achievement
+        self.user = CustomUser.objects.create_user(
+            username='testuser',
+            password='password'
+        )
+
+        self.carry = Carry.objects.create(
+            name="CarryTestCase",
+            title="Ruck",
+            longtitle="Ruck",
+            size=0,
+            shoulders=2,
+            layers=1,
+            mmposition=0,
+            position="back",
+            pretied=False,
+            rings=False,
+            finish="TIF",
+            pass_ruck=1,
+        )
+
+        self.one_carry_achievement = Achievement.objects.create(
+            name='one_carry',
+            title='first_carry',
+            category='0',
+            description='Test description',
+            order=0,
+        )
+
+    def test_user_gets_one_carry_achievement(self):
+        # Ensure the user has no achievements initially
+        self.assertFalse(UserAchievement.objects.filter(user=self.user).exists())
+
+        # Create the first DoneCarry for the user
+        done_carry = DoneCarry.objects.create(user=self.user, carry=self.carry)
+
+        # Check that the user now has the 'one_carry' achievement
+        self.assertTrue(
+            UserAchievement.objects.filter(user=self.user, achievement=self.one_carry_achievement).exists()
+        )
+
+    def test_achievement_removed_on_done_carry_deletion(self):
+        # Create the first DoneCarry for the user
+        done_carry = DoneCarry.objects.create(user=self.user, carry=self.carry)
+
+        # Ensure the user has the 'one_carry' achievement
+        self.assertTrue(
+            UserAchievement.objects.filter(user=self.user, achievement=self.one_carry_achievement).exists()
+        )
+
+        # Delete the DoneCarry instance
+        done_carry.delete()
+
+        # Ensure the 'one_carry' achievement is removed after deletion
+        self.assertFalse(
+            UserAchievement.objects.filter(user=self.user, achievement=self.one_carry_achievement).exists()
+        )
+
+
+class UserRatingAchievementTest(TestCase):
+    def setUp(self):
+        # Set up a user, a carry, and the one_review achievement
+        self.user = CustomUser.objects.create_user(
+            username='testuser',
+            password='password'
+        )
+
+        self.carry = Carry.objects.create(
+            name="CarryTestCase",
+            title="Ruck",
+            longtitle="Ruck",
+            size=0,
+            shoulders=2,
+            layers=1,
+            mmposition=0,
+            position="back",
+            pretied=False,
+            rings=False,
+            finish="TIF",
+            pass_ruck=1,
+        )
+
+        self.one_review_achievement = Achievement.objects.create(
+            name='one_review',
+            title='first_review',
+            category='0',
+            description='Test description for first review achievement',
+            order=1,
+        )
+
+    def test_user_gets_one_review_achievement(self):
+        # Ensure the user has no achievements initially
+        self.assertFalse(UserAchievement.objects.filter(user=self.user).exists())
+
+        # Create the first UserRating for the user
+        user_rating = UserRating.objects.create(
+            user=self.user,
+            carry=self.carry,
+            newborns=3,
+            legstraighteners=4,
+            leaners=2,
+            bigkids=5,
+            feeding=1,
+            quickups=3,
+            pregnancy=2,
+            difficulty=4,
+            fancy=5,
+        )
+
+        # Check that the user now has the 'one_review' achievement
+        self.assertTrue(
+            UserAchievement.objects.filter(user=self.user, achievement=self.one_review_achievement).exists()
+        )

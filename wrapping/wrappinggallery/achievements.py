@@ -1,4 +1,3 @@
-from .models import DoneCarry, Rating
 from django.utils import timezone
 from django.db.models.functions import Round
 
@@ -87,8 +86,8 @@ ACHIEVEMENT_FUNCTIONS = {
     'five_reviews': (count_reviews, 'ratings', {'threshold': 5}),
     'ten_reviews': (count_reviews, 'ratings', {'threshold': 10}),
     'fifty_reviews': (count_reviews, 'ratings', {'threshold': 50}),
-    'one_month': (count_account_days, 'user', {'threshold': 30}),
-    'one_year': (count_account_days, 'user', {'threshold': 365}),
+    'one_month': (count_account_days, 'time', {'threshold': 30}),
+    'one_year': (count_account_days, 'time', {'threshold': 365}),
     'one_beginner_plus': (count_difficulty_carries, 'general_ratings', {'difficulty': 2, 'threshold': 1}),
     'one_intermediate': (count_difficulty_carries, 'general_ratings', {'difficulty': 3, 'threshold': 1}),
     'one_advanced': (count_difficulty_carries, 'general_ratings', {'difficulty': 4, 'threshold': 1}),
@@ -103,3 +102,4 @@ ACHIEVEMENT_FUNCTIONS = {
     'pirates': (count_pirates, 'done_carries', {'threshold': 3}),
     'toddler_prisoner': (count_toddler_prisoner, 'general_ratings', {'threshold': 5}),
 }
+

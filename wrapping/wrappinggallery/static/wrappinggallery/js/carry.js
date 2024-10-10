@@ -184,6 +184,109 @@ function updateStars(rating) {
 }
 
 
+
+// Handle close button click
+const closeButton = document.querySelector('.close-btn');
+if (closeButton) {
+    closeButton.addEventListener('click', function() {
+        const congratsBox = document.getElementById('congratsBox');
+        if (congratsBox) {
+            congratsBox.style.display = 'none';
+        }
+    });
+}
+
+// Optional: Close modal by clicking outside of the modal content
+const congratsBox = document.getElementById('congratsBox');
+if (congratsBox) {
+    congratsBox.addEventListener('click', function(event) {
+        if (event.target === this) {
+            this.style.display = 'none';
+        }
+    });
+}
+
+
+
+function markAsDone(button) {
+    // Create a FormData object to hold any necessary data
+    const formData = new FormData();
+    const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
+    formData.append('csrfmiddlewaretoken', csrfToken);
+
+    fetch(button.dataset.action, {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'X-CSRFToken': formData.get('csrfmiddlewaretoken'), // Pass CSRF token
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+
+        // Add achievements to congrats box
+        if (data.unlocked_achievements.length > 0) {
+            loadCongratsBox(data.unlocked_achievements);
+            createConfetti();
+        }
+
+        button.style.display = "none";
+        document.getElementById('removeBtn').style.display = "block";
+    })
+    .catch(error => console.error('Error:', error));
+}
+
+
+function submitReview(button) {
+    // Create a FormData object to hold any necessary data
+    const formData = new FormData();
+    const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
+    formData.append('csrfmiddlewaretoken', csrfToken);
+
+    fetch(button.dataset.action, {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'X-CSRFToken': formData.get('csrfmiddlewaretoken'), // Pass CSRF token
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        // Add achievements to congrats box
+        if (data.unlocked_achievements.length > 0) {
+            loadCongratsBox(data.unlocked_achievements);
+            createConfetti();
+        }
+
+        document.getElementById('review-form').style.display = 'none';
+
+    })
+    .catch(error => console.error('Error:', error));
+}
+
+function removeFromCollection(button) {
+    // Create a FormData object to hold any necessary data
+    const formData = new FormData();
+    const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
+    formData.append('csrfmiddlewaretoken', csrfToken);
+
+    fetch(button.dataset.action, {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'X-CSRFToken': formData.get('csrfmiddlewaretoken'), // Pass CSRF token
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        button.style.display = "none";
+        document.getElementById('markasdoneBtn').style.display = "block";
+
+    })
+    .catch(error => console.error('Error:', error));
+}
+
+
 document.addEventListener('DOMContentLoaded', async function() { 
     // Add stars to the rating groups based on their data attributes
     const ratingGroups = document.querySelectorAll('.rating-group');

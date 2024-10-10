@@ -4,6 +4,7 @@ from django.core.exceptions import ValidationError
 from django.contrib.auth.models import AbstractUser
 from django.db.models import Sum, Count, Case, When, IntegerField, FloatField
 from django.utils.translation import gettext_lazy as _
+from .achievements import ACHIEVEMENT_FUNCTIONS
 
 class CustomUser(AbstractUser):
     email = models.EmailField(_('email address'), unique=True, blank=False, null=False)
@@ -316,6 +317,42 @@ def NZ_AVG(queryset, field_name):
     # Calculate average, return 0 if there are no non-zero values
     return sum_non_zero / count_non_zero if count_non_zero > 0 else 0
 
+def recalculate_achievements(user, type):
+    print(f"recalculate {type} achievements")
+    
+    # Get support data based on the type
+    if type == "done_carries":
+        support_data = DoneCarry.objects.filter(user=user)
+    elif type == "ratings":
+        support_data = UserRating.objects.filter(user=user)
+    elif type == "time":
+        support_data = user
+    elif type == "general_ratings":
+        user_done_carries = DoneCarry.objects.filter(user=user)
+        carry_names = user_done_carries.values_list('carry__name', flat=True)
+        support_data = Rating.objects.filter(carry__name__in=carry_names)
+    else:
+        raise ValidationError(f"Unknown type {type}")
+    
+    # Retrieve all necessary achievements and user achievements in bulk
+    achievements = Achievement.objects.filter(name__in=ACHIEVEMENT_FUNCTIONS.keys())
+    achievements_dict = {achievement.name: achievement for achievement in achievements}
+    
+    user_achievements = UserAchievement.objects.filter(user=user)
+    user_achievements_dict = {ua.achievement.name: ua for ua in user_achievements}        
+    
+    for achievement_name, (func, data_type, kwargs) in ACHIEVEMENT_FUNCTIONS.items():
+        if achievement_name in achievements_dict:
+            achievement = achievements_dict[achievement_name]
+            
+            # Check if this function applies to the current type
+            if data_type == type:
+                if func(support_data, **kwargs):  # Pass the done carries or ratings
+                    if achievement_name not in user_achievements_dict:
+                        UserAchievement.objects.create(achievement=achievement, user=user)
+                else:
+                    if achievement_name in user_achievements_dict:
+                        user_achievements_dict[achievement_name].delete()
 
 class UserRating(models.Model):
     validators = [MinValueValidator(0.0), MaxValueValidator(5)]
@@ -412,15 +449,14 @@ class UserRating(models.Model):
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)  # Call the parent class's save method
 
-        # Call your shared logic
         self.update_rating()
-        
+        recalculate_achievements(self.user, "ratings")        
 
     def delete(self, *args, **kwargs):
         super().delete(*args, **kwargs)  # Call the parent class's delete method
         
-        # Call your shared logic
         self.update_rating()
+        recalculate_achievements(self.user, "ratings")
 
 
 class FavouriteCarry(models.Model):
@@ -431,6 +467,22 @@ class FavouriteCarry(models.Model):
 class DoneCarry(models.Model):
     carry = models.ForeignKey(Carry, on_delete=models.CASCADE)
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+
+    def save(self, *args, **kwargs):
+        # Save the DoneCarry instance
+        super().save(*args, **kwargs)
+
+        # After saving, recalculate achievements
+        recalculate_achievements(self.user, "done_carries")
+        recalculate_achievements(self.user, "general_ratings")
+
+    def delete(self, *args, **kwargs):
+        # Save the DoneCarry instance
+        super().delete(*args, **kwargs)
+
+        # After saving, recalculate achievements
+        recalculate_achievements(self.user, "done_carries")
+        recalculate_achievements(self.user, "general_ratings")
 
 
 class TodoCarry(models.Model):
@@ -455,6 +507,18 @@ class Achievement(models.Model):
 
     description = models.TextField()
     order = models.FloatField(blank=True)
+
+    def save(self, *args, **kwargs):
+        # Save the DoneCarry instance
+        super().save(*args, **kwargs)
+
+        # If a new achievement is created, recalculate for all users
+        users = CustomUser.objects.all()  # Adjust this if you have a different user model
+        for user in users:
+            recalculate_achievements(user, "ratings")
+            recalculate_achievements(user, "done_carries")
+            recalculate_achievements(user, "time")
+            recalculate_achievements(user, "general_ratings")
 
 
 class UserAchievement(models.Model):

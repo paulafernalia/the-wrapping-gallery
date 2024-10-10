@@ -22,6 +22,7 @@
     <link href="{% static 'wrappinggallery/css/grid.css' %}" rel="stylesheet">
     <link href="{% static 'wrappinggallery/css/carry.css' %}" rel="stylesheet">
     <link href="{% static 'wrappinggallery/css/faq.css' %}" rel="stylesheet">
+    <link href="{% static 'wrappinggallery/css/banners.css' %}" rel="stylesheet">
     <link rel="shortcut icon" type="image/png" href="{% static 'wrappinggallery/icons/favicon.ico' %}"/>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -57,15 +58,6 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
             <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                    <a class="nav-link poppins-light {% if request.path == '/' %}active{% endif %}" data-page="carries-page" href="{% url 'index' %}">CARRIES</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link poppins-light {% if request.path == '/faq/' %}active{% endif %}" data-page="faq-page" href="{% url 'faq' %}">BASICS</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link poppins-light {% if request.path == '/downloads/' %}active{% endif %}" data-page="downloads" href="{% url 'downloads' %}">DOWNLOADS</a>
-                </li>
                 {% if user.is_authenticated %}
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -75,7 +67,7 @@
                             <a class="dropdown-item poppins-light" href="{% url 'collection' %}">COLLECTION (beta)</a>
                             <a class="dropdown-item poppins-light" href="{% url 'achievements' %}">ACHIEVEMENTS (beta)</a>
                             <hr>
-                            <a class="dropdown-item poppins-light" href="{% url 'profile' %}">PROFILE</a>
+                            <a class="dropdown-item poppins-light" href="{% url 'profile' %}">PROFILE ({{ user.username }})</a>
                             <a class="dropdown-item poppins-light" href="{% url 'password_change' %}">CHANGE PASSWORD</a>
                             <form action="{% url 'logout' %}" method="post" class="dropdown-item m-0">
                                 {% csrf_token %}
@@ -90,6 +82,16 @@
                     </li>
                     {% endif %}
                 {% endif %}
+                <li class="nav-item">
+                    <a class="nav-link poppins-light {% if request.path == '/' %}active{% endif %}" data-page="carries-page" href="{% url 'index' %}">CARRIES</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link poppins-light {% if request.path == '/faq/' %}active{% endif %}" data-page="faq-page" href="{% url 'faq' %}">FAQ</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link poppins-light {% if request.path == '/downloads/' %}active{% endif %}" data-page="downloads" href="{% url 'downloads' %}">DOWNLOADS</a>
+                </li>
+                
             </ul>
         </div>
 
@@ -98,6 +100,17 @@
 
     {% block body %}
     {% endblock %}
+
+    <div id="congratsBox" style="display: none;" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeCongratsBox()">&times;</span> <h4 class="poppins-bold pink">New achievements unlocked!</h4>
+            <ul id="unlockedAchievementsList"></ul> <!-- Empty list to be filled dynamically -->
+        </div>
+    </div>
+
+    <div id="confettiContainer" class="confetti"></div>
+
+    {% csrf_token %}
 
     <div class='footer-container bg-dark'>
     <footer class="py-3 my-4">
@@ -161,10 +174,76 @@
         }
     }
 
+    function createConfetti() {
+        const colors = [
+            '#e3dbdb', // Light grey
+            '#c8b7b7', // Dark grey
+            '#ac9393', // Grey
+            '#916f6f', // Pink
+            '#6c5353', // Hot pink
+            '#483737'  // Black
+        ];
+
+        const container = document.getElementById('confettiContainer');
+        const numberOfPieces = 100; // Number of confetti pieces to generate
+
+        for (let i = 0; i < numberOfPieces; i++) {
+            const confettiPiece = document.createElement('div');
+            confettiPiece.classList.add('confetti-piece');
+
+            // Set a random color
+            confettiPiece.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+
+            // Randomize position and animation duration
+            confettiPiece.style.left = Math.random() * 100 + 'vw';
+            confettiPiece.style.animationDuration = Math.random() * 2 + 1 + 's'; // Between 1s and 3s
+
+            // Add the confetti piece to the container
+            container.appendChild(confettiPiece);
+
+            // Remove the confetti piece after the animation ends
+            confettiPiece.addEventListener('animationend', () => {
+                confettiPiece.remove();
+            });
+        }
+    }
+
+    function loadCongratsBox(achievements) {
+        const unlockedAchievementsList = document.getElementById('unlockedAchievementsList');
+        const congratsBox = document.getElementById('congratsBox');
+
+        // Clear any previous achievements from the list
+        unlockedAchievementsList.innerHTML = '';
+
+        // Populate the list with unlocked achievements
+        achievements.forEach(achievement => {
+            const achievementItem = `
+                <div class="modal-grid-item clickable-grid-item">
+                    <img src="/static/wrappinggallery/illustrations/achievements/${achievement.name}.png">
+                    <div class="ach-desc-container poppins-light fssmall">${achievement.title}</div>
+                </div>
+            `;
+            unlockedAchievementsList.insertAdjacentHTML('beforeend', achievementItem);
+        });
+
+        // Unhide the congrats modal
+        congratsBox.style.display = 'block';
+    }
+
+    // Close modal when clicking outside of it
+    window.addEventListener('click', function (event) {
+        closeCongratsBox();
+    });
+
+    function closeCongratsBox() {
+        if (document.getElementById('congratsBox')) {
+            document.getElementById('congratsBox').style.display = "none";
+        }
+    }
+
     document.addEventListener('DOMContentLoaded', function() { 
         updateFooterPosition();
     });
-
 
 </script>
 

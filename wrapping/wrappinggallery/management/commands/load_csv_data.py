@@ -163,7 +163,7 @@ class Command(BaseCommand):
                     "pass_reinforcing_horizontal", "pass_poppins", "pass_ruck", "pass_sling",
                     "pass_kangaroo", "other_chestpass", "other_bunchedpasses", "other_shoulderflip",
                     "other_twistedpass", "other_waistband", "other_legpasses", "other_s2s",
-                    "other_eyelet", "other_poppins", "other_sternum"
+                    "other_eyelet", "other_poppins", "other_sternum", "finish",
                 ]
 
                 updated = False
@@ -200,6 +200,7 @@ class Command(BaseCommand):
                     description=row["description"],
                     pretied=row["pretied"],
                     rings=row["rings"],
+                    finish=row["finish"],
                     pass_horizontal=row["pass_horizontal"],
                     pass_cross=row["pass_cross"],
                     pass_reinforcing_cross=row["pass_reinforcing_cross"],
