@@ -20,9 +20,11 @@
         <input type="text" class="pretty-input fssmall" id="carrySearch" placeholder="Add carries..." onclick="showDropdown()"
         onkeyup="filterCarries()" />
         <div id="carryDropdown" class="dropdown-content">
-            {% for carry in not_todo_carries %}
+            {% for carry in all_carries_ann %}
                 <div
                     class="dropdown-item fssmall"
+                    style="display:{% if carry.intodo %}none{% else %}block{% endif %};"
+                    data-temp="{{ carry.intodo }}"
                     data-name="{{ carry.name }}"
                     data-url="{% url 'carry' carry.name %}"
                     data-position="{{ carry.position }}"
@@ -40,6 +42,7 @@
         <div 
             class="card-grid-item clickable-grid-item shadow"
             data-title="{{carry.title}}"
+            data-name="{{carry.name}}"
             onclick="handleGridItemClick(this, '{{ carry.title|escapejs }}', '{% url 'carry' carry.name %}')"
             onmouseenter="handleMouseEnter(event, '{{carry.title|escapejs}}')"
             onmouseleave="handleMouseLeave()">
@@ -48,6 +51,11 @@
                 src="{{carry.image_url}}"
                 alt="{{carry.title}}"
             >
+            <div
+                class="add-circle"
+                onclick="clickOnRemoveIcon(event, this)">
+                <i class="fa fa-minus"></i>
+            </div>
         </div>
     {% endfor %}
     </div>    

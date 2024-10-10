@@ -19,6 +19,7 @@ urlpatterns = [
     path('mark-done/<str:carry_name>/', views.mark_as_done, name='mark_as_done'),
     path('add-todo/<str:carry_name>/', views.add_to_todo, name='add_to_todo'),
     path('remove-done/<str:carry_name>/', views.remove_done, name='remove_done'),
+    path('remove-todo/<str:carry_name>/', views.remove_todo, name='remove_todo'),
     path('done-carries/', views.get_done_carries, name='get_done_carries'),
     path('submit-review/<str:carry_name>/', views.submit_review, name='submit_review'),
     path('achievements/', views.achievements, name="achievements"),

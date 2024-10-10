@@ -15,6 +15,7 @@ from django.contrib.auth.views import LoginView
 from django.contrib import messages
 from django.shortcuts import render
 
+from django.db.models import Case, When, BooleanField
 
 from .forms import CustomUserCreationForm, CustomLoginForm, UserUpdateForm
 
@@ -163,18 +164,25 @@ def collection(request):
     # Get done carries by the user in one query
     user_done_carries = DoneCarry.objects.filter(user=user).select_related('carry')
 
-    # Get todo carries by the user in one query
-    user_todo_carries = TodoCarry.objects.filter(user=user).select_related('carry')
+    # Get todo carries by the user in one query, prefetching the related Carry objects
+    user_todo_carries = TodoCarry.objects.filter(user=user).prefetch_related('carry')
 
-    # Get list of carries not in to do
-    not_todo_carries = (
-        Carry.objects.all()
-        .values('name', 'longtitle', 'position')
-        .exclude(name__in=user_todo_carries
-        .values_list('carry__name', flat=True))
-        .order_by('title')
+    # Get the carry names from the related Carry objects
+    user_todo_names = [todo_carry.carry.name for todo_carry in user_todo_carries]
+
+    # Get all carries with an annotation for whether they are in the user's todo list
+    all_carries_ann = (
+        Carry.objects.annotate(
+            intodo=Case(
+                When(name__in=user_todo_names, then=True),
+                default=False,
+                output_field=BooleanField(),
+            )
+        )
+        .values('name', 'longtitle', 'position', 'intodo')
+        .order_by('longtitle')  # Sort directly at the database level
     )
-    
+
     # Get image urls
     todo_data = []
     for carry in user_todo_carries:
@@ -210,7 +218,7 @@ def collection(request):
 
     # Pass the separated carries information to the template
     context = {
-        'not_todo_carries': not_todo_carries,
+        'all_carries_ann': all_carries_ann,
         'positions': positions,
         'sizes': sizes,
         'total_carries': total_carries,
@@ -457,6 +465,20 @@ def remove_done(request, carry_name):
     done_carries = DoneCarry.objects.filter(carry=carry, user=user)
     for done_carry in done_carries:
         done_carry.delete()
+
+    return JsonResponse({})
+
+
+@login_required
+@require_POST
+def remove_todo(request, carry_name):
+    carry = get_object_or_404(Carry, name=carry_name)
+    user = request.user
+
+    # Remove from favorites if it exists
+    todo_carries = TodoCarry.objects.filter(carry=carry, user=user)
+    for todo_carry in todo_carries:
+        todo_carry.delete()
 
     return JsonResponse({})
 

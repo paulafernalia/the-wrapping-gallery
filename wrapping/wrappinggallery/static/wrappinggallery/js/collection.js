@@ -103,13 +103,50 @@ function handleGridItemClick(gridItem, carryTitle, carryUrl) {
     }
 }
 
+
+async function removeCarryFromTodo(gridItem) {
+    loadingSpinner.style.display = 'block';
+
+    const carryName = gridItem.dataset.name;
+
+    const formData = new FormData();
+    const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
+    formData.append('csrfmiddlewaretoken', csrfToken);
+
+    try {
+        // Make an AJAX POST request to mark the carry as done
+        fetch(`/remove-todo/${carryName}/`, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRFToken': formData.get('csrfmiddlewaretoken'), // Pass CSRF token
+            }
+        })
+        .catch(error => console.error('Error:', error));
+
+        // Delete gridItem
+        gridItem.remove();
+
+        // Unhide element from dropdown
+        const dropdownItem = document.querySelector(`.dropdown-item[data-name="${carryName}"]`);
+        dropdownItem.style = "block";
+
+    } catch (error) {
+        console.error("Error marking carry as done:", error);
+    }
+
+    loadingSpinner.style.display = 'none';
+}
+
 // Function to handle "Mark as done" action
-async function addCarryAsDone(carryName, gridItem, img, overlay, addCircle) {
+async function addCarryAsDone(carryName, addCircle) {
     loadingSpinner.style.display = 'block';
     
     const formData = new FormData();
     const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
     formData.append('csrfmiddlewaretoken', csrfToken);
+
+    const gridItem = addCircle.parentElement;
 
     try {
         // Make an AJAX POST request to mark the carry as done
@@ -131,10 +168,10 @@ async function addCarryAsDone(carryName, gridItem, img, overlay, addCircle) {
         .catch(error => console.error('Error:', error));
 
         // Update the UI: Remove opacity, show shadow, and remove "+" icon
-        img.style.opacity = '1';
+        gridItem.children[1].style.opacity = '1';
         gridItem.classList.add("shadow");
         gridItem.style.border = "1px solid lightgrey";
-        gridItem.removeChild(overlay);
+        gridItem.removeChild(gridItem.firstChild);
         gridItem.removeChild(addCircle); // Remove the "+" icon
     } catch (error) {
         console.error("Error marking carry as done:", error);
@@ -148,7 +185,8 @@ function createCarryGridItem(carryTitle, carryName, pageUrl, imgUrl, disabled) {
     // Create grid item
     const gridItem = document.createElement('div');
     gridItem.className = 'card-grid-item clickable-grid-item';
-    gridItem.dataset.name = carryTitle;
+    gridItem.dataset.name = carryName;
+    gridItem.dataset.title = carryTitle;
 
     const img = document.createElement('img');
     img.src = imgUrl;
@@ -164,19 +202,6 @@ function createCarryGridItem(carryTitle, carryName, pageUrl, imgUrl, disabled) {
         overlay.classList.add('overlay'); // Add the overlay class to the div
         gridItem.appendChild(overlay);
         gridItem.style.border = "none";
-
-        // Create the "+" circle button and append it to the grid item
-        const addCircle = document.createElement('div');
-        addCircle.className = 'add-circle'; // Style using the same CSS class as in the example
-        addCircle.innerHTML = '<i class="fa fa-plus"></i>'; // Add the "+" icon
-
-        // Separate the click handler
-        addCircle.onclick = function(event) {
-            event.stopPropagation(); // Prevent the click from bubbling up to the grid item
-            addCarryAsDone(carryName, gridItem, img, overlay, addCircle);
-        };
-
-        gridItem.appendChild(addCircle); // Append the circle to the grid item
     } else {
         gridItem.classList.add("shadow");
     }
@@ -223,6 +248,26 @@ async function loadMyCarries(size, position) {
         const disabled = !(carriesInfo[position][size].includes(carry.carry__name));
 
         const gridItem = createCarryGridItem(title, name, pageUrl, imgUrl, disabled)
+
+        if (disabled) {
+            // Create the "+" circle button and append it to the grid item
+            const addCircle = document.createElement('div');
+            addCircle.className = 'add-circle'; // Style using the same CSS class as in the example
+            addCircle.innerHTML = '<i class="fa fa-plus"></i>'; // Add the "+" icon
+
+            // Separate the click handler
+            // addCircle.onclick = function(event) {
+            //     event.stopPropagation(); // Prevent the click from bubbling up to the grid item
+            //     addCarryAsDone(name, gridItem, gridItem.img, overlay, addCircle);
+            // };
+
+            addCircle.onclick = (event) => {
+                event.stopPropagation(); // Prevent the click from bubbling up to the grid item
+                addCarryAsDone(name, addCircle);
+            };
+
+            gridItem.appendChild(addCircle);
+        }
 
         // Append grid item to fragment
         gridContainer.appendChild(gridItem);
@@ -278,10 +323,17 @@ function filterCarries() {
     }
 }
 
+function clickOnRemoveIcon(event, div) {
+    event.stopPropagation(); // Prevent the click from bubbling up to the grid item
+
+    const gridItem = div.parentElement;
+    removeCarryFromTodo(gridItem);
+}
+
 // Function to handle the selection of a carry
 async function addCarryToTodo(div) {
     const name = div.dataset.name;
-    const title = div.innerHTML;
+    const title = div.innerText;
     const pageUrl = div.dataset.url;
     const position = div.dataset.position;
     const imgUrl = await fetchFileUrl(name, position);
@@ -309,6 +361,17 @@ async function addCarryToTodo(div) {
         // add carry to todo grid
         const gridContainer = document.getElementById('todoGrid');
         const gridItem = createCarryGridItem(title, name, pageUrl, imgUrl, false);
+
+        // Create the "+" circle button and append it to the grid item
+        const removeIcon = document.createElement('div');
+        removeIcon.className = 'add-circle'; // Style using the same CSS class as in the example
+        removeIcon.innerHTML = '<i class="fa fa-minus"></i>'; // Add the "-" icon
+
+        removeIcon.onclick = (event) => {
+            clickOnRemoveIcon(event, removeIcon);
+        };
+
+        gridItem.appendChild(removeIcon);
 
         // Append grid item to fragment
         gridContainer.appendChild(gridItem);

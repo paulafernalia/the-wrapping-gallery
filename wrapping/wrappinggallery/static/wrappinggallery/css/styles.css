@@ -898,6 +898,7 @@ hr {
 .dropdown-content {
     display: none;
     position: absolute;
+    color: lightgrey;
     background-color: lightgrey;
     min-width: 160px;
     border: 1px solid #ddd;
