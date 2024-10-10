@@ -287,6 +287,31 @@ function removeFromCollection(button) {
 }
 
 
+function addCarryToTodo(div) {
+    const formData = new FormData();
+    const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
+    formData.append('csrfmiddlewaretoken', csrfToken);
+
+    const name = div.dataset.name;
+
+    try {
+        // Make an AJAX POST request to mark the carry as done
+        fetch(`/add-todo/${name}/`, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRFToken': formData.get('csrfmiddlewaretoken'), // Pass CSRF token
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    } catch (error) {
+        console.error("Error marking carry as done:", error);
+    }
+
+    div.style.display = 'none';
+}
+
+
 document.addEventListener('DOMContentLoaded', async function() { 
     // Add stars to the rating groups based on their data attributes
     const ratingGroups = document.querySelectorAll('.rating-group');

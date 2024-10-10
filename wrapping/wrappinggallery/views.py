@@ -5,7 +5,7 @@ from django.db.models import FloatField, Func, F, Sum, Count, Q
 from django.db.models.functions import Round
 from django.shortcuts import redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from .models import Carry, Rating, DoneCarry, UserRating, Achievement, UserAchievement
+from .models import Carry, Rating, DoneCarry, UserRating, Achievement, UserAchievement, TodoCarry
 from . import utils
 from django.conf import settings
 import os
@@ -15,7 +15,8 @@ from django.contrib.auth.views import LoginView
 from django.contrib import messages
 from django.shortcuts import render
 
-
+from django.db.models import Case, When, BooleanField
+import json
 from .forms import CustomUserCreationForm, CustomLoginForm, UserUpdateForm
 
 
@@ -129,13 +130,10 @@ def termsandconditions(request):
 
 def about(request):
     image_url = utils.generate_carry_url("profile", "back")
-
-    context = {"imageSrc": image_url}
-    return render(request, "wrappinggallery/about.html", context)
+    return render(request, "wrappinggallery/about.html",  {"imageSrc": image_url})
 
 
 def downloads(request):
-
     return render(request, "wrappinggallery/downloads.html")
 
 @login_required
@@ -146,12 +144,15 @@ def collection(request):
     positions = Carry.objects.values_list('position', flat=True).distinct().order_by('position')
     sizes = Carry.objects.values_list('size', flat=True).distinct().order_by('size')
 
-    # Pre-fetch all carries and group by position and size
-    all_carries = Carry.objects.filter(position__in=positions, size__in=sizes).values('position', 'size').annotate(total_count=Count('name'))
+    # Filter carries based on position and size
+    filtered_carries = Carry.objects.filter(position__in=positions, size__in=sizes)
+
+    # Annotate with the total count of names
+    annotated_carries = filtered_carries.values('position', 'size').annotate(total_count=Count('name'))
 
     # Create a dictionary to quickly access the total counts of carries
     total_carries = {}
-    for carry in all_carries:
+    for carry in annotated_carries:
         position = carry['position']
         size = carry['size']
         count = carry['total_count']
@@ -162,6 +163,37 @@ def collection(request):
 
     # Get done carries by the user in one query
     user_done_carries = DoneCarry.objects.filter(user=user).select_related('carry')
+
+    # Get todo carries by the user in one query, prefetching the related Carry objects
+    user_todo_carries = TodoCarry.objects.filter(user=user).prefetch_related('carry')
+
+    # Get the carry names from the related Carry objects
+    user_todo_names = [todo_carry.carry.name for todo_carry in user_todo_carries]
+
+    # Get all carries with an annotation for whether they are in the user's todo list
+    all_carries_ann = (
+        Carry.objects.annotate(
+            intodo=Case(
+                When(name__in=user_todo_names, then=True),
+                default=False,
+                output_field=BooleanField(),
+            )
+        )
+        .values('name', 'longtitle', 'position', 'intodo')
+        .order_by('longtitle')  # Sort directly at the database level
+    )
+
+    # Get image urls
+    todo_data = []
+    for carry in user_todo_carries:
+        url = utils.generate_carry_url(carry.carry.name, carry.carry.position)
+
+        # Append the carry title and image URL to the list
+        todo_data.append({
+            'title': carry.carry.title,
+            'name': carry.carry.name,
+            'image_url': url
+        })
     
     # Create structures for user carries
     done_counts = {}
@@ -174,19 +206,25 @@ def collection(request):
         
         for size in sizes:
             # Filter user done carries by position and size
-            user_done = user_done_carries.filter(carry__position=position, carry__size=size)
+            user_done = user_done_carries.filter(
+                carry__position=position,
+                carry__size=size
+            )
             
             # Done count and names of done carries
             done_counts[position][size] = user_done.count()
-            done_carry_names[position][size] = list(user_done.values_list('carry__name', flat=True))  # Get carry names
+            done_carry_names[position][size] = list(
+                user_done.values_list('carry__name', flat=True))
 
     # Pass the separated carries information to the template
     context = {
+        'all_carries_ann': all_carries_ann,
         'positions': positions,
         'sizes': sizes,
         'total_carries': total_carries,
         'done_counts': done_counts,
         'done_carry_names': done_carry_names,
+        'todo_carries': todo_data,
     }
 
     return render(request, "wrappinggallery/collection.html", context)
@@ -274,6 +312,7 @@ def carry(request, name):
     
     if user.is_authenticated:
         is_done = DoneCarry.objects.filter(carry=carry, user=user).exists()
+        is_todo = TodoCarry.objects.filter(carry=carry, user=user).exists()
         
         # Fetch the user's rating for the carry, if it exists
         user_rating = UserRating.objects.filter(carry=carry, user=user).first()
@@ -281,7 +320,8 @@ def carry(request, name):
         if user_rating:
             user_ratings_data = user_rating.to_dict()
     else:
-        is_done = False        
+        is_done = False
+        is_todo = False
 
     # Get the carry context
     carry_context = utils.get_carry_context(name)
@@ -290,14 +330,19 @@ def carry(request, name):
     context = {
         **carry_context,
         'is_done': is_done,
+        'is_todo': is_todo,
         'user_ratings': user_ratings_data,
     }
 
     return render(request, "wrappinggallery/carry.html", context)
 
+@require_POST
+def file_url(request):
+     # Parse the request body as JSON to get the data sent in the POST request
+    body = json.loads(request.body)
+    file_name = body.get("file_name")
+    position = body.get("position", "back")
 
-def file_url(request, file_name):
-    position = request.GET.get("position", "back")
     image_url = utils.generate_carry_url(file_name, position)
 
     return JsonResponse({"url": image_url})
@@ -404,6 +449,21 @@ def mark_as_done(request, carry_name):
 
 @login_required
 @require_POST
+def add_to_todo(request, carry_name):
+    carry = get_object_or_404(Carry, name=carry_name)
+    user = request.user
+    
+    # Check if the done already entry exists
+    if not TodoCarry.objects.filter(carry=carry, user=user).exists():
+        TodoCarry.objects.create(carry=carry, user=user)
+
+    
+    # Return a JSON response
+    return JsonResponse({})
+
+
+@login_required
+@require_POST
 def remove_done(request, carry_name):
     carry = get_object_or_404(Carry, name=carry_name)
     user = request.user
@@ -412,6 +472,20 @@ def remove_done(request, carry_name):
     done_carries = DoneCarry.objects.filter(carry=carry, user=user)
     for done_carry in done_carries:
         done_carry.delete()
+
+    return JsonResponse({})
+
+
+@login_required
+@require_POST
+def remove_todo(request, carry_name):
+    carry = get_object_or_404(Carry, name=carry_name)
+    user = request.user
+
+    # Remove from favorites if it exists
+    todo_carries = TodoCarry.objects.filter(carry=carry, user=user)
+    for todo_carry in todo_carries:
+        todo_carry.delete()
 
     return JsonResponse({})
 

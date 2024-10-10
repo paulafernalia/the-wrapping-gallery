@@ -89,6 +89,18 @@
         Review this carry
     </button>
 </div>
+<div class="title-container flex-container poppins-regular fs16 pink">
+    <button
+        type="button"
+        style="display: {% if is_todo %}none{% else %}block{% endif %};"
+        data-action="{% url 'add_to_todo' name %}"
+        data-name="{{ name }}"
+        class="submit-button poppins-regular "
+        onclick="addCarryToTodo(this)"
+    >
+        Add to my 'to do' list
+    </button>
+</div>
 {% endif %}
 
 
@@ -445,7 +457,6 @@
 
 
 
-<div id="loadingSpinner" class="loading-spinner"></div>
 <br><br>
 <div id="tutorial-content">
     <div class="title-container poppins-bold fsmedium">
