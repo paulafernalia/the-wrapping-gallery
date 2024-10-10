@@ -15,6 +15,23 @@
     <h3 class="pink playfair">To do list</h3>
     <p>This are the carries I haven't done yet and would like to try.</p>
 
+    <div class="card-grid">
+    {% for carry in todo_carries %}
+        <div 
+            class="card-grid-item clickable-grid-item shadow"
+            data-name="{{carry.title}}"
+            onclick="handleGridItemClick(this, '{{ carry.title|escapejs }}', '{% url 'carry' carry.name %}')"
+            onmouseenter="handleMouseEnter(event, '{{carry.title|escapejs}}')"
+            onmouseleave="handleMouseLeave()">
+            <img
+                class="grid-item"
+                src="{{carry.image_url}}"
+                alt="{{carry.title}}"
+            >
+        </div>
+    {% endfor %}
+    </div>
+
     <br>
     <hr>
     <h3 class="pink playfair">Progress</h3>
@@ -26,14 +43,36 @@
         <p class="poppins-bold fs16">{{ position|capfirst }} carries</p>
         {% for size in sizes %}
             {% if total_carries|get_item:position|get_item:size > 0 %}
-                <p class="fs16" data-size="{{ size }}" data-position="{{ position }}">
-                    <span class="poppins-regular">Base {% if size < 0 %} {{ size|slice:":-1" }}{% elif size == 0 %}{% else %}+{{ size }}{% endif %}</span>
-                    &nbsp;<span class="filter-tag-mini poppins-bold">{{ done_counts|get_item:position|get_item:size }} /
-                    {{ total_carries|get_item:position|get_item:size }}</span>
-                    <i class="fa-solid fa-caret-right toggle-icon" onclick="toggleGroup(this)" style="cursor: pointer;" data-size="{{ size }}" data-position="{{ position }}"></i>
+                <p
+                    class="fs16"
+                    data-size="{{ size }}"
+                    data-position="{{ position }}">
+                    <span
+                        class="poppins-regular">Base {% if size < 0 %} {{ size|slice:":-1" }}{% elif size == 0 %}{% else %}+{{ size }}{% endif %}
+                    </span>&nbsp;<span
+                        class="filter-tag-mini poppins-bold">{{ done_counts|get_item:position|get_item:size }} /
+                        {{ total_carries|get_item:position|get_item:size }}
+                    </span>
+                    <i
+                        class="fa-solid fa-caret-right toggle-icon"
+                        onclick="toggleGroup(this)"
+                        style="cursor: pointer;"
+                        data-size="{{ size }}"
+                        data-position="{{ position }}"
+                    ></i>
                 </p>
-                <div class="collapsable" data-size="{{ size }}" data-position="{{ position }}" style="display: none;">
-                    <div class="card-grid" data-size="{{ size }}" data-position="{{ position }}" data-base-url-pattern="{% url 'carry' 'PLACEHOLDER' %}"></div>
+                <div
+                    class="collapsable"
+                    data-size="{{ size }}"
+                    data-position="{{ position }}"
+                    style="display: none;"
+                >
+                    <div
+                        class="card-grid"
+                        data-size="{{ size }}"
+                        data-position="{{ position }}"
+                        data-base-url-pattern="{% url 'carry' 'PLACEHOLDER' %}"
+                    ></div>
                     <br>
                 </div>
             {% endif %}

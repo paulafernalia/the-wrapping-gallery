@@ -5,7 +5,7 @@ from django.db.models import FloatField, Func, F, Sum, Count, Q
 from django.db.models.functions import Round
 from django.shortcuts import redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from .models import Carry, Rating, DoneCarry, UserRating, Achievement, UserAchievement
+from .models import Carry, Rating, DoneCarry, UserRating, Achievement, UserAchievement, TodoCarry
 from . import utils
 from django.conf import settings
 import os
@@ -162,6 +162,21 @@ def collection(request):
 
     # Get done carries by the user in one query
     user_done_carries = DoneCarry.objects.filter(user=user).select_related('carry')
+
+    # Get todo carries by the user in one query
+    user_todo_carries = DoneCarry.objects.filter(user=user).select_related('carry')
+
+    # Get image urls
+    todo_data = []
+    for carry in user_todo_carries:
+        url = utils.generate_carry_url(carry.carry.name, carry.carry.position)
+
+        # Append the carry title and image URL to the list
+        todo_data.append({
+            'title': carry.carry.title,
+            'name': carry.carry.name,
+            'image_url': url
+        })
     
     # Create structures for user carries
     done_counts = {}
@@ -174,11 +189,15 @@ def collection(request):
         
         for size in sizes:
             # Filter user done carries by position and size
-            user_done = user_done_carries.filter(carry__position=position, carry__size=size)
+            user_done = user_done_carries.filter(
+                carry__position=position,
+                carry__size=size
+            )
             
             # Done count and names of done carries
             done_counts[position][size] = user_done.count()
-            done_carry_names[position][size] = list(user_done.values_list('carry__name', flat=True))  # Get carry names
+            done_carry_names[position][size] = list(
+                user_done.values_list('carry__name', flat=True))
 
     # Pass the separated carries information to the template
     context = {
@@ -187,6 +206,7 @@ def collection(request):
         'total_carries': total_carries,
         'done_counts': done_counts,
         'done_carry_names': done_carry_names,
+        'todo_carries': todo_data,
     }
 
     return render(request, "wrappinggallery/collection.html", context)

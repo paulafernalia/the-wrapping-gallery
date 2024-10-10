@@ -58,15 +58,18 @@ async function fetchFilteredCarries(page = 1, pageSize = 18, size, position) {
 }
 
 
-function handleMouseEnter(event, carry, hoverLabel) {
+function handleMouseEnter(event, carryTitle) {
+    const hoverLabel = document.querySelector('.hover-label');
     const rect = event.currentTarget.getBoundingClientRect();
+
     hoverLabel.style.left = `${rect.left + window.scrollX}px`;
     hoverLabel.style.top = `${rect.top + window.scrollY - 40}px`;
     hoverLabel.style.display = 'block'; // Show the label
-    hoverLabel.textContent = carry.carry__title;
+    hoverLabel.textContent = carryTitle;
 }
 
-function handleMouseLeave(hoverLabel) {
+function handleMouseLeave() {
+    const hoverLabel = document.querySelector('.hover-label');
     hoverLabel.style.display = 'none'; // Hide the label
 }
 
@@ -76,7 +79,7 @@ function isLargeScreenDevice() {
 }
 
 
-function handleGridItemClick(gridItem, carry, baseUrlPattern) {
+function handleGridItemClick(gridItem, carryTitle, carryUrl) {
     const hasBeenClicked = isLargeScreenDevice() ? true : gridItem.dataset.clicked === 'true';
 
     if (!hasBeenClicked) {
@@ -86,20 +89,17 @@ function handleGridItemClick(gridItem, carry, baseUrlPattern) {
         hoverLabel.style.left = `${rect.left + window.scrollX}px`;
         hoverLabel.style.top = `${rect.top + window.scrollY - 40}px`;
         hoverLabel.style.display = 'block'; // Show the label
-        hoverLabel.textContent = carry.carry__title;
+        hoverLabel.textContent = carryTitle;
 
         // Mark the gridItem as clicked
         gridItem.dataset.clicked = 'true';
     } else {
-        // Redirect to the constructed URL
-        const url = `${baseUrlPattern}${carry.carry__name}`;
-
         // Deselect tabs
         document.querySelector('.nav-link[data-page="carries-page"]').classList.remove('active');
         document.querySelector('.nav-link[data-page="faq-page"]').classList.remove('active');
 
         // Redirect to the constructed URL
-        window.location.href = url;
+        window.location.href = carryUrl;
     }
 }
 
@@ -155,17 +155,12 @@ async function loadMyCarries(size, position) {
     resultsPage = 1;
     const carries = await fetchFilteredCarries(resultsPage, pageSize, size, position);
 
-    // Create a hover label element outside the loop
-    const hoverLabel = document.createElement('div');
-    hoverLabel.className = 'hover-label poppins-regular'; // Class for styling the label
-    hoverLabel.style.display = 'none'; // Hide by default
-    document.body.appendChild(hoverLabel); // Append hover label to body
-
     // Create an array of promises to fetch all image URLs
     for (const carry of carries) {
         // Create grid item
         const gridItem = document.createElement('div');
         gridItem.className = 'card-grid-item clickable-grid-item';
+        gridItem.dataset.name = carry.carry__title;
 
         // Check if carry is done
         const isDone = carriesInfo[position][size].includes(carry.carry__name);
@@ -208,14 +203,18 @@ async function loadMyCarries(size, position) {
 
         // Event listeners for hover and click
         gridItem.addEventListener('mouseenter', (event) => {
-            handleMouseEnter(event, carry, hoverLabel);
+            handleMouseEnter(event, carry.carry__title);
         });
 
         // Event listeners for hover and click
         gridItem.addEventListener('mouseleave', () => {
-            handleMouseLeave(hoverLabel);
+            handleMouseLeave();
         });
-        gridItem.addEventListener('click', () => handleGridItemClick(gridItem, carry, baseUrlPattern));
+        gridItem.addEventListener('click', () => {
+            // Redirect to the constructed URL
+            const carryUrl = `${baseUrlPattern}${carry.carry__name}`;
+            handleGridItemClick(gridItem, carry.carry__title, carryUrl);
+        });
 
         // Append grid item to fragment
         gridContainer.appendChild(gridItem);
@@ -251,5 +250,9 @@ async function toggleGroup(iconElement) {
 
 
 document.addEventListener('DOMContentLoaded', async function() {    
-    updateFooterPosition();
+    // Create a hover label element outside the loop
+    const hoverLabel = document.createElement('div');
+    hoverLabel.className = 'hover-label poppins-regular'; // Class for styling the label
+    hoverLabel.style.display = 'none'; // Hide by default
+    document.body.appendChild(hoverLabel); // Append hover label to body
 });
