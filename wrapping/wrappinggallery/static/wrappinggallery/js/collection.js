@@ -246,12 +246,6 @@ async function loadMyCarries(size, position) {
             addCircle.className = 'add-circle'; // Style using the same CSS class as in the example
             addCircle.innerHTML = '<i class="fa fa-plus"></i>'; // Add the "+" icon
 
-            // Separate the click handler
-            // addCircle.onclick = function(event) {
-            //     event.stopPropagation(); // Prevent the click from bubbling up to the grid item
-            //     addCarryAsDone(name, gridItem, gridItem.img, overlay, addCircle);
-            // };
-
             addCircle.onclick = (event) => {
                 event.stopPropagation(); // Prevent the click from bubbling up to the grid item
                 addCarryAsDone(name, addCircle);
