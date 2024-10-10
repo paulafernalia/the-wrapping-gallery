@@ -1,4 +1,4 @@
-async function fetchFileUrl(achievementName) {
+async function fetchAchievementFileUrl(achievementName) {
     try {
         const response = await fetch(`/achievement-file-url/${achievementName}`);
         const data = await response.json();
@@ -33,10 +33,9 @@ async function updateGridItem(item) {
     if (item.dataset.done === "True") {
         try {
             // Get URL of the achievement illustration
-            let fileUrl = await fetchFileUrl(item.dataset.name);
+            let fileUrl = await fetchAchievementFileUrl(item.dataset.name);
 
             // Update image
-            
             img.src = fileUrl;
         } catch (error) {
             console.error('Error fetching file URL:', error);
