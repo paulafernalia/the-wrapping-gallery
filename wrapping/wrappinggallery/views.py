@@ -312,6 +312,7 @@ def carry(request, name):
     
     if user.is_authenticated:
         is_done = DoneCarry.objects.filter(carry=carry, user=user).exists()
+        is_todo = TodoCarry.objects.filter(carry=carry, user=user).exists()
         
         # Fetch the user's rating for the carry, if it exists
         user_rating = UserRating.objects.filter(carry=carry, user=user).first()
@@ -319,7 +320,8 @@ def carry(request, name):
         if user_rating:
             user_ratings_data = user_rating.to_dict()
     else:
-        is_done = False        
+        is_done = False
+        is_todo = False
 
     # Get the carry context
     carry_context = utils.get_carry_context(name)
@@ -328,6 +330,7 @@ def carry(request, name):
     context = {
         **carry_context,
         'is_done': is_done,
+        'is_todo': is_todo,
         'user_ratings': user_ratings_data,
     }
 
