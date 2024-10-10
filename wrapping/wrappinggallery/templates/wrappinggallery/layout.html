@@ -224,7 +224,10 @@
         // Populate the list with unlocked achievements
         achievements.forEach(achievement => {
             const achievementItem = `
-                <div class="modal-grid-item clickable-grid-item">
+                <div
+                    class="modal-grid-item clickable-grid-item"
+                    onclick="redirectToAchievement('${achievement.name}')"
+                >
                     <img src="/static/wrappinggallery/illustrations/achievements/${achievement.name}.png">
                     <div class="ach-desc-container poppins-light fssmall">${achievement.title}</div>
                 </div>
@@ -234,6 +237,11 @@
 
         // Unhide the congrats modal
         congratsBox.style.display = 'block';
+    }
+
+    // Redirect function
+    function redirectToAchievement(achievementName) {
+        window.location.href = "/achievements";
     }
 
     // Close modal when clicking outside of it
