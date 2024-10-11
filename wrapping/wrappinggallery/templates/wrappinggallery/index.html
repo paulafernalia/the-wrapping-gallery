@@ -12,7 +12,7 @@
 <div class="search-container d-flex justify-content-center">
     <div class="col-md-6">
         <div class="input-group mb-3 position-relative">
-            <input id="search-input" type="text" class="form-control input-format poppins-light fs16" placeholder="Type part of the name">
+            <input id="search-input" type="text" class="form-control input-format poppins-light fs16" placeholder="Type part of the name"onclick="showDropdown()" autocomplete="off">
             <button id="button-filter" class="btn btn-outline-secondary ml-4 poppins-light fs16" type="button" onclick="toggleFilterBox(this)">
                 <img src="{% static 'wrappinggallery/icons/filters_white.svg' %}" alt="Filters" style="width: 1em; height: 1em;">
             </button>
@@ -21,6 +21,21 @@
                 &times;
             </button>
         </div>
+    </div>
+</div>
+<div class="title-container d-flex justify-content-center">
+    <div id="carryDropdown" class="dropdown-content" style="margin: -25px 0px;">
+        {% for carry in carries %}
+            <div
+                class="dropdown-item fssmall poppins-light"
+                style="display:{% if carry.intodo %}none{% else %}block{% endif %};"
+                data-title="{{ carry.title }}"
+                data-longtitle="{{ carry.longtitle }}"
+                data-name="{{ carry.name }}"
+                data-url="{% url 'carry' carry.name %}">
+                {{ carry.longtitle }}
+            </div>
+        {% endfor %}
     </div>
 </div>
 
