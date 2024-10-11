@@ -32,7 +32,7 @@
                 data-title="{{ carry.title }}"
                 data-longtitle="{{ carry.longtitle }}"
                 data-name="{{ carry.name }}"
-                data-url="{% url 'carry' carry.name %}">
+                onclick="window.location.href='{% url 'carry' carry.name %}';">
                 {{ carry.longtitle }}
             </div>
         {% endfor %}
