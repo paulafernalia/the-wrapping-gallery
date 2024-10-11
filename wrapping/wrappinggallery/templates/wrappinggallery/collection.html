@@ -11,14 +11,19 @@
 
 <div id="carryTitle" class="title-container poppins-bold fsmedium">
 
+
     <h2 class="pink poiret-one-regular">{{ user.username|capfirst }}' Collection</h2>
+
+    <p><strong>Warning:</strong> You are accessing a beta feature. We cannot guarantee the integrity of the data, and features may be unstable or incomplete.</p>
+    <br>
 
     <h3 class="pink playfair">To do list</h3>
     <p>Use this area to keep track of carries you would like to try. Click on the search box add carries.</p>
 
-    <div class="dropdown">
+    <div class="dropdown" style="position: relative;">
+        <i class="fa-solid fa-magnifying-glass" style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%);"></i>
         <input type="text" class="pretty-input fssmall" id="carrySearch" placeholder="Add carries..." onclick="showDropdown()"
-        onkeyup="filterCarries()" />
+        onkeyup="filterCarries()" autocomplete="off" style="padding-left: 40px; width: 300px; height: 35px;" />
         <div id="carryDropdown" class="dropdown-content">
             {% for carry in all_carries_ann %}
                 <div

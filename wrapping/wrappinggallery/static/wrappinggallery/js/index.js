@@ -903,10 +903,63 @@ function clearSearch() {
     handleInputChange();
 }
 
+
+function filterDropdown() {
+    // Loop through the items and hide those that don't match the search query
+    const input = document.getElementById('search-input');
+    const carryDropdown = document.getElementById('carryDropdown');
+
+    const items = carryDropdown.getElementsByClassName('dropdown-item');
+    const filter = input.value.trim().toLowerCase(); // Get the input value and convert to lowercase
+
+    for (let i = 0; i < items.length; i++) {
+        const item = items[i];
+
+        const name = item.dataset.name.toLowerCase().replace(/_/g, ''); // Lowercase and remove underscores
+        const longtitle = item.dataset.longtitle.toLowerCase(); // Lowercase longtitle
+        const title = item.dataset.title.toLowerCase(); // Lowercase title
+
+        // Check if the input text is included in name, longtitle, or title
+        if (name.includes(filter) || longtitle.includes(filter) || title.includes(filter)) {
+            item.style.display = 'block'; // Show the item if it matches
+        } else {
+            item.style.display = 'none'; // Hide the item if it doesn't match
+        }
+    }
+}
+
 document.getElementById('search-input').addEventListener('input', function() {
     const clearBtn = document.getElementById('clear-search');
     clearBtn.style.display = this.value ? 'block' : 'none';
+
+    const carryDropdown = document.getElementById('carryDropdown');
+
+    // Only show the dropdown if the input value has at least 1 character
+    if (this.value.trim().length > 0) {
+        carryDropdown.style.display = 'block';
+    } else {
+        carryDropdown.style.display = 'none';
+    }
+
+    filterDropdown();
 });
+
+
+function showDropdown() {
+    const searchInput = document.getElementById('search-input');
+    const carryDropdown = document.getElementById('carryDropdown');
+
+    // Only show the dropdown if the input value has at least 1 character
+    if (searchInput.value.trim().length > 0) {
+        carryDropdown.style.display = 'block';
+    } else {
+        carryDropdown.style.display = 'none';
+    }
+}
+
+function hideDropdown() {
+    document.getElementById('carryDropdown').style.display = 'none';
+}
 
 
 document.addEventListener('DOMContentLoaded', async function() { 
@@ -942,7 +995,26 @@ document.addEventListener('DOMContentLoaded', async function() {
             this.blur();
         }
     });
+
+    document.addEventListener('click', function(event) {
+        const dropdown = document.getElementById('carryDropdown');
+        const searchBox = document.getElementById('search-input');
+
+        // Check if the click was outside the dropdown and the search box
+        if (!dropdown.contains(event.target) && event.target !== searchBox) {
+            hideDropdown();  // Hide the dropdown
+        }
+    });
+
+
+    // Listen for keydown events
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') { // Check if the Escape key is pressed
+            hideDropdown();  // Hide the dropdown
+        }
+    });
 });
+
 
 
 function togglePasses(iconElement, group) {
