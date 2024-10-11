@@ -264,7 +264,7 @@ function submitReview(button) {
     .catch(error => console.error('Error:', error));
 }
 
-function removeFromCollection(button) {
+function removeFromDone(button) {
     // Create a FormData object to hold any necessary data
     const formData = new FormData();
     const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
