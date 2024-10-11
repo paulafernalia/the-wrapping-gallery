@@ -73,7 +73,7 @@
         style="display: {% if is_done %}block{% else %}none{% endif %};"
         class="btn pinkbg btn-custom mx-1 poppins-regular fs16"
         data-action="{% url 'remove_done' name %}"
-        onclick="removeFromCollection(this)">
+        onclick="checkAuthAndRemoveFromDone(this)">
         Remove from collection
     </button>
     <button
@@ -82,7 +82,7 @@
         style="display: {% if is_done %}none{% else %}block{% endif %};"
         class="btn pinkbg btn-custom mx-1 poppins-regular fs16"
         data-action="{% url 'mark_as_done' name %}"
-        onclick="markAsDone(this)">
+        onclick="checkAuthAndMarkAsDone(this)">
         Mark as done
     </button>
     <button id="reviewcarry" onclick="return openReviewForm()" class="btn pinkbg btn-custom mx-1 poppins-regular fs16">
@@ -96,7 +96,7 @@
         data-action="{% url 'add_to_todo' name %}"
         data-name="{{ name }}"
         class="submit-button poppins-regular "
-        onclick="addCarryToTodo(this)"
+        onclick="checkAuthAndAddToTodo(this)"
     >
         Add to my 'to do' list
     </button>
@@ -566,6 +566,36 @@
         {% else %}
             // Redirect to the login page
             window.location.href = "{% url 'login' %}";
+        {% endif %}
+    }
+
+    function checkAuthAndAddToTodo(button) {        
+        {% if user.is_authenticated %}
+            // Call the addCarryToTodo function
+            addCarryToTodo(button);
+        {% else %}
+            // Redirect to the login page
+            window.location.href = "{% url 'login' %}";  // Update with your actual login URL
+        {% endif %}
+    }
+
+    function checkAuthAndMarkAsDone(button) {        
+        {% if user.is_authenticated %}
+            // Call the markAsDone function
+            markAsDone(button);
+        {% else %}
+            // Redirect to the login page
+            window.location.href = "{% url 'login' %}";  // Update with your actual login URL
+        {% endif %}
+    }
+
+    function checkAuthAndRemoveFromDone(button) {        
+        {% if user.is_authenticated %}
+            // Call the removeFromDone function
+            removeFromDone(button);
+        {% else %}
+            // Redirect to the login page
+            window.location.href = "{% url 'login' %}";  // Update with your actual login URL
         {% endif %}
     }
 </script>
