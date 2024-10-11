@@ -76,11 +76,9 @@
                         </div>
                     </li>
                 {% else %}
-                    {% if False %}
                     <li class="nav-item">
                         <a class="nav-link poppins-light" href="{% url 'login' %}">LOG IN</a>
                     </li>
-                    {% endif %}
                 {% endif %}
                 <li class="nav-item">
                     <a class="nav-link poppins-light {% if request.path == '/' %}active{% endif %}" data-page="carries-page" href="{% url 'index' %}">CARRIES</a>
