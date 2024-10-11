@@ -64,14 +64,14 @@
                             <i class="fas fa-user"></i>
                         </a>
                         <div class="dropdown-menu poppins-light" style="font-size: 13px;" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item poppins-light" href="{% url 'collection' %}">COLLECTION (beta)</a>
-                            <a class="dropdown-item poppins-light" href="{% url 'achievements' %}">ACHIEVEMENTS (beta)</a>
+                            <a class="dropdown-item poppins-light" style="color: black;" href="{% url 'collection' %}">COLLECTION (beta)</a>
+                            <a class="dropdown-item poppins-light" style="color: black;" href="{% url 'achievements' %}">ACHIEVEMENTS (beta)</a>
                             <hr>
-                            <a class="dropdown-item poppins-light" href="{% url 'profile' %}">PROFILE ({{ user.username }})</a>
-                            <a class="dropdown-item poppins-light" href="{% url 'password_change' %}">CHANGE PASSWORD</a>
+                            <a class="dropdown-item poppins-light" style="color: black;" href="{% url 'profile' %}">PROFILE ({{ user.username }})</a>
+                            <a class="dropdown-item poppins-light" style="color: black;" href="{% url 'password_change' %}">CHANGE PASSWORD</a>
                             <form action="{% url 'logout' %}" method="post" class="dropdown-item m-0">
                                 {% csrf_token %}
-                                <button type="submit" class="btn btn-link dropdown-item poppins-light" style="font-size: 13px; padding: 0; margin: 0;">LOG OUT</button>
+                                <button type="submit" class="btn btn-link dropdown-item poppins-light"  style="color: black; font-size: 13px; padding: 0; margin: 0;">LOG OUT</button>
                             </form>
                         </div>
                     </li>

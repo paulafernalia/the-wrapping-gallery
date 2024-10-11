@@ -119,6 +119,11 @@ def index(request):
             "2 DH off centre",
     ]
 
+    # Convert the QuerySet to a list of dictionaries
+    context["carries"] = list(
+        Carry.objects.values('name', 'longtitle', 'title').order_by('longtitle')
+    )
+
     return render(request, "wrappinggallery/index.html", context)
 
 def termsandconditions(request):
