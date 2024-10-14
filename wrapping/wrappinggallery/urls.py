@@ -1,5 +1,14 @@
 from django.urls import path
 from . import views
+from .sitemaps import StaticViewSitemap, CarrySitemap
+from django.contrib.sitemaps.views import sitemap
+
+
+sitemaps = {
+    'static': StaticViewSitemap,
+    'carry': CarrySitemap,
+}
+
 
 urlpatterns = [
     path("", views.index, name="index"),
@@ -26,4 +35,5 @@ urlpatterns = [
     path('accounts/profile/', views.profile_view, name='profile'),
     path('accounts/delete_account/', views.delete_account, name='delete_account'),
     path('accounts/account-deleted/', views.account_deleted, name='account_deleted'),
+    path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='sitemap'),
 ]
