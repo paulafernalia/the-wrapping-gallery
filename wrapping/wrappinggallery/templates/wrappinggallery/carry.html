@@ -2,6 +2,23 @@
 
 {% load static %}
 
+{% block title %}
+<title>{{ title }}</title>
+{% endblock %}
+
+{% block meta_description %}
+<meta name="description" content="This page contains information about {{longtitle}} such as size, finish or number of layers, user ratings on how suitable this carry is for different scenarios and link(s) to video tutorials(s) and, in some cases, a picture tutorial.">
+{% endblock %}
+
+{% block og_title %}
+<meta property="og:title" content="The Wrapping Gallery | {{title}}">
+{% endblock %}
+
+{% block og_description %}
+<meta property="og:description" content="Information about {{longtitle}} such as size, finish or number of layers, user ratings on how suitable this carry is for different scenarios as well as tutorials.">
+{% endblock %}
+
+
 {% block body %}
 
 <br>
