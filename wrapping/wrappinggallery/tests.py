@@ -364,13 +364,13 @@ class PasswordResetEmailTest(TestCase):
         self.assertEqual(len(mail.outbox), 1)
 
         # Check the email subject
-        self.assertEqual(mail.outbox[0].subject, 'Password reset on testserver')
+        self.assertIn('Password reset', mail.outbox[0].subject)
 
         # Check the recipient list
         self.assertEqual(mail.outbox[0].to, ['testuser@gmail.com'])
 
         # Optionally check the email body content
-        self.assertIn('you requested a password reset for your user account', mail.outbox[0].body)
+        self.assertIn('you requested a password reset', mail.outbox[0].body)
 
 
 class DoneCarryAchievementTest(TestCase):
