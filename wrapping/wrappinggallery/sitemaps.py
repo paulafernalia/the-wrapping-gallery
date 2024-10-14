@@ -19,7 +19,7 @@ class CarrySitemap(Sitemap):
     priority = 0.8
 
     def items(self):
-        return Carry.objects.all()
+        return Carry.objects.order_by('name')
 
     def location(self, obj):
         return reverse('carry', args=[obj.name])
