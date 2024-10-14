@@ -5,18 +5,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
+    {% block meta_description %}
     <meta name="description" content="The Wrapping Gallery is a place for users of woven wraps to discover new ways to wear their babies and make the most of their wraps.">
-    <meta name="color-scheme" content="only light">
+    {% endblock %}
 
+    {% block title %}
+    <title>The Wrapping Gallery</title>
+    {% endblock %}
+
+    {% block og_title %}
     <meta property="og:title" content="The Wrapping Gallery">
-    <meta property="og:image" content="{% static 'wrappinggallery/illustrations/carries/placeholder_back.png' %}">
+    {% endblock %}
+
+    {% block og_description %}
     <meta property="og:description" content="The Wrapping Gallery is a place for users of woven wraps to discover new ways to wear their babies and make the most of their wraps.">
-    <meta property="og:url" content="https://www.thewrappinggallery.com">
+    {% endblock %}
+
+    <meta property="og:url" content="{{ request.build_absolute_uri }}">
+
     <meta property="og:type" content="website">
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
-    <title>The Wrapping Gallery</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="{% static 'wrappinggallery/css/styles.css' %}" rel="stylesheet">
     <link href="{% static 'wrappinggallery/css/grid.css' %}" rel="stylesheet">
