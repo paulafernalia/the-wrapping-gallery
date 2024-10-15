@@ -18,6 +18,10 @@
 <meta property="og:description" content="Information about {{longtitle}} such as size, finish or number of layers, user ratings on how suitable this carry is for different scenarios as well as tutorials.">
 {% endblock %}
 
+ {% block og_image %}
+<meta property="og:image" content="https://thewrappinggallery.com{{imageSrc}}">
+{% endblock %}
+
 
 {% block body %}
 
@@ -33,7 +37,7 @@
     <div id="carryTitle" class="title-container fsmedium">
         <div class="two-column-container">
             <div class="column">
-                <img id="carryImage" alt="{{name}}" src="{{imageSrc}}">
+                <img id="carryImage" alt="{{longtitle}}" src="{{imageSrc}}">
                 <br>
             </div>
 
