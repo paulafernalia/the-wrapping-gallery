@@ -22,6 +22,10 @@
     <meta property="og:description" content="The Wrapping Gallery is a place for users of woven wraps to discover new ways to wear their babies and make the most of their wraps.">
     {% endblock %}
 
+    {% block og_image %}
+    <meta property="og:image" content="https://thewrappinggallery.com/static/wrappinggallery/illustrations/carries/placeholder_back.png">
+    {% endblock %}
+
     <meta property="og:url" content="{{ request.build_absolute_uri }}">
 
     <meta property="og:type" content="website">
