@@ -69,7 +69,7 @@ class Carry(models.Model):
     rings = models.BooleanField(default=False)
 
     finish = models.CharField(
-        max_length=16,
+        max_length=20,
         choices={
             "knotless": "Knotless",
             "knotless tibetan": "Knotless Tibetan",
@@ -82,7 +82,7 @@ class Carry(models.Model):
             "slipknot": "Slipknot",
             "ring(s)": "Rings",
             "rapunzel": "Rapunzel",
-            "tied at the back": "Tied at the back",
+            "other double knot": "Double Knot (other)",
             "strangleproof": "Strangleproof",
         },
     )
@@ -109,6 +109,8 @@ class Carry(models.Model):
     other_sternum = models.BooleanField(default=0)
     other_poppins = models.BooleanField(default=0)
 
+    # New updated_at field
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return f"{self.name}: {self.position} carry, {self.size}, {self.mmposition}"
@@ -226,7 +228,7 @@ class Carry(models.Model):
            (self.position != "tandem") and \
            ('fwcc' not in self.name) and \
            ('frts' not in self.name) and \
-           ('poppins' not in self.name) and \
+           ('popp' not in self.name) and \
            (self.shoulders != num_shoulders):
             raise ValidationError(
                 f"Shoulders ({self.shoulders}) inconsistent with passes ({num_shoulders})"
