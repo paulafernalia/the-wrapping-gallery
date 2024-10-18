@@ -36,6 +36,16 @@ def account_deleted(request):
     return render(request, 'registration/account_deleted.html')
 
 
+
+def robots_txt(request):
+    lines = [
+        "User-agent: *",
+        "Disallow:",
+        "Sitemap: https://thewrappinggallery.com/sitemap.xml",
+    ]
+    return HttpResponse("\n".join(lines), content_type="text/plain")
+
+
 @login_required
 def profile_view(request):
     messages.get_messages(request).used = True  # This will clear out all messages
