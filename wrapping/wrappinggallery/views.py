@@ -444,7 +444,9 @@ def mark_as_done(request, carry_name):
     achieved_before = UserAchievement.objects.filter(
         Q(user=user) & (Q(achievement__category=1) | Q(achievement__category=0))
     )
-    achieved_before = set(achieved_before.values_list('achievement__title', 'achievement__name'))
+    achieved_before = set(achieved_before.values_list(
+        'achievement__title', 'achievement__name', 'achievement__description',
+    ))
     
     # Check if the done already entry exists
     if not DoneCarry.objects.filter(carry=carry, user=user).exists():
@@ -454,9 +456,11 @@ def mark_as_done(request, carry_name):
         Q(user=user) & (Q(achievement__category=1) | Q(achievement__category=0))
     )        
     
-    achieved_after = set(achieved_after.values_list('achievement__title', 'achievement__name'))
+    achieved_after = set(achieved_after.values_list(
+        'achievement__title', 'achievement__name', 'achievement__description',
+    ))
 
-    unlocked = [{'name': tuple_[1], 'title': tuple_[0]} for tuple_ in list(achieved_after - achieved_before)]
+    unlocked = [{'name': tuple_[1], 'title': tuple_[0], 'description':  tuple_[2]} for tuple_ in list(achieved_after - achieved_before)]
     
     # Return a JSON response
     return JsonResponse({'unlocked_achievements': unlocked})
@@ -524,7 +528,9 @@ def submit_review(request, carry_name):
     achieved_before = UserAchievement.objects.filter(
         Q(user=user) & (Q(achievement__category=2) | Q(achievement__category=0))
     )
-    achieved_before = set(achieved_before.values_list('achievement__title', 'achievement__name'))
+    achieved_before = set(achieved_before.values_list(
+        'achievement__title', 'achievement__name', 'achievement__description',
+    ))
 
     # Fetch the relevant carry object based on carry_name
     carry = Carry.objects.get(name=carry_name)
@@ -549,7 +555,9 @@ def submit_review(request, carry_name):
         Q(user=user) & (Q(achievement__category=2) | Q(achievement__category=0))
     )
     
-    achieved_after = set(achieved_after.values_list('achievement__title', 'achievement__name'))
-    unlocked = [{'name': tuple_[1], 'title': tuple_[0]} for tuple_ in list(achieved_after - achieved_before)]
-
+    achieved_after = set(achieved_after.values_list(
+        'achievement__title', 'achievement__name', 'achievement__description',
+    ))
+    unlocked = [{'name': tuple_[1], 'title': tuple_[0], 'description':  tuple_[2]} for tuple_ in list(achieved_after - achieved_before)]
+    
     return JsonResponse({'unlocked_achievements': unlocked})
