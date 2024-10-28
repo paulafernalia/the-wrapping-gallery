@@ -991,6 +991,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     searchInput.addEventListener('keydown', function(event) {
         if (event.key === 'Enter') {
             event.preventDefault(); // Prevent the default action (if necessary)
+            hideDropdown();
             handleInputChange();
             this.blur();
         }
@@ -1006,11 +1007,26 @@ document.addEventListener('DOMContentLoaded', async function() {
         }
     });
 
-
+    const searchBox = document.getElementById('search-input');
+    let escapePressCount = 0;
+    let escapePressTimeout;
     // Listen for keydown events
     document.addEventListener('keydown', function(event) {
         if (event.key === 'Escape') { // Check if the Escape key is pressed
-            hideDropdown();  // Hide the dropdown
+            escapePressCount++;
+
+            if (escapePressCount === 1) {
+                hideDropdown();  // Hide the dropdown on first press
+            } else if (escapePressCount === 2) {
+                searchBox.value = '';  // Clear search box on second press
+                escapePressCount = 0; // Reset counter
+            }
+
+            // Reset count after a short delay
+            clearTimeout(escapePressTimeout);
+            escapePressTimeout = setTimeout(() => {
+                escapePressCount = 0;
+            }, 3000); // Adjust the delay as needed
         }
     });
 });
