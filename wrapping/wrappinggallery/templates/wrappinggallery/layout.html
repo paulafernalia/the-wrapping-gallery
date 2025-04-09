@@ -238,7 +238,10 @@
                     onclick="redirectToAchievement('${achievement.name}')"
                 >
                     <img src="/static/wrappinggallery/illustrations/achievements/${achievement.name}.png">
-                    <div class="ach-desc-container poppins-light fssmall">${achievement.title}</div>
+                     <div class="ach-desc-wrapper">
+                        <div class="ach-desc-container poppins-bold fssmall">${achievement.title}</div>
+                        <div class="ach-desc-container poppins-light fssmall">${achievement.description}</div>
+                    </div>
                 </div>
             `;
             unlockedAchievementsList.insertAdjacentHTML('beforeend', achievementItem);
