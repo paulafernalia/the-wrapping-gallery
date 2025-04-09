@@ -75,9 +75,6 @@
                             <i class="fas fa-user"></i>
                         </a>
                         <div class="dropdown-menu poppins-light" style="font-size: 13px;" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item poppins-light" style="color: black;" href="{% url 'collection' %}">COLLECTION (beta)</a>
-                            <a class="dropdown-item poppins-light" style="color: black;" href="{% url 'achievements' %}">ACHIEVEMENTS (beta)</a>
-                            <hr>
                             <a class="dropdown-item poppins-light" style="color: black;" href="{% url 'profile' %}">PROFILE ({{ user.username }})</a>
                             <a class="dropdown-item poppins-light" style="color: black;" href="{% url 'password_change' %}">CHANGE PASSWORD</a>
                             <form action="{% url 'logout' %}" method="post" class="dropdown-item m-0">
@@ -93,6 +90,12 @@
                 {% endif %}
                 <li class="nav-item">
                     <a class="nav-link poppins-light {% if request.path == '/' %}active{% endif %}" data-page="carries-page" href="{% url 'index' %}">CARRIES</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link poppins-light {% if request.path == '/collection' %}active{% endif %}" data-page="collection-page" href="{% url 'collection' %}">COLLECTION</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link poppins-light {% if request.path == '/collection' %}active{% endif %}" data-page="achievements-page" href="{% url 'achievements' %}">ACHIEVEMENTS</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link poppins-light {% if request.path == '/faq/' %}active{% endif %}" data-page="faq-page" href="{% url 'faq' %}">FAQ</a>
