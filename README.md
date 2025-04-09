@@ -4,19 +4,21 @@ This is a project for a website with content related to babywearing with woven w
 
 The production and development environments use a PostgreSQL database hosted in Supabase. This database contains a bunch of tables with data needed to run the app as well as a S3 bucket where tutorial images are stored.
 
+## Usage
+
 To run the app in development mode, follow these steps:
 
 1. Install [Docker](https://www.docker.com/get-started/).
 2. Clone this repo.
 3. Set up the required environment variables in a file called `.env.dev` (see below)
-4. Run `docker compose -f docker-compose.dev.yml up --build -d`
+4. Run `docker compose -f docker-compose.dev.yml up --build -d` or `make dev-docker-up`.
 5. To view on desktop: open http://0.0.0.0:8000 in a browser.
 6. To view on mobile: open http://`<your-local-ip>`:8000/ on your phone. 
 7. Run `docker compose -f docker-compose.dev.yml down` to stop running the app and remove the Docker container.
 
 The `.env.dev` file must be at the same level as `manage.py` and list the following variables:
 
-```
+```bash
 SECRET_KEY=<your-secret-key>
 
 DJANGO_SETTINGS_MODULE=wrapping.settings.development
@@ -41,9 +43,21 @@ To find `<your-local-ip>` execute `ifconfig` on your terminal (linux/macOS) and 
 If you create a database to test this in development, before running the `docker compose -f docker-compose.dev.yml up --build -d` for the first time, you must run `python manage.py createsuperuser` to create a superuser and then `python manage.py load_csv_data initial_data.csv` to load some initial data to the database.
 
 
+To update the data in the development database:
+
+1. Update, add or delete a row in `wrapping/initial_data.csv`
+2. Run `make load-csv-data` to update the changes in the development database
+3. Commit the changes to `wrapping/initial_data.csv`
+
+To update the data in the production database after updating the development database run
+```python
+python manage.py load_csv_data initial_data.csv --settings=wrapping.settings.production
+```
+
 ## Licensing
 
 This project is licensed under the GNU General Public License (GPL), version 3.0, except for the illustrations included in the repository.
+
 
 ### Illustrations
 
