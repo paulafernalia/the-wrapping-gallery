@@ -54,6 +54,11 @@ To update the data in the production database after updating the development dat
 python manage.py load_csv_data initial_data.csv --settings=wrapping.settings.production
 ```
 
+To push a release:
+1. Create a PR to merge `develop` into `main`
+2. Create a release on GitHub: set the version number on the tag, make sure target is set to `main`, add some notes.
+3. That's it. The previous step should trigger the workflow in `.github/workflow/deploy.yml` that pulls the changes in AWS and restarts the server.
+
 ## Licensing
 
 This project is licensed under the GNU General Public License (GPL), version 3.0, except for the illustrations included in the repository.
