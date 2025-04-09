@@ -166,6 +166,9 @@ async function resetFilters() {
     // Set initial values of filters
     initialiseFilters();
 
+    // Clear search bar
+    clearSearch();
+
     // Update button box
     updateButtonBox();
 
