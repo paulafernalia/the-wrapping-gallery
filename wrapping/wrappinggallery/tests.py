@@ -22,6 +22,7 @@ class CarryTestCase(TestCase):
             position="back",
             pretied=False,  # corrected boolean value
             rings=False,
+            tutorial=False,
             finish="TIF",
             pass_ruck=1,
         )
@@ -258,6 +259,7 @@ class UserRatingTestCase(TestCase):
             position="back",
             pretied=False,  # corrected boolean value
             rings=False,
+            tutorial=False,
             finish="TIF",
             pass_ruck=1,
         )
@@ -392,6 +394,7 @@ class DoneCarryAchievementTest(TestCase):
             position="back",
             pretied=False,
             rings=False,
+            tutorial=False,
             finish="TIF",
             pass_ruck=1,
         )
@@ -453,6 +456,7 @@ class UserRatingAchievementTest(TestCase):
             position="back",
             pretied=False,
             rings=False,
+            tutorial=False,
             finish="TIF",
             pass_ruck=1,
         )

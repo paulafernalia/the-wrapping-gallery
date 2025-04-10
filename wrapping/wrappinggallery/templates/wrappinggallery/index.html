@@ -74,6 +74,36 @@
     <div id=filterBoxExt style="display: none;">
         <hr>
 
+        <div class="checkbox-group poppins-bold fs16">
+            <label>
+                <input type="checkbox" data-property="tutorial" onclick="handleSwitchChange(this)">
+                Picture tutorial available
+            </label>
+        </div>
+
+        <div class="checkbox-group poppins-bold fs16">
+            <label>
+                <input type="checkbox" data-property="pretied" onclick="handleSwitchChange(this)">
+                Can be pre-tied
+            </label>
+        </div>
+
+        <div class="checkbox-group poppins-bold fs16">
+            <label>
+                <input type="checkbox" data-property="rings" onclick="handleSwitchChange(this)">
+                Uses ring(s)
+            </label>
+        </div>
+        
+        <div class="checkbox-group poppins-bold fs16">
+            <label>
+                <input type="checkbox" data-property="fancy" onclick="handleSwitchChange(this)">
+                Looks fancy
+            </label>
+        </div>
+
+        <hr>
+
         <p class="poppins-bold fs16">
             Must be good for
             <i class="fa-solid fa-caret-down toggle-icon" onclick="togglePasses(this, 'suitableGroup')" style="cursor: pointer;"></i>
@@ -147,28 +177,7 @@
                 {% endfor %}
             </select>
         </div>
-        <hr>
-
-        <div class="checkbox-group poppins-bold fs16">
-            <label>
-                <input type="checkbox" data-property="pretied" onclick="handleSwitchChange(this)">
-                Can be pre-tied
-            </label>
-        </div>
-
-        <div class="checkbox-group poppins-bold fs16">
-            <label>
-                <input type="checkbox" data-property="rings" onclick="handleSwitchChange(this)">
-                Uses ring(s)
-            </label>
-        </div>
         
-        <div class="checkbox-group poppins-bold fs16">
-            <label>
-                <input type="checkbox" data-property="fancy" onclick="handleSwitchChange(this)">
-                Looks fancy
-            </label>
-        </div>
         <hr>
 
         <p class="poppins-bold fs16">

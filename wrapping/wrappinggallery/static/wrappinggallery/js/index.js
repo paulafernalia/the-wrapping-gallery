@@ -4,8 +4,8 @@ let resultsPage = 1;
 let pageSize = 18;
 
 const booleanProps = [
-    'fancy', 'pretied', 'newborns', 'legstraighteners', 'leaners', 'pregnancy',
-    'bigkids', 'feeding', 'quickups', 'rings', 'pass_sling', 
+    'tutorial', 'fancy', 'pretied', 'newborns', 'legstraighteners', 'leaners', 'pregnancy',
+    'bigkids', 'feeding', 'quickups', 'rings', 'pass_sling',
     'pass_ruck', 'pass_kangaroo', 'pass_cross', 'pass_reinforcing_cross', 
     'pass_reinforcing_horizontal', 'pass_horizontal', 'pass_poppins', 
     'other_chestpass', 'other_bunchedpasses', 'other_shoulderflip', 
@@ -484,6 +484,7 @@ function showAppliedFilters() {
         { key: "fancy", label: "fancy" },
         { key: "pretied", label: "can be pre-tied" },
         { key: "rings", label: "ring(s)" },
+        { key: "tutorial", label: "picture tutorial available" },
         { key: "leaners", label: "good for leaners" },
         { key: "quickups", label: "good for quickups" },
         { key: "legstraighteners", label: "good for leg straighteners" },
@@ -725,6 +726,7 @@ async function toggleFilterBox(button) {
     if (filtersContainer.style.display === 'none') {
         filtersContainer.style.display = 'block';
 
+        document.getElementById('sort-dropdown').style.display = 'none';
         document.getElementById('filter-title').style.display = 'block';
         document.getElementById('buttonBox').style.display = 'block';
         document.querySelector('footer').style.display = 'none';

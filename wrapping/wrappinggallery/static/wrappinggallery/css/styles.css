@@ -301,6 +301,10 @@ p, li {
     outline: none;
 }
 
+.light-dropdown select:focus {
+    outline: none;
+}
+
 .dropdown {
     display: inline-block;
     position: relative;
