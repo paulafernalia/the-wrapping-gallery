@@ -301,6 +301,10 @@ p, li {
     outline: none;
 }
 
+.light-dropdown select:focus {
+    outline: none;
+}
+
 .dropdown {
     display: inline-block;
     position: relative;
@@ -894,6 +898,17 @@ hr {
     display: inline-block;
 }
 
+.light-dropdown select {
+    width: 200px;
+    height: 40px; /* Set a fixed height for the dropdown */
+    padding: 6px;
+    border: 1px solid #E0E0E0;
+    border-radius: 3px;
+    background-color: transparent;
+    cursor: pointer;
+    color: grey;
+    font-weight: 300;
+}
 
 .dropdown-content {
     display: none;

@@ -4,8 +4,8 @@ let resultsPage = 1;
 let pageSize = 18;
 
 const booleanProps = [
-    'fancy', 'pretied', 'newborns', 'legstraighteners', 'leaners', 'pregnancy',
-    'bigkids', 'feeding', 'quickups', 'rings', 'pass_sling', 
+    'tutorial', 'fancy', 'pretied', 'newborns', 'legstraighteners', 'leaners', 'pregnancy',
+    'bigkids', 'feeding', 'quickups', 'rings', 'pass_sling',
     'pass_ruck', 'pass_kangaroo', 'pass_cross', 'pass_reinforcing_cross', 
     'pass_reinforcing_horizontal', 'pass_horizontal', 'pass_poppins', 
     'other_chestpass', 'other_bunchedpasses', 'other_shoulderflip', 
@@ -89,7 +89,7 @@ async function handleInputChange() {
 
     // Filter carries by the property selected in the button
     emptyCarryGallery();
-    await showResults();
+    await showResults("carry__longtitle", true);
 }
 
 function initialiseSwitchData(property) {
@@ -144,6 +144,7 @@ function showAllFilters() {
     footer.style.display = 'none';
 }
 
+
 async function resetFilters() {
     const filterDefaults = {
         size: JSON.stringify(['Any']),
@@ -166,6 +167,10 @@ async function resetFilters() {
     // Set initial values of filters
     initialiseFilters();
 
+    // Clear search bar
+    const searchInput = document.getElementById('search-input');
+    sessionStorage.setItem('partialname', searchInput.value);
+
     // Update button box
     updateButtonBox();
 
@@ -174,9 +179,14 @@ async function resetFilters() {
     resetFiltersBtn.classList.add('disabled');
     resetFiltersBtn.disabled = true;
 
-    // Display gallery
-    emptyCarryGallery();
-    showResults();
+    // // Display gallery
+    await emptyCarryGallery();
+
+    const selectElement = document.getElementById('sort-select');
+    const selectedOption = selectElement.options[selectElement.selectedIndex];
+    const sortBy = selectedOption.getAttribute('data-sortBy');
+    const ascending = selectedOption.getAttribute('data-ascending') === 'true';
+    showResults(sortBy, ascending);
 }
 
 function initialiseButtonData(property) {
@@ -334,8 +344,20 @@ function isAnyFilterActive() {
 }
 
 
+async function fetchTotalCarries() {
+    const response = await fetch(`/api/carry-count/`);
 
-async function fetchFilteredCarries(page = 1, pageSize = 18) {
+    if (!response.ok) {
+        throw new Error('Network response was not ok');
+    }
+
+    const data = await response.json();
+    return data.count;
+}
+
+
+
+async function fetchFilteredCarries(page = 1, pageSize = 18, sortBy = 'carry__longtitle', ascending = true) {
     // Read the property of the button group and the button value
     const nonBooleanProps = [
         "position", "shoulders", "layers", "mmposition", 
@@ -372,9 +394,10 @@ async function fetchFilteredCarries(page = 1, pageSize = 18) {
 
     // Add pagination parameters to the query string
     const paginationParams = `page=${encodeURIComponent(page)}&page_size=${encodeURIComponent(pageSize)}`;
+    const sortingParams = `sortBy=${encodeURIComponent(sortBy)}&ascending=${encodeURIComponent(ascending)}`;
 
     // Combine filters and pagination parameters
-    const fullQueryString = `${queryString}&${paginationParams}`;
+    const fullQueryString = `${queryString}&${paginationParams}&${sortingParams}`;
 
     // Filter carries by using filter values
     const response = await fetch(`/api/filter-carries/?${fullQueryString}`);
@@ -461,6 +484,7 @@ function showAppliedFilters() {
         { key: "fancy", label: "fancy" },
         { key: "pretied", label: "can be pre-tied" },
         { key: "rings", label: "ring(s)" },
+        { key: "tutorial", label: "picture tutorial available" },
         { key: "leaners", label: "good for leaners" },
         { key: "quickups", label: "good for quickups" },
         { key: "legstraighteners", label: "good for leg straighteners" },
@@ -537,7 +561,7 @@ function showAppliedFilters() {
 
 
 
-async function showResults() {
+async function showResults(sortBy, ascending = true) {
     // Hide all filters
     hideAllFilters();
 
@@ -546,7 +570,7 @@ async function showResults() {
 
     // Populate gallery
     resultsPage = 1;
-    const carries = await fetchFilteredCarries(resultsPage, pageSize);
+    const carries = await fetchFilteredCarries(resultsPage, pageSize, sortBy, ascending);
 
     await updateCarryGallery(carries);
 
@@ -564,7 +588,13 @@ async function showResults() {
 
 async function loadMore(button) {
     resultsPage += 1;
-    const carries = await fetchFilteredCarries(resultsPage, pageSize);
+    // Get sortby
+    const selectElement = document.getElementById('sort-select');
+    const selectedOption = selectElement.options[selectElement.selectedIndex];
+    const sortBy = selectedOption.getAttribute('data-sortBy');
+    const ascending = selectedOption.getAttribute('data-ascending') === 'true';
+
+    const carries = await fetchFilteredCarries(resultsPage, pageSize, sortBy, ascending);
     await updateCarryGallery(carries);
 
     // Check if even more could be loaded
@@ -577,25 +607,32 @@ async function loadMore(button) {
 
 async function updateButtonBox() {
     const showResultsBtn = document.getElementById('showResultsBtn');
-    const countText = document.getElementById('count-text');
+    const sortDropdown = document.getElementById('sort-dropdown');
 
     let num_carries = 0;
     try {
         const carries = await fetchFilteredCarries(1, 300);
         filteredResults = carries.length;
         
-        if (carries.length === 0) {
+        if (filteredResults === 0) {
             showResultsBtn.classList.remove('active');
             showResultsBtn.classList.add('disabled');
             showResultsBtn.disabled = true;
             showResultsBtn.textContent = "No results";
-            countText.textContent = "No carries found";
+            sortDropdown.style.display = "none";
         } else {
+             // Count carries
+            const total = await fetchTotalCarries();
+
             showResultsBtn.classList.remove('disabled');
             showResultsBtn.disabled = false;
             showResultsBtn.classList.add('active');
-            showResultsBtn.textContent = "Show " + filteredResults + " results";
-            countText.textContent = "Showing " + filteredResults + " carries.";
+            if (total === filteredResults) {
+                showResultsBtn.textContent = "Show all results";
+
+            } else {
+                showResultsBtn.textContent = "Show " + filteredResults + " results";
+            }
         }
     } catch (error) {
         console.error('There was a problem with the fetch operation:', error);
@@ -689,6 +726,7 @@ async function toggleFilterBox(button) {
     if (filtersContainer.style.display === 'none') {
         filtersContainer.style.display = 'block';
 
+        document.getElementById('sort-dropdown').style.display = 'none';
         document.getElementById('filter-title').style.display = 'block';
         document.getElementById('buttonBox').style.display = 'block';
         document.querySelector('footer').style.display = 'none';
@@ -780,7 +818,6 @@ function hideFilterBoxExt() {
 
 
 function emptyCarryGallery() {
-    document.getElementById('count-text').style.display = 'none';
     document.getElementById('filters-applied').style.display = 'none';
     document.getElementById('imageGrid').innerHTML = '';
 }
@@ -811,7 +848,9 @@ async function updateCarryGallery(carries) {
     updateFooterPosition();
 
     // // Show text counting results
-    document.getElementById('count-text').style.display = 'block';
+    if (carries.length !== 0) {
+        document.getElementById('sort-dropdown').style.display = 'block';
+    }
     document.getElementById('filters-applied').style.display = 'block';
 
     // Disable filters until all images have rendered
@@ -928,6 +967,16 @@ function filterDropdown() {
     }
 }
 
+
+document.getElementById('showResultsBtn').addEventListener('click', function() {
+    const selectElement = document.getElementById('sort-select');
+    const selectedOption = selectElement.options[selectElement.selectedIndex];
+    const sortBy = selectedOption.getAttribute('data-sortBy');
+    const ascending = selectedOption.getAttribute('data-ascending') === 'true';
+
+    showResults(sortBy, ascending);
+});
+
 document.getElementById('search-input').addEventListener('input', function() {
     const clearBtn = document.getElementById('clear-search');
     clearBtn.style.display = this.value ? 'block' : 'none';
@@ -984,8 +1033,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 
     // Filter carries by the property selected in the button
     emptyCarryGallery();
-    showResults();
-    // }
+    showResults("carry__longtitle", true);
 
     const searchInput = document.getElementById('search-input');
     searchInput.addEventListener('keydown', function(event) {
@@ -1045,4 +1093,15 @@ function togglePasses(iconElement, group) {
         iconElement.classList.remove("fa-caret-up");
         iconElement.classList.add("fa-caret-down");
     }
+}
+
+
+function handleSortChange(selectElement) {
+    const selectedOption = selectElement.options[selectElement.selectedIndex];
+    const sortBy = selectedOption.getAttribute('data-sortBy');
+    const ascending = selectedOption.getAttribute('data-ascending') === 'true';
+    
+    emptyCarryGallery();
+
+    showResults(sortBy, ascending);
 }

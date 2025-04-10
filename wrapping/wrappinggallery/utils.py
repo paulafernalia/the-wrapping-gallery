@@ -136,6 +136,8 @@ def apply_filters(queryset, properties, values, mmpositions, finishes, difficult
             )
         elif prop == "pretied" and val == "1":
             queryset = queryset.filter(carry__pretied=val)
+        elif prop == "tutorial" and val == "1":
+            queryset = queryset.filter(carry__tutorial=val)
         elif prop == "pass_sling" and val == "1":
             queryset = queryset.filter(carry__pass_sling=val)
         elif prop == "pass_ruck" and val == "1":

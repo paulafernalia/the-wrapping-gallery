@@ -75,9 +75,6 @@
                             <i class="fas fa-user"></i>
                         </a>
                         <div class="dropdown-menu poppins-light" style="font-size: 13px;" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item poppins-light" style="color: black;" href="{% url 'collection' %}">COLLECTION (beta)</a>
-                            <a class="dropdown-item poppins-light" style="color: black;" href="{% url 'achievements' %}">ACHIEVEMENTS (beta)</a>
-                            <hr>
                             <a class="dropdown-item poppins-light" style="color: black;" href="{% url 'profile' %}">PROFILE ({{ user.username }})</a>
                             <a class="dropdown-item poppins-light" style="color: black;" href="{% url 'password_change' %}">CHANGE PASSWORD</a>
                             <form action="{% url 'logout' %}" method="post" class="dropdown-item m-0">
@@ -93,6 +90,12 @@
                 {% endif %}
                 <li class="nav-item">
                     <a class="nav-link poppins-light {% if request.path == '/' %}active{% endif %}" data-page="carries-page" href="{% url 'index' %}">CARRIES</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link poppins-light {% if request.path == '/collection' %}active{% endif %}" data-page="collection-page" href="{% url 'collection' %}">COLLECTION</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link poppins-light {% if request.path == '/collection' %}active{% endif %}" data-page="achievements-page" href="{% url 'achievements' %}">ACHIEVEMENTS</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link poppins-light {% if request.path == '/faq/' %}active{% endif %}" data-page="faq-page" href="{% url 'faq' %}">FAQ</a>
@@ -131,7 +134,7 @@
       <li class="nav-item"><a href="https://github.com/paulafernalia/the-wrapping-gallery" class="nav-link px-2 text-body-secondary" target="_blank"><svg class="bi" width="20" height="20"><use xlink:href="#github"/></svg></a></li>
       <li class="nav-item"><a href="mailto:thewrappinggallery@gmail.com" class="nav-link px-2 text-body-secondary" target="_blank"><svg class="bi" width="20" height="20"><use xlink:href="#email"/></svg></a></li>
     </ul>
-    <p class="text-center text-body-secondary bg-dark">© 2024 The Wrapping Gallery</p>
+    <p class="text-center text-body-secondary bg-dark">© 2025 The Wrapping Gallery</p>
   </footer>
 </div>
 
