@@ -726,6 +726,7 @@ async function toggleFilterBox(button) {
     if (filtersContainer.style.display === 'none') {
         filtersContainer.style.display = 'block';
 
+        document.getElementById('sort-dropdown').style.display = 'none';
         document.getElementById('filter-title').style.display = 'block';
         document.getElementById('buttonBox').style.display = 'block';
         document.querySelector('footer').style.display = 'none';
