@@ -41,7 +41,7 @@
 
 
 <br>
-<div id="filter-title" class="title-container poppins-bold fsmedium">
+<div id="filter-title" style="display: none;" class="title-container poppins-bold fsmedium">
     Filter properties
 </div>
 <div id="filters-container" class="content-container">
@@ -466,6 +466,18 @@
 
 <div id="count-text" style="display: none;" class="title-container poppins-bold fs16">
     Showing carries
+</div>
+<div id="sort-dropdown" class="title-container poppins-light fssmall">
+    <div class="light-dropdown">
+        <span style="margin-right: 0.5rem;">SORT BY</span>
+        <select id="sort-select" onchange="handleSelectChange(this)">
+            <option value="Alphabetically A-Z" selected>Alphabetically A-Z</option>
+            <option value="Difficulty (easiest first)">Difficulty (easiest first)</option>
+            <option value="Difficulty (hardest first)">Difficulty (hardest first)</option>
+            <option value="Size (short carries first)">Size (short carries first)</option>
+            <option value="Size (long carries first)">Size (long carries first)</option>
+        </select>
+    </div>
 </div>
 <div id="filters-applied" style="display: none;" class="title-container poppins fssmall">
 </div>

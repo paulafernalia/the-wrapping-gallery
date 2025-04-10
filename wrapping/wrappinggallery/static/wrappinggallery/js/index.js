@@ -593,24 +593,34 @@ async function loadMore(button) {
 async function updateButtonBox() {
     const showResultsBtn = document.getElementById('showResultsBtn');
     const countText = document.getElementById('count-text');
+    const sortDropdown = document.getElementById('sort-dropdown');
 
     let num_carries = 0;
     try {
         const carries = await fetchFilteredCarries(1, 300);
         filteredResults = carries.length;
         
-        if (carries.length === 0) {
+        if (filteredResults === 0) {
             showResultsBtn.classList.remove('active');
             showResultsBtn.classList.add('disabled');
             showResultsBtn.disabled = true;
             showResultsBtn.textContent = "No results";
             countText.textContent = "No carries found";
+            sortDropdown.style.display = "none";
         } else {
+             // Count carries
+            const total = await fetchTotalCarries();
+
             showResultsBtn.classList.remove('disabled');
             showResultsBtn.disabled = false;
             showResultsBtn.classList.add('active');
-            showResultsBtn.textContent = "Show " + filteredResults + " results";
-            countText.textContent = "Showing " + filteredResults + " carries.";
+            countText.style.display = 'none';
+            if (total === filteredResults) {
+                showResultsBtn.textContent = "Show all results";
+
+            } else {
+                showResultsBtn.textContent = "Show " + filteredResults + " results";
+            }
         }
     } catch (error) {
         console.error('There was a problem with the fetch operation:', error);
@@ -796,6 +806,7 @@ function hideFilterBoxExt() {
 
 function emptyCarryGallery() {
     document.getElementById('count-text').style.display = 'none';
+    document.getElementById('sort-dropdown').style.display = 'none';
     document.getElementById('filters-applied').style.display = 'none';
     document.getElementById('imageGrid').innerHTML = '';
 }
@@ -826,7 +837,11 @@ async function updateCarryGallery(carries) {
     updateFooterPosition();
 
     // // Show text counting results
-    document.getElementById('count-text').style.display = 'block';
+    if (carries.length === 0) {
+        document.getElementById('count-text').style.display = 'block';
+    } else {
+        document.getElementById('sort-dropdown').style.display = 'block';
+    }
     document.getElementById('filters-applied').style.display = 'block';
 
     // Disable filters until all images have rendered
