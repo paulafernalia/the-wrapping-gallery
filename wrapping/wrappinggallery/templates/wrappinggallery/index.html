@@ -458,24 +458,23 @@
 <div class="fixed-container">
     <div id=buttonBox style="display: block;">
         <div class="row justify-content-center">
-            <button id="showResultsBtn" type="button" class="btn pinkbg btn-custom mx-1 poppins-regular disabled fs16" onclick="showResults()">Show results</button>
+            <button id="showResultsBtn" type="button" class="btn pinkbg btn-custom mx-1 poppins-regular disabled fs16">Show results</button>
             <button id="resetFiltersBtn" type="button" class="btn pinkbg btn-custom mx-1 poppins-regular fs16" onclick="resetFilters()">Reset filters</button>
         </div>
     </div>
 </div>
 
-<div id="count-text" style="display: none;" class="title-container poppins-bold fs16">
-    Showing carries
-</div>
+
 <div id="sort-dropdown" class="title-container poppins-light fssmall">
     <div class="light-dropdown">
         <span style="margin-right: 0.5rem;">SORT BY</span>
-        <select id="sort-select" onchange="handleSelectChange(this)">
-            <option value="Alphabetically A-Z" selected>Alphabetically A-Z</option>
-            <option value="Difficulty (easiest first)">Difficulty (easiest first)</option>
-            <option value="Difficulty (hardest first)">Difficulty (hardest first)</option>
-            <option value="Size (short carries first)">Size (short carries first)</option>
-            <option value="Size (long carries first)">Size (long carries first)</option>
+        <select id="sort-select" onchange="handleSortChange(this)">
+            <option value="Alphabetically, A-Z" selected data-sortBy="carry__longtitle" data-ascending="true">Alphabetically, A-Z</option>
+            <option value="Alphabetically, Z-A" data-sortBy="carry__longtitle" data-ascending="false">Alphabetically, Z-A</option>
+            <option value="Difficulty (easiest first)" data-sortBy="difficulty" data-ascending="true">Difficulty (easiest first)</option>
+            <option value="Difficulty (hardest first)" data-sortBy="difficulty" data-ascending="false">Difficulty (hardest first)</option>
+            <option value="Size (short carries first)" data-sortBy="carry__size" data-ascending="true">Size (short carries first)</option>
+            <option value="Size (long carries first)" data-sortBy="carry__size" data-ascending="false">Size (long carries first)</option>
         </select>
     </div>
 </div>

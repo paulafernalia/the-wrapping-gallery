@@ -411,7 +411,9 @@ def filter_carries(request):
             rounded_difficulty=Round(F("difficulty"))
         ).filter(rounded_difficulty__in=[difficulties[v] for v in filteredDiffs])
 
-    sorted_queryset = queryset.order_by('carry__longtitle')
+    sortBy = request.GET.get("sortBy")
+    ascending = '-' if request.GET.get("ascending") == 'false' else ''
+    sorted_queryset = queryset.order_by(ascending + sortBy)
 
     start =(page - 1) * pagesize
     end = page * pagesize
