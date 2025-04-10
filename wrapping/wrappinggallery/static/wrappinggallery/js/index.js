@@ -337,6 +337,18 @@ function isAnyFilterActive() {
 }
 
 
+async function fetchTotalCarries() {
+    const response = await fetch(`/api/carry-count/`);
+
+    if (!response.ok) {
+        throw new Error('Network response was not ok');
+    }
+
+    const data = await response.json();
+    return data.count;
+}
+
+
 
 async function fetchFilteredCarries(page = 1, pageSize = 18) {
     // Read the property of the button group and the button value

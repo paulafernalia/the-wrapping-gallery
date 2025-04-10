@@ -37,4 +37,5 @@ urlpatterns = [
     path('accounts/account-deleted/', views.account_deleted, name='account_deleted'),
     path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='sitemap'),
     path("robots.txt", views.robots_txt, name="robots_txt"),
+    path("api/carry-count/", views.carry_count, name="carry-count"),
 ]

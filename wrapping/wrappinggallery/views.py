@@ -370,6 +370,12 @@ def achievement_file_url(request, file_name):
 
 
 @require_GET
+def carry_count(request):
+    count = Carry.objects.count()
+    return JsonResponse({'count': count})
+
+
+@require_GET
 def filter_carries(request):
     # Extract lists of properties and values from GET parameters
     properties = request.GET.getlist("property[]")
