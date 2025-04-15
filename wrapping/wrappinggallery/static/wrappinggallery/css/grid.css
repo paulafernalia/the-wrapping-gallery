@@ -47,6 +47,16 @@ h2 {
     gap: 50px; /* Space between grid items, reduced from 50px */
 }
 
+.tutorial-grid {
+    border: none;
+    margin: 0 auto;
+    padding: 10px;
+    max-width: 1100px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* Responsive grid layout */
+    gap: 50px; /* Space between grid items, reduced from 50px */
+}
+
 .grid-item {
     position: relative; /* Allows absolute positioning of child elements */
     overflow: hidden;
