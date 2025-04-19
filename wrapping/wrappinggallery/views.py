@@ -144,7 +144,7 @@ def termsandconditions(request):
 
 
 def about(request):
-    image_url = utils.generate_carry_url("profile", "back")
+    image_url = utils.generate_profile_url()
     return render(request, "wrappinggallery/about.html",  {"imageSrc": image_url})
 
 
