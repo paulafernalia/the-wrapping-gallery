@@ -48,6 +48,16 @@ def generate_signed_urls(file_paths, bucket, supabase=supabase_client):
     return signed_urls
 
 
+def generate_profile_url():
+    filepath = "wrappinggallery/illustrations/profile.png"
+    assert staticfiles_storage.exists(filepath)
+
+    image_url = staticfiles_storage.url(filepath)
+
+    return image_url
+
+
+
 def generate_carry_url(carry, position, dark=False):
     if not dark:
         filepath = f'wrappinggallery/illustrations/carries/{carry}.png'
