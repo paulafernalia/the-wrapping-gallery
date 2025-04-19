@@ -170,7 +170,7 @@ class Command(BaseCommand):
                 updated = False
                 # Check each field for changes
                 for field in fields_to_check:
-                    if getattr(carry, field) != row[field]:
+                    if field != "tutorial" and getattr(carry, field) != row[field]:
                         setattr(carry, field, row[field])  # Update the field
                         updated = True
                 
