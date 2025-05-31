@@ -63,7 +63,6 @@ def count_shortie_carries(user_done_carries, threshold):
         >= threshold
     )
 
-    return count >= threshold
 
 
 def count_longie_carries(user_done_carries, threshold):
