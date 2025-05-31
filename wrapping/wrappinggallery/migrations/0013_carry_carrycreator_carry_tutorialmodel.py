@@ -4,20 +4,19 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('wrappinggallery', '0012_carry_tutorial'),
+        ("wrappinggallery", "0012_carry_tutorial"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='carry',
-            name='carrycreator',
+            model_name="carry",
+            name="carrycreator",
             field=models.CharField(blank=True, max_length=64, null=True),
         ),
         migrations.AddField(
-            model_name='carry',
-            name='tutorialmodel',
+            model_name="carry",
+            name="tutorialmodel",
             field=models.CharField(blank=True, max_length=64, null=True),
         ),
     ]

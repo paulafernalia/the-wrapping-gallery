@@ -1,3 +1,5 @@
+# ruff: noqa: F401
+
 """
 Django settings for wrapping project.
 
@@ -9,13 +11,39 @@ https://docs.djangoproject.com/en/5.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
-from pathlib import Path
+
 import os
-from decouple import Config, RepositoryEnv, config as decouple_config
-from .base import *
 
+from decouple import Config, RepositoryEnv
+from decouple import config as decouple_config
 
-env_file = '.env.prod'
+from .base import (
+    AUTH_PASSWORD_VALIDATORS,
+    AUTH_USER_MODEL,
+    BASE_DIR,
+    DEFAULT_AUTO_FIELD,
+    EMAIL_BACKEND,
+    EMAIL_HOST,
+    EMAIL_PORT,
+    EMAIL_USE_TLS,
+    INSTALLED_APPS,
+    LANGUAGE_CODE,
+    LOGIN_REDIRECT_URL,
+    LOGOUT_REDIRECT_URL,
+    MEDIA_ROOT,
+    MEDIA_URL,
+    MIDDLEWARE,
+    ROOT_URLCONF,
+    STATIC_ROOT,
+    STATIC_URL,
+    TEMPLATES,
+    TIME_ZONE,
+    USE_I18N,
+    USE_TZ,
+    WSGI_APPLICATION,
+)
+
+env_file = ".env.prod"
 if os.path.exists(env_file):
     config = Config(RepositoryEnv(env_file))
 else:
@@ -31,28 +59,30 @@ SECRET_KEY = config("SECRET_KEY", default="default-development-secret-key")
 # Load Supabase configuration from environment variables
 SUPABASE_URL = config("SUPABASE_URL", default="https://default.supabase.co")
 SERVICE_ROLE_KEY = config("SERVICE_ROLE_KEY", default="default-service-role-key")
-SUPABASE_TUTORIAL_BUCKET = config("SUPABASE_TUTORIAL_BUCKET", default="default-bucket-name")
+SUPABASE_TUTORIAL_BUCKET = config(
+    "SUPABASE_TUTORIAL_BUCKET", default="default-bucket-name"
+)
 
 EMAIL_HOST_USER = config("EMAIL_HOST_USER", default="")
 EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD", default="")
 
 # This setting is important because the app is behind a reverse proxy
 # that handles HTTPS connections and forwards the requests to Django.
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
 # This setting forces all HTTP connections to be redirected to HTTPS.
 SECURE_SSL_REDIRECT = True
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
-ALLOWED_HOSTS = config('DJANGO_ALLOWED_HOSTS', default='').split(',')
+ALLOWED_HOSTS = config("DJANGO_ALLOWED_HOSTS", default="").split(",")
 
 # Necessary to enable CSRF tokens in production
-CSRF_TRUSTED_ORIGINS = config('CSRF_TRUSTED_ORIGINS', default='').split(',')
+CSRF_TRUSTED_ORIGINS = config("CSRF_TRUSTED_ORIGINS", default="").split(",")
 
 # Adds a unique hash at the end of static files names when running collectstatic
 # It ensures that old static files aren't cached and get reloaded when they change
-STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
+STATICFILES_STORAGE = "django.contrib.staticfiles.storage.ManifestStaticFilesStorage"
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases

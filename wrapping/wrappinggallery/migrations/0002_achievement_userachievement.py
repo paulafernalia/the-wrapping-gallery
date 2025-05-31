@@ -6,26 +6,48 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('wrappinggallery', '0001_initial'),
+        ("wrappinggallery", "0001_initial"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Achievement',
+            name="Achievement",
             fields=[
-                ('name', models.CharField(max_length=64, primary_key=True, serialize=False)),
-                ('title', models.CharField(max_length=64)),
-                ('description', models.TextField()),
+                (
+                    "name",
+                    models.CharField(max_length=64, primary_key=True, serialize=False),
+                ),
+                ("title", models.CharField(max_length=64)),
+                ("description", models.TextField()),
             ],
         ),
         migrations.CreateModel(
-            name='UserAchievement',
+            name="UserAchievement",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('achievement', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='wrappinggallery.achievement')),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "achievement",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="wrappinggallery.achievement",
+                    ),
+                ),
+                (
+                    "user",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
         ),
     ]

@@ -1,16 +1,19 @@
-from django.db import models
-from django.core.validators import MinValueValidator, MaxValueValidator
-from django.core.exceptions import ValidationError
 from django.contrib.auth.models import AbstractUser
-from django.db.models import Sum, Count, Case, When, IntegerField, FloatField
+from django.core.exceptions import ValidationError
+from django.core.validators import MaxValueValidator, MinValueValidator
+from django.db import models
+from django.db.models import Case, Count, FloatField, IntegerField, Sum, When
 from django.utils.translation import gettext_lazy as _
+
 from .achievements import ACHIEVEMENT_FUNCTIONS
 
+
 class CustomUser(AbstractUser):
-    email = models.EmailField(_('email address'), unique=True, blank=False, null=False)
+    email = models.EmailField(_("email address"), unique=True, blank=False, null=False)
 
     def __str__(self):
         return self.username
+
 
 # Create your models here.
 class Carry(models.Model):
@@ -117,7 +120,6 @@ class Carry(models.Model):
 
     def __str__(self):
         return f"{self.name}: {self.position} carry, {self.size}, {self.mmposition}"
-        
 
     def to_dict(self):
         return {
@@ -143,74 +145,114 @@ class Carry(models.Model):
             "tutorialmodel": self.tutorialmodel,
             "carrycreator": self.carrycreator,
             "passes": [
-                pass_name for pass_name in [
-                    f"horizontal (2)" if self.pass_horizontal == 2 else "horizontal" if self.pass_horizontal == 1 else None,
-                    f"sling (2)" if self.pass_sling == 2 else "sling" if self.pass_sling == 1 else None,
-                    f"cross (2)" if self.pass_cross == 2 else "cross" if self.pass_cross == 1 else None,
-                    f"reinforcing cross (2)" if self.pass_reinforcing_cross == 2 else "reinforcing cross" if self.pass_reinforcing_cross == 1 else None,
-                    f"reinforcing horizontal (2)" if self.pass_reinforcing_horizontal == 2 else "reinforcing horizontal" if self.pass_reinforcing_horizontal == 1 else None,
-                    f"poppins (2)" if self.pass_poppins == 2 else "poppins" if self.pass_poppins == 1 else None,
-                    f"ruck (2)" if self.pass_ruck == 2 else "ruck" if self.pass_ruck == 1 else None,
-                    f"kangaroo (2)" if self.pass_kangaroo == 2 else "kangaroo" if self.pass_kangaroo == 1 else None,
-                ]  if pass_name is not None
+                pass_name
+                for pass_name in [
+                    "horizontal (2)"
+                    if self.pass_horizontal == 2
+                    else "horizontal"
+                    if self.pass_horizontal == 1
+                    else None,
+                    "sling (2)"
+                    if self.pass_sling == 2
+                    else "sling"
+                    if self.pass_sling == 1
+                    else None,
+                    "cross (2)"
+                    if self.pass_cross == 2
+                    else "cross"
+                    if self.pass_cross == 1
+                    else None,
+                    "reinforcing cross (2)"
+                    if self.pass_reinforcing_cross == 2
+                    else "reinforcing cross"
+                    if self.pass_reinforcing_cross == 1
+                    else None,
+                    "reinforcing horizontal (2)"
+                    if self.pass_reinforcing_horizontal == 2
+                    else "reinforcing horizontal"
+                    if self.pass_reinforcing_horizontal == 1
+                    else None,
+                    "poppins (2)"
+                    if self.pass_poppins == 2
+                    else "poppins"
+                    if self.pass_poppins == 1
+                    else None,
+                    "ruck (2)"
+                    if self.pass_ruck == 2
+                    else "ruck"
+                    if self.pass_ruck == 1
+                    else None,
+                    "kangaroo (2)"
+                    if self.pass_kangaroo == 2
+                    else "kangaroo"
+                    if self.pass_kangaroo == 1
+                    else None,
+                ]
+                if pass_name is not None
             ],
             "other": [
-                other_name for other_name in [
-                    "chest pass" if self.other_chestpass == True else None,
-                    "bunched passes" if self.other_bunchedpasses == True else None,
-                    "shoulder flip" if self.other_shoulderflip == True else None,
-                    "twisted pass" if self.other_twistedpass == True else None,
-                    "waist band" if self.other_waistband == True else None,
-                    "leg passes" if self.other_legpasses == True else None,
-                    "shoulder to shoulder" if self.other_s2s == True else None,
-                    "eyelet" if self.other_eyelet == True else None,
-                    "sternum belt" if self.other_sternum == True else None,
-                    "poppins" if self.other_poppins == True else None,
-                ] if other_name is not None
-            ]
+                other_name
+                for other_name in [
+                    "chest pass" if self.other_chestpass else None,
+                    "bunched passes" if self.other_bunchedpasses else None,
+                    "shoulder flip" if self.other_shoulderflip else None,
+                    "twisted pass" if self.other_twistedpass else None,
+                    "waist band" if self.other_waistband else None,
+                    "leg passes" if self.other_legpasses else None,
+                    "shoulder to shoulder" if self.other_s2s else None,
+                    "eyelet" if self.other_eyelet else None,
+                    "sternum belt" if self.other_sternum else None,
+                    "poppins" if self.other_poppins else None,
+                ]
+                if other_name is not None
+            ],
         }
-
 
     def clean(self):
         # Ensure carry cannot be pretied if it is a back carry
-        if self.pretied == 1 and self.position == "back" and self.name != "traditional_back_carry":
-            raise ValidationError(
-                "a back carry cannot be pretied"
-            )
+        if (
+            self.pretied == 1
+            and self.position == "back"
+            and self.name != "traditional_back_carry"
+        ):
+            raise ValidationError("a back carry cannot be pretied")
 
         # Ensure videoauthor2 cannot be not null if videoauthor is null
         if self.videoauthor2 and not self.videoauthor:
-            raise ValidationError(
-                "videoauthor2 cannot be set if videoauthor is null."
-            )
+            raise ValidationError("videoauthor2 cannot be set if videoauthor is null.")
 
         # Ensure videoauthor3 cannot be not null if videoauthor2 is null
         if self.videoauthor3 and not self.videoauthor2:
-            raise ValidationError(
-                "videoauthor3 cannot be set if videoauthor2 is null."
-            )
+            raise ValidationError("videoauthor3 cannot be set if videoauthor2 is null.")
 
         # Ensure that if one of the pair is set, the other must also be set
-        if (self.videotutorial and not self.videoauthor) or \
-           (not self.videotutorial and self.videoauthor):
+        if (self.videotutorial and not self.videoauthor) or (
+            not self.videotutorial and self.videoauthor
+        ):
             raise ValidationError(
                 "Both videoauthor and videotutorial must be either set or both blank."
             )
 
-        if (self.videotutorial2 and not self.videoauthor2) or \
-           (not self.videotutorial2 and self.videoauthor2):
+        if (self.videotutorial2 and not self.videoauthor2) or (
+            not self.videotutorial2 and self.videoauthor2
+        ):
             raise ValidationError(
                 "Both videoauthor2 and videotutorial2 must be either set or both blank."
             )
 
-        if (self.videotutorial3 and not self.videoauthor3) or \
-           (not self.videotutorial3 and self.videoauthor3):
+        if (self.videotutorial3 and not self.videoauthor3) or (
+            not self.videotutorial3 and self.videoauthor3
+        ):
             raise ValidationError(
                 "Both videoauthor3 and videotutorial3 must be either set or both blank."
             )
 
-        if not (self.rings) == ("ring" in self.title.lower()) and \
-            ("xena" not in self.name) and ("mermaid" not in self.name)  and ("lola" not in self.name):
+        if (
+            not (self.rings) == ("ring" in self.title.lower())
+            and ("xena" not in self.name)
+            and ("mermaid" not in self.name)
+            and ("lola" not in self.name)
+        ):
             raise ValidationError("inconsistent information regarding ring(s)")
 
         num_passes = self.pass_sling
@@ -230,32 +272,37 @@ class Carry(models.Model):
         num_shoulders += self.pass_sling
         num_shoulders += 2 * self.pass_ruck
         num_shoulders += 2 * self.pass_kangaroo
-        if (self.name != "ruck_celtic_knot") and \
-           (self.position != "tandem") and \
-           ('fwcc' not in self.name) and \
-           ('frts' not in self.name) and \
-           ('popp' not in self.name) and \
-           (self.shoulders != num_shoulders):
+        if (
+            (self.name != "ruck_celtic_knot")
+            and (self.position != "tandem")
+            and ("fwcc" not in self.name)
+            and ("frts" not in self.name)
+            and ("popp" not in self.name)
+            and (self.shoulders != num_shoulders)
+        ):
             raise ValidationError(
                 f"Shoulders ({self.shoulders}) inconsistent with passes ({num_shoulders})"
             )
 
-        if not self.other_legpasses and self.pass_reinforcing_cross + self.pass_cross > 0:
+        if (
+            not self.other_legpasses
+            and self.pass_reinforcing_cross + self.pass_cross > 0
+        ):
             raise ValidationError(
-                f"Leg passes cannot be 0 with cross and reinforcing cross pass"
+                "Leg passes cannot be 0 with cross and reinforcing cross pass"
             )
 
-        if "dh" in self.name and "fdh"not in self.name and self.other_chestpass == False:
+        if "dh" in self.name and "fdh" not in self.name and not self.other_chestpass:
             raise ValidationError(
-                f"Chest pass cannot be 0 in a double hammock variation"
+                "Chest pass cannot be 0 in a double hammock variation"
             )
 
-        if (self.name != "ruckless_bikini_carry") and \
-            ("christina" not in self.name) and \
-            ("ruck" in self.name and self.pass_ruck == 0):
-            raise ValidationError(
-                f"Ruck pass cannot be empty in a ruck variation"
-            )
+        if (
+            (self.name != "ruckless_bikini_carry")
+            and ("christina" not in self.name)
+            and ("ruck" in self.name and self.pass_ruck == 0)
+        ):
+            raise ValidationError("Ruck pass cannot be empty in a ruck variation")
 
     def save(self, *args, **kwargs):
         self.clean()
@@ -275,11 +322,13 @@ class Carry(models.Model):
                 "difficulty": 0,
                 "fancy": 0,
                 "votes": 0,
-            }
+            },
         )
 
         if created:
-            print(f"- Rating entry has been created for {self.name}")  # Log when a new Rating is created
+            print(
+                f"- Rating entry has been created for {self.name}"
+            )  # Log when a new Rating is created
 
 
 class Rating(models.Model):
@@ -317,17 +366,23 @@ class Rating(models.Model):
 
 def NZ_AVG(queryset, field_name):
     # Count non-zero values
-    count_non_zero = queryset.filter(**{field_name + '__gt': 0}).count()
-    
+    count_non_zero = queryset.filter(**{field_name + "__gt": 0}).count()
+
     # Sum non-zero values
-    sum_non_zero = queryset.filter(**{field_name + '__gt': 0}).aggregate(Sum(field_name))[f"{field_name}__sum"] or 0
+    sum_non_zero = (
+        queryset.filter(**{field_name + "__gt": 0}).aggregate(Sum(field_name))[
+            f"{field_name}__sum"
+        ]
+        or 0
+    )
 
     # Calculate average, return 0 if there are no non-zero values
     return sum_non_zero / count_non_zero if count_non_zero > 0 else 0
 
+
 def recalculate_achievements(user, type):
     print(f"recalculate {type} achievements")
-    
+
     # Get support data based on the type
     if type == "done_carries":
         support_data = DoneCarry.objects.filter(user=user)
@@ -337,30 +392,33 @@ def recalculate_achievements(user, type):
         support_data = user
     elif type == "general_ratings":
         user_done_carries = DoneCarry.objects.filter(user=user)
-        carry_names = user_done_carries.values_list('carry__name', flat=True)
+        carry_names = user_done_carries.values_list("carry__name", flat=True)
         support_data = Rating.objects.filter(carry__name__in=carry_names)
     else:
         raise ValidationError(f"Unknown type {type}")
-    
+
     # Retrieve all necessary achievements and user achievements in bulk
     achievements = Achievement.objects.filter(name__in=ACHIEVEMENT_FUNCTIONS.keys())
     achievements_dict = {achievement.name: achievement for achievement in achievements}
-    
+
     user_achievements = UserAchievement.objects.filter(user=user)
-    user_achievements_dict = {ua.achievement.name: ua for ua in user_achievements}        
-    
+    user_achievements_dict = {ua.achievement.name: ua for ua in user_achievements}
+
     for achievement_name, (func, data_type, kwargs) in ACHIEVEMENT_FUNCTIONS.items():
         if achievement_name in achievements_dict:
             achievement = achievements_dict[achievement_name]
-            
+
             # Check if this function applies to the current type
             if data_type == type:
                 if func(support_data, **kwargs):  # Pass the done carries or ratings
                     if achievement_name not in user_achievements_dict:
-                        UserAchievement.objects.create(achievement=achievement, user=user)
+                        UserAchievement.objects.create(
+                            achievement=achievement, user=user
+                        )
                 else:
                     if achievement_name in user_achievements_dict:
                         user_achievements_dict[achievement_name].delete()
+
 
 class UserRating(models.Model):
     validators = [MinValueValidator(0.0), MaxValueValidator(5)]
@@ -380,7 +438,7 @@ class UserRating(models.Model):
     fancy = models.FloatField(validators=validators, default=1)
 
     class Meta:
-        unique_together = ('user', 'carry')
+        unique_together = ("user", "carry")
 
     def to_dict(self):
         return {
@@ -394,7 +452,7 @@ class UserRating(models.Model):
             "difficulty": round(self.difficulty),
             "fancy": round(self.fancy),
             "username": self.user.username,  # Get the username from CustomUser
-            "carry_name": self.carry.name,    # Get the name from Carry
+            "carry_name": self.carry.name,  # Get the name from Carry
         }
 
     def update_rating(self):
@@ -408,40 +466,152 @@ class UserRating(models.Model):
 
             # Calculate counts of non-zero entries
             non_zero_counts = user_ratings.aggregate(
-                newborns_count=Count(Case(When(newborns__gt=0, then=1), output_field=IntegerField())),
-                legstraighteners_count=Count(Case(When(legstraighteners__gt=0, then=1), output_field=IntegerField())),
-                leaners_count=Count(Case(When(leaners__gt=0, then=1), output_field=IntegerField())),
-                bigkids_count=Count(Case(When(bigkids__gt=0, then=1), output_field=IntegerField())),
-                feeding_count=Count(Case(When(feeding__gt=0, then=1), output_field=IntegerField())),
-                quickups_count=Count(Case(When(quickups__gt=0, then=1), output_field=IntegerField())),
-                pregnancy_count=Count(Case(When(pregnancy__gt=0, then=1), output_field=IntegerField())),
-                difficulty_count=Count(Case(When(difficulty__gt=0, then=1), output_field=IntegerField())),
-                fancy_count=Count(Case(When(fancy__gt=0, then=1), output_field=IntegerField())),
+                newborns_count=Count(
+                    Case(When(newborns__gt=0, then=1), output_field=IntegerField())
+                ),
+                legstraighteners_count=Count(
+                    Case(
+                        When(legstraighteners__gt=0, then=1),
+                        output_field=IntegerField(),
+                    )
+                ),
+                leaners_count=Count(
+                    Case(When(leaners__gt=0, then=1), output_field=IntegerField())
+                ),
+                bigkids_count=Count(
+                    Case(When(bigkids__gt=0, then=1), output_field=IntegerField())
+                ),
+                feeding_count=Count(
+                    Case(When(feeding__gt=0, then=1), output_field=IntegerField())
+                ),
+                quickups_count=Count(
+                    Case(When(quickups__gt=0, then=1), output_field=IntegerField())
+                ),
+                pregnancy_count=Count(
+                    Case(When(pregnancy__gt=0, then=1), output_field=IntegerField())
+                ),
+                difficulty_count=Count(
+                    Case(When(difficulty__gt=0, then=1), output_field=IntegerField())
+                ),
+                fancy_count=Count(
+                    Case(When(fancy__gt=0, then=1), output_field=IntegerField())
+                ),
             )
 
             # Calculate sums of non-zero entries
             total_sums = user_ratings.aggregate(
-                newborns_sum=Sum(Case(When(newborns__gt=0, then='newborns'), default=0, output_field=FloatField())),
-                legstraighteners_sum=Sum(Case(When(legstraighteners__gt=0, then='legstraighteners'), default=0, output_field=FloatField())),
-                leaners_sum=Sum(Case(When(leaners__gt=0, then='leaners'), default=0, output_field=FloatField())),
-                bigkids_sum=Sum(Case(When(bigkids__gt=0, then='bigkids'), default=0, output_field=FloatField())),
-                feeding_sum=Sum(Case(When(feeding__gt=0, then='feeding'), default=0, output_field=FloatField())),
-                quickups_sum=Sum(Case(When(quickups__gt=0, then='quickups'), default=0, output_field=FloatField())),
-                pregnancy_sum=Sum(Case(When(pregnancy__gt=0, then='pregnancy'), default=0, output_field=FloatField())),
-                difficulty_sum=Sum(Case(When(difficulty__gt=0, then='difficulty'), default=0, output_field=FloatField())),
-                fancy_sum=Sum(Case(When(fancy__gt=0, then='fancy'), default=0, output_field=FloatField())),
+                newborns_sum=Sum(
+                    Case(
+                        When(newborns__gt=0, then="newborns"),
+                        default=0,
+                        output_field=FloatField(),
+                    )
+                ),
+                legstraighteners_sum=Sum(
+                    Case(
+                        When(legstraighteners__gt=0, then="legstraighteners"),
+                        default=0,
+                        output_field=FloatField(),
+                    )
+                ),
+                leaners_sum=Sum(
+                    Case(
+                        When(leaners__gt=0, then="leaners"),
+                        default=0,
+                        output_field=FloatField(),
+                    )
+                ),
+                bigkids_sum=Sum(
+                    Case(
+                        When(bigkids__gt=0, then="bigkids"),
+                        default=0,
+                        output_field=FloatField(),
+                    )
+                ),
+                feeding_sum=Sum(
+                    Case(
+                        When(feeding__gt=0, then="feeding"),
+                        default=0,
+                        output_field=FloatField(),
+                    )
+                ),
+                quickups_sum=Sum(
+                    Case(
+                        When(quickups__gt=0, then="quickups"),
+                        default=0,
+                        output_field=FloatField(),
+                    )
+                ),
+                pregnancy_sum=Sum(
+                    Case(
+                        When(pregnancy__gt=0, then="pregnancy"),
+                        default=0,
+                        output_field=FloatField(),
+                    )
+                ),
+                difficulty_sum=Sum(
+                    Case(
+                        When(difficulty__gt=0, then="difficulty"),
+                        default=0,
+                        output_field=FloatField(),
+                    )
+                ),
+                fancy_sum=Sum(
+                    Case(
+                        When(fancy__gt=0, then="fancy"),
+                        default=0,
+                        output_field=FloatField(),
+                    )
+                ),
             )
 
             # Update the rating fields using the sums and counts
-            rating.newborns = total_sums['newborns_sum'] / non_zero_counts['newborns_count'] if non_zero_counts['newborns_count'] > 0 else 0
-            rating.legstraighteners = total_sums['legstraighteners_sum'] / non_zero_counts['legstraighteners_count'] if non_zero_counts['legstraighteners_count'] > 0 else 0
-            rating.leaners = total_sums['leaners_sum'] / non_zero_counts['leaners_count'] if non_zero_counts['leaners_count'] > 0 else 0
-            rating.bigkids = total_sums['bigkids_sum'] / non_zero_counts['bigkids_count'] if non_zero_counts['bigkids_count'] > 0 else 0
-            rating.feeding = total_sums['feeding_sum'] / non_zero_counts['feeding_count'] if non_zero_counts['feeding_count'] > 0 else 0
-            rating.quickups = total_sums['quickups_sum'] / non_zero_counts['quickups_count'] if non_zero_counts['quickups_count'] > 0 else 0
-            rating.pregnancy = total_sums['pregnancy_sum'] / non_zero_counts['pregnancy_count'] if non_zero_counts['pregnancy_count'] > 0 else 0
-            rating.difficulty = total_sums['difficulty_sum'] / non_zero_counts['difficulty_count'] if non_zero_counts['difficulty_count'] > 0 else 0
-            rating.fancy = total_sums['fancy_sum'] / non_zero_counts['fancy_count'] if non_zero_counts['fancy_count'] > 0 else 0
+            rating.newborns = (
+                total_sums["newborns_sum"] / non_zero_counts["newborns_count"]
+                if non_zero_counts["newborns_count"] > 0
+                else 0
+            )
+            rating.legstraighteners = (
+                total_sums["legstraighteners_sum"]
+                / non_zero_counts["legstraighteners_count"]
+                if non_zero_counts["legstraighteners_count"] > 0
+                else 0
+            )
+            rating.leaners = (
+                total_sums["leaners_sum"] / non_zero_counts["leaners_count"]
+                if non_zero_counts["leaners_count"] > 0
+                else 0
+            )
+            rating.bigkids = (
+                total_sums["bigkids_sum"] / non_zero_counts["bigkids_count"]
+                if non_zero_counts["bigkids_count"] > 0
+                else 0
+            )
+            rating.feeding = (
+                total_sums["feeding_sum"] / non_zero_counts["feeding_count"]
+                if non_zero_counts["feeding_count"] > 0
+                else 0
+            )
+            rating.quickups = (
+                total_sums["quickups_sum"] / non_zero_counts["quickups_count"]
+                if non_zero_counts["quickups_count"] > 0
+                else 0
+            )
+            rating.pregnancy = (
+                total_sums["pregnancy_sum"] / non_zero_counts["pregnancy_count"]
+                if non_zero_counts["pregnancy_count"] > 0
+                else 0
+            )
+            rating.difficulty = (
+                total_sums["difficulty_sum"] / non_zero_counts["difficulty_count"]
+                if non_zero_counts["difficulty_count"] > 0
+                else 0
+            )
+            rating.fancy = (
+                total_sums["fancy_sum"] / non_zero_counts["fancy_count"]
+                if non_zero_counts["fancy_count"] > 0
+                else 0
+            )
 
             # Update the vote field with the count of UserRating entries for this carry
             rating.votes = user_ratings.count()
@@ -453,16 +623,15 @@ class UserRating(models.Model):
         except Exception as e:
             print(str(e))
 
-
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)  # Call the parent class's save method
 
         self.update_rating()
-        recalculate_achievements(self.user, "ratings")        
+        recalculate_achievements(self.user, "ratings")
 
     def delete(self, *args, **kwargs):
         super().delete(*args, **kwargs)  # Call the parent class's delete method
-        
+
         self.update_rating()
         recalculate_achievements(self.user, "ratings")
 
@@ -504,14 +673,12 @@ class Achievement(models.Model):
 
     CATEGORY_CHOICES = [
         (0, "Onboarding"),
-        (1, 'Wrapping'),
-        (2, 'Contributor'),
-        (3, 'Special'),
+        (1, "Wrapping"),
+        (2, "Contributor"),
+        (3, "Special"),
     ]
 
-    category = models.IntegerField(
-        choices=CATEGORY_CHOICES
-    )
+    category = models.IntegerField(choices=CATEGORY_CHOICES)
 
     description = models.TextField()
     order = models.FloatField(blank=True)
@@ -521,7 +688,9 @@ class Achievement(models.Model):
         super().save(*args, **kwargs)
 
         # If a new achievement is created, recalculate for all users
-        users = CustomUser.objects.all()  # Adjust this if you have a different user model
+        users = (
+            CustomUser.objects.all()
+        )  # Adjust this if you have a different user model
         for user in users:
             recalculate_achievements(user, "ratings")
             recalculate_achievements(user, "done_carries")
@@ -532,4 +701,3 @@ class Achievement(models.Model):
 class UserAchievement(models.Model):
     achievement = models.ForeignKey(Achievement, on_delete=models.CASCADE)
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-

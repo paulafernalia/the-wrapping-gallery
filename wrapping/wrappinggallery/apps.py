@@ -6,4 +6,4 @@ class WrappinggalleryConfig(AppConfig):
     name = "wrappinggallery"
 
     def ready(self):
-        import wrappinggallery.signals  # Ensure this is imported
+        pass
