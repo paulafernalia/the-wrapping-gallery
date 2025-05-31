@@ -57,6 +57,8 @@ class Carry(models.Model):
     videoauthor = models.CharField(max_length=64, blank=True, null=True)
     videoauthor2 = models.CharField(max_length=64, blank=True, null=True)
     videoauthor3 = models.CharField(max_length=64, blank=True, null=True)
+    tutorialmodel = models.CharField(max_length=64, blank=True, null=True)
+    carrycreator = models.CharField(max_length=64, blank=True, null=True)
 
     position = models.CharField(
         max_length=10,
@@ -138,6 +140,8 @@ class Carry(models.Model):
             "videoauthor2": self.videoauthor2,
             "videotutorial3": self.videotutorial3,
             "videoauthor3": self.videoauthor3,
+            "tutorialmodel": self.tutorialmodel,
+            "carrycreator": self.carrycreator,
             "passes": [
                 pass_name for pass_name in [
                     f"horizontal (2)" if self.pass_horizontal == 2 else "horizontal" if self.pass_horizontal == 1 else None,
