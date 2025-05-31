@@ -1,11 +1,9 @@
-from concurrent.futures import ThreadPoolExecutor, as_completed
-
+from supabase import create_client
 from django.conf import settings
 from django.contrib.staticfiles.storage import staticfiles_storage
-from django.db.models import Q
-from supabase import create_client
-
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from .models import Carry, Rating
+from django.db.models import Q
 
 
 def initialise_supabase():
@@ -91,7 +89,7 @@ def generate_achievement_url(achievement):
 
     if not staticfiles_storage.exists(filepath):
         filepath = "wrappinggallery/illustrations/carries/placeholder_front.png"
-        filepath = "wrappinggallery/illustrations/carries/placeholder_front.png"
+        filepath = f"wrappinggallery/illustrations/carries/placeholder_front.png"
         assert staticfiles_storage.exists(filepath)
 
     image_url = staticfiles_storage.url(filepath)

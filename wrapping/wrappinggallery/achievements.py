@@ -64,6 +64,7 @@ def count_shortie_carries(user_done_carries, threshold):
     )
 
 
+
 def count_longie_carries(user_done_carries, threshold):
     # Filter ratings based on the difficulty and carry size
     return (

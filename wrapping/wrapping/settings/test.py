@@ -1,5 +1,3 @@
-# ruff: noqa: F401
-
 """
 Django settings for wrapping project.
 
@@ -17,31 +15,7 @@ import os
 from decouple import Config, RepositoryEnv
 from decouple import config as decouple_config
 
-from .base import (
-    AUTH_PASSWORD_VALIDATORS,
-    AUTH_USER_MODEL,
-    BASE_DIR,
-    DEFAULT_AUTO_FIELD,
-    EMAIL_BACKEND,
-    EMAIL_HOST,
-    EMAIL_PORT,
-    EMAIL_USE_TLS,
-    INSTALLED_APPS,
-    LANGUAGE_CODE,
-    LOGIN_REDIRECT_URL,
-    LOGOUT_REDIRECT_URL,
-    MEDIA_ROOT,
-    MEDIA_URL,
-    MIDDLEWARE,
-    ROOT_URLCONF,
-    STATIC_ROOT,
-    STATIC_URL,
-    TEMPLATES,
-    TIME_ZONE,
-    USE_I18N,
-    USE_TZ,
-    WSGI_APPLICATION,
-)
+from .base import *
 
 env_file = ".env.dev"
 if os.path.exists(env_file):
