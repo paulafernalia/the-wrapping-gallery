@@ -159,7 +159,7 @@ class Command(BaseCommand):
                 fields_to_check = [
                     "title", "longtitle", "size", "shoulders", "layers", "mmposition",
                     "videotutorial", "videoauthor", "videotutorial2", "videoauthor2",
-                    "videotutorial3", "videoauthor3", "position", "description",
+                    "videotutorial3", "videoauthor3", "carrycreator", "tutorialmodel", "position", "description",
                     "pretied", "rings", "tutorial", "pass_horizontal", "pass_cross", "pass_reinforcing_cross",
                     "pass_reinforcing_horizontal", "pass_poppins", "pass_ruck", "pass_sling",
                     "pass_kangaroo", "other_chestpass", "other_bunchedpasses", "other_shoulderflip",
@@ -197,6 +197,8 @@ class Command(BaseCommand):
                     videoauthor2=row["videoauthor2"],
                     videotutorial3=row["videotutorial3"],
                     videoauthor3=row["videoauthor3"],
+                    tutorialmodel=row["tutorialmodel"],
+                    carrycreator=row["carrycreator"],
                     position=row["position"],
                     description=row["description"],
                     pretied=row["pretied"],
