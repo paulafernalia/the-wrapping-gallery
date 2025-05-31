@@ -9,13 +9,15 @@ https://docs.djangoproject.com/en/5.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
-from pathlib import Path
+
 import os
-from decouple import Config, RepositoryEnv, config as decouple_config
+
+from decouple import Config, RepositoryEnv
+from decouple import config as decouple_config
+
 from .base import *
 
-
-env_file = '.env.prod'
+env_file = ".env.prod"
 if os.path.exists(env_file):
     config = Config(RepositoryEnv(env_file))
 else:
@@ -31,28 +33,30 @@ SECRET_KEY = config("SECRET_KEY", default="default-development-secret-key")
 # Load Supabase configuration from environment variables
 SUPABASE_URL = config("SUPABASE_URL", default="https://default.supabase.co")
 SERVICE_ROLE_KEY = config("SERVICE_ROLE_KEY", default="default-service-role-key")
-SUPABASE_TUTORIAL_BUCKET = config("SUPABASE_TUTORIAL_BUCKET", default="default-bucket-name")
+SUPABASE_TUTORIAL_BUCKET = config(
+    "SUPABASE_TUTORIAL_BUCKET", default="default-bucket-name"
+)
 
 EMAIL_HOST_USER = config("EMAIL_HOST_USER", default="")
 EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD", default="")
 
 # This setting is important because the app is behind a reverse proxy
 # that handles HTTPS connections and forwards the requests to Django.
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
 # This setting forces all HTTP connections to be redirected to HTTPS.
 SECURE_SSL_REDIRECT = True
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
-ALLOWED_HOSTS = config('DJANGO_ALLOWED_HOSTS', default='').split(',')
+ALLOWED_HOSTS = config("DJANGO_ALLOWED_HOSTS", default="").split(",")
 
 # Necessary to enable CSRF tokens in production
-CSRF_TRUSTED_ORIGINS = config('CSRF_TRUSTED_ORIGINS', default='').split(',')
+CSRF_TRUSTED_ORIGINS = config("CSRF_TRUSTED_ORIGINS", default="").split(",")
 
 # Adds a unique hash at the end of static files names when running collectstatic
 # It ensures that old static files aren't cached and get reloaded when they change
-STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
+STATICFILES_STORAGE = "django.contrib.staticfiles.storage.ManifestStaticFilesStorage"
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases

@@ -1,10 +1,18 @@
 from django.contrib import admin
-from .models import Carry, Rating, FavouriteCarry, DoneCarry, TodoCarry, UserRating, Achievement, UserAchievement
-
 from django.contrib.auth.admin import UserAdmin
 
-from .forms import CustomUserCreationForm, CustomUserChangeForm
-from .models import CustomUser
+from .forms import CustomUserChangeForm, CustomUserCreationForm
+from .models import (
+    Achievement,
+    Carry,
+    CustomUser,
+    DoneCarry,
+    FavouriteCarry,
+    Rating,
+    TodoCarry,
+    UserAchievement,
+    UserRating,
+)
 
 # Register your models here.
 admin.site.register(Carry)
@@ -16,11 +24,15 @@ admin.site.register(UserRating)
 admin.site.register(UserAchievement)
 admin.site.register(Achievement)
 
+
 class CustomUserAdmin(UserAdmin):
     add_form = CustomUserCreationForm
     form = CustomUserChangeForm
     model = CustomUser
-    list_display = ["email", "username",]
+    list_display = [
+        "email",
+        "username",
+    ]
+
 
 admin.site.register(CustomUser, CustomUserAdmin)
-
