@@ -59,3 +59,6 @@ dev-docker-down:
 
 dev-docker-up:
 	docker compose -f docker-compose.dev.yml up --build
+
+ruff:
+	ruff check

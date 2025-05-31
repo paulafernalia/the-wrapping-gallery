@@ -1,11 +1,8 @@
-from supabase import create_client, Client
+from supabase import create_client
 from django.conf import settings
 from django.contrib.staticfiles.storage import staticfiles_storage
 from concurrent.futures import ThreadPoolExecutor, as_completed
-from django.http import JsonResponse
-import os
-from .models import Carry, Rating, UserRating
-from django.db.models import Avg
+from .models import Carry, Rating
 from django.db.models import Q
 
 
@@ -14,18 +11,21 @@ def initialise_supabase():
     key: str = settings.SERVICE_ROLE_KEY
     return create_client(url, key)
 
+
 supabase_client = initialise_supabase()
 
+
 def generate_signed_url(file_path, bucket, supabase=supabase_client):
-     try:
+    try:
         response = supabase.storage.from_(bucket).create_signed_url(
             file_path, expires_in=3600
         )
-        
+
         return response["signedURL"]
 
-     except Exception as e:
+    except Exception:
         return None
+
 
 def generate_signed_url_wrapper(file_path, bucket, supabase=supabase_client):
     result = generate_signed_url(file_path, bucket, supabase)
@@ -40,7 +40,10 @@ def generate_signed_urls(file_paths, bucket, supabase=supabase_client):
     signed_urls = {}
 
     with ThreadPoolExecutor() as executor:
-        futures = [executor.submit(generate_signed_url_wrapper, file_path, bucket, supabase) for file_path in file_paths]
+        futures = [
+            executor.submit(generate_signed_url_wrapper, file_path, bucket, supabase)
+            for file_path in file_paths
+        ]
         for future in as_completed(futures):
             if future.result() is not None:
                 signed_urls[future.result()[0]] = future.result()[1]
@@ -57,19 +60,20 @@ def generate_profile_url():
     return image_url
 
 
-
 def generate_carry_url(carry, position, dark=False):
     if not dark:
-        filepath = f'wrappinggallery/illustrations/carries/{carry}.png'
+        filepath = f"wrappinggallery/illustrations/carries/{carry}.png"
     else:
-        filepath = f'wrappinggallery/illustrations/carries/{carry}_dark.png'
-    
+        filepath = f"wrappinggallery/illustrations/carries/{carry}_dark.png"
+
     if not staticfiles_storage.exists(filepath):
         if position in ["back", "front", "tandem"]:
             if dark:
-                filepath = f'wrappinggallery/illustrations/carries/placeholder_{position}_dark.png'
+                filepath = f"wrappinggallery/illustrations/carries/placeholder_{position}_dark.png"
             else:
-                filepath = f'wrappinggallery/illustrations/carries/placeholder_{position}.png'
+                filepath = (
+                    f"wrappinggallery/illustrations/carries/placeholder_{position}.png"
+                )
             assert staticfiles_storage.exists(filepath)
         else:
             print("error position not valid", carry, position)
@@ -81,10 +85,11 @@ def generate_carry_url(carry, position, dark=False):
 
 
 def generate_achievement_url(achievement):
-    filepath = f'wrappinggallery/illustrations/achievements/{achievement}.png'
-    
+    filepath = f"wrappinggallery/illustrations/achievements/{achievement}.png"
+
     if not staticfiles_storage.exists(filepath):
-        filepath = f'wrappinggallery/illustrations/carries/placeholder_front.png'
+        filepath = "wrappinggallery/illustrations/carries/placeholder_front.png"
+        filepath = f"wrappinggallery/illustrations/carries/placeholder_front.png"
         assert staticfiles_storage.exists(filepath)
 
     image_url = staticfiles_storage.url(filepath)
@@ -104,12 +109,16 @@ def get_carry_context(name):
         carry_dict["videotutorial"] = "NA"
 
     if carry_dict["videoauthor2"] == "" or carry_dict["videoauthor2"] is None:
-        assert carry_dict["videotutorial2"] == "" or carry_dict["videotutorial2"] is None
+        assert (
+            carry_dict["videotutorial2"] == "" or carry_dict["videotutorial2"] is None
+        )
         carry_dict["videoauthor2"] = "NA"
         carry_dict["videotutorial2"] = "NA"
 
     if carry_dict["videoauthor3"] == "" or carry_dict["videoauthor3"] is None:
-        assert carry_dict["videotutorial3"] == "" or carry_dict["videotutorial3"] is None
+        assert (
+            carry_dict["videotutorial3"] == "" or carry_dict["videotutorial3"] is None
+        )
         carry_dict["videoauthor3"] = "NA"
         carry_dict["videotutorial3"] = "NA"
 
@@ -124,7 +133,7 @@ def get_carry_context(name):
 
 
 def apply_filters(queryset, properties, values, mmpositions, finishes, difficulties):
-    for prop, val in zip(properties, values): 
+    for prop, val in zip(properties, values):
         if prop == "position" and val not in ["Any", "null"]:
             queryset = queryset.filter(carry__position=val.lower())
         elif prop == "shoulders" and val not in ["Any", "null"]:
@@ -139,10 +148,10 @@ def apply_filters(queryset, properties, values, mmpositions, finishes, difficult
             queryset = queryset.filter(carry__finish=finishes[val])
         elif prop == "partialname" and val not in ["null", ""] and val:
             queryset = queryset.filter(
-                Q(carry__title__icontains=val) |
-                Q(carry__longtitle__icontains=val) |
-                Q(carry__name__icontains=val) |
-                Q(carry__finish__icontains=val)
+                Q(carry__title__icontains=val)
+                | Q(carry__longtitle__icontains=val)
+                | Q(carry__name__icontains=val)
+                | Q(carry__finish__icontains=val)
             )
         elif prop == "pretied" and val == "1":
             queryset = queryset.filter(carry__pretied=val)

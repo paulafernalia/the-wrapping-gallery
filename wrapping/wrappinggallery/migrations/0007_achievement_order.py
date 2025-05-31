@@ -4,15 +4,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('wrappinggallery', '0006_alter_achievement_category'),
+        ("wrappinggallery", "0006_alter_achievement_category"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='achievement',
-            name='order',
+            model_name="achievement",
+            name="order",
             field=models.FloatField(blank=True, default=0.0),
             preserve_default=False,
         ),

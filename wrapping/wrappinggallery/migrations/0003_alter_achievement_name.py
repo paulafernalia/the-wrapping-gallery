@@ -4,15 +4,16 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('wrappinggallery', '0002_achievement_userachievement'),
+        ("wrappinggallery", "0002_achievement_userachievement"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='achievement',
-            name='name',
-            field=models.CharField(max_length=64, primary_key=True, serialize=False, unique=True),
+            model_name="achievement",
+            name="name",
+            field=models.CharField(
+                max_length=64, primary_key=True, serialize=False, unique=True
+            ),
         ),
     ]
