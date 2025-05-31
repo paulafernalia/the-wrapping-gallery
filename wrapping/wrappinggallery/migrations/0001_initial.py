@@ -10,140 +10,599 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
-        ('auth', '0012_alter_user_first_name_max_length'),
+        ("auth", "0012_alter_user_first_name_max_length"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Carry',
+            name="Carry",
             fields=[
-                ('name', models.CharField(max_length=64, primary_key=True, serialize=False)),
-                ('title', models.CharField(max_length=64)),
-                ('longtitle', models.CharField(max_length=128)),
-                ('size', models.IntegerField(choices=[(-5, 'Base - 5'), (-4, 'Base - 4'), (-3, 'Base - 3'), (-2, 'Base - 2'), (-1, 'Base - 1'), (0, 'Base'), (1, 'Base + 1'), (2, 'Base + 2')])),
-                ('shoulders', models.IntegerField(choices=[(0, '0'), (1, '1'), (2, '2')])),
-                ('layers', models.IntegerField(choices=[(-1, 'Varies'), (1, '1'), (2, '2'), (3, '3'), (4, '4')])),
-                ('mmposition', models.IntegerField(choices=[(-1, 'Follow tutorial'), (0, 'Centred'), (6, '0.5 DH off centre'), (1, '1 DH off centre'), (7, '1.5 DH off centre'), (2, '2 DH off centre'), (3, 'Centred on your chest'), (4, 'Centred on your back'), (5, 'Under your armpit')])),
-                ('videotutorial', models.URLField(blank=True, null=True)),
-                ('videotutorial2', models.URLField(blank=True, null=True)),
-                ('videotutorial3', models.URLField(blank=True, null=True)),
-                ('videoauthor', models.CharField(blank=True, max_length=64, null=True)),
-                ('videoauthor2', models.CharField(blank=True, max_length=64, null=True)),
-                ('videoauthor3', models.CharField(blank=True, max_length=64, null=True)),
-                ('position', models.CharField(choices=[('front', 'Front'), ('back', 'Back'), ('tandem', 'Tandem')], max_length=10)),
-                ('description', models.TextField(blank=True, null=True)),
-                ('pretied', models.BooleanField(default=False)),
-                ('rings', models.BooleanField(default=False)),
-                ('finish', models.CharField(choices=[('knotless', 'Knotless'), ('knotless tibetan', 'Knotless Tibetan'), ('tibetan', 'Tibetan'), ('TUB', 'Tied under bum'), ('TIF', 'Tied in front'), ('TAS', 'Tied at shoulder'), ('buleria', 'Buleria'), ('CCCB', 'Candy Cane Chest Belt'), ('slipknot', 'Slipknot'), ('ring(s)', 'Rings'), ('rapunzel', 'Rapunzel'), ('tied at the back', 'Tied at the back'), ('strangleproof', 'Strangleproof')], max_length=16)),
-                ('pass_horizontal', models.IntegerField(choices=[(0, ''), (1, ''), (2, '(2)'), (3, '(3)')], default=0)),
-                ('pass_sling', models.IntegerField(choices=[(0, ''), (1, ''), (2, '(2)'), (3, '(3)')], default=0)),
-                ('pass_cross', models.IntegerField(choices=[(0, ''), (1, ''), (2, '(2)'), (3, '(3)')], default=0)),
-                ('pass_reinforcing_cross', models.IntegerField(choices=[(0, ''), (1, ''), (2, '(2)'), (3, '(3)')], default=0)),
-                ('pass_reinforcing_horizontal', models.IntegerField(choices=[(0, ''), (1, ''), (2, '(2)'), (3, '(3)')], default=0)),
-                ('pass_poppins', models.IntegerField(choices=[(0, ''), (1, ''), (2, '(2)'), (3, '(3)')], default=0)),
-                ('pass_ruck', models.IntegerField(choices=[(0, ''), (1, ''), (2, '(2)'), (3, '(3)')], default=0)),
-                ('pass_kangaroo', models.IntegerField(choices=[(0, ''), (1, ''), (2, '(2)'), (3, '(3)')], default=0)),
-                ('other_chestpass', models.BooleanField(default=0)),
-                ('other_bunchedpasses', models.BooleanField(default=0)),
-                ('other_shoulderflip', models.BooleanField(default=0)),
-                ('other_twistedpass', models.BooleanField(default=0)),
-                ('other_waistband', models.BooleanField(default=0)),
-                ('other_legpasses', models.BooleanField(default=0)),
-                ('other_s2s', models.BooleanField(default=0)),
-                ('other_eyelet', models.BooleanField(default=0)),
-                ('other_sternum', models.BooleanField(default=0)),
-                ('other_poppins', models.BooleanField(default=0)),
+                (
+                    "name",
+                    models.CharField(max_length=64, primary_key=True, serialize=False),
+                ),
+                ("title", models.CharField(max_length=64)),
+                ("longtitle", models.CharField(max_length=128)),
+                (
+                    "size",
+                    models.IntegerField(
+                        choices=[
+                            (-5, "Base - 5"),
+                            (-4, "Base - 4"),
+                            (-3, "Base - 3"),
+                            (-2, "Base - 2"),
+                            (-1, "Base - 1"),
+                            (0, "Base"),
+                            (1, "Base + 1"),
+                            (2, "Base + 2"),
+                        ]
+                    ),
+                ),
+                (
+                    "shoulders",
+                    models.IntegerField(choices=[(0, "0"), (1, "1"), (2, "2")]),
+                ),
+                (
+                    "layers",
+                    models.IntegerField(
+                        choices=[(-1, "Varies"), (1, "1"), (2, "2"), (3, "3"), (4, "4")]
+                    ),
+                ),
+                (
+                    "mmposition",
+                    models.IntegerField(
+                        choices=[
+                            (-1, "Follow tutorial"),
+                            (0, "Centred"),
+                            (6, "0.5 DH off centre"),
+                            (1, "1 DH off centre"),
+                            (7, "1.5 DH off centre"),
+                            (2, "2 DH off centre"),
+                            (3, "Centred on your chest"),
+                            (4, "Centred on your back"),
+                            (5, "Under your armpit"),
+                        ]
+                    ),
+                ),
+                ("videotutorial", models.URLField(blank=True, null=True)),
+                ("videotutorial2", models.URLField(blank=True, null=True)),
+                ("videotutorial3", models.URLField(blank=True, null=True)),
+                ("videoauthor", models.CharField(blank=True, max_length=64, null=True)),
+                (
+                    "videoauthor2",
+                    models.CharField(blank=True, max_length=64, null=True),
+                ),
+                (
+                    "videoauthor3",
+                    models.CharField(blank=True, max_length=64, null=True),
+                ),
+                (
+                    "position",
+                    models.CharField(
+                        choices=[
+                            ("front", "Front"),
+                            ("back", "Back"),
+                            ("tandem", "Tandem"),
+                        ],
+                        max_length=10,
+                    ),
+                ),
+                ("description", models.TextField(blank=True, null=True)),
+                ("pretied", models.BooleanField(default=False)),
+                ("rings", models.BooleanField(default=False)),
+                (
+                    "finish",
+                    models.CharField(
+                        choices=[
+                            ("knotless", "Knotless"),
+                            ("knotless tibetan", "Knotless Tibetan"),
+                            ("tibetan", "Tibetan"),
+                            ("TUB", "Tied under bum"),
+                            ("TIF", "Tied in front"),
+                            ("TAS", "Tied at shoulder"),
+                            ("buleria", "Buleria"),
+                            ("CCCB", "Candy Cane Chest Belt"),
+                            ("slipknot", "Slipknot"),
+                            ("ring(s)", "Rings"),
+                            ("rapunzel", "Rapunzel"),
+                            ("tied at the back", "Tied at the back"),
+                            ("strangleproof", "Strangleproof"),
+                        ],
+                        max_length=16,
+                    ),
+                ),
+                (
+                    "pass_horizontal",
+                    models.IntegerField(
+                        choices=[(0, ""), (1, ""), (2, "(2)"), (3, "(3)")], default=0
+                    ),
+                ),
+                (
+                    "pass_sling",
+                    models.IntegerField(
+                        choices=[(0, ""), (1, ""), (2, "(2)"), (3, "(3)")], default=0
+                    ),
+                ),
+                (
+                    "pass_cross",
+                    models.IntegerField(
+                        choices=[(0, ""), (1, ""), (2, "(2)"), (3, "(3)")], default=0
+                    ),
+                ),
+                (
+                    "pass_reinforcing_cross",
+                    models.IntegerField(
+                        choices=[(0, ""), (1, ""), (2, "(2)"), (3, "(3)")], default=0
+                    ),
+                ),
+                (
+                    "pass_reinforcing_horizontal",
+                    models.IntegerField(
+                        choices=[(0, ""), (1, ""), (2, "(2)"), (3, "(3)")], default=0
+                    ),
+                ),
+                (
+                    "pass_poppins",
+                    models.IntegerField(
+                        choices=[(0, ""), (1, ""), (2, "(2)"), (3, "(3)")], default=0
+                    ),
+                ),
+                (
+                    "pass_ruck",
+                    models.IntegerField(
+                        choices=[(0, ""), (1, ""), (2, "(2)"), (3, "(3)")], default=0
+                    ),
+                ),
+                (
+                    "pass_kangaroo",
+                    models.IntegerField(
+                        choices=[(0, ""), (1, ""), (2, "(2)"), (3, "(3)")], default=0
+                    ),
+                ),
+                ("other_chestpass", models.BooleanField(default=0)),
+                ("other_bunchedpasses", models.BooleanField(default=0)),
+                ("other_shoulderflip", models.BooleanField(default=0)),
+                ("other_twistedpass", models.BooleanField(default=0)),
+                ("other_waistband", models.BooleanField(default=0)),
+                ("other_legpasses", models.BooleanField(default=0)),
+                ("other_s2s", models.BooleanField(default=0)),
+                ("other_eyelet", models.BooleanField(default=0)),
+                ("other_sternum", models.BooleanField(default=0)),
+                ("other_poppins", models.BooleanField(default=0)),
             ],
         ),
         migrations.CreateModel(
-            name='CustomUser',
+            name="CustomUser",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('password', models.CharField(max_length=128, verbose_name='password')),
-                ('last_login', models.DateTimeField(blank=True, null=True, verbose_name='last login')),
-                ('is_superuser', models.BooleanField(default=False, help_text='Designates that this user has all permissions without explicitly assigning them.', verbose_name='superuser status')),
-                ('username', models.CharField(error_messages={'unique': 'A user with that username already exists.'}, help_text='Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.', max_length=150, unique=True, validators=[django.contrib.auth.validators.UnicodeUsernameValidator()], verbose_name='username')),
-                ('first_name', models.CharField(blank=True, max_length=150, verbose_name='first name')),
-                ('last_name', models.CharField(blank=True, max_length=150, verbose_name='last name')),
-                ('email', models.EmailField(blank=True, max_length=254, verbose_name='email address')),
-                ('is_staff', models.BooleanField(default=False, help_text='Designates whether the user can log into this admin site.', verbose_name='staff status')),
-                ('is_active', models.BooleanField(default=True, help_text='Designates whether this user should be treated as active. Unselect this instead of deleting accounts.', verbose_name='active')),
-                ('date_joined', models.DateTimeField(default=django.utils.timezone.now, verbose_name='date joined')),
-                ('groups', models.ManyToManyField(blank=True, help_text='The groups this user belongs to. A user will get all permissions granted to each of their groups.', related_name='user_set', related_query_name='user', to='auth.group', verbose_name='groups')),
-                ('user_permissions', models.ManyToManyField(blank=True, help_text='Specific permissions for this user.', related_name='user_set', related_query_name='user', to='auth.permission', verbose_name='user permissions')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("password", models.CharField(max_length=128, verbose_name="password")),
+                (
+                    "last_login",
+                    models.DateTimeField(
+                        blank=True, null=True, verbose_name="last login"
+                    ),
+                ),
+                (
+                    "is_superuser",
+                    models.BooleanField(
+                        default=False,
+                        help_text="Designates that this user has all permissions without explicitly assigning them.",
+                        verbose_name="superuser status",
+                    ),
+                ),
+                (
+                    "username",
+                    models.CharField(
+                        error_messages={
+                            "unique": "A user with that username already exists."
+                        },
+                        help_text="Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.",
+                        max_length=150,
+                        unique=True,
+                        validators=[
+                            django.contrib.auth.validators.UnicodeUsernameValidator()
+                        ],
+                        verbose_name="username",
+                    ),
+                ),
+                (
+                    "first_name",
+                    models.CharField(
+                        blank=True, max_length=150, verbose_name="first name"
+                    ),
+                ),
+                (
+                    "last_name",
+                    models.CharField(
+                        blank=True, max_length=150, verbose_name="last name"
+                    ),
+                ),
+                (
+                    "email",
+                    models.EmailField(
+                        blank=True, max_length=254, verbose_name="email address"
+                    ),
+                ),
+                (
+                    "is_staff",
+                    models.BooleanField(
+                        default=False,
+                        help_text="Designates whether the user can log into this admin site.",
+                        verbose_name="staff status",
+                    ),
+                ),
+                (
+                    "is_active",
+                    models.BooleanField(
+                        default=True,
+                        help_text="Designates whether this user should be treated as active. Unselect this instead of deleting accounts.",
+                        verbose_name="active",
+                    ),
+                ),
+                (
+                    "date_joined",
+                    models.DateTimeField(
+                        default=django.utils.timezone.now, verbose_name="date joined"
+                    ),
+                ),
+                (
+                    "groups",
+                    models.ManyToManyField(
+                        blank=True,
+                        help_text="The groups this user belongs to. A user will get all permissions granted to each of their groups.",
+                        related_name="user_set",
+                        related_query_name="user",
+                        to="auth.group",
+                        verbose_name="groups",
+                    ),
+                ),
+                (
+                    "user_permissions",
+                    models.ManyToManyField(
+                        blank=True,
+                        help_text="Specific permissions for this user.",
+                        related_name="user_set",
+                        related_query_name="user",
+                        to="auth.permission",
+                        verbose_name="user permissions",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'user',
-                'verbose_name_plural': 'users',
-                'abstract': False,
+                "verbose_name": "user",
+                "verbose_name_plural": "users",
+                "abstract": False,
             },
             managers=[
-                ('objects', django.contrib.auth.models.UserManager()),
+                ("objects", django.contrib.auth.models.UserManager()),
             ],
         ),
         migrations.CreateModel(
-            name='DoneCarry',
+            name="DoneCarry",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('carry', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='wrappinggallery.carry')),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "carry",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="wrappinggallery.carry",
+                    ),
+                ),
+                (
+                    "user",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='FavouriteCarry',
+            name="FavouriteCarry",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('carry', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='wrappinggallery.carry')),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "carry",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="wrappinggallery.carry",
+                    ),
+                ),
+                (
+                    "user",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='Rating',
+            name="Rating",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('newborns', models.FloatField(default=1, validators=[django.core.validators.MinValueValidator(0.0), django.core.validators.MaxValueValidator(5)])),
-                ('legstraighteners', models.FloatField(default=1, validators=[django.core.validators.MinValueValidator(0.0), django.core.validators.MaxValueValidator(5)])),
-                ('leaners', models.FloatField(default=1, validators=[django.core.validators.MinValueValidator(0.0), django.core.validators.MaxValueValidator(5)])),
-                ('bigkids', models.FloatField(default=1, validators=[django.core.validators.MinValueValidator(0.0), django.core.validators.MaxValueValidator(5)])),
-                ('feeding', models.FloatField(default=1, validators=[django.core.validators.MinValueValidator(0.0), django.core.validators.MaxValueValidator(5)])),
-                ('quickups', models.FloatField(default=1, validators=[django.core.validators.MinValueValidator(0.0), django.core.validators.MaxValueValidator(5)])),
-                ('pregnancy', models.FloatField(default=1, validators=[django.core.validators.MinValueValidator(0.0), django.core.validators.MaxValueValidator(5)])),
-                ('difficulty', models.FloatField(default=1, validators=[django.core.validators.MinValueValidator(0.0), django.core.validators.MaxValueValidator(5)])),
-                ('fancy', models.FloatField(default=1, validators=[django.core.validators.MinValueValidator(0.0), django.core.validators.MaxValueValidator(5)])),
-                ('votes', models.IntegerField(blank=True, default=0, null=True)),
-                ('carry', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to='wrappinggallery.carry')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "newborns",
+                    models.FloatField(
+                        default=1,
+                        validators=[
+                            django.core.validators.MinValueValidator(0.0),
+                            django.core.validators.MaxValueValidator(5),
+                        ],
+                    ),
+                ),
+                (
+                    "legstraighteners",
+                    models.FloatField(
+                        default=1,
+                        validators=[
+                            django.core.validators.MinValueValidator(0.0),
+                            django.core.validators.MaxValueValidator(5),
+                        ],
+                    ),
+                ),
+                (
+                    "leaners",
+                    models.FloatField(
+                        default=1,
+                        validators=[
+                            django.core.validators.MinValueValidator(0.0),
+                            django.core.validators.MaxValueValidator(5),
+                        ],
+                    ),
+                ),
+                (
+                    "bigkids",
+                    models.FloatField(
+                        default=1,
+                        validators=[
+                            django.core.validators.MinValueValidator(0.0),
+                            django.core.validators.MaxValueValidator(5),
+                        ],
+                    ),
+                ),
+                (
+                    "feeding",
+                    models.FloatField(
+                        default=1,
+                        validators=[
+                            django.core.validators.MinValueValidator(0.0),
+                            django.core.validators.MaxValueValidator(5),
+                        ],
+                    ),
+                ),
+                (
+                    "quickups",
+                    models.FloatField(
+                        default=1,
+                        validators=[
+                            django.core.validators.MinValueValidator(0.0),
+                            django.core.validators.MaxValueValidator(5),
+                        ],
+                    ),
+                ),
+                (
+                    "pregnancy",
+                    models.FloatField(
+                        default=1,
+                        validators=[
+                            django.core.validators.MinValueValidator(0.0),
+                            django.core.validators.MaxValueValidator(5),
+                        ],
+                    ),
+                ),
+                (
+                    "difficulty",
+                    models.FloatField(
+                        default=1,
+                        validators=[
+                            django.core.validators.MinValueValidator(0.0),
+                            django.core.validators.MaxValueValidator(5),
+                        ],
+                    ),
+                ),
+                (
+                    "fancy",
+                    models.FloatField(
+                        default=1,
+                        validators=[
+                            django.core.validators.MinValueValidator(0.0),
+                            django.core.validators.MaxValueValidator(5),
+                        ],
+                    ),
+                ),
+                ("votes", models.IntegerField(blank=True, default=0, null=True)),
+                (
+                    "carry",
+                    models.OneToOneField(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="wrappinggallery.carry",
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='TodoCarry',
+            name="TodoCarry",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('carry', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='wrappinggallery.carry')),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "carry",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="wrappinggallery.carry",
+                    ),
+                ),
+                (
+                    "user",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='UserRating',
+            name="UserRating",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('newborns', models.FloatField(default=1, validators=[django.core.validators.MinValueValidator(0.0), django.core.validators.MaxValueValidator(5)])),
-                ('legstraighteners', models.FloatField(default=1, validators=[django.core.validators.MinValueValidator(0.0), django.core.validators.MaxValueValidator(5)])),
-                ('leaners', models.FloatField(default=1, validators=[django.core.validators.MinValueValidator(0.0), django.core.validators.MaxValueValidator(5)])),
-                ('bigkids', models.FloatField(default=1, validators=[django.core.validators.MinValueValidator(0.0), django.core.validators.MaxValueValidator(5)])),
-                ('feeding', models.FloatField(default=1, validators=[django.core.validators.MinValueValidator(0.0), django.core.validators.MaxValueValidator(5)])),
-                ('quickups', models.FloatField(default=1, validators=[django.core.validators.MinValueValidator(0.0), django.core.validators.MaxValueValidator(5)])),
-                ('pregnancy', models.FloatField(default=1, validators=[django.core.validators.MinValueValidator(0.0), django.core.validators.MaxValueValidator(5)])),
-                ('difficulty', models.FloatField(default=1, validators=[django.core.validators.MinValueValidator(0.0), django.core.validators.MaxValueValidator(5)])),
-                ('fancy', models.FloatField(default=1, validators=[django.core.validators.MinValueValidator(0.0), django.core.validators.MaxValueValidator(5)])),
-                ('carry', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='wrappinggallery.carry')),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "newborns",
+                    models.FloatField(
+                        default=1,
+                        validators=[
+                            django.core.validators.MinValueValidator(0.0),
+                            django.core.validators.MaxValueValidator(5),
+                        ],
+                    ),
+                ),
+                (
+                    "legstraighteners",
+                    models.FloatField(
+                        default=1,
+                        validators=[
+                            django.core.validators.MinValueValidator(0.0),
+                            django.core.validators.MaxValueValidator(5),
+                        ],
+                    ),
+                ),
+                (
+                    "leaners",
+                    models.FloatField(
+                        default=1,
+                        validators=[
+                            django.core.validators.MinValueValidator(0.0),
+                            django.core.validators.MaxValueValidator(5),
+                        ],
+                    ),
+                ),
+                (
+                    "bigkids",
+                    models.FloatField(
+                        default=1,
+                        validators=[
+                            django.core.validators.MinValueValidator(0.0),
+                            django.core.validators.MaxValueValidator(5),
+                        ],
+                    ),
+                ),
+                (
+                    "feeding",
+                    models.FloatField(
+                        default=1,
+                        validators=[
+                            django.core.validators.MinValueValidator(0.0),
+                            django.core.validators.MaxValueValidator(5),
+                        ],
+                    ),
+                ),
+                (
+                    "quickups",
+                    models.FloatField(
+                        default=1,
+                        validators=[
+                            django.core.validators.MinValueValidator(0.0),
+                            django.core.validators.MaxValueValidator(5),
+                        ],
+                    ),
+                ),
+                (
+                    "pregnancy",
+                    models.FloatField(
+                        default=1,
+                        validators=[
+                            django.core.validators.MinValueValidator(0.0),
+                            django.core.validators.MaxValueValidator(5),
+                        ],
+                    ),
+                ),
+                (
+                    "difficulty",
+                    models.FloatField(
+                        default=1,
+                        validators=[
+                            django.core.validators.MinValueValidator(0.0),
+                            django.core.validators.MaxValueValidator(5),
+                        ],
+                    ),
+                ),
+                (
+                    "fancy",
+                    models.FloatField(
+                        default=1,
+                        validators=[
+                            django.core.validators.MinValueValidator(0.0),
+                            django.core.validators.MaxValueValidator(5),
+                        ],
+                    ),
+                ),
+                (
+                    "carry",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="wrappinggallery.carry",
+                    ),
+                ),
+                (
+                    "user",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
             options={
-                'unique_together': {('user', 'carry')},
+                "unique_together": {("user", "carry")},
             },
         ),
     ]

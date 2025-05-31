@@ -4,15 +4,21 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('wrappinggallery', '0005_alter_achievement_category'),
+        ("wrappinggallery", "0005_alter_achievement_category"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='achievement',
-            name='category',
-            field=models.IntegerField(choices=[(0, 'Onboarding'), (1, 'Wrapping'), (2, 'Contributor'), (3, 'Special')]),
+            model_name="achievement",
+            name="category",
+            field=models.IntegerField(
+                choices=[
+                    (0, "Onboarding"),
+                    (1, "Wrapping"),
+                    (2, "Contributor"),
+                    (3, "Special"),
+                ]
+            ),
         ),
     ]

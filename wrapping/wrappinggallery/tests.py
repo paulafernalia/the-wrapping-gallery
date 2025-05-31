@@ -1,14 +1,21 @@
-from django.test import TestCase
-from .models import Carry, Rating, CustomUser, UserRating, Achievement, UserAchievement, DoneCarry
-from django.db import IntegrityError
-from django.core.exceptions import ValidationError
 from django.core import mail
+from django.core.exceptions import ValidationError
 from django.test import TestCase
 from django.urls import reverse
 
+from .models import (
+    Achievement,
+    Carry,
+    CustomUser,
+    DoneCarry,
+    Rating,
+    UserAchievement,
+    UserRating,
+)
+
+
 # Create your tests here.
 class CarryTestCase(TestCase):
-
     def setUp(self):
         # Create a Carry instance.
         self.c1 = Carry.objects.create(
@@ -36,7 +43,7 @@ class CarryTestCase(TestCase):
         self.assertEqual(r.count(), 1)
 
     def test_cascade_delete_carry(self):
-         # Delete the Carry instance.
+        # Delete the Carry instance.
         carry_name = self.c1.name
         self.c1.delete()
 
@@ -46,7 +53,6 @@ class CarryTestCase(TestCase):
 
 
 class CarryVideoTest(TestCase):
-
     def test_videoauthor2_cannot_be_set_if_videoauthor_is_null(self):
         carry = Carry(
             name="test_carry",
@@ -131,7 +137,9 @@ class CarryVideoTest(TestCase):
         try:
             carry.full_clean()  # This should pass
         except ValidationError:
-            self.fail("ValidationError raised unexpectedly when both videoauthor and videotutorial are blank.")
+            self.fail(
+                "ValidationError raised unexpectedly when both videoauthor and videotutorial are blank."
+            )
 
         # Test case where both fields are filled
         carry.videotutorial = "http://example.com/video"
@@ -139,7 +147,9 @@ class CarryVideoTest(TestCase):
         try:
             carry.full_clean()  # This should pass
         except ValidationError:
-            self.fail("ValidationError raised unexpectedly when both videoauthor and videotutorial are filled.")
+            self.fail(
+                "ValidationError raised unexpectedly when both videoauthor and videotutorial are filled."
+            )
 
         # Test case where only one is filled
         carry.videoauthor = ""
@@ -174,7 +184,9 @@ class CarryVideoTest(TestCase):
         try:
             carry.full_clean()  # This should pass
         except ValidationError:
-            self.fail("ValidationError raised unexpectedly when both videoauthor2 and videotutorial2 are blank.")
+            self.fail(
+                "ValidationError raised unexpectedly when both videoauthor2 and videotutorial2 are blank."
+            )
 
         # Test case where both fields are filled
         carry.videotutorial2 = "http://example.com/video2"
@@ -182,7 +194,9 @@ class CarryVideoTest(TestCase):
         try:
             carry.full_clean()  # This should pass
         except ValidationError:
-            self.fail("ValidationError raised unexpectedly when both videoauthor2 and videotutorial2 are filled.")
+            self.fail(
+                "ValidationError raised unexpectedly when both videoauthor2 and videotutorial2 are filled."
+            )
 
         # Test case where only one is filled
         carry.videoauthor2 = ""
@@ -219,7 +233,9 @@ class CarryVideoTest(TestCase):
         try:
             carry.full_clean()  # This should pass
         except ValidationError:
-            self.fail("ValidationError raised unexpectedly when both videoauthor3 and videotutorial3 are blank.")
+            self.fail(
+                "ValidationError raised unexpectedly when both videoauthor3 and videotutorial3 are blank."
+            )
 
         # Test case where both fields are filled
         carry.videotutorial3 = "http://example.com/video3"
@@ -227,7 +243,9 @@ class CarryVideoTest(TestCase):
         try:
             carry.full_clean()  # This should pass
         except ValidationError:
-            self.fail("ValidationError raised unexpectedly when both videoauthor3 and videotutorial3 are filled.")
+            self.fail(
+                "ValidationError raised unexpectedly when both videoauthor3 and videotutorial3 are filled."
+            )
 
         # Test case where only one is filled
         carry.videoauthor3 = ""
@@ -244,8 +262,8 @@ class UserRatingTestCase(TestCase):
     def setUp(self):
         # Create a user and a carry for testing
         self.user = CustomUser.objects.create_user(
-            username='testuser',
-            password='testpassword',
+            username="testuser",
+            password="testpassword",
         )
 
         self.carry = Carry.objects.create(
@@ -266,7 +284,7 @@ class UserRatingTestCase(TestCase):
 
     def test_user_rating_create_updates_rating(self):
         # Create a UserRating entry
-        user_rating = UserRating.objects.create(
+        UserRating.objects.create(
             user=self.user,
             carry=self.carry,
             newborns=4,
@@ -310,7 +328,7 @@ class UserRatingTestCase(TestCase):
             difficulty=4,
             fancy=3,
         )
-        
+
         # Update the UserRating entry
         user_rating.newborns = 5
         user_rating.save()  # This should trigger update_rating
@@ -319,7 +337,9 @@ class UserRatingTestCase(TestCase):
         updated_rating = Rating.objects.get(carry=self.carry)
 
         # Check if the Rating entry is updated correctly
-        self.assertEqual(updated_rating.newborns, 5)  # This will depend on existing UserRatings
+        self.assertEqual(
+            updated_rating.newborns, 5
+        )  # This will depend on existing UserRatings
 
     def test_user_rating_delete_updates_rating(self):
         # Create a UserRating entry
@@ -351,36 +371,31 @@ class PasswordResetEmailTest(TestCase):
     def setUp(self):
         # Create a user for the test
         self.user = CustomUser.objects.create_user(
-            username='testuser',
-            email='testuser@gmail.com',
-            password='testpassword'
+            username="testuser", email="testuser@gmail.com", password="testpassword"
         )
 
     def test_password_reset_email(self):
         # Trigger the password reset process
-        response = self.client.post(reverse('password_reset'), {
-            'email': 'testuser@gmail.com'
-        })
+        self.client.post(reverse("password_reset"), {"email": "testuser@gmail.com"})
 
         # Check if an email was sent
         self.assertEqual(len(mail.outbox), 1)
 
         # Check the email subject
-        self.assertIn('Password reset', mail.outbox[0].subject)
+        self.assertIn("Password reset", mail.outbox[0].subject)
 
         # Check the recipient list
-        self.assertEqual(mail.outbox[0].to, ['testuser@gmail.com'])
+        self.assertEqual(mail.outbox[0].to, ["testuser@gmail.com"])
 
         # Optionally check the email body content
-        self.assertIn('you requested a password reset', mail.outbox[0].body)
+        self.assertIn("you requested a password reset", mail.outbox[0].body)
 
 
 class DoneCarryAchievementTest(TestCase):
     def setUp(self):
         # Set up a user, a carry, and the one_carry achievement
         self.user = CustomUser.objects.create_user(
-            username='testuser',
-            password='password'
+            username="testuser", password="password"
         )
 
         self.carry = Carry.objects.create(
@@ -400,10 +415,10 @@ class DoneCarryAchievementTest(TestCase):
         )
 
         self.one_carry_achievement = Achievement.objects.create(
-            name='one_carry',
-            title='first_carry',
-            category='0',
-            description='Test description',
+            name="one_carry",
+            title="first_carry",
+            category="0",
+            description="Test description",
             order=0,
         )
 
@@ -412,11 +427,13 @@ class DoneCarryAchievementTest(TestCase):
         self.assertFalse(UserAchievement.objects.filter(user=self.user).exists())
 
         # Create the first DoneCarry for the user
-        done_carry = DoneCarry.objects.create(user=self.user, carry=self.carry)
+        DoneCarry.objects.create(user=self.user, carry=self.carry)
 
         # Check that the user now has the 'one_carry' achievement
         self.assertTrue(
-            UserAchievement.objects.filter(user=self.user, achievement=self.one_carry_achievement).exists()
+            UserAchievement.objects.filter(
+                user=self.user, achievement=self.one_carry_achievement
+            ).exists()
         )
 
     def test_achievement_removed_on_done_carry_deletion(self):
@@ -425,7 +442,9 @@ class DoneCarryAchievementTest(TestCase):
 
         # Ensure the user has the 'one_carry' achievement
         self.assertTrue(
-            UserAchievement.objects.filter(user=self.user, achievement=self.one_carry_achievement).exists()
+            UserAchievement.objects.filter(
+                user=self.user, achievement=self.one_carry_achievement
+            ).exists()
         )
 
         # Delete the DoneCarry instance
@@ -433,7 +452,9 @@ class DoneCarryAchievementTest(TestCase):
 
         # Ensure the 'one_carry' achievement is removed after deletion
         self.assertFalse(
-            UserAchievement.objects.filter(user=self.user, achievement=self.one_carry_achievement).exists()
+            UserAchievement.objects.filter(
+                user=self.user, achievement=self.one_carry_achievement
+            ).exists()
         )
 
 
@@ -441,8 +462,7 @@ class UserRatingAchievementTest(TestCase):
     def setUp(self):
         # Set up a user, a carry, and the one_review achievement
         self.user = CustomUser.objects.create_user(
-            username='testuser',
-            password='password'
+            username="testuser", password="password"
         )
 
         self.carry = Carry.objects.create(
@@ -462,10 +482,10 @@ class UserRatingAchievementTest(TestCase):
         )
 
         self.one_review_achievement = Achievement.objects.create(
-            name='one_review',
-            title='first_review',
-            category='0',
-            description='Test description for first review achievement',
+            name="one_review",
+            title="first_review",
+            category="0",
+            description="Test description for first review achievement",
             order=1,
         )
 
@@ -474,7 +494,7 @@ class UserRatingAchievementTest(TestCase):
         self.assertFalse(UserAchievement.objects.filter(user=self.user).exists())
 
         # Create the first UserRating for the user
-        user_rating = UserRating.objects.create(
+        UserRating.objects.create(
             user=self.user,
             carry=self.carry,
             newborns=3,
@@ -490,5 +510,7 @@ class UserRatingAchievementTest(TestCase):
 
         # Check that the user now has the 'one_review' achievement
         self.assertTrue(
-            UserAchievement.objects.filter(user=self.user, achievement=self.one_review_achievement).exists()
+            UserAchievement.objects.filter(
+                user=self.user, achievement=self.one_review_achievement
+            ).exists()
         )

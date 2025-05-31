@@ -4,15 +4,31 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('wrappinggallery', '0010_alter_carry_finish'),
+        ("wrappinggallery", "0010_alter_carry_finish"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='carry',
-            name='finish',
-            field=models.CharField(choices=[('knotless', 'Knotless'), ('knotless tibetan', 'Knotless Tibetan'), ('tibetan', 'Tibetan'), ('TUB', 'Tied under bum'), ('TIF', 'Tied in front'), ('TAS', 'Tied at shoulder'), ('buleria', 'Buleria'), ('CCCB', 'Candy Cane Chest Belt'), ('slipknot', 'Slipknot'), ('ring(s)', 'Rings'), ('rapunzel', 'Rapunzel'), ('other double knot', 'Double Knot (other)'), ('strangleproof', 'Strangleproof')], max_length=20),
+            model_name="carry",
+            name="finish",
+            field=models.CharField(
+                choices=[
+                    ("knotless", "Knotless"),
+                    ("knotless tibetan", "Knotless Tibetan"),
+                    ("tibetan", "Tibetan"),
+                    ("TUB", "Tied under bum"),
+                    ("TIF", "Tied in front"),
+                    ("TAS", "Tied at shoulder"),
+                    ("buleria", "Buleria"),
+                    ("CCCB", "Candy Cane Chest Belt"),
+                    ("slipknot", "Slipknot"),
+                    ("ring(s)", "Rings"),
+                    ("rapunzel", "Rapunzel"),
+                    ("other double knot", "Double Knot (other)"),
+                    ("strangleproof", "Strangleproof"),
+                ],
+                max_length=20,
+            ),
         ),
     ]

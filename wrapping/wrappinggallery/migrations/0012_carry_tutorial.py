@@ -4,15 +4,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('wrappinggallery', '0011_alter_carry_finish'),
+        ("wrappinggallery", "0011_alter_carry_finish"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='carry',
-            name='tutorial',
+            model_name="carry",
+            name="tutorial",
             field=models.BooleanField(default=False),
         ),
     ]
