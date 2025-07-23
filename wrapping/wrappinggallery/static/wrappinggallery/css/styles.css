@@ -25,6 +25,20 @@
     background-color: #343a40; /* Or any other color matching your navbar */
 }
 
+#bmc-fixed-button {
+    position: fixed;
+    bottom: 18px;
+    right: 18px;
+    z-index: 1000;
+}
+
+#bmc-fixed-button img {
+    height: 60px;
+    width: auto;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
 
 
 body {
