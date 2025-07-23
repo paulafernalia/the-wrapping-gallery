@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.core.management.base import BaseCommand
+
 from wrappinggallery.models import recalculate_achievements
 
 User = get_user_model()

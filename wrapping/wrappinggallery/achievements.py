@@ -1,3 +1,5 @@
+from typing import Any, Callable, Dict, Tuple
+
 from django.db.models.functions import Round
 from django.utils import timezone
 
@@ -64,7 +66,6 @@ def count_shortie_carries(user_done_carries, threshold):
     )
 
 
-
 def count_longie_carries(user_done_carries, threshold):
     # Filter ratings based on the difficulty and carry size
     return (
@@ -93,7 +94,9 @@ def count_toddler_prisoner(general_ratings, threshold):
     )
 
 
-ACHIEVEMENT_FUNCTIONS = {
+AchievementFunc = Callable[..., bool]
+
+ACHIEVEMENT_FUNCTIONS: Dict[str, Tuple[AchievementFunc, str, Dict[str, Any]]] = {
     "one_carry": (count_carries, "done_carries", {"threshold": 1}),
     "five_carries": (count_carries, "done_carries", {"threshold": 5}),
     "ten_carries": (count_carries, "done_carries", {"threshold": 10}),
