@@ -1,5 +1,6 @@
 import json
 import os
+import re
 from typing import Any, Dict, List, cast
 
 from django.conf import settings
@@ -16,7 +17,13 @@ from django.db.models import (
     When,
 )
 from django.db.models.functions import Round
-from django.http import FileResponse, HttpResponse, HttpResponseForbidden, JsonResponse
+from django.http import (
+    FileResponse,
+    HttpResponse,
+    HttpResponseBadRequest,
+    HttpResponseForbidden,
+    JsonResponse,
+)
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.views.decorators.http import require_GET, require_POST
@@ -477,6 +484,14 @@ def filter_carries(request):
 
 
 def download_booklet(request, carry):
+    # Validate that carry contains only safe characters
+    if not re.match(r"^[a-zA-Z0-9_-]+$", carry):
+        return HttpResponseBadRequest("Invalid carry parameter")
+
+    # Additional length check
+    if len(carry) > 50:  # adjust as needed
+        return HttpResponseBadRequest("Carry parameter too long")
+
     file_path = os.path.join(settings.MEDIA_ROOT, f"{carry}_tutorial.pdf")
     response = FileResponse(
         open(file_path, "rb"), as_attachment=True, filename=f"{carry}_tutorial.pdf"

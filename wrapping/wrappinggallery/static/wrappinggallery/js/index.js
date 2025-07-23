@@ -226,7 +226,7 @@ function initialiseMultiButtonData(property) {
         // If not, set the counter to 0 in local storage
         sessionStorage.setItem(property, JSON.stringify(['Any']));
     } else {
-        initString = sessionStorage.getItem(property);
+        const initString = sessionStorage.getItem(property);
         init = JSON.parse(initString);
     }
 
@@ -686,7 +686,7 @@ function setActiveMultiButton(button) {
         values = ["Any"];
     } else {
         // Get current list
-        let valueString = sessionStorage.getItem(property); // Extract the values
+        const valueString = sessionStorage.getItem(property); // Extract the values
         values = JSON.parse(valueString);
 
         // Ensure "Any" is not in the array
@@ -714,10 +714,10 @@ function setActiveMultiButton(button) {
     }
 
     // Stringify new array
-    valueString = JSON.stringify(values);
+    const valueStr = JSON.stringify(values);
     
     // Store selected value in local storage
-    sessionStorage.setItem(button.dataset.property, valueString);
+    sessionStorage.setItem(button.dataset.property, valueStr);
 }
 
 async function toggleFilterBox(button) {
@@ -761,7 +761,7 @@ function updateFooterPosition() {
 
     // print position of footer
     let element = document.querySelector('footer');
-    elementPosition = 0;
+    let elementPosition = 0;
 
     while(element) {
         elementPosition += element.offsetTop;
@@ -1025,7 +1025,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     updateButtonBox();
 
     // Update reset filters button
-    resetFiltersBtn = document.getElementById('resetFiltersBtn');
+    let resetFiltersBtn = document.getElementById('resetFiltersBtn');
 
     // Get all carries with session data and update gallery
     resetFiltersBtn.classList.add('disabled');
