@@ -3,7 +3,8 @@ import os
 
 from django.conf import settings
 from django.core.management.base import BaseCommand
-from wrappinggallery.models import Carry  # Replace 'myapp' with your actual app name
+
+from wrappinggallery.models import Carry
 
 
 class Command(BaseCommand):
@@ -23,7 +24,7 @@ class Command(BaseCommand):
         if static_root:
             illustrations_path = os.path.join(static_root, illustrations_subfolder)
             if os.path.exists(illustrations_path):
-                for root, dirs, files in os.walk(illustrations_path):
+                for _, _, files in os.walk(illustrations_path):
                     file_names.extend(files)
 
         self.check_static_files_in_db(file_names)

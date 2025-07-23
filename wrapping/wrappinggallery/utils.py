@@ -1,9 +1,11 @@
-from supabase import create_client
+from concurrent.futures import ThreadPoolExecutor, as_completed
+
 from django.conf import settings
 from django.contrib.staticfiles.storage import staticfiles_storage
-from concurrent.futures import ThreadPoolExecutor, as_completed
-from .models import Carry, Rating
 from django.db.models import Q
+from supabase import create_client
+
+from .models import Carry, Rating
 
 
 def initialise_supabase():
@@ -89,7 +91,7 @@ def generate_achievement_url(achievement):
 
     if not staticfiles_storage.exists(filepath):
         filepath = "wrappinggallery/illustrations/carries/placeholder_front.png"
-        filepath = f"wrappinggallery/illustrations/carries/placeholder_front.png"
+        filepath = "wrappinggallery/illustrations/carries/placeholder_front.png"
         assert staticfiles_storage.exists(filepath)
 
     image_url = staticfiles_storage.url(filepath)
@@ -133,7 +135,7 @@ def get_carry_context(name):
 
 
 def apply_filters(queryset, properties, values, mmpositions, finishes, difficulties):
-    for prop, val in zip(properties, values):
+    for prop, val in zip(properties, values, strict=False):
         if prop == "position" and val not in ["Any", "null"]:
             queryset = queryset.filter(carry__position=val.lower())
         elif prop == "shoulders" and val not in ["Any", "null"]:

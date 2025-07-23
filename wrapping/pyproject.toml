@@ -1,0 +1,20 @@
+[tool.ruff]
+line-length = 88
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "W", "B", "DJ"]  # DJ for Django-specific rules
+ignore = ["E501"]  # Ignore line too long (handled by formatter)
+
+[tool.ruff.lint.isort]
+known-first-party = ["wrappinggallery"]  # Your project name
+
+[tool.mypy]
+python_version = "3.10"
+plugins = ["mypy_django_plugin.main"]
+ignore_missing_imports = true
+check_untyped_defs = true
+strict_optional = false
+
+[tool.django-stubs]
+django_settings_module = "wrapping.settings.production"

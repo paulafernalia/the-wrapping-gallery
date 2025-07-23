@@ -1,5 +1,6 @@
 import json
 import os
+from typing import Any, Dict, List, cast
 
 from django.conf import settings
 from django.contrib import messages
@@ -10,6 +11,7 @@ from django.db.models import (
     Case,
     Count,
     F,
+    Field,
     Q,
     When,
 )
@@ -60,7 +62,9 @@ def robots_txt(request):
 
 @login_required
 def profile_view(request):
-    messages.get_messages(request).used = True  # This will clear out all messages
+    storage = messages.get_messages(request)
+    if hasattr(storage, "used"):
+        storage.used = True
 
     user = request.user
     if request.method == "POST":
@@ -77,7 +81,9 @@ def profile_view(request):
 
 @login_required
 def delete_account(request):
-    messages.get_messages(request).used = True  # This will clear out all messages
+    storage = messages.get_messages(request)
+    if hasattr(storage, "used"):
+        storage.used = True
 
     user = request.user
     if request.method == "POST":
@@ -126,14 +132,19 @@ def achievements(request):
 
 # Create your views here.
 def index(request):
-    context = {}
+    context: Dict[str, Any] = {}
 
     carry_fields = ["size", "shoulders", "layers", "position", "finish"]
 
-    for field in carry_fields:
-        idx = 0 if field in ["shoulders", "layers", "size"] else 1
-        labels = [elem[idx] for elem in Carry._meta.get_field(field).choices]
-        context[field + "_values"] = ["Any"] + labels
+    for field_name in carry_fields:
+        field = Carry._meta.get_field(field_name)
+        if isinstance(field, Field) and field.choices:
+            idx = 0 if field_name in ["shoulders", "layers", "size"] else 1
+            labels = [elem[idx] for elem in field.choices]
+            context[field_name + "_values"] = ["Any"] + labels
+        else:
+            # Fallback or skip if field has no choices
+            context[field_name + "_values"] = ["Any"]
 
     context["shoulders_values"] = [
         "Varies" if x == -1 else x for x in context["shoulders_values"]
@@ -152,10 +163,10 @@ def index(request):
     ]
 
     # Convert the QuerySet to a list of dictionaries
-    context["carries"] = list(
-        Carry.objects.values("name", "longtitle", "title").order_by("longtitle")
+    context["carries"] = cast(
+        List[Dict[str, Any]],
+        list(Carry.objects.values("name", "longtitle", "title").order_by("longtitle")),
     )
-
     return render(request, "wrappinggallery/index.html", context)
 
 
@@ -194,7 +205,7 @@ def collection(request):
     )
 
     # Create a dictionary to quickly access the total counts of carries
-    total_carries = {}
+    total_carries: Dict[str, Any] = {}
     for carry in annotated_carries:
         position = carry["position"]
         size = carry["size"]
@@ -228,17 +239,17 @@ def collection(request):
 
     # Get image urls
     todo_data = []
-    for carry in user_todo_carries:
-        url = utils.generate_carry_url(carry.carry.name, carry.carry.position)
+    for elem in user_todo_carries:
+        url = utils.generate_carry_url(elem.carry.name, elem.carry.position)
 
         # Append the carry title and image URL to the list
         todo_data.append(
-            {"title": carry.carry.title, "name": carry.carry.name, "image_url": url}
+            {"title": elem.carry.title, "name": elem.carry.name, "image_url": url}
         )
 
     # Create structures for user carries
-    done_counts = {}
-    done_carry_names = {}
+    done_counts: Dict[str, Any] = {}
+    done_carry_names: Dict[str, Any] = {}
 
     # Initialize the structures for positions
     for position in positions:
@@ -404,7 +415,7 @@ def filter_carries(request):
     page = int(request.GET.get("page"))
     pagesize = int(request.GET.get("page_size"))
 
-    difficulties = dict(zip(DIFFICULTY_VALUES, [1, 2, 3, 4, 5]))
+    difficulties = dict(zip(DIFFICULTY_VALUES, [1, 2, 3, 4, 5], strict=False))
 
     mmpositions = {
         key: value for value, key in Carry._meta.get_field("mmposition").choices
@@ -482,7 +493,7 @@ def mark_as_done(request, carry_name):
     achieved_before = UserAchievement.objects.filter(
         Q(user=user) & (Q(achievement__category=1) | Q(achievement__category=0))
     )
-    achieved_before = set(
+    achieved_before_set = set(
         achieved_before.values_list(
             "achievement__title",
             "achievement__name",
@@ -498,7 +509,7 @@ def mark_as_done(request, carry_name):
         Q(user=user) & (Q(achievement__category=1) | Q(achievement__category=0))
     )
 
-    achieved_after = set(
+    achieved_after_set = set(
         achieved_after.values_list(
             "achievement__title",
             "achievement__name",
@@ -508,7 +519,7 @@ def mark_as_done(request, carry_name):
 
     unlocked = [
         {"name": tuple_[1], "title": tuple_[0], "description": tuple_[2]}
-        for tuple_ in list(achieved_after - achieved_before)
+        for tuple_ in list(achieved_after_set - achieved_before_set)
     ]
 
     # Return a JSON response
@@ -578,7 +589,7 @@ def submit_review(request, carry_name):
     achieved_before = UserAchievement.objects.filter(
         Q(user=user) & (Q(achievement__category=2) | Q(achievement__category=0))
     )
-    achieved_before = set(
+    achieved_before_set = set(
         achieved_before.values_list(
             "achievement__title",
             "achievement__name",
@@ -609,7 +620,7 @@ def submit_review(request, carry_name):
         Q(user=user) & (Q(achievement__category=2) | Q(achievement__category=0))
     )
 
-    achieved_after = set(
+    achieved_after_set = set(
         achieved_after.values_list(
             "achievement__title",
             "achievement__name",
@@ -618,7 +629,7 @@ def submit_review(request, carry_name):
     )
     unlocked = [
         {"name": tuple_[1], "title": tuple_[0], "description": tuple_[2]}
-        for tuple_ in list(achieved_after - achieved_before)
+        for tuple_ in list(achieved_after_set - achieved_before_set)
     ]
 
     return JsonResponse({"unlocked_achievements": unlocked})

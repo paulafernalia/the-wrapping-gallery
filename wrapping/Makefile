@@ -62,3 +62,13 @@ dev-docker-up:
 
 ruff:
 	ruff check
+
+pre-commit:
+	pre-commit run --all-files
+
+pip-audit:
+	pip-audit
+
+mypy:
+	mypy .
+
