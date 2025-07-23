@@ -3,6 +3,7 @@ import os
 import pandas as pd
 from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from django.core.management.base import BaseCommand
+
 from wrappinggallery.models import Carry, CustomUser, UserRating
 
 

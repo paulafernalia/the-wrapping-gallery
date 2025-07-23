@@ -1,8 +1,11 @@
+from typing import Union
+
 from django.contrib.auth.models import AbstractUser
 from django.core.exceptions import ValidationError
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.db.models import Case, Count, FloatField, IntegerField, Sum, When
+from django.db.models.query import QuerySet
 from django.utils.translation import gettext_lazy as _
 
 from .achievements import ACHIEVEMENT_FUNCTIONS
@@ -17,10 +20,10 @@ class CustomUser(AbstractUser):
 
 # Create your models here.
 class Carry(models.Model):
-    name = models.CharField(max_length=64, primary_key=True)
+    name: models.CharField = models.CharField(max_length=64, primary_key=True)
 
-    title = models.CharField(max_length=64)
-    longtitle = models.CharField(max_length=128)
+    title: models.CharField = models.CharField(max_length=64)
+    longtitle: models.CharField = models.CharField(max_length=128)
 
     size = models.IntegerField(
         choices={
@@ -35,7 +38,9 @@ class Carry(models.Model):
         }
     )
 
-    shoulders = models.IntegerField(choices={0: "0", 1: "1", 2: "2"})
+    shoulders: models.IntegerField = models.IntegerField(
+        choices={0: "0", 1: "1", 2: "2"}
+    )
 
     layers = models.IntegerField(choices={-1: "Varies", 1: "1", 2: "2", 3: "3", 4: "4"})
 
@@ -53,22 +58,22 @@ class Carry(models.Model):
         }
     )
 
-    videotutorial = models.URLField(blank=True, null=True)
-    videotutorial2 = models.URLField(blank=True, null=True)
-    videotutorial3 = models.URLField(blank=True, null=True)
+    videotutorial = models.URLField(blank=True, default="")
+    videotutorial2 = models.URLField(blank=True, default="")
+    videotutorial3 = models.URLField(blank=True, default="")
 
-    videoauthor = models.CharField(max_length=64, blank=True, null=True)
-    videoauthor2 = models.CharField(max_length=64, blank=True, null=True)
-    videoauthor3 = models.CharField(max_length=64, blank=True, null=True)
-    tutorialmodel = models.CharField(max_length=64, blank=True, null=True)
-    carrycreator = models.CharField(max_length=64, blank=True, null=True)
+    videoauthor = models.CharField(max_length=64, blank=True, default="")
+    videoauthor2 = models.CharField(max_length=64, blank=True, default="")
+    videoauthor3 = models.CharField(max_length=64, blank=True, default="")
+    tutorialmodel = models.CharField(max_length=64, blank=True, default="")
+    carrycreator = models.CharField(max_length=64, blank=True, default="")
 
     position = models.CharField(
         max_length=10,
         choices={"front": "Front", "back": "Back", "tandem": "Tandem"},
     )
 
-    description = models.TextField(blank=True, null=True)
+    description = models.TextField(blank=True, default="")
 
     pretied = models.BooleanField(default=False)
     rings = models.BooleanField(default=False)
@@ -120,6 +125,32 @@ class Carry(models.Model):
 
     def __str__(self):
         return f"{self.name}: {self.position} carry, {self.size}, {self.mmposition}"
+
+    def save(self, *args, **kwargs):
+        self.clean()
+        super().save(*args, **kwargs)  # Save the Carry instance first
+
+        # Check if a Rating entry exists for this carry
+        rating, created = Rating.objects.get_or_create(
+            carry=self,
+            defaults={
+                "newborns": 0,
+                "legstraighteners": 0,
+                "leaners": 0,
+                "bigkids": 0,
+                "feeding": 0,
+                "quickups": 0,
+                "pregnancy": 0,
+                "difficulty": 0,
+                "fancy": 0,
+                "votes": 0,
+            },
+        )
+
+        if created:
+            print(
+                f"- Rating entry has been created for {self.name}"
+            )  # Log when a new Rating is created
 
     def to_dict(self):
         return {
@@ -304,32 +335,6 @@ class Carry(models.Model):
         ):
             raise ValidationError("Ruck pass cannot be empty in a ruck variation")
 
-    def save(self, *args, **kwargs):
-        self.clean()
-        super().save(*args, **kwargs)  # Save the Carry instance first
-
-        # Check if a Rating entry exists for this carry
-        rating, created = Rating.objects.get_or_create(
-            carry=self,
-            defaults={
-                "newborns": 0,
-                "legstraighteners": 0,
-                "leaners": 0,
-                "bigkids": 0,
-                "feeding": 0,
-                "quickups": 0,
-                "pregnancy": 0,
-                "difficulty": 0,
-                "fancy": 0,
-                "votes": 0,
-            },
-        )
-
-        if created:
-            print(
-                f"- Rating entry has been created for {self.name}"
-            )  # Log when a new Rating is created
-
 
 class Rating(models.Model):
     validators = [MinValueValidator(0.0), MaxValueValidator(5)]
@@ -347,7 +352,10 @@ class Rating(models.Model):
     difficulty = models.FloatField(validators=validators, default=1)
     fancy = models.FloatField(validators=validators, default=1)
 
-    votes = models.IntegerField(blank=True, null=True, default=0)
+    votes = models.IntegerField(blank=True, default=0)
+
+    def __str__(self):
+        return f"Ratings for {self.carry}."
 
     def to_dict(self):
         return {
@@ -382,6 +390,10 @@ def NZ_AVG(queryset, field_name):
 
 def recalculate_achievements(user, type):
     print(f"recalculate {type} achievements")
+
+    support_data: Union[
+        "QuerySet[DoneCarry]", "QuerySet[UserRating]", "QuerySet[Rating]"
+    ]
 
     # Get support data based on the type
     if type == "done_carries":
@@ -439,6 +451,21 @@ class UserRating(models.Model):
 
     class Meta:
         unique_together = ("user", "carry")
+
+    def __str__(self):
+        return f"User ratings for {self.carry} and {self.user}."
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)  # Call the parent class's save method
+
+        self.update_rating()
+        recalculate_achievements(self.user, "ratings")
+
+    def delete(self, *args, **kwargs):
+        super().delete(*args, **kwargs)  # Call the parent class's delete method
+
+        self.update_rating()
+        recalculate_achievements(self.user, "ratings")
 
     def to_dict(self):
         return {
@@ -623,27 +650,21 @@ class UserRating(models.Model):
         except Exception as e:
             print(str(e))
 
-    def save(self, *args, **kwargs):
-        super().save(*args, **kwargs)  # Call the parent class's save method
-
-        self.update_rating()
-        recalculate_achievements(self.user, "ratings")
-
-    def delete(self, *args, **kwargs):
-        super().delete(*args, **kwargs)  # Call the parent class's delete method
-
-        self.update_rating()
-        recalculate_achievements(self.user, "ratings")
-
 
 class FavouriteCarry(models.Model):
     carry = models.ForeignKey(Carry, on_delete=models.CASCADE)
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return f"Favourite carry {self.carry} user {self.user}."
+
 
 class DoneCarry(models.Model):
     carry = models.ForeignKey(Carry, on_delete=models.CASCADE)
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"Done carry {self.carry} user {self.user}."
 
     def save(self, *args, **kwargs):
         # Save the DoneCarry instance
@@ -666,6 +687,9 @@ class TodoCarry(models.Model):
     carry = models.ForeignKey(Carry, on_delete=models.CASCADE)
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return f"Todo carry {self.carry} user {self.user}."
+
 
 class Achievement(models.Model):
     name = models.CharField(max_length=64, primary_key=True, unique=True)
@@ -680,8 +704,11 @@ class Achievement(models.Model):
 
     category = models.IntegerField(choices=CATEGORY_CHOICES)
 
-    description = models.TextField()
+    description = models.TextField(default="")
     order = models.FloatField(blank=True)
+
+    def __str__(self):
+        return f"Achievement {self.name} title {self.title}."
 
     def save(self, *args, **kwargs):
         # Save the DoneCarry instance
@@ -701,3 +728,6 @@ class Achievement(models.Model):
 class UserAchievement(models.Model):
     achievement = models.ForeignKey(Achievement, on_delete=models.CASCADE)
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"Achievement {self.achievement} user {self.user}."

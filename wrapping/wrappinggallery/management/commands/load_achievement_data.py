@@ -1,4 +1,7 @@
+from typing import List, TypedDict
+
 from django.core.management.base import BaseCommand
+
 from wrappinggallery.models import Achievement
 
 
@@ -6,7 +9,14 @@ class Command(BaseCommand):
     help = "Loads achievement data into The Wrapping Gallery"
 
     def handle(self, *args, **kwargs):
-        data = [
+        class AchievementData(TypedDict):
+            name: str
+            title: str
+            order: int
+            category: int
+            description: str
+
+        data: List[AchievementData] = [
             {
                 "name": "one_carry",
                 "title": "First carry",
