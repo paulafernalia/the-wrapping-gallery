@@ -179,8 +179,8 @@ async function resetFilters() {
     resetFiltersBtn.classList.add('disabled');
     resetFiltersBtn.disabled = true;
 
-    // // Display gallery
-    await emptyCarryGallery();
+    // /Display gallery
+    emptyCarryGallery();
 
     const selectElement = document.getElementById('sort-select');
     const selectedOption = selectElement.options[selectElement.selectedIndex];
@@ -804,8 +804,8 @@ function hideFilterBoxExt() {
     document.getElementById('filterBoxExt').style.display = 'none';
     document.getElementById('showMoreBtn').style.display = 'block';
 
-    var targetElement = document.getElementById('filterBox');
-    var elementPosition = targetElement.getBoundingClientRect().top;
+    let targetElement = document.getElementById('filterBox');
+    let elementPosition = targetElement.getBoundingClientRect().top;
 
     window.scrollTo({
         top: elementPosition,

@@ -135,119 +135,155 @@ def get_carry_context(name):
 
 
 def apply_filters(queryset, properties, values, mmpositions, finishes, difficulties):
-    for prop, val in zip(properties, values, strict=False):
-        if prop == "position" and val not in ["Any", "null"]:
-            queryset = queryset.filter(carry__position=val.lower())
-        elif prop == "shoulders" and val not in ["Any", "null"]:
-            queryset = queryset.filter(carry__shoulders=val)
-        elif prop == "layers" and val not in ["Any", "null", "Varies"]:
-            queryset = queryset.filter(carry__layers=val)
-        elif prop == "layers" and val == "Varies":
-            queryset = queryset.filter(carry__layers=-1)
-        elif prop == "mmposition" and val not in ["Any", "null"]:
-            queryset = queryset.filter(carry__mmposition=mmpositions[val])
-        elif prop == "finish" and val not in ["Any", "null"]:
-            queryset = queryset.filter(carry__finish=finishes[val])
-        elif prop == "partialname" and val not in ["null", ""] and val:
-            queryset = queryset.filter(
-                Q(carry__title__icontains=val)
-                | Q(carry__longtitle__icontains=val)
-                | Q(carry__name__icontains=val)
-                | Q(carry__finish__icontains=val)
-            )
-        elif prop == "pretied" and val == "1":
-            queryset = queryset.filter(carry__pretied=val)
-        elif prop == "tutorial" and val == "1":
-            queryset = queryset.filter(carry__tutorial=val)
-        elif prop == "pass_sling" and val == "1":
-            queryset = queryset.filter(carry__pass_sling=val)
-        elif prop == "pass_ruck" and val == "1":
-            queryset = queryset.filter(carry__pass_ruck=val)
-        elif prop == "pass_kangaroo" and val == "1":
-            queryset = queryset.filter(carry__pass_kangaroo=val)
-        elif prop == "pass_cross" and val == "1":
-            queryset = queryset.filter(carry__pass_cross=val)
-        elif prop == "pass_reinforcing_cross" and val == "1":
-            queryset = queryset.filter(carry__pass_reinforcing_cross=val)
-        elif prop == "pass_reinforcing_horizontal" and val == "1":
-            queryset = queryset.filter(carry__pass_reinforcing_horizontal=val)
-        elif prop == "pass_horizontal" and val == "1":
-            queryset = queryset.filter(carry__pass_horizontal=val)
-        elif prop == "pass_poppins" and val == "1":
-            queryset = queryset.filter(carry__pass_poppins=val)
-        elif prop == "no_pass_sling" and val == "1":
-            queryset = queryset.filter(carry__pass_sling="0")
-        elif prop == "no_pass_ruck" and val == "1":
-            queryset = queryset.filter(carry__pass_ruck="0")
-        elif prop == "no_pass_kangaroo" and val == "1":
-            queryset = queryset.filter(carry__pass_kangaroo="0")
-        elif prop == "no_pass_cross" and val == "1":
-            queryset = queryset.filter(carry__pass_cross="0")
-        elif prop == "no_pass_reinforcing_cross" and val == "1":
-            queryset = queryset.filter(carry__pass_reinforcing_cross="0")
-        elif prop == "no_pass_reinforcing_horizontal" and val == "1":
-            queryset = queryset.filter(carry__pass_reinforcing_horizontal="0")
-        elif prop == "no_pass_horizontal" and val == "1":
-            queryset = queryset.filter(carry__pass_horizontal="0")
-        elif prop == "no_pass_poppins" and val == "1":
-            queryset = queryset.filter(carry__pass_poppins="0")
-        elif prop == "rings" and val == "1":
-            queryset = queryset.filter(carry__rings=val)
-        elif prop == "newborns" and val == "1":
-            queryset = queryset.filter(newborns__gte=3.5)
-        elif prop == "pregnancy" and val == "1":
-            queryset = queryset.filter(pregnancy__gte=3.5)
-        elif prop == "legstraighteners" and val == "1":
-            queryset = queryset.filter(legstraighteners__gte=3.5)
-        elif prop == "leaners" and val == "1":
-            queryset = queryset.filter(leaners__gte=3.5)
-        elif prop == "bigkids" and val == "1":
-            queryset = queryset.filter(bigkids__gte=3.5)
-        elif prop == "feeding" and val == "1":
-            queryset = queryset.filter(feeding__gte=3.5)
-        elif prop == "quickups" and val == "1":
-            queryset = queryset.filter(quickups__gte=3.5)
-        elif prop == "fancy" and val == "1":
-            queryset = queryset.filter(fancy__gte=3.5)
-        elif prop == "other_chestpass" and val == "1":
-            queryset = queryset.filter(carry__other_chestpass=val)
-        elif prop == "other_bunchedpasses" and val == "1":
-            queryset = queryset.filter(carry__other_bunchedpasses=val)
-        elif prop == "other_shoulderflip" and val == "1":
-            queryset = queryset.filter(carry__other_shoulderflip=val)
-        elif prop == "other_twistedpass" and val == "1":
-            queryset = queryset.filter(carry__other_twistedpass=val)
-        elif prop == "other_waistband" and val == "1":
-            queryset = queryset.filter(carry__other_waistband=val)
-        elif prop == "other_legpasses" and val == "1":
-            queryset = queryset.filter(carry__other_legpasses=val)
-        elif prop == "other_s2s" and val == "1":
-            queryset = queryset.filter(carry__other_s2s=val)
-        elif prop == "other_eyelet" and val == "1":
-            queryset = queryset.filter(carry__other_eyelet=val)
-        elif prop == "other_poppins" and val == "1":
-            queryset = queryset.filter(carry__other_poppins=val)
-        elif prop == "other_sternum" and val == "1":
-            queryset = queryset.filter(carry__other_sternum=val)
-        elif prop == "no_other_chestpass" and val == "1":
-            queryset = queryset.filter(carry__other_chestpass="0")
-        elif prop == "no_other_bunchedpasses" and val == "1":
-            queryset = queryset.filter(carry__other_bunchedpasses="0")
-        elif prop == "no_other_shoulderflip" and val == "1":
-            queryset = queryset.filter(carry__other_shoulderflip="0")
-        elif prop == "no_other_twistedpass" and val == "1":
-            queryset = queryset.filter(carry__other_twistedpass="0")
-        elif prop == "no_other_waistband" and val == "1":
-            queryset = queryset.filter(carry__other_waistband="0")
-        elif prop == "no_other_legpasses" and val == "1":
-            queryset = queryset.filter(carry__other_legpasses="0")
-        elif prop == "no_other_s2s" and val == "1":
-            queryset = queryset.filter(carry__other_s2s="0")
-        elif prop == "no_other_eyelet" and val == "1":
-            queryset = queryset.filter(carry__other_eyelet="0")
-        elif prop == "no_other_sternum" and val == "1":
-            queryset = queryset.filter(carry__other_sternum="0")
-        elif prop == "no_other_poppins" and val == "1":
-            queryset = queryset.filter(carry__other_poppins="0")
+    """Apply filters to queryset based on properties and values."""
 
+    # Define filter mappings for simple field filters
+    SIMPLE_FILTERS = {
+        "position": lambda val: Q(carry__position=val.lower())
+        if val not in ["Any", "null"]
+        else None,
+        "shoulders": lambda val: Q(carry__shoulders=val)
+        if val not in ["Any", "null"]
+        else None,
+        "pretied": lambda val: Q(carry__pretied=val) if val == "1" else None,
+        "tutorial": lambda val: Q(carry__tutorial=val) if val == "1" else None,
+        "rings": lambda val: Q(carry__rings=val) if val == "1" else None,
+    }
+
+    # Define pass filters (positive)
+    PASS_FILTERS = {
+        "pass_sling": "carry__pass_sling",
+        "pass_ruck": "carry__pass_ruck",
+        "pass_kangaroo": "carry__pass_kangaroo",
+        "pass_cross": "carry__pass_cross",
+        "pass_reinforcing_cross": "carry__pass_reinforcing_cross",
+        "pass_reinforcing_horizontal": "carry__pass_reinforcing_horizontal",
+        "pass_horizontal": "carry__pass_horizontal",
+        "pass_poppins": "carry__pass_poppins",
+    }
+
+    # Define negative pass filters
+    NO_PASS_FILTERS = {
+        "no_pass_sling": "carry__pass_sling",
+        "no_pass_ruck": "carry__pass_ruck",
+        "no_pass_kangaroo": "carry__pass_kangaroo",
+        "no_pass_cross": "carry__pass_cross",
+        "no_pass_reinforcing_cross": "carry__pass_reinforcing_cross",
+        "no_pass_reinforcing_horizontal": "carry__pass_reinforcing_horizontal",
+        "no_pass_horizontal": "carry__pass_horizontal",
+        "no_pass_poppins": "carry__pass_poppins",
+    }
+
+    # Define other filters (positive)
+    OTHER_FILTERS = {
+        "other_chestpass": "carry__other_chestpass",
+        "other_bunchedpasses": "carry__other_bunchedpasses",
+        "other_shoulderflip": "carry__other_shoulderflip",
+        "other_twistedpass": "carry__other_twistedpass",
+        "other_waistband": "carry__other_waistband",
+        "other_legpasses": "carry__other_legpasses",
+        "other_s2s": "carry__other_s2s",
+        "other_eyelet": "carry__other_eyelet",
+        "other_poppins": "carry__other_poppins",
+        "other_sternum": "carry__other_sternum",
+    }
+
+    # Define negative other filters
+    NO_OTHER_FILTERS = {
+        "no_other_chestpass": "carry__other_chestpass",
+        "no_other_bunchedpasses": "carry__other_bunchedpasses",
+        "no_other_shoulderflip": "carry__other_shoulderflip",
+        "no_other_twistedpass": "carry__other_twistedpass",
+        "no_other_waistband": "carry__other_waistband",
+        "no_other_legpasses": "carry__other_legpasses",
+        "no_other_s2s": "carry__other_s2s",
+        "no_other_eyelet": "carry__other_eyelet",
+        "no_other_sternum": "carry__other_sternum",
+        "no_other_poppins": "carry__other_poppins",
+    }
+
+    # Define rating filters (>= 3.5)
+    RATING_FILTERS = {
+        "newborns",
+        "pregnancy",
+        "legstraighteners",
+        "leaners",
+        "bigkids",
+        "feeding",
+        "quickups",
+        "fancy",
+    }
+
+    for prop, val in zip(properties, values, strict=False):
+        filter_q = None
+
+        # Handle simple filters
+        if prop in SIMPLE_FILTERS:
+            filter_q = SIMPLE_FILTERS[prop](val)
+
+        # Handle special cases
+        elif prop == "layers":
+            filter_q = _handle_layers_filter(val)
+        elif prop == "mmposition":
+            filter_q = _handle_mmposition_filter(val, mmpositions)
+        elif prop == "finish":
+            filter_q = _handle_finish_filter(val, finishes)
+        elif prop == "partialname":
+            filter_q = _handle_partialname_filter(val)
+
+        # Handle pass filters
+        elif prop in PASS_FILTERS and val == "1":
+            filter_q = Q(**{PASS_FILTERS[prop]: val})
+        elif prop in NO_PASS_FILTERS and val == "1":
+            filter_q = Q(**{NO_PASS_FILTERS[prop]: "0"})
+
+        # Handle other filters
+        elif prop in OTHER_FILTERS and val == "1":
+            filter_q = Q(**{OTHER_FILTERS[prop]: val})
+        elif prop in NO_OTHER_FILTERS and val == "1":
+            filter_q = Q(**{NO_OTHER_FILTERS[prop]: "0"})
+
+        # Handle rating filters
+        elif prop in RATING_FILTERS and val == "1":
+            filter_q = Q(**{f"{prop}__gte": 3.5})
+
+        # Apply the filter if one was created
+        if filter_q:
+            queryset = queryset.filter(filter_q)
     return queryset
+
+
+def _handle_layers_filter(val):
+    """Handle layers filter logic."""
+    if val in ["Any", "null"]:
+        return None
+    elif val == "Varies":
+        return Q(carry__layers=-1)
+    else:
+        return Q(carry__layers=val)
+
+
+def _handle_mmposition_filter(val, mmpositions):
+    """Handle mmposition filter logic."""
+    if val not in ["Any", "null"]:
+        return Q(carry__mmposition=mmpositions[val])
+    return None
+
+
+def _handle_finish_filter(val, finishes):
+    """Handle finish filter logic."""
+    if val not in ["Any", "null"]:
+        return Q(carry__finish=finishes[val])
+    return None
+
+
+def _handle_partialname_filter(val):
+    """Handle partial name search filter logic."""
+    if val not in ["null", ""] and val:
+        return (
+            Q(carry__title__icontains=val)
+            | Q(carry__longtitle__icontains=val)
+            | Q(carry__name__icontains=val)
+            | Q(carry__finish__icontains=val)
+        )
+    return None
