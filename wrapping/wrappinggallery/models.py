@@ -131,7 +131,7 @@ class Carry(models.Model):
         super().save(*args, **kwargs)  # Save the Carry instance first
 
         # Check if a Rating entry exists for this carry
-        rating, created = Rating.objects.get_or_create(
+        _, created = Rating.objects.get_or_create(
             carry=self,
             defaults={
                 "newborns": 0,
@@ -219,100 +219,174 @@ class Carry(models.Model):
         return [feature_name for feature_name, is_enabled in other_fields if is_enabled]
 
     def clean(self):
-        # Ensure carry cannot be pretied if it is a back carry
+        """Validate model fields and relationships."""
+        validation_errors = []
+
+        # Run all validation checks
+        validation_errors.extend(self._validate_pretied_back_carry())
+        validation_errors.extend(self._validate_video_author_sequence())
+        validation_errors.extend(self._validate_video_tutorial_pairs())
+        validation_errors.extend(self._validate_rings_consistency())
+        validation_errors.extend(self._validate_layers_passes_consistency())
+        validation_errors.extend(self._validate_shoulders_passes_consistency())
+        validation_errors.extend(self._validate_leg_passes_cross_consistency())
+        validation_errors.extend(self._validate_double_hammock_chest_pass())
+        validation_errors.extend(self._validate_ruck_variation_consistency())
+
+        # Raise the first validation error found
+        if validation_errors:
+            raise ValidationError(validation_errors[0])
+
+    def _validate_pretied_back_carry(self):
+        """Validate that back carries cannot be pretied (except traditional_back_carry)."""
         if (
             self.pretied == 1
             and self.position == "back"
             and self.name != "traditional_back_carry"
         ):
-            raise ValidationError("a back carry cannot be pretied")
+            return ["a back carry cannot be pretied"]
+        return []
 
-        # Ensure videoauthor2 cannot be not null if videoauthor is null
+    def _validate_video_author_sequence(self):
+        """Validate that video authors are set in sequence."""
+        errors = []
+
         if self.videoauthor2 and not self.videoauthor:
-            raise ValidationError("videoauthor2 cannot be set if videoauthor is null.")
+            errors.append("videoauthor2 cannot be set if videoauthor is null.")
 
-        # Ensure videoauthor3 cannot be not null if videoauthor2 is null
         if self.videoauthor3 and not self.videoauthor2:
-            raise ValidationError("videoauthor3 cannot be set if videoauthor2 is null.")
+            errors.append("videoauthor3 cannot be set if videoauthor2 is null.")
 
-        # Ensure that if one of the pair is set, the other must also be set
-        if (self.videotutorial and not self.videoauthor) or (
-            not self.videotutorial and self.videoauthor
-        ):
-            raise ValidationError(
-                "Both videoauthor and videotutorial must be either set or both blank."
-            )
+        return errors
 
-        if (self.videotutorial2 and not self.videoauthor2) or (
-            not self.videotutorial2 and self.videoauthor2
-        ):
-            raise ValidationError(
-                "Both videoauthor2 and videotutorial2 must be either set or both blank."
-            )
+    def _validate_video_tutorial_pairs(self):
+        """Validate that video tutorial and author pairs are consistent."""
+        errors = []
 
-        if (self.videotutorial3 and not self.videoauthor3) or (
-            not self.videotutorial3 and self.videoauthor3
-        ):
-            raise ValidationError(
-                "Both videoauthor3 and videotutorial3 must be either set or both blank."
-            )
+        # Define video tutorial pairs to validate
+        video_pairs = [
+            ("videotutorial", "videoauthor", "videoauthor and videotutorial"),
+            ("videotutorial2", "videoauthor2", "videoauthor2 and videotutorial2"),
+            ("videotutorial3", "videoauthor3", "videoauthor3 and videotutorial3"),
+        ]
 
-        if (
-            not (self.rings) == ("ring" in self.title.lower())
-            and ("xena" not in self.name)
-            and ("mermaid" not in self.name)
-            and ("lola" not in self.name)
-        ):
-            raise ValidationError("inconsistent information regarding ring(s)")
+        for tutorial_field, author_field, field_names in video_pairs:
+            tutorial_value = getattr(self, tutorial_field)
+            author_value = getattr(self, author_field)
 
-        num_passes = self.pass_sling
-        num_passes += self.pass_ruck
-        num_passes += self.pass_horizontal
-        num_passes += self.pass_cross
-        num_passes += self.pass_kangaroo
-        num_passes += self.pass_reinforcing_cross
-        num_passes += self.pass_reinforcing_horizontal
-        num_passes += 2 * self.pass_poppins
-        if self.layers != num_passes and self.position != "tandem":
-            raise ValidationError(
-                f"Layers ({self.layers}) inconsistent with passes ({num_passes})"
-            )
+            if bool(tutorial_value) != bool(author_value):
+                errors.append(f"Both {field_names} must be either set or both blank.")
 
-        num_shoulders = self.pass_cross
-        num_shoulders += self.pass_sling
-        num_shoulders += 2 * self.pass_ruck
-        num_shoulders += 2 * self.pass_kangaroo
-        if (
-            (self.name != "ruck_celtic_knot")
-            and (self.position != "tandem")
-            and ("fwcc" not in self.name)
-            and ("frts" not in self.name)
-            and ("popp" not in self.name)
-            and (self.shoulders != num_shoulders)
-        ):
-            raise ValidationError(
-                f"Shoulders ({self.shoulders}) inconsistent with passes ({num_shoulders})"
-            )
+        return errors
 
-        if (
-            not self.other_legpasses
-            and self.pass_reinforcing_cross + self.pass_cross > 0
-        ):
-            raise ValidationError(
-                "Leg passes cannot be 0 with cross and reinforcing cross pass"
-            )
+    def _validate_rings_consistency(self):
+        """Validate that rings field is consistent with title."""
+        # Special cases that are exempt from ring validation
+        exempt_names = ["xena", "mermaid", "lola"]
 
-        if "dh" in self.name and "fdh" not in self.name and not self.other_chestpass:
-            raise ValidationError(
-                "Chest pass cannot be 0 in a double hammock variation"
-            )
+        if any(exempt in self.name for exempt in exempt_names):
+            return []
 
-        if (
-            (self.name != "ruckless_bikini_carry")
-            and ("christina" not in self.name)
-            and ("ruck" in self.name and self.pass_ruck == 0)
-        ):
-            raise ValidationError("Ruck pass cannot be empty in a ruck variation")
+        has_ring_in_title = "ring" in self.title.lower()
+        if self.rings != has_ring_in_title:
+            return ["inconsistent information regarding ring(s)"]
+
+        return []
+
+    def _validate_layers_passes_consistency(self):
+        """Validate that layers count matches total passes (except for tandems)."""
+        if self.position == "tandem":
+            return []
+
+        total_passes = self._calculate_total_passes()
+
+        if self.layers != total_passes:
+            return [f"Layers ({self.layers}) inconsistent with passes ({total_passes})"]
+
+        return []
+
+    def _validate_shoulders_passes_consistency(self):
+        """Validate that shoulders count matches calculated shoulders from passes."""
+        # Special cases exempt from shoulder validation
+        exempt_conditions = [
+            self.name == "ruck_celtic_knot",
+            self.position == "tandem",
+            "fwcc" in self.name,
+            "frts" in self.name,
+            "popp" in self.name,
+        ]
+
+        if any(exempt_conditions):
+            return []
+
+        calculated_shoulders = self._calculate_shoulders_from_passes()
+
+        if self.shoulders != calculated_shoulders:
+            return [
+                f"Shoulders ({self.shoulders}) inconsistent with passes ({calculated_shoulders})"
+            ]
+
+        return []
+
+    def _validate_leg_passes_cross_consistency(self):
+        """Validate that leg passes are present when cross passes exist."""
+        has_cross_passes = (self.pass_reinforcing_cross + self.pass_cross) > 0
+
+        if not self.other_legpasses and has_cross_passes:
+            return ["Leg passes cannot be 0 with cross and reinforcing cross pass"]
+
+        return []
+
+    def _validate_double_hammock_chest_pass(self):
+        """Validate that double hammock variations have chest pass."""
+        is_double_hammock = "dh" in self.name and "fdh" not in self.name
+
+        if is_double_hammock and not self.other_chestpass:
+            return ["Chest pass cannot be 0 in a double hammock variation"]
+
+        return []
+
+    def _validate_ruck_variation_consistency(self):
+        """Validate that ruck variations have ruck passes."""
+        # Special cases exempt from ruck validation
+        exempt_names = ["ruckless_bikini_carry"]
+        exempt_conditions = [
+            self.name in exempt_names,
+            "christina" in self.name,
+        ]
+
+        if any(exempt_conditions):
+            return []
+
+        is_ruck_variation = "ruck" in self.name
+        has_no_ruck_pass = self.pass_ruck == 0
+
+        if is_ruck_variation and has_no_ruck_pass:
+            return ["Ruck pass cannot be empty in a ruck variation"]
+
+        return []
+
+    def _calculate_total_passes(self):
+        """Calculate total number of passes."""
+        return (
+            self.pass_sling
+            + self.pass_ruck
+            + self.pass_horizontal
+            + self.pass_cross
+            + self.pass_kangaroo
+            + self.pass_reinforcing_cross
+            + self.pass_reinforcing_horizontal
+            + (2 * self.pass_poppins)  # Poppins count as 2 passes
+        )
+
+    def _calculate_shoulders_from_passes(self):
+        """Calculate number of shoulders based on pass types."""
+        return (
+            self.pass_cross
+            + self.pass_sling
+            + (2 * self.pass_ruck)  # Ruck passes count as 2 shoulders
+            + (2 * self.pass_kangaroo)  # Kangaroo passes count as 2 shoulders
+        )
 
 
 class Rating(models.Model):
