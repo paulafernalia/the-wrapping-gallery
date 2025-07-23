@@ -175,69 +175,48 @@ class Carry(models.Model):
             "videoauthor3": self.videoauthor3,
             "tutorialmodel": self.tutorialmodel,
             "carrycreator": self.carrycreator,
-            "passes": [
-                pass_name
-                for pass_name in [
-                    "horizontal (2)"
-                    if self.pass_horizontal == 2
-                    else "horizontal"
-                    if self.pass_horizontal == 1
-                    else None,
-                    "sling (2)"
-                    if self.pass_sling == 2
-                    else "sling"
-                    if self.pass_sling == 1
-                    else None,
-                    "cross (2)"
-                    if self.pass_cross == 2
-                    else "cross"
-                    if self.pass_cross == 1
-                    else None,
-                    "reinforcing cross (2)"
-                    if self.pass_reinforcing_cross == 2
-                    else "reinforcing cross"
-                    if self.pass_reinforcing_cross == 1
-                    else None,
-                    "reinforcing horizontal (2)"
-                    if self.pass_reinforcing_horizontal == 2
-                    else "reinforcing horizontal"
-                    if self.pass_reinforcing_horizontal == 1
-                    else None,
-                    "poppins (2)"
-                    if self.pass_poppins == 2
-                    else "poppins"
-                    if self.pass_poppins == 1
-                    else None,
-                    "ruck (2)"
-                    if self.pass_ruck == 2
-                    else "ruck"
-                    if self.pass_ruck == 1
-                    else None,
-                    "kangaroo (2)"
-                    if self.pass_kangaroo == 2
-                    else "kangaroo"
-                    if self.pass_kangaroo == 1
-                    else None,
-                ]
-                if pass_name is not None
-            ],
-            "other": [
-                other_name
-                for other_name in [
-                    "chest pass" if self.other_chestpass else None,
-                    "bunched passes" if self.other_bunchedpasses else None,
-                    "shoulder flip" if self.other_shoulderflip else None,
-                    "twisted pass" if self.other_twistedpass else None,
-                    "waist band" if self.other_waistband else None,
-                    "leg passes" if self.other_legpasses else None,
-                    "shoulder to shoulder" if self.other_s2s else None,
-                    "eyelet" if self.other_eyelet else None,
-                    "sternum belt" if self.other_sternum else None,
-                    "poppins" if self.other_poppins else None,
-                ]
-                if other_name is not None
-            ],
+            "passes": self._get_passes(),
+            "other": self._get_other_features(),
         }
+
+    def _get_passes(self):
+        """Get list of pass types with their counts."""
+        pass_fields = [
+            ("horizontal", self.pass_horizontal),
+            ("sling", self.pass_sling),
+            ("cross", self.pass_cross),
+            ("reinforcing cross", self.pass_reinforcing_cross),
+            ("reinforcing horizontal", self.pass_reinforcing_horizontal),
+            ("poppins", self.pass_poppins),
+            ("ruck", self.pass_ruck),
+            ("kangaroo", self.pass_kangaroo),
+        ]
+
+        passes = []
+        for pass_name, pass_count in pass_fields:
+            if pass_count == 2:
+                passes.append(f"{pass_name} (2)")
+            elif pass_count == 1:
+                passes.append(pass_name)
+
+        return passes
+
+    def _get_other_features(self):
+        """Get list of other features that are enabled."""
+        other_fields = [
+            ("chest pass", self.other_chestpass),
+            ("bunched passes", self.other_bunchedpasses),
+            ("shoulder flip", self.other_shoulderflip),
+            ("twisted pass", self.other_twistedpass),
+            ("waist band", self.other_waistband),
+            ("leg passes", self.other_legpasses),
+            ("shoulder to shoulder", self.other_s2s),
+            ("eyelet", self.other_eyelet),
+            ("sternum belt", self.other_sternum),
+            ("poppins", self.other_poppins),
+        ]
+
+        return [feature_name for feature_name, is_enabled in other_fields if is_enabled]
 
     def clean(self):
         # Ensure carry cannot be pretied if it is a back carry
