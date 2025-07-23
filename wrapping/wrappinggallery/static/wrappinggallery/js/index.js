@@ -179,8 +179,8 @@ async function resetFilters() {
     resetFiltersBtn.classList.add('disabled');
     resetFiltersBtn.disabled = true;
 
-    // // Display gallery
-    await emptyCarryGallery();
+    // /Display gallery
+    emptyCarryGallery();
 
     const selectElement = document.getElementById('sort-select');
     const selectedOption = selectElement.options[selectElement.selectedIndex];
