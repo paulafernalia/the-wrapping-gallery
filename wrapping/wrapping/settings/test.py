@@ -56,7 +56,6 @@ else:
 SECRET_KEY = config("SECRET_KEY", default="default-development-secret-key")
 
 # Load Supabase configuration from environment variables
-# TODO MIGRATE TO DIFFERENT PROJECT
 SUPABASE_URL = config("SUPABASE_URL", default="https://default.supabase.co")
 SERVICE_ROLE_KEY = config("SERVICE_ROLE_KEY", default="default-service-role-key")
 SUPABASE_TUTORIAL_BUCKET = config(

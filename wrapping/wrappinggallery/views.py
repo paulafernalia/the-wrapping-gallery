@@ -434,9 +434,7 @@ def filter_carries(request):
     queryset = Rating.objects.all()
 
     # Apply filters based on properties and values
-    queryset = utils.apply_filters(
-        queryset, properties, values, mmpositions, finishes, difficulties
-    )
+    queryset = utils.apply_filters(queryset, properties, values, mmpositions, finishes)
 
     sizes = request.GET.getlist("size[]", "Any")
     if sizes != ["Any"]:
@@ -447,9 +445,6 @@ def filter_carries(request):
         queryset = queryset.annotate(rounded_difficulty=Round(F("difficulty"))).filter(
             rounded_difficulty__in=[difficulties[v] for v in filteredDiffs]
         )
-
-    sortBy = request.GET.get("sortBy") if request.GET.get("sortBy") else ""
-    ascending = "-" if request.GET.get("ascending") == "false" else ""
 
     if (
         request.GET.get("ascending") is not None

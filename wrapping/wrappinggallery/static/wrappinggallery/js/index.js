@@ -104,7 +104,7 @@ function initialiseSwitchData(property) {
     // Get switch with this property and value
     const switch_ = getSwitchByProperty(property);
     if (switch_) {
-        if (init === '1') {
+        if (init == '1') {
             switch_.checked = true;
             return true;
         } else {
@@ -212,11 +212,7 @@ function initialiseButtonData(property) {
         button.classList.add('active');
     }
 
-    if (init !== "Any") {
-        return true;
-    }
-
-    return false;
+    return init !== "Any";
 }
 
 
@@ -246,11 +242,7 @@ function initialiseMultiButtonData(property) {
         button.classList.add('active');
     }
 
-    if (init.length !== 1 || init[0] !== "Any") {
-        return true;
-    }
-
-    return false;
+    return init.length !== 1 || init[0] !== "Any";
 }
 
 function initialiseDropdownData(property) {
@@ -268,11 +260,7 @@ function initialiseDropdownData(property) {
         optionToSelect.selected = true;
     }
 
-    if (init !== "Any") {
-        return true;
-    }
-
-    return false;
+    return init !== "Any";
 }
 
 
@@ -308,8 +296,8 @@ function isAnyFilterActive() {
         "layers", "shoulders", "mmposition"
     ];
 
-    for (let i = 0; i < choiceProperties.length; i++) {
-        if (sessionStorage.getItem(choiceProperties[i]) != "Any") {
+    for (const prop of choiceProperties) {
+        if (sessionStorage.getItem(prop) !== "Any") {
             return true;
         }
     }
@@ -334,8 +322,8 @@ function isAnyFilterActive() {
         return true;
     }
 
-    for (let i = 0; i < booleanProps.length; i++) {
-        if (sessionStorage.getItem(booleanProps[i]) == "1") {
+    for (const prop of booleanProps) {
+        if (sessionStorage.getItem(prop) == "1") {
             return true;
         }
     }
@@ -641,7 +629,6 @@ async function updateButtonBox() {
     const showResultsBtn = document.getElementById('showResultsBtn');
     const sortDropdown = document.getElementById('sort-dropdown');
 
-    let num_carries = 0;
     try {
         const carries = await fetchFilteredCarries(1, 300);
         filteredResults = carries.length;
@@ -874,6 +861,11 @@ async function checkUrlStatus(url) {
 }
 
 
+function getSizeDescription(size) {
+    if (size === 0) return 'Base';
+    if (size > 0) return `Base +${size}`;
+    return `Base ${size}`;
+}
 
 async function updateCarryGallery(carries) {
     // Check if footer must be changed
@@ -925,9 +917,7 @@ async function updateCarryGallery(carries) {
         // Create sizedesc
         const sizedesc = document.createElement('div');
         sizedesc.className = 'sizedesc dancing fs16';
-        sizedesc.textContent = carry.carry__size === 0 ? 'Base' :
-                               carry.carry__size > 0 ? `Base + ${carry.carry__size}` :
-                               `Base ${carry.carry__size}`;
+        sizedesc.textContent = getSizeDescription(carry.carry__size);
 
         // Append descriptions to the description container
         descContainer.appendChild(carrydesc);
@@ -983,9 +973,7 @@ function filterDropdown() {
     const items = carryDropdown.getElementsByClassName('dropdown-item');
     const filter = input.value.trim().toLowerCase(); // Get the input value and convert to lowercase
 
-    for (let i = 0; i < items.length; i++) {
-        const item = items[i];
-
+    for (const item of items) {
         const name = item.dataset.name.toLowerCase().replace(/_/g, ''); // Lowercase and remove underscores
         const longtitle = item.dataset.longtitle.toLowerCase(); // Lowercase longtitle
         const title = item.dataset.title.toLowerCase(); // Lowercase title
@@ -1051,7 +1039,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     updateFooterPosition();
 
     // Set initial active buttons in filters
-    const anyapplied = await initialiseFilters();
+    await initialiseFilters();
 
     // Update button box
     updateButtonBox();
