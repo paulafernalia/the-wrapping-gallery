@@ -137,8 +137,9 @@ def get_carry_context(name):
 def apply_filters(queryset, properties, values, mmpositions, finishes, difficulties):
     """Apply filters to queryset based on properties and values."""
 
-    # Define filter mappings for simple field filters
-    SIMPLE_FILTERS = {
+    # Combined filter mapping for better organization
+    FILTER_HANDLERS = {
+        # Simple filters
         "position": lambda val: Q(carry__position=val.lower())
         if val not in ["Any", "null"]
         else None,
@@ -148,62 +149,37 @@ def apply_filters(queryset, properties, values, mmpositions, finishes, difficult
         "pretied": lambda val: Q(carry__pretied=val) if val == "1" else None,
         "tutorial": lambda val: Q(carry__tutorial=val) if val == "1" else None,
         "rings": lambda val: Q(carry__rings=val) if val == "1" else None,
+        # Special cases with closures
+        "layers": lambda val: _handle_layers_filter(val),
+        "mmposition": lambda val: _handle_mmposition_filter(val, mmpositions),
+        "finish": lambda val: _handle_finish_filter(val, finishes),
+        "partialname": lambda val: _handle_partialname_filter(val),
     }
 
-    # Define pass filters (positive)
-    PASS_FILTERS = {
-        "pass_sling": "carry__pass_sling",
-        "pass_ruck": "carry__pass_ruck",
-        "pass_kangaroo": "carry__pass_kangaroo",
-        "pass_cross": "carry__pass_cross",
-        "pass_reinforcing_cross": "carry__pass_reinforcing_cross",
-        "pass_reinforcing_horizontal": "carry__pass_reinforcing_horizontal",
-        "pass_horizontal": "carry__pass_horizontal",
-        "pass_poppins": "carry__pass_poppins",
-    }
-
-    # Define negative pass filters
-    NO_PASS_FILTERS = {
-        "no_pass_sling": "carry__pass_sling",
-        "no_pass_ruck": "carry__pass_ruck",
-        "no_pass_kangaroo": "carry__pass_kangaroo",
-        "no_pass_cross": "carry__pass_cross",
-        "no_pass_reinforcing_cross": "carry__pass_reinforcing_cross",
-        "no_pass_reinforcing_horizontal": "carry__pass_reinforcing_horizontal",
-        "no_pass_horizontal": "carry__pass_horizontal",
-        "no_pass_poppins": "carry__pass_poppins",
-    }
-
-    # Define other filters (positive)
-    OTHER_FILTERS = {
-        "other_chestpass": "carry__other_chestpass",
-        "other_bunchedpasses": "carry__other_bunchedpasses",
-        "other_shoulderflip": "carry__other_shoulderflip",
-        "other_twistedpass": "carry__other_twistedpass",
-        "other_waistband": "carry__other_waistband",
-        "other_legpasses": "carry__other_legpasses",
-        "other_s2s": "carry__other_s2s",
-        "other_eyelet": "carry__other_eyelet",
-        "other_poppins": "carry__other_poppins",
-        "other_sternum": "carry__other_sternum",
-    }
-
-    # Define negative other filters
-    NO_OTHER_FILTERS = {
-        "no_other_chestpass": "carry__other_chestpass",
-        "no_other_bunchedpasses": "carry__other_bunchedpasses",
-        "no_other_shoulderflip": "carry__other_shoulderflip",
-        "no_other_twistedpass": "carry__other_twistedpass",
-        "no_other_waistband": "carry__other_waistband",
-        "no_other_legpasses": "carry__other_legpasses",
-        "no_other_s2s": "carry__other_s2s",
-        "no_other_eyelet": "carry__other_eyelet",
-        "no_other_sternum": "carry__other_sternum",
-        "no_other_poppins": "carry__other_poppins",
-    }
-
-    # Define rating filters (>= 3.5)
-    RATING_FILTERS = {
+    # Generate pass and other filters dynamically
+    pass_fields = [
+        "sling",
+        "ruck",
+        "kangaroo",
+        "cross",
+        "reinforcing_cross",
+        "reinforcing_horizontal",
+        "horizontal",
+        "poppins",
+    ]
+    other_fields = [
+        "chestpass",
+        "bunchedpasses",
+        "shoulderflip",
+        "twistedpass",
+        "waistband",
+        "legpasses",
+        "s2s",
+        "eyelet",
+        "poppins",
+        "sternum",
+    ]
+    rating_fields = [
         "newborns",
         "pregnancy",
         "legstraighteners",
@@ -212,78 +188,74 @@ def apply_filters(queryset, properties, values, mmpositions, finishes, difficult
         "feeding",
         "quickups",
         "fancy",
-    }
+    ]
 
+    # Add dynamically generated filters
+    _add_generated_filters(FILTER_HANDLERS, pass_fields, other_fields, rating_fields)
+
+    # Apply filters
     for prop, val in zip(properties, values, strict=False):
-        filter_q = None
+        if prop in FILTER_HANDLERS:
+            filter_q = FILTER_HANDLERS[prop](val)
+            if filter_q:
+                queryset = queryset.filter(filter_q)
 
-        # Handle simple filters
-        if prop in SIMPLE_FILTERS:
-            filter_q = SIMPLE_FILTERS[prop](val)
-
-        # Handle special cases
-        elif prop == "layers":
-            filter_q = _handle_layers_filter(val)
-        elif prop == "mmposition":
-            filter_q = _handle_mmposition_filter(val, mmpositions)
-        elif prop == "finish":
-            filter_q = _handle_finish_filter(val, finishes)
-        elif prop == "partialname":
-            filter_q = _handle_partialname_filter(val)
-
-        # Handle pass filters
-        elif prop in PASS_FILTERS and val == "1":
-            filter_q = Q(**{PASS_FILTERS[prop]: val})
-        elif prop in NO_PASS_FILTERS and val == "1":
-            filter_q = Q(**{NO_PASS_FILTERS[prop]: "0"})
-
-        # Handle other filters
-        elif prop in OTHER_FILTERS and val == "1":
-            filter_q = Q(**{OTHER_FILTERS[prop]: val})
-        elif prop in NO_OTHER_FILTERS and val == "1":
-            filter_q = Q(**{NO_OTHER_FILTERS[prop]: "0"})
-
-        # Handle rating filters
-        elif prop in RATING_FILTERS and val == "1":
-            filter_q = Q(**{f"{prop}__gte": 3.5})
-
-        # Apply the filter if one was created
-        if filter_q:
-            queryset = queryset.filter(filter_q)
     return queryset
+
+
+def _add_generated_filters(handlers, pass_fields, other_fields, rating_fields):
+    """Add dynamically generated filter handlers to reduce repetition."""
+
+    # Add pass filters (positive and negative)
+    for field in pass_fields:
+        handlers[f"pass_{field}"] = (
+            lambda val, f=field: Q(**{f"carry__pass_{f}": val}) if val == "1" else None
+        )
+        handlers[f"no_pass_{field}"] = (
+            lambda val, f=field: Q(**{f"carry__pass_{f}": "0"}) if val == "1" else None
+        )
+
+    # Add other filters (positive and negative)
+    for field in other_fields:
+        handlers[f"other_{field}"] = (
+            lambda val, f=field: Q(**{f"carry__other_{f}": val}) if val == "1" else None
+        )
+        handlers[f"no_other_{field}"] = (
+            lambda val, f=field: Q(**{f"carry__other_{f}": "0"}) if val == "1" else None
+        )
+
+    # Add rating filters
+    for field in rating_fields:
+        handlers[field] = (
+            lambda val, f=field: Q(**{f"{f}__gte": 3.5}) if val == "1" else None
+        )
 
 
 def _handle_layers_filter(val):
     """Handle layers filter logic."""
     if val in ["Any", "null"]:
         return None
-    elif val == "Varies":
-        return Q(carry__layers=-1)
-    else:
-        return Q(carry__layers=val)
+    return Q(carry__layers=-1) if val == "Varies" else Q(carry__layers=val)
 
 
 def _handle_mmposition_filter(val, mmpositions):
     """Handle mmposition filter logic."""
-    if val not in ["Any", "null"]:
-        return Q(carry__mmposition=mmpositions[val])
-    return None
+    return Q(carry__mmposition=mmpositions[val]) if val not in ["Any", "null"] else None
 
 
 def _handle_finish_filter(val, finishes):
     """Handle finish filter logic."""
-    if val not in ["Any", "null"]:
-        return Q(carry__finish=finishes[val])
-    return None
+    return Q(carry__finish=finishes[val]) if val not in ["Any", "null"] else None
 
 
 def _handle_partialname_filter(val):
     """Handle partial name search filter logic."""
-    if val not in ["null", ""] and val:
-        return (
-            Q(carry__title__icontains=val)
-            | Q(carry__longtitle__icontains=val)
-            | Q(carry__name__icontains=val)
-            | Q(carry__finish__icontains=val)
-        )
-    return None
+    if val in ["null", ""] or not val:
+        return None
+
+    return (
+        Q(carry__title__icontains=val)
+        | Q(carry__longtitle__icontains=val)
+        | Q(carry__name__icontains=val)
+        | Q(carry__finish__icontains=val)
+    )
