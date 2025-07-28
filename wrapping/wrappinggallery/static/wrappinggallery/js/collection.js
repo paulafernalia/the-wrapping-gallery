@@ -19,9 +19,8 @@ const booleanProps = [
 ];
 
 
-async function fetchFilteredCarries(page = 1, pageSize = 18, size, position) {
+async function fetchFilteredCarries(size, position, page = 1, pageSize = 18) {
     let sizes = [size];
-    const difficulties = ["Any"];
     const filters = {"position": position};
     
     // Build the query string from the filters object
@@ -240,7 +239,7 @@ async function loadMyCarries(size, position) {
     loadingSpinner.style.display = 'block';
 
     resultsPage = 1;
-    const carries = await fetchFilteredCarries(resultsPage, pageSize, size, position);
+    const carries = await fetchFilteredCarries(size, position, resultsPage, pageSize);
 
     // Create an array of promises to fetch all image URLs
     for (const carry of carries) {
@@ -292,7 +291,6 @@ async function toggleGroup(iconElement) {
     const position = iconElement.getAttribute('data-position');
 
     const carriesGroup = document.querySelector(`.collapsable[data-size="${size}"][data-position="${position}"]`);
-    const imageGrid = document.querySelector(`.card-grid[data-size="${size}"][data-position="${position}"]`);
     
     if (carriesGroup.style.display === "none") {
         carriesGroup.style.display = "block";
@@ -325,11 +323,10 @@ function filterCarries() {
     const items = dropdown.getElementsByClassName('dropdown-item');
 
     // Loop through the items and hide those that don't match the search query
-    for (let i = 0; i < items.length; i++) {
-        const item = items[i];
+    items.forEach(item => {
         const txtValue = item.innerText.toLowerCase();
         item.style.display = txtValue.includes(filter) ? 'block' : 'none';
-    }
+    });
 }
 
 function clickOnRemoveIcon(event, div) {

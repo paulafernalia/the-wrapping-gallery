@@ -35,11 +35,6 @@
 <script>
     function openTerms() {
       // Get the dimensions of the screen
-      const width = 600;
-      const height = 400;
-      const left = (window.innerWidth / 2) - (width / 2);
-      const top = (window.innerHeight / 2) - (height / 2);
-
       window.open("{% url 'termsandconditions' %}", 'Terms and Conditions', 'width=600,height=400');
     }
 

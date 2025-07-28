@@ -422,22 +422,6 @@ class Rating(models.Model):
         }
 
 
-def NZ_AVG(queryset, field_name):
-    # Count non-zero values
-    count_non_zero = queryset.filter(**{field_name + "__gt": 0}).count()
-
-    # Sum non-zero values
-    sum_non_zero = (
-        queryset.filter(**{field_name + "__gt": 0}).aggregate(Sum(field_name))[
-            f"{field_name}__sum"
-        ]
-        or 0
-    )
-
-    # Calculate average, return 0 if there are no non-zero values
-    return sum_non_zero / count_non_zero if count_non_zero > 0 else 0
-
-
 def get_support_data(user, type):
     if type == "done_carries":
         return DoneCarry.objects.filter(user=user)

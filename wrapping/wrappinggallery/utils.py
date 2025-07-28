@@ -91,7 +91,6 @@ def generate_achievement_url(achievement):
 
     if not staticfiles_storage.exists(filepath):
         filepath = "wrappinggallery/illustrations/carries/placeholder_front.png"
-        filepath = "wrappinggallery/illustrations/carries/placeholder_front.png"
         assert staticfiles_storage.exists(filepath)
 
     image_url = staticfiles_storage.url(filepath)
@@ -134,7 +133,7 @@ def get_carry_context(name):
     return carry_context
 
 
-def apply_filters(queryset, properties, values, mmpositions, finishes, difficulties):
+def apply_filters(queryset, properties, values, mmpositions, finishes):
     """Apply filters to queryset based on properties and values."""
 
     # Combined filter mapping for better organization
@@ -195,6 +194,7 @@ def apply_filters(queryset, properties, values, mmpositions, finishes, difficult
 
     # Apply filters
     for prop, val in zip(properties, values, strict=False):
+        print(prop, val)
         if prop in FILTER_HANDLERS:
             filter_q = FILTER_HANDLERS[prop](val)
             if filter_q:
