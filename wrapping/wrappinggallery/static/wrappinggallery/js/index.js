@@ -412,74 +412,110 @@ async function fetchFilteredCarries(page = 1, pageSize = 18, sortBy = 'carry__lo
 
 
 function showAppliedFilters() {
-    // Clear previous filters
     const filtersApplied = document.getElementById('filters-applied');
-    filtersApplied.innerHTML = '';  // Clear any existing content
-
-    // Function to create and style a filter span
-    function createFilterSpan(text) {
-        const span = document.createElement('span');
-        span.className = 'filter-tag';  // Add a class for styling
-        span.textContent = text;
-        return span;
-    }
-
+    filtersApplied.innerHTML = '';
+    
     let anyApplied = false;
-
-    // Extract the size values
-    const sizeString = sessionStorage.getItem("size"); 
-
-    let sizes = ["Any"];
-    if (sizeString !== null) {
-        sizes = JSON.parse(sizeString);
+    
+    // Process all filter types
+    anyApplied = processSpecialFilters(filtersApplied) || anyApplied;
+    anyApplied = processStandardFilters(filtersApplied) || anyApplied;
+    anyApplied = processBooleanFilters(filtersApplied) || anyApplied;
+    
+    // Add reset button if any filters applied
+    if (anyApplied) {
+        addResetButton(filtersApplied);
     }
+}
 
-    let sizeStr = "";
-    for (let i = 0; i < sizes.length; i++) {
-        let size = sizes[i];
-        if (size !== "Any") {
-            const sizeInt = parseInt(size);
-            if (sizeInt === 0) {
-                sizeStr += " Base";
-            } else if (sizeInt > 0) {
-                sizeStr += " Base +" + size;
-            } else {
-                sizeStr += " Base " + size;
-            }
-            if (i < sizes.length - 1) {
-                sizeStr += ", ";
-            }
-        }
+function processSpecialFilters(container) {
+    let anyApplied = false;
+    
+    // Process size filters
+    const sizeStr = buildSizeString();
+    if (sizeStr) {
+        container.appendChild(createFilterSpan(`size: ${sizeStr}`));
+        anyApplied = true;
     }
-
-    const difficultyString = sessionStorage.getItem("difficulty"); 
-
-    let difficulties = ["Any"];
-    if (difficultyString !== null) {
-        difficulties = JSON.parse(difficultyString);
+    
+    // Process difficulty filters
+    const difficultyStr = buildDifficultyString();
+    if (difficultyStr) {
+        container.appendChild(createFilterSpan(`difficulty: ${difficultyStr}`));
+        anyApplied = true;
     }
+    
+    return anyApplied;
+}
 
-    let difficultyStr = "";
-    for (let i = 0; i < difficulties.length; i++) {
-        let diff = difficulties[i];
-        if (diff !== "Any") {
-            difficultyStr += diff;
-            if (i < difficulties.length - 1) {
-                difficultyStr += ", ";
-            }
-        }
-    }
+function processStandardFilters(container) {
     const filterConditions = [
-        { key: "size", value: sizeStr, format: val => `size: ${val}`, condition: val => val !== "" },
-        { key: "difficulty", value: difficultyStr, format: val => `difficulty: ${val}`, condition: val => val !== "" },
-        { key: "position", value: sessionStorage["position"], format: val => `${val} carries`, condition: val => val !== "Any" && val !== undefined},
-        { key: "finish", value: sessionStorage["finish"], format: val => `finish: ${val}`, condition: val => val !== "Any" && val !== undefined},
-        { key: "mmposition", value: sessionStorage["mmposition"], format: val => `MM position: ${val}`, condition: val => val !== "Any" && val !== undefined},
-        { key: "layers", value: sessionStorage["layers"], format: val => `${val} layers`, condition: val => val !== "Any" && val !== undefined},
-        { key: "shoulders", value: sessionStorage["shoulders"], format: val => `${val} shoulders`, condition: val => val !== "Any" && val !== undefined},
+        { key: "position", format: val => `${val} carries`, condition: val => val !== "Any" && val !== undefined },
+        { key: "finish", format: val => `finish: ${val}`, condition: val => val !== "Any" && val !== undefined },
+        { key: "mmposition", format: val => `MM position: ${val}`, condition: val => val !== "Any" && val !== undefined },
+        { key: "layers", format: val => `${val} layers`, condition: val => val !== "Any" && val !== undefined },
+        { key: "shoulders", format: val => `${val} shoulders`, condition: val => val !== "Any" && val !== undefined },
     ];
+    
+    let anyApplied = false;
+    
+    filterConditions.forEach(({ key, format, condition }) => {
+        const value = sessionStorage[key];
+        if (condition(value)) {
+            container.appendChild(createFilterSpan(format(value)));
+            anyApplied = true;
+        }
+    });
+    
+    return anyApplied;
+}
 
-    const booleanFilters = [
+function processBooleanFilters(container) {
+    const booleanFilters = getBooleanFilterConfig();
+    let anyApplied = false;
+    
+    booleanFilters.forEach(({ key, label }) => {
+        if (sessionStorage[key] === "1") {
+            container.appendChild(createFilterSpan(label));
+            anyApplied = true;
+        }
+    });
+    
+    return anyApplied;
+}
+
+function buildSizeString() {
+    const sizeString = sessionStorage.getItem("size");
+    if (!sizeString) return "";
+    
+    const sizes = JSON.parse(sizeString);
+    const sizeLabels = sizes
+        .filter(size => size !== "Any")
+        .map(formatSizeLabel);
+    
+    return sizeLabels.join(", ");
+}
+
+function buildDifficultyString() {
+    const difficultyString = sessionStorage.getItem("difficulty");
+    if (!difficultyString) return "";
+    
+    const difficulties = JSON.parse(difficultyString);
+    return difficulties
+        .filter(diff => diff !== "Any")
+        .join(", ");
+}
+
+function formatSizeLabel(size) {
+    const sizeInt = parseInt(size);
+    if (sizeInt === 0) return "Base";
+    if (sizeInt > 0) return `Base +${size}`;
+    return `Base ${size}`;
+}
+
+function getBooleanFilterConfig() {
+    return [
+        // Basic filters
         { key: "bigkids", label: "good for big kids" },
         { key: "fancy", label: "fancy" },
         { key: "pretied", label: "can be pre-tied" },
@@ -491,6 +527,8 @@ function showAppliedFilters() {
         { key: "feeding", label: "good for feeding" },
         { key: "newborns", label: "good for newborns" },
         { key: "pregnancy", label: "good for pregnancy" },
+        
+        // Pass filters
         { key: "pass_sling", label: "sling pass" },
         { key: "pass_ruck", label: "ruck pass" },
         { key: "pass_kangaroo", label: "kangaroo pass" },
@@ -499,6 +537,8 @@ function showAppliedFilters() {
         { key: "pass_reinforcing_horizontal", label: "reinforcing horizontal pass" },
         { key: "pass_horizontal", label: "horizontal pass" },
         { key: "pass_poppins", label: "poppins pass" },
+        
+        // Negative pass filters
         { key: "no_pass_sling", label: "no sling pass" },
         { key: "no_pass_ruck", label: "no ruck pass" },
         { key: "no_pass_kangaroo", label: "no kangaroo pass" },
@@ -507,6 +547,8 @@ function showAppliedFilters() {
         { key: "no_pass_reinforcing_horizontal", label: "no reinforcing horizontal pass" },
         { key: "no_pass_horizontal", label: "no horizontal pass" },
         { key: "no_pass_poppins", label: "no poppins pass" },
+        
+        // Other filters
         { key: "other_chestpass", label: "chest pass" },
         { key: "other_bunchedpasses", label: "bunched pass(es)" },
         { key: "other_shoulderflip", label: "shoulder flip" },
@@ -517,6 +559,8 @@ function showAppliedFilters() {
         { key: "other_eyelet", label: "eyelet" },
         { key: "other_poppins", label: "poppins (not as a pass)" },
         { key: "other_sternum", label: "pond" },
+        
+        // Negative other filters
         { key: "no_other_chestpass", label: "no chest pass" },
         { key: "no_other_bunchedpasses", label: "no bunched pass(es)" },
         { key: "no_other_shoulderflip", label: "no shoulder flip" },
@@ -528,37 +572,25 @@ function showAppliedFilters() {
         { key: "no_other_poppins", label: "no poppins (not as a pass)" },
         { key: "no_other_sternum", label: "no pond" },
     ];
-
-    // Process the filter conditions
-    filterConditions.forEach(({ key, value, format, condition }) => {
-        if (condition(value)) {
-            filtersApplied.appendChild(createFilterSpan(format(value)));
-            anyApplied = true;
-        }
-    });
-
-    // Process the boolean filters
-    booleanFilters.forEach(({ key, label }) => {
-        if (sessionStorage[key] === "1") {
-            filtersApplied.appendChild(createFilterSpan(label));
-            anyApplied = true;
-        }
-    });
-
-    // If any filters were added, add the reset "x" button
-    if (anyApplied) {
-        const resetButton = document.createElement('span');
-        resetButton.className = 'reset-button';
-        resetButton.innerHTML = '&times;';  // Use &times; HTML entity for ×
-        resetButton.title = 'Reset Filters';
-        resetButton.onclick = function() {
-            // Clear filters in sessionStorage
-            resetFilters();
-        };
-        filtersApplied.appendChild(resetButton);
-    }
 }
 
+function createFilterSpan(text) {
+    const span = document.createElement('span');
+    span.className = 'filter-tag';
+    span.textContent = text;
+    return span;
+}
+
+function addResetButton(container) {
+    const resetButton = document.createElement('span');
+    resetButton.className = 'reset-button';
+    resetButton.innerHTML = '&times;';
+    resetButton.title = 'Reset Filters';
+    resetButton.onclick = function() {
+        resetFilters();
+    };
+    container.appendChild(resetButton);
+}
 
 
 async function showResults(sortBy, ascending = true) {

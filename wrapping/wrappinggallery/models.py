@@ -1,11 +1,8 @@
-from typing import Union
-
 from django.contrib.auth.models import AbstractUser
 from django.core.exceptions import ValidationError
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.db.models import Case, Count, FloatField, IntegerField, Sum, When
-from django.db.models.query import QuerySet
 from django.utils.translation import gettext_lazy as _
 
 from .achievements import ACHIEVEMENT_FUNCTIONS
@@ -441,48 +438,46 @@ def NZ_AVG(queryset, field_name):
     return sum_non_zero / count_non_zero if count_non_zero > 0 else 0
 
 
-def recalculate_achievements(user, type):
-    print(f"recalculate {type} achievements")
-
-    support_data: Union[
-        "QuerySet[DoneCarry]", "QuerySet[UserRating]", "QuerySet[Rating]"
-    ]
-
-    # Get support data based on the type
+def get_support_data(user, type):
     if type == "done_carries":
-        support_data = DoneCarry.objects.filter(user=user)
+        return DoneCarry.objects.filter(user=user)
     elif type == "ratings":
-        support_data = UserRating.objects.filter(user=user)
+        return UserRating.objects.filter(user=user)
     elif type == "time":
-        support_data = user
+        return user
     elif type == "general_ratings":
-        user_done_carries = DoneCarry.objects.filter(user=user)
-        carry_names = user_done_carries.values_list("carry__name", flat=True)
-        support_data = Rating.objects.filter(carry__name__in=carry_names)
+        carry_names = DoneCarry.objects.filter(user=user).values_list(
+            "carry__name", flat=True
+        )
+        return Rating.objects.filter(carry__name__in=carry_names)
     else:
         raise ValidationError(f"Unknown type {type}")
 
-    # Retrieve all necessary achievements and user achievements in bulk
-    achievements = Achievement.objects.filter(name__in=ACHIEVEMENT_FUNCTIONS.keys())
-    achievements_dict = {achievement.name: achievement for achievement in achievements}
 
-    user_achievements = UserAchievement.objects.filter(user=user)
-    user_achievements_dict = {ua.achievement.name: ua for ua in user_achievements}
+def recalculate_achievements(user, type):
+    print(f"recalculate {type} achievements")
+    support_data = get_support_data(user, type)
 
-    for achievement_name, (func, data_type, kwargs) in ACHIEVEMENT_FUNCTIONS.items():
-        if achievement_name in achievements_dict:
-            achievement = achievements_dict[achievement_name]
+    achievements_dict = {
+        a.name: a
+        for a in Achievement.objects.filter(name__in=ACHIEVEMENT_FUNCTIONS.keys())
+    }
 
-            # Check if this function applies to the current type
-            if data_type == type:
-                if func(support_data, **kwargs):  # Pass the done carries or ratings
-                    if achievement_name not in user_achievements_dict:
-                        UserAchievement.objects.create(
-                            achievement=achievement, user=user
-                        )
-                else:
-                    if achievement_name in user_achievements_dict:
-                        user_achievements_dict[achievement_name].delete()
+    user_achievements_dict = {
+        ua.achievement.name: ua for ua in UserAchievement.objects.filter(user=user)
+    }
+
+    for name, (func, data_type, kwargs) in ACHIEVEMENT_FUNCTIONS.items():
+        if data_type != type or name not in achievements_dict:
+            continue
+
+        achievement = achievements_dict[name]
+        has_achievement = func(support_data, **kwargs)
+
+        if has_achievement and name not in user_achievements_dict:
+            UserAchievement.objects.create(achievement=achievement, user=user)
+        elif not has_achievement and name in user_achievements_dict:
+            user_achievements_dict[name].delete()
 
 
 class UserRating(models.Model):
