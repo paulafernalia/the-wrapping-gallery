@@ -325,15 +325,19 @@ def steps_url(request, prefix):
         counter = 0
         batch_urls = ["dummy"]
 
+        matches = utils.get_existing_keys(bucket=settings.S3_BUCKET, prefix=prefix)
+
         while len(batch_urls) != 0:
             filenames = []
             range_start = counter * batchsize
             range_end = (counter + 1) * batchsize
 
             for i in [f"{i + 1:02}" for i in range(range_start, range_end)]:
-                filenames.append(f"{prefix}_step{i}.png")
+                filename = f"{prefix}_step{i}.png"
+                if filename in matches:
+                    filenames.append(filename)
 
-            batch_urls_dict = utils.generate_signed_urls(filenames, "tutorials")
+            batch_urls_dict = utils.generate_signed_urls(filenames, settings.S3_BUCKET)
             sorted_keys = sorted(batch_urls_dict.keys())
             batch_urls = [batch_urls_dict[key] for key in sorted_keys]
 

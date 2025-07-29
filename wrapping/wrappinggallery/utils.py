@@ -1,56 +1,147 @@
 from concurrent.futures import ThreadPoolExecutor, as_completed
+from typing import Dict, List, Optional, Tuple
 
+import boto3
+from botocore.exceptions import ClientError, NoCredentialsError
 from django.conf import settings
 from django.contrib.staticfiles.storage import staticfiles_storage
 from django.db.models import Q
-from supabase import create_client
 
 from .models import Carry, Rating
 
 
-def initialise_supabase():
-    url: str = settings.SUPABASE_URL
-    key: str = settings.SERVICE_ROLE_KEY
-    return create_client(url, key)
-
-
-supabase_client = initialise_supabase()
-
-
-def generate_signed_url(file_path, bucket, supabase=supabase_client):
+def initialise_s3():
+    """
+    Initialize S3 client using AWS credentials from environment or IAM roles
+    Make sure to set:
+    - AWS_ACCESS_KEY_ID
+    - AWS_SECRET_ACCESS_KEY
+    - AWS_DEFAULT_REGION (optional, defaults to us-east-1)
+    """
     try:
-        response = supabase.storage.from_(bucket).create_signed_url(
-            file_path, expires_in=3600
+        return boto3.client(
+            "s3",
+            region_name=settings.AWS_REGION,
+            aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
+            aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
         )
+    except NoCredentialsError as err:
+        raise Exception(
+            "AWS credentials not found. Please configure your credentials."
+        ) from err
 
-        return response["signedURL"]
 
-    except Exception:
+s3_client = initialise_s3()
+
+
+def get_existing_keys(bucket, prefix):
+    response = s3_client.list_objects_v2(Bucket=bucket, Prefix=prefix, MaxKeys=50)
+    return set(obj["Key"] for obj in response.get("Contents", []))
+
+
+def generate_signed_url(
+    file_path: str, bucket: str, s3_client=s3_client, expires_in: int = 3600
+) -> Optional[str]:
+    """
+    Generate a presigned URL for S3 object access
+
+    Args:
+        file_path: The S3 object key (file path)
+        bucket: S3 bucket name
+        s3_client: boto3 S3 client instance
+        expires_in: URL expiration time in seconds (default: 1 hour)
+
+    Returns:
+        Presigned URL string or None if failed
+    """
+    try:
+        response = s3_client.generate_presigned_url(
+            "get_object",
+            Params={"Bucket": bucket, "Key": file_path},
+            ExpiresIn=expires_in,
+        )
+        print(response, file_path)
+
+        return response
+    except ClientError as e:
+        print(f"Error generating signed URL for {file_path}: {e}")
+        return None
+    except Exception as e:
+        print(f"Unexpected error generating signed URL for {file_path}: {e}")
         return None
 
 
-def generate_signed_url_wrapper(file_path, bucket, supabase=supabase_client):
-    result = generate_signed_url(file_path, bucket, supabase)
+def generate_signed_url_wrapper(
+    file_path: str, bucket: str, s3_client=s3_client, expires_in: int = 3600
+) -> Optional[Tuple[str, str]]:
+    """
+    Wrapper function for thread pool execution
 
+    Returns:
+        Tuple of (file_path, signed_url) or None if failed
+    """
+    result = generate_signed_url(file_path, bucket, s3_client, expires_in)
     if result is None:
         return None
-
     return (file_path, result)
 
 
-def generate_signed_urls(file_paths, bucket, supabase=supabase_client):
-    signed_urls = {}
+def generate_signed_urls(
+    file_paths: List[str], bucket: str, s3_client=s3_client, expires_in: int = 3600
+) -> Dict[str, str]:
+    """
+    Generate signed URLs for multiple files concurrently
 
+    Args:
+        file_paths: List of S3 object keys
+        bucket: S3 bucket name
+        s3_client: boto3 S3 client instance
+        expires_in: URL expiration time in seconds
+
+    Returns:
+        Dictionary mapping file_path to signed_url
+    """
+    signed_urls = {}
     with ThreadPoolExecutor() as executor:
         futures = [
-            executor.submit(generate_signed_url_wrapper, file_path, bucket, supabase)
+            executor.submit(
+                generate_signed_url_wrapper, file_path, bucket, s3_client, expires_in
+            )
             for file_path in file_paths
         ]
         for future in as_completed(futures):
-            if future.result() is not None:
-                signed_urls[future.result()[0]] = future.result()[1]
-
+            result = future.result()
+            if result is not None:
+                signed_urls[result[0]] = result[1]
     return signed_urls
+
+
+# Additional utility functions for migration
+
+
+def upload_file_to_s3(
+    local_file_path: str, s3_key: str, bucket: str, s3_client=s3_client
+) -> bool:
+    """
+    Upload a file to S3
+
+    Args:
+        local_file_path: Path to local file
+        s3_key: S3 object key (destination path)
+        bucket: S3 bucket name
+
+    Returns:
+        True if successful, False otherwise
+    """
+    try:
+        s3_client.upload_file(local_file_path, bucket, s3_key)
+        return True
+    except ClientError as e:
+        print(f"Error uploading {local_file_path} to S3: {e}")
+        return False
+    except Exception as e:
+        print(f"Unexpected error uploading {local_file_path}: {e}")
+        return False
 
 
 def generate_profile_url():
