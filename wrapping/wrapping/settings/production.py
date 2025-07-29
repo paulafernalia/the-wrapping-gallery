@@ -59,9 +59,11 @@ SECRET_KEY = config("SECRET_KEY", default="default-development-secret-key")
 # Load Supabase configuration from environment variables
 SUPABASE_URL = config("SUPABASE_URL", default="https://default.supabase.co")
 SERVICE_ROLE_KEY = config("SERVICE_ROLE_KEY", default="default-service-role-key")
-SUPABASE_TUTORIAL_BUCKET = config(
-    "SUPABASE_TUTORIAL_BUCKET", default="default-bucket-name"
-)
+
+AWS_ACCESS_KEY_ID = config("AWS_ACCESS_KEY_ID")
+AWS_SECRET_ACCESS_KEY = config("AWS_SECRET_ACCESS_KEY")
+AWS_REGION = config("AWS_REGION")
+S3_BUCKET = config("AWS_S3_BUCKET_NAME")
 
 EMAIL_HOST_USER = config("EMAIL_HOST_USER", default="")
 EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD", default="")
