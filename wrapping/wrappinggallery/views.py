@@ -1,5 +1,6 @@
 import json
 import os
+import re
 from typing import Any, Dict, List, cast
 
 from django.conf import settings
@@ -16,7 +17,13 @@ from django.db.models import (
     When,
 )
 from django.db.models.functions import Round
-from django.http import FileResponse, HttpResponse, HttpResponseForbidden, JsonResponse
+from django.http import (
+    FileResponse,
+    HttpResponse,
+    HttpResponseBadRequest,
+    HttpResponseForbidden,
+    JsonResponse,
+)
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.views.decorators.http import require_GET, require_POST
@@ -318,15 +325,19 @@ def steps_url(request, prefix):
         counter = 0
         batch_urls = ["dummy"]
 
+        matches = utils.get_existing_keys(bucket=settings.S3_BUCKET, prefix=prefix)
+
         while len(batch_urls) != 0:
             filenames = []
             range_start = counter * batchsize
             range_end = (counter + 1) * batchsize
 
             for i in [f"{i + 1:02}" for i in range(range_start, range_end)]:
-                filenames.append(f"{prefix}_step{i}.png")
+                filename = f"{prefix}_step{i}.png"
+                if filename in matches:
+                    filenames.append(filename)
 
-            batch_urls_dict = utils.generate_signed_urls(filenames, "tutorials")
+            batch_urls_dict = utils.generate_signed_urls(filenames, settings.S3_BUCKET)
             sorted_keys = sorted(batch_urls_dict.keys())
             batch_urls = [batch_urls_dict[key] for key in sorted_keys]
 
@@ -427,9 +438,7 @@ def filter_carries(request):
     queryset = Rating.objects.all()
 
     # Apply filters based on properties and values
-    queryset = utils.apply_filters(
-        queryset, properties, values, mmpositions, finishes, difficulties
-    )
+    queryset = utils.apply_filters(queryset, properties, values, mmpositions, finishes)
 
     sizes = request.GET.getlist("size[]", "Any")
     if sizes != ["Any"]:
@@ -440,9 +449,6 @@ def filter_carries(request):
         queryset = queryset.annotate(rounded_difficulty=Round(F("difficulty"))).filter(
             rounded_difficulty__in=[difficulties[v] for v in filteredDiffs]
         )
-
-    sortBy = request.GET.get("sortBy") if request.GET.get("sortBy") else ""
-    ascending = "-" if request.GET.get("ascending") == "false" else ""
 
     if (
         request.GET.get("ascending") is not None
@@ -477,6 +483,14 @@ def filter_carries(request):
 
 
 def download_booklet(request, carry):
+    # Validate that carry contains only safe characters
+    if not re.match(r"^[a-zA-Z0-9_-]+$", carry):
+        return HttpResponseBadRequest("Invalid carry parameter")
+
+    # Additional length check
+    if len(carry) > 50:  # adjust as needed
+        return HttpResponseBadRequest("Carry parameter too long")
+
     file_path = os.path.join(settings.MEDIA_ROOT, f"{carry}_tutorial.pdf")
     response = FileResponse(
         open(file_path, "rb"), as_attachment=True, filename=f"{carry}_tutorial.pdf"
