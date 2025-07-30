@@ -278,7 +278,7 @@
     </div>
     <div style="margin: 0; padding: 0;">
         <button id="showFiltersBtn" class="show-button poppins-light fs16" onclick="showRatingsTable()" style="margin: 0; padding: 0px 0px; font-size: 0.8em; line-height: 1;">Show</button>
-        <i id="showFiltersArrow" class="fa-solid fa-caret-down toggle-icon" onclick="showRatingsTable()" style="cursor: pointer;"></i>
+        <i id="showFiltersArrow" class="fa-solid fa-caret-down toggle-icon" onclick="showRatingsTable()" onkeydown="if (event.key === 'Enter' || event.key === ' ') showRatingsTable()" style="cursor: pointer;"></i>
     </div>
 
     <br>
