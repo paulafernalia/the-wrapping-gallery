@@ -234,7 +234,7 @@ h4 {
 .table-item {
     display: flex;
     align-items: flex-start;
-    margin-bottom: 20px; /* Space between items */
+    margin-bottom: 10px; /* Space between items */
 }
 
 .table-icon {

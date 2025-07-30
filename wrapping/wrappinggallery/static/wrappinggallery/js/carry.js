@@ -311,6 +311,26 @@ function addCarryToTodo(div) {
     div.style.display = 'none';
 }
 
+function showRatingsTable() {
+    const table = document.getElementById("ratings-table");
+    const button = document.getElementById("showFiltersBtn");
+    const arrow = document.getElementById("showFiltersArrow");
+
+    const isHidden = table.style.display === "none" || table.style.display === "";
+
+    table.style.display = isHidden ? "block" : "none";
+    button.textContent = isHidden ? "Hide" : "Show";
+
+    if (isHidden) {
+        arrow.classList.remove("fa-caret-down");
+        arrow.classList.add("fa-caret-up");
+    } else {
+        arrow.classList.remove("fa-caret-up");
+        arrow.classList.add("fa-caret-down");
+    }
+    
+}
+
 
 document.addEventListener('DOMContentLoaded', async function() { 
     // Add stars to the rating groups based on their data attributes
