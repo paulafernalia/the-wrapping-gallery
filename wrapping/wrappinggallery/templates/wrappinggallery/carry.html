@@ -274,10 +274,16 @@
 <div class="title-container" id="avg-ratings">
     <div class="poppins-bold fsmedium">
         User ratings <span class="filter-tag-mini poppins-bold">{{ votes }} {{ votes|pluralize:"vote,votes" }}</span>
+
     </div>
+    <div style="margin: 0; padding: 0;">
+        <button id="showFiltersBtn" class="show-button poppins-light fs16" onclick="showRatingsTable()" style="margin: 0; padding: 0px 0px; font-size: 0.8em; line-height: 1;">Show</button>
+        <i id="showFiltersArrow" class="fa-solid fa-caret-down toggle-icon" onclick="showRatingsTable()" onkeydown="if (event.key === 'Enter' || event.key === ' ') showRatingsTable()" style="cursor: pointer;"></i>
+    </div>
+
     <br>
     
-    <div class="table-container">
+    <div id="ratings-table" class="table-container" style="display: none;">
         <div class="table-item">
             <div class="table-icon">
                 <img src="{% static 'wrappinggallery/icons/leaners.svg' %}" alt="Icon description" width="30" height="30">
@@ -296,7 +302,6 @@
                     {% endif %}
 
                 </div>
-                <p class="table-description">How good is this carry for containing a leaner, including while you are wrapping?</p>
             </div>
         </div>
 
@@ -317,7 +322,6 @@
                     </div>
                     {% endif %}
                 </div>
-                <p class="table-description">Is this carry good for leg straighteners? Does it have leg passes? A deep seat?</p>
             </div>
         </div>
 
@@ -339,7 +343,6 @@
                     {% endif %}
                 
                 </div>
-                <p class="table-description">Can it be wrapped high, with no bunched passes under tiny legs, and no head or torso support is required while you are wrapping? <a class="table-description" href="https://www.carryingmatters.co.uk/beginning-to-back-carry/#:~:text=Can%20I%20carry%20my%20newborn,soft%20and%20floppy%20woven%20wrap." target="blank_" style="color: blue;">Can I carry my newborn baby on my back?</a></p>
             </div>
         </div>
 
@@ -362,7 +365,6 @@
                     {% endif %}
                 
                 </div>
-                <p class="table-description">Does it allow you to carry a big child comfortably or is this best for short periods and or young babies?</p>
             </div>
         </div>
 
@@ -383,7 +385,6 @@
                     {% endif %}
                     
                 </div>
-                <p><span class="table-description">Does this carry apply an uncomfortable pressure on your bump either from baby or the wrap? </span> <a class="table-description" href="https://www.carryingmatters.co.uk/carrying-while-pregnant/" target="blank_" style="color: blue;">Can I carry while pregnant? </a></p>
             </div>
         </div>
 
@@ -404,7 +405,6 @@
                     {% endif %}
                 
                 </div>
-                <p class="table-description">Can you pop a boob out and place baby’s head at boob height with minimal adjustment? <a class="table-description" href="https://www.carryingmatters.co.uk/breast-and-bottle-feeding-safely-in-a-sling-3/" target="blank_" style="color: blue;">Can I feed safely in a wrap?</a></p>
             </div>
         </div>
         {% endif %}
@@ -424,10 +424,8 @@
                     </div>
                     {% endif %}
                 </div>
-                <p class="table-description">The more layers and complex elements, the longer it takes to wrap.</p>
             </div>
         </div>
-        <br>
 
         <div class="table-item">
             <div class="table-icon">
@@ -444,7 +442,6 @@
                     </div>
                     {% endif %}
                 </div>
-                <p class="table-description">On a scale from absolute beginners to wrapping guru level</p>
             </div>
         </div>
 
@@ -463,20 +460,13 @@
                     </div>
                     {% endif %}
                 </div>
-                <p class="table-description">All woven wrap carries are aesthetically pleasing, but some more so than others.</p>
             </div>
         </div>
     </div>
-    <br>
-</div>
-
-<div class="title-container poppins-light fssmall">
-    <p style="color: grey;">Something doesn't look right? <a href="mailto:thewrappinggallery@gmail.com" style='color: grey; text-decoration: underline;'>Email me</a></b></p>
 </div>
 
 
-
-<br><br>
+<br>
 <div id="tutorial-content">
     <div class="title-container poppins-bold fsmedium">
         Picture tutorial
